@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthResponseEntity {
 
- String get token; UserEntity get user;
+ TokenResponseEntity get tokenResponse; UserEntity get user;
 /// Create a copy of AuthResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AuthResponseEntityCopyWith<AuthResponseEntity> get copyWith => _$AuthResponseEn
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponseEntity&&(identical(other.token, token) || other.token == token)&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthResponseEntity&&(identical(other.tokenResponse, tokenResponse) || other.tokenResponse == tokenResponse)&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,user);
+int get hashCode => Object.hash(runtimeType,tokenResponse,user);
 
 @override
 String toString() {
-  return 'AuthResponseEntity(token: $token, user: $user)';
+  return 'AuthResponseEntity(tokenResponse: $tokenResponse, user: $user)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $AuthResponseEntityCopyWith<$Res>  {
   factory $AuthResponseEntityCopyWith(AuthResponseEntity value, $Res Function(AuthResponseEntity) _then) = _$AuthResponseEntityCopyWithImpl;
 @useResult
 $Res call({
- String token, UserEntity user
+ TokenResponseEntity tokenResponse, UserEntity user
 });
 
 
-$UserEntityCopyWith<$Res> get user;
+$TokenResponseEntityCopyWith<$Res> get tokenResponse;$UserEntityCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -62,14 +62,23 @@ class _$AuthResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? token = null,Object? user = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tokenResponse = null,Object? user = null,}) {
   return _then(_self.copyWith(
-token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+tokenResponse: null == tokenResponse ? _self.tokenResponse : tokenResponse // ignore: cast_nullable_to_non_nullable
+as TokenResponseEntity,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserEntity,
   ));
 }
 /// Create a copy of AuthResponseEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TokenResponseEntityCopyWith<$Res> get tokenResponse {
+  
+  return $TokenResponseEntityCopyWith<$Res>(_self.tokenResponse, (value) {
+    return _then(_self.copyWith(tokenResponse: value));
+  });
+}/// Create a copy of AuthResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -160,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String token,  UserEntity user)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TokenResponseEntity tokenResponse,  UserEntity user)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthResponseEntity() when $default != null:
-return $default(_that.token,_that.user);case _:
+return $default(_that.tokenResponse,_that.user);case _:
   return orElse();
 
 }
@@ -181,10 +190,10 @@ return $default(_that.token,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String token,  UserEntity user)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TokenResponseEntity tokenResponse,  UserEntity user)  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponseEntity():
-return $default(_that.token,_that.user);case _:
+return $default(_that.tokenResponse,_that.user);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +210,10 @@ return $default(_that.token,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String token,  UserEntity user)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TokenResponseEntity tokenResponse,  UserEntity user)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthResponseEntity() when $default != null:
-return $default(_that.token,_that.user);case _:
+return $default(_that.tokenResponse,_that.user);case _:
   return null;
 
 }
@@ -216,10 +225,10 @@ return $default(_that.token,_that.user);case _:
 
 
 class _AuthResponseEntity implements AuthResponseEntity {
-  const _AuthResponseEntity({required this.token, required this.user});
+  const _AuthResponseEntity({required this.tokenResponse, required this.user});
   
 
-@override final  String token;
+@override final  TokenResponseEntity tokenResponse;
 @override final  UserEntity user;
 
 /// Create a copy of AuthResponseEntity
@@ -232,16 +241,16 @@ _$AuthResponseEntityCopyWith<_AuthResponseEntity> get copyWith => __$AuthRespons
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponseEntity&&(identical(other.token, token) || other.token == token)&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResponseEntity&&(identical(other.tokenResponse, tokenResponse) || other.tokenResponse == tokenResponse)&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,user);
+int get hashCode => Object.hash(runtimeType,tokenResponse,user);
 
 @override
 String toString() {
-  return 'AuthResponseEntity(token: $token, user: $user)';
+  return 'AuthResponseEntity(tokenResponse: $tokenResponse, user: $user)';
 }
 
 
@@ -252,11 +261,11 @@ abstract mixin class _$AuthResponseEntityCopyWith<$Res> implements $AuthResponse
   factory _$AuthResponseEntityCopyWith(_AuthResponseEntity value, $Res Function(_AuthResponseEntity) _then) = __$AuthResponseEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String token, UserEntity user
+ TokenResponseEntity tokenResponse, UserEntity user
 });
 
 
-@override $UserEntityCopyWith<$Res> get user;
+@override $TokenResponseEntityCopyWith<$Res> get tokenResponse;@override $UserEntityCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -269,15 +278,24 @@ class __$AuthResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of AuthResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? token = null,Object? user = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tokenResponse = null,Object? user = null,}) {
   return _then(_AuthResponseEntity(
-token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+tokenResponse: null == tokenResponse ? _self.tokenResponse : tokenResponse // ignore: cast_nullable_to_non_nullable
+as TokenResponseEntity,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserEntity,
   ));
 }
 
 /// Create a copy of AuthResponseEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TokenResponseEntityCopyWith<$Res> get tokenResponse {
+  
+  return $TokenResponseEntityCopyWith<$Res>(_self.tokenResponse, (value) {
+    return _then(_self.copyWith(tokenResponse: value));
+  });
+}/// Create a copy of AuthResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
