@@ -88,12 +88,12 @@ abstract class IAuthRepository {
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, AuthResponseEntity>> signInWithFacebook();
 
-  /// Signs out the current user by clearing local session data.
+  /// Signs out the current user by invalidating server session and clearing local data.
   ///
-  /// Removes authentication token and user profile data from local storage.
-  /// This operation only affects local data and does not invalidate server-side sessions.
+  /// Retrieves refresh token from secure storage, sends it to backend to invalidate
+  /// the session, then removes authentication tokens and user profile data from local storage.
   ///
   /// Returns [Right] with [SignOutResponseEntity] on success,
-  /// or [Left] with [Failure] if clearing local data fails.
+  /// or [Left] with [Failure] if operation fails.
   Future<Either<Failure, SignOutResponseEntity>> signOut();
 }
