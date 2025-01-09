@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart' show GetIt;
 import 'package:google_sign_in/google_sign_in.dart' show GoogleSignIn;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116;
+import '../../../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
+    show ISessionTokenSecureDataSource;
 import '../../../../platform/session/application/usecases/update.auth.status.usecase.dart'
     show UpdateAuthStatusUseCase;
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
@@ -51,10 +53,15 @@ Future<void> registerAuthDependencies(GetIt sl) async {
       sl<IAuthRemoteDataSource>(),
       sl<IGoogleAuthDataSource>(),
       sl<IFacebookAuthDataSource>(),
+      sl<ISessionTokenSecureDataSource>(),
     ),
   );
   sl.registerSingleton<IAuthRepository>(
-    AuthCachedRepository(sl<AuthRemoteRepository>(), sl<IAuthLocalDataSource>()),
+    AuthCachedRepository(
+      sl<AuthRemoteRepository>(),
+      sl<IAuthLocalDataSource>(),
+      sl<ISessionTokenSecureDataSource>(),
+    ),
   );
 
   // Use cases
