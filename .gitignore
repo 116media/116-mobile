@@ -1,13 +1,30 @@
 # Miscellaneous
 *.class
-*.lock
 *.log
 *.pyc
 *.swp
+.DS_Store
+.atom/
+.build/
 .buildlog/
 .history
+.svn/
+.swiftpm/
+migrate_working_dir/
 
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
+# dotenv environment variables file
+.env*
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
 
 # Flutter repo-specific
 /bin/cache/
@@ -33,18 +50,18 @@ analysis_benchmark.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
+**/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 **/generated_plugin_registrant.dart
-.packages
-.pub-preload-cache/
+.pub-cache/
 .pub/
-build/
-flutter_*.png
-linked_*.ds
-unlinked.ds
-unlinked_spec.ds
+/build/
+.packages
+
+# If you're building an application, you may want to check-in your pubspec.lock
+pubspec.lock
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -74,7 +91,6 @@ unlinked_spec.ds
 **/ios/**/profile
 **/ios/**/xcuserdata
 **/ios/.generated/
-**/ios/Flutter/.last_build_id
 **/ios/Flutter/App.framework
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
@@ -107,8 +123,16 @@ unlinked_spec.ds
 # Coverage
 coverage/
 
-# Symbols
+# Symbolication related
 app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
