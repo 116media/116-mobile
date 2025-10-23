@@ -1,0 +1,37 @@
+{
+  "cSpell.words": [
+    "appbar",
+    "borderdraw",
+    "bottombar",
+    "buildcontext",
+    "buildlog",
+    "cupertino",
+    "dblite",
+    "devicelab",
+    "dotenv",
+    "favorited",
+    "Français",
+    "gradlew",
+    "listview",
+    "mingit",
+    "pbxuser",
+    "perspectivev",
+    "podspec",
+    "pubspec",
+    "sconsign",
+    "searchbar",
+    "swiftpm",
+    "Symbolication",
+    "themetoggle",
+    "xcconfig",
+    "xcuserdata"
+  ],
+  "dart.lineLength": 100,
+  "[dart]": {
+    "editor.rulers": [
+    100
+    ],
+    "editor.formatOnSave": true
+  },
+  "color-highlight.useARGB": true
+}
