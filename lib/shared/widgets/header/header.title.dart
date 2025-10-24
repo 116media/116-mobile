@@ -28,11 +28,7 @@ class HeaderTitle extends StatelessWidget {
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: ColorsUtil.neutral400,
-          ),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: ColorsUtil.neutral400),
         ),
       ],
     );
