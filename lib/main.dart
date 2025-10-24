@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
 import '../../../shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
-import 'core/presentation/preferences/screens/preference.screen.dart' show PreferenceScreen;
+import 'core/presentation/onboardings/screens/onboarding.screen.dart' show OnboardingScreen;
 import 'modules/discover/presentation/screens/discover.screen.dart' show DiscoverScreen;
 import 'modules/favorite/presentation/screens/favorite.screen.dart' show FavoriteScreen;
 import 'modules/home/presentation/screens/home.screen.dart' show HomeScreen;
@@ -42,7 +42,7 @@ class App extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          home: const PreferenceScreen(),
+          home: const OnboardingScreen(),
         );
       },
     );
