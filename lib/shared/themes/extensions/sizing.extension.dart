@@ -24,9 +24,11 @@ class Sizing extends ThemeExtension<Sizing> {
   final double s12;
   final double s14;
   final double s16;
+  final double s18;
   final double s20;
   final double s24;
   final double s28;
+  final double s30;
   final double s32;
   final double s36;
   final double s40;
@@ -60,9 +62,11 @@ class Sizing extends ThemeExtension<Sizing> {
     required this.s12,
     required this.s14,
     required this.s16,
+    required this.s18,
     required this.s20,
     required this.s24,
     required this.s28,
+    required this.s30,
     required this.s32,
     required this.s36,
     required this.s40,
@@ -98,9 +102,11 @@ class Sizing extends ThemeExtension<Sizing> {
     double? s12,
     double? s14,
     double? s16,
+    double? s18,
     double? s20,
     double? s24,
     double? s28,
+    double? s30,
     double? s32,
     double? s36,
     double? s40,
@@ -134,9 +140,11 @@ class Sizing extends ThemeExtension<Sizing> {
       s12: s12 ?? this.s12,
       s14: s14 ?? this.s14,
       s16: s16 ?? this.s16,
+      s18: s18 ?? this.s18,
       s20: s20 ?? this.s20,
       s24: s24 ?? this.s24,
       s28: s28 ?? this.s28,
+      s30: s30 ?? this.s30,
       s32: s32 ?? this.s32,
       s36: s36 ?? this.s36,
       s40: s40 ?? this.s40,
@@ -177,9 +185,11 @@ class Sizing extends ThemeExtension<Sizing> {
       s12: lerpDouble(s12, other.s12, t)!,
       s14: lerpDouble(s14, other.s14, t)!,
       s16: lerpDouble(s16, other.s16, t)!,
+      s18: lerpDouble(s18, other.s18, t)!,
       s20: lerpDouble(s20, other.s20, t)!,
       s24: lerpDouble(s24, other.s24, t)!,
       s28: lerpDouble(s28, other.s28, t)!,
+      s30: lerpDouble(s30, other.s30, t)!,
       s32: lerpDouble(s32, other.s32, t)!,
       s36: lerpDouble(s36, other.s36, t)!,
       s40: lerpDouble(s40, other.s40, t)!,
