@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
+import '../../../shared/themes/extensions/build.context.extension.dart';
 import '../../utils/colors.util.dart' show ColorsUtil;
 
 /// A solid button widget that adapts to the platform (iOS/Android).
 ///
 /// Provides consistent button styling with size variants across platforms.
 class SolidButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final Color? background;
-  final Color? textColor;
   final String text;
   final String size;
   final bool isFull;
+  final Color? textColor;
+  final Color? background;
+  final VoidCallback onPressed;
 
   const SolidButton({
     super.key,
@@ -43,27 +44,29 @@ class SolidButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformElevatedButton(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
       onPressed: onPressed,
       material: (_, _) => MaterialElevatedButtonData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: background,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          padding: EdgeInsets.zero,
           elevation: 0,
+          padding: EdgeInsets.zero,
+          backgroundColor: background,
+          splashFactory: InkRipple.splashFactory,
+          foregroundColor: ColorsUtil.white.withAlpha(context.sizing.s48.toInt()),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
         ),
       ),
       cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
-      child: Container(
+      child: SizedBox(
         height: _getHeight(),
-        alignment: Alignment.center,
         width: isFull ? double.infinity : null,
-        decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(8.0)),
-        child: Text(
-          text,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: textColor, fontWeight: FontWeight.w500),
+        child: Center(
+          child: Text(
+            text,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
+          ),
         ),
       ),
     );
