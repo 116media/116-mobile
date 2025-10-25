@@ -36,7 +36,7 @@ class OnboardingActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final EdgeInsets padding = EdgeInsets.symmetric(
-      vertical: context.sizing.s0_5,
+      vertical: context.sizing.s12,
       horizontal: context.sizing.s0_5,
     );
 
