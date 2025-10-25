@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../utils/colors.util.dart' show ColorsUtil;
 
+/// A solid button widget that adapts to the platform (iOS/Android).
+///
+/// Provides consistent button styling with size variants across platforms.
 class SolidButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? background;
   final Color? textColor;
   final String text;
   final String size;
-  final bool full;
+  final bool isFull;
 
   const SolidButton({
     super.key,
@@ -18,9 +21,10 @@ class SolidButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.background = ColorsUtil.primary,
     this.size = 'md',
-    this.full = false,
+    this.isFull = false,
   });
 
+  /// Returns the height based on the size variant.
   double _getHeight() {
     switch (size) {
       case 'xs':
@@ -38,13 +42,22 @@ class SolidButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
+    return PlatformElevatedButton(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12.0),
       onPressed: onPressed,
+      material: (_, _) => MaterialElevatedButtonData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: background,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          padding: EdgeInsets.zero,
+          elevation: 0,
+        ),
+      ),
+      cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
       child: Container(
         height: _getHeight(),
         alignment: Alignment.center,
-        width: full ? double.infinity : null,
+        width: isFull ? double.infinity : null,
         decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(8.0)),
         child: Text(
           text,
