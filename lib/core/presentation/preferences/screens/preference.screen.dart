@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../shared/themes/extensions/build.context.extension.dart';
 import '../../../../shared/providers/theme.provider.dart';
 import '../../../../shared/utils/colors.util.dart' show ColorsUtil;
+import '../../../../shared/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../shared/widgets/header/header.title.dart' show HeaderTitle;
 import '../../../../shared/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../widgets/language/language.listview.widget.dart' show LanguageListView;
@@ -47,7 +48,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            vertical: context.sizing.s36,
+            vertical: context.sizing.s24,
             horizontal: context.sizing.s24,
           ),
           child: Column(
@@ -78,7 +79,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
               ),
 
               Divider(
-                thickness: 0.5,
+                thickness: context.sizing.s0_5,
                 color: context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300,
               ),
 
@@ -94,33 +95,13 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 ),
               ),
 
-              Container(
-                width: double.infinity,
-                height: context.sizing.s56,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: context.primaryColor,
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      // Handle continue action
-                      // You can pass the selected language back or navigate to next screen
-                    },
-                    child: const Center(
-                      child: Text(
-                        'Continue',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              SolidButton(
+                size: 'sm',
+                text: 'Continue',
+                onPressed: () {
+                  // Handle continue action
+                  // You can pass the selected language back or navigate to next screen
+                },
               ),
             ],
           ),

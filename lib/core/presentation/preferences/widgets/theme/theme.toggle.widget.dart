@@ -25,10 +25,7 @@ class SlidingThemeToggle extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
+        decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.all(2),
         child: CupertinoSlidingSegmentedControl<AppThemeMode>(
           groupValue: currentTheme,
