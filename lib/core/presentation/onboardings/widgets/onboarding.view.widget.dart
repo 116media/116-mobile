@@ -30,7 +30,7 @@ class OnboardingView extends StatelessWidget {
         itemCount: onboardingItemList.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.25),
+            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,7 +50,7 @@ class OnboardingView extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: textColor,
                           fontWeight: FontWeight.w700,
-                          fontSize: context.sizing.s28,
+                          fontSize: context.sizing.s24,
                         ),
                       ),
                     ),
@@ -62,9 +62,9 @@ class OnboardingView extends StatelessWidget {
                         textAlign: TextAlign.center,
                         onboardingItemList[index].description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: context.sizing.s18,
-                          color: textColor.withValues(alpha: 0.65),
+                          fontWeight: FontWeight.w600,
+                          fontSize: context.sizing.s16,
+                          color: textColor.withValues(alpha: context.sizing.s0_5),
                         ),
                       ),
                     ),

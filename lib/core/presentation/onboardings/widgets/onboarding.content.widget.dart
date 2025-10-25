@@ -46,9 +46,9 @@ class OnboardingContent extends StatelessWidget {
 
         // skip and next action buttons
         OnboardingActions(
+          textColor: textColor,
           controller: controller,
           percentage: percentage,
-          textColor: textColor,
           currentIndex: currentIndex,
           onSkip: onSkip,
           onGetStarted: onGetStarted,

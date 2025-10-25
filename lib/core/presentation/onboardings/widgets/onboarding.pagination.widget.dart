@@ -21,7 +21,7 @@ class OnboardingPagination extends StatelessWidget {
     final Color inactiveColor = isDarkMode ? ColorsUtil.slate700 : ColorsUtil.slate500;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: context.sizing.s24),
+      padding: EdgeInsets.only(bottom: context.sizing.s32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

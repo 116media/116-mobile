@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart' show PlatformTextButton;
 
 import '../../../../shared/themes/extensions/build.context.extension.dart';
 import '../../../../shared/animations/fade.animation.dart' show FadeAnimation;
@@ -8,6 +7,9 @@ import '../../../../shared/widgets/buttons/solid.button.dart' show SolidButton;
 import '../models/onboarding.model.dart' show onboardingItemList;
 
 /// Widget that displays action buttons for onboarding screens.
+///
+/// **Note:** This widget uses Cupertino-style buttons exclusively for
+/// consistent iOS-style appearance across all platforms.
 ///
 /// Shows either:
 /// - "Get Started" button on the last page
@@ -33,27 +35,35 @@ class OnboardingActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EdgeInsets padding = EdgeInsets.symmetric(
+      vertical: context.sizing.s0_5,
+      horizontal: context.sizing.s0_5,
+    );
+
     return currentIndex == onboardingItemList.length - 1
         ? FadeAnimation(
             reverse: true,
-            child: SolidButton(size: "sm", text: "Get Started", onPressed: onGetStarted),
+            child: Padding(
+              padding: padding,
+              child: SolidButton(size: "sm", text: "Get Started", onPressed: onGetStarted),
+            ),
           )
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              PlatformTextButton(
+              CupertinoButton(
+                padding: padding,
                 onPressed: onSkip,
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
                 child: Text(
                   'Skip',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: textColor.withValues(alpha: 0.75),
+                    color: textColor.withValues(alpha: context.sizing.s0_5),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               CupertinoButton(
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
+                padding: padding,
                 onPressed: () {
                   if (currentIndex < onboardingItemList.length - 1) {
                     controller.nextPage(
@@ -66,8 +76,8 @@ class OnboardingActions extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
-                      width: 50.0,
-                      height: 50.0,
+                      width: context.sizing.s52,
+                      height: context.sizing.s52,
                       child: CircularProgressIndicator(
                         value: percentage,
                         backgroundColor: context.colors.primary.withValues(

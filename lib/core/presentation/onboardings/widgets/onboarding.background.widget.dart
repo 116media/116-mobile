@@ -30,7 +30,7 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final gradientEndColor = isDarkMode ? ColorsUtil.black : ColorsUtil.white;
-    final gradientMidColor = isDarkMode ? ColorsUtil.slate900 : ColorsUtil.slate100;
+    final gradientMidColor = isDarkMode ? ColorsUtil.slate800 : ColorsUtil.slate200;
 
     return Scaffold(
       body: Stack(
@@ -54,8 +54,8 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          ColorsUtil.primary.withValues(alpha: 2.5),
-                          ColorsUtil.secondary.withValues(alpha: 0.5),
+                          ColorsUtil.primary.withValues(alpha: context.sizing.s0_5),
+                          ColorsUtil.secondary.withValues(alpha: context.sizing.s0_5),
                         ],
                       ),
                     ),
