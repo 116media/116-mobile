@@ -16,18 +16,8 @@ class LanguageModel {
   });
 
   /// List of all supported languages in the application.
-  static const List<LanguageModel> availableLanguages = [
-    LanguageModel(
-      code: 'en',
-      nativeName: 'English',
-      englishName: 'English',
-      flagEmoji: '🇬🇧',
-    ),
-    LanguageModel(
-      code: 'fr',
-      nativeName: 'Français',
-      englishName: 'French',
-      flagEmoji: '🇫🇷',
-    ),
+  static const List<LanguageModel> languagesList = [
+    LanguageModel(code: 'en', nativeName: 'English', englishName: 'English', flagEmoji: '🇬🇧'),
+    LanguageModel(code: 'fr', nativeName: 'Français', englishName: 'French', flagEmoji: '🇫🇷'),
   ];
 }

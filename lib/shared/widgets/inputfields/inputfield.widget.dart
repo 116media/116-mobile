@@ -51,15 +51,9 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
     super.initState();
     _isPasswordVisible = !widget.isPassword;
 
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
 
-    final Animation<double> curve = CurvedAnimation(
-      parent: controller!,
-      curve: Curves.easeInOut,
-    );
+    final Animation<double> curve = CurvedAnimation(parent: controller!, curve: Curves.easeInOut);
 
     alpha = Tween(begin: 0.0, end: 1.0).animate(curve);
 
@@ -84,13 +78,13 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        border: Border.all(color: ColorsUtil.gray400),
+        borderRadius: BorderRadius.all(Radius.circular(context.sizing.s8)),
       ),
       child: CustomPaint(
         painter: BorderAnimation(alpha.value),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.all(Radius.circular(context.sizing.s8)),
           child: TextField(
             focusNode: focusNode,
             autocorrect: !widget.isPassword,
@@ -102,16 +96,14 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
               filled: widget.filled,
               label: Text(widget.label, style: const TextStyle(height: 0)),
               fillColor: widget.filled ? widget.filledColor : null,
-              labelStyle: context.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+              labelStyle: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
               floatingLabelStyle: context.textTheme.bodyMedium?.copyWith(
                 color: context.primaryColor,
                 fontWeight: FontWeight.w500,
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 10.0,
-                horizontal: 12.0,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: context.sizing.s10,
+                horizontal: context.sizing.s12,
               ),
               suffixIcon: widget.isPassword
                   ? VisibleIconButton(

@@ -8,10 +8,10 @@ import 'language.options.widget.dart' show LanguageOption;
 /// A scrollable list view displaying available language options for selection.
 ///
 /// This widget creates a vertical list of [LanguageOption] widgets from the
-/// available languages defined in [LanguageModel.availableLanguages]. Each
+/// available languages defined in [LanguageModel.languagesList]. Each
 /// language option can be tapped to select it.
 ///
-/// The list automatically displays all languages from [LanguageModel.availableLanguages]
+/// The list automatically displays all languages from [LanguageModel.languagesList]
 /// and highlights the currently selected language based on [selectedLanguageCode].
 class LanguageListView extends StatelessWidget {
   final bool isDarkMode;
@@ -29,10 +29,10 @@ class LanguageListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        itemCount: LanguageModel.availableLanguages.length,
+        itemCount: LanguageModel.languagesList.length,
         separatorBuilder: (context, index) => Gap(context.sizing.s12),
         itemBuilder: (context, index) {
-          final language = LanguageModel.availableLanguages[index];
+          final language = LanguageModel.languagesList[index];
           final isSelected = selectedLanguageCode == language.code;
 
           return LanguageOption(

@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../../../shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
 import '../../../shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
-import 'core/presentation/preferences/screens/preference.screen.dart' show PreferenceScreen;
+import 'core/presentation/onboardings/screens/onboarding.screen.dart' show OnboardingScreen;
+import 'modules/discover/presentation/screens/discover.screen.dart' show DiscoverScreen;
+import 'modules/favorite/presentation/screens/favorite.screen.dart' show FavoriteScreen;
 import 'modules/home/presentation/screens/home.screen.dart' show HomeScreen;
+import 'modules/shows/presentation/screens/shows.screen.dart' show ShowsScreen;
 import 'shared/providers/theme.provider.dart' show ThemeProvider;
 import 'shared/themes/app.theme.dart' show AppTheme;
 
@@ -39,7 +42,7 @@ class App extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          home: const PreferenceScreen(),
+          home: const OnboardingScreen(),
         );
       },
     );
@@ -107,32 +110,5 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: BottomBarLayout(currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
-  }
-}
-
-class DiscoverScreen extends StatelessWidget {
-  const DiscoverScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Discover Screen'));
-  }
-}
-
-class ShowsScreen extends StatelessWidget {
-  const ShowsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Shows Screen'));
-  }
-}
-
-class FavoriteScreen extends StatelessWidget {
-  const FavoriteScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Favorite Screen'));
   }
 }
