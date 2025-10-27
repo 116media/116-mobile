@@ -40,7 +40,7 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
             top: 0,
             left: 0,
             right: 0,
-            height: screenHeight * 0.5,
+            height: screenHeight * context.sizing.s0_5,
             child: Stack(
               children: [
                 // onboarding image
@@ -66,8 +66,8 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
                 Positioned.fill(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                      sigmaX: context.sizing.s2_5,
-                      sigmaY: context.sizing.s2_5,
+                      sigmaX: context.sizing.s0_5,
+                      sigmaY: context.sizing.s0_5,
                     ),
                     child: const SizedBox(),
                   ),
@@ -78,9 +78,9 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
 
           // Bottom half: Gradient fading to solid color (adapts to theme)
           Positioned(
-            bottom: 0,
             left: 0,
             right: 0,
+            bottom: 0,
             height: screenHeight,
             child: Container(
               decoration: BoxDecoration(
