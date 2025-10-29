@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../../shared/themes/extensions/build.context.extension.dart';
 import '../../../../shared/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../shared/widgets/buttons/solid.button.dart' show SolidButton;
+import '../../../../modules/auth/presentation/widgets/shared/buttons/guest.button.dart'
+    show GuestButton;
 import '../models/onboarding.model.dart' show onboardingItemList;
 
 /// Widget that displays action buttons for onboarding screens.
@@ -22,6 +24,7 @@ class OnboardingActions extends StatelessWidget {
 
   final VoidCallback onSkip;
   final VoidCallback onGetStarted;
+  final VoidCallback onContinueAsGuest;
 
   const OnboardingActions({
     super.key,
@@ -31,6 +34,7 @@ class OnboardingActions extends StatelessWidget {
     required this.percentage,
     required this.onSkip,
     required this.onGetStarted,
+    required this.onContinueAsGuest,
   });
 
   @override
@@ -45,7 +49,13 @@ class OnboardingActions extends StatelessWidget {
             reverse: true,
             child: Padding(
               padding: padding,
-              child: SolidButton(size: "sm", text: "Get Started", onPressed: onGetStarted),
+              child: Column(
+                spacing: context.sizing.s12,
+                children: [
+                  SolidButton(size: "sm", text: "Sign In / Sign Up", onPressed: onGetStarted),
+                  GuestButton(text: "Continue as guest", onPressed: onContinueAsGuest),
+                ],
+              ),
             ),
           )
         : Row(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../shared/themes/extensions/build.context.extension.dart';
+import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
+    show SignInDialog;
 import '../constants/onboardings.constant.dart' show kIncrementPercentage;
 import '../models/onboarding.model.dart' show onboardingItemList;
 import '../widgets/onboarding.background.widget.dart' show OnboardingBackground;
@@ -57,6 +59,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     });
   }
 
+  /// Shows the sign-in dialog with a slide-up animation.
+  Future<void> _showSignInDialog() async {
+    await showGeneralDialog<Widget>(
+      context: context,
+      barrierDismissible: false,
+      transitionDuration: const Duration(milliseconds: 500),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        Tween<Offset> tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
+        return SlideTransition(
+          position: tween.animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const SignInDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     precacheImage(AssetImage(onboardingItemList[currentIndex].image), context);
@@ -85,11 +106,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     percentage = (index + 1) / onboardingItemList.length;
                   });
                 },
-                onSkip: () {
-                  // Navigate to signup screen
-                },
-                onGetStarted: () {
-                  // Navigate to signup screen
+                onSkip: _showSignInDialog,
+                onGetStarted: _showSignInDialog,
+                onContinueAsGuest: () {
+                  // direct the user to the homepage
                 },
               ),
             ),
