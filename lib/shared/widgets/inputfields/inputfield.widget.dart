@@ -26,7 +26,7 @@ class InputField extends StatefulWidget {
     this.filled = false,
     this.isPassword = false,
     Color? filledColor,
-  }) : filledColor = filledColor ?? ColorsUtil.white.withValues(alpha: 0.7);
+  }) : filledColor = filledColor ?? ColorsUtil.white.withValues(alpha: 0.5);
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -79,7 +79,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: ColorsUtil.slate300),
-        borderRadius: BorderRadius.all(Radius.circular(context.sizing.s8)),
+        borderRadius: BorderRadius.all(Radius.circular(context.sizing.s9)),
       ),
       child: CustomPaint(
         painter: BorderAnimation(alpha.value),
