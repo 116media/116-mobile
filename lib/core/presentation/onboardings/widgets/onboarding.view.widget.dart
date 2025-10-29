@@ -32,7 +32,6 @@ class OnboardingView extends StatelessWidget {
           return Container(
             margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Wrap(
