@@ -78,7 +78,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: ColorsUtil.gray400),
+        border: Border.all(color: ColorsUtil.slate300),
         borderRadius: BorderRadius.all(Radius.circular(context.sizing.s8)),
       ),
       child: CustomPaint(
