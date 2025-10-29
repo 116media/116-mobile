@@ -5,6 +5,7 @@ import '../../../../../../shared/themes/extensions/build.context.extension.dart'
 import '../../../../../../shared/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../../../shared/widgets/inputfields/inputfield.widget.dart' show InputField;
 import '../../../../../../shared/widgets/logo/logo.widget.dart' show Logo, LogoType;
+import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../shared/buttons/guest.button.dart' show GuestButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/signin.dialog.widget.dart' show SignInDialog;
@@ -23,30 +24,17 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   /// Shows the sign-in dialog with a slide-up animation.
+  /// Closes the current dialog before opening the new one.
   Future<void> _showSignInDialog() async {
-    await showGeneralDialog<Widget>(
-      context: context,
-      barrierDismissible: false,
-      transitionDuration: const Duration(milliseconds: 500),
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        Tween<Offset> tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
-        return SlideTransition(
-          position: tween.animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
-          child: child,
-        );
-      },
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return const SignInDialog();
-      },
-    );
+    await showAuthDialog(context, const SignInDialog(), closeExisting: true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: context.sizing.s24),
+      padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
       child: Column(
-        spacing: context.sizing.s24,
+        spacing: context.sizing.s12,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
