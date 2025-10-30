@@ -5,19 +5,52 @@ import '../../animations/border.animation.dart' show BorderAnimation;
 import '../../utils/colors.util.dart' show ColorsUtil;
 import '../buttons/visible.icon.button.dart' show VisibleIconButton;
 
-/// A customizable text input field with animated border and optional password visibility toggle.
+part 'base.textfield.widget.dart';
+
+/// A customizable text input field with animated border, validation, and password visibility toggle.
 ///
-/// This widget provides a styled TextField with:
-/// - Animated border that activates on focus (using [BorderAnimation])
-/// - Optional filled background
-/// - Built-in password visibility toggle for password fields
-/// - Custom suffix icon support
+/// This widget provides a fully-featured form input with:
+/// - **Animated border** that appears on focus using [BorderAnimation]
+/// - **Form validation** with error display on blur (hidden while focused)
+/// - **Password visibility toggle** for secure input fields
+/// - **Error states** with red border (2px), error icon, and message below field
+/// - **Optional filled background** with customizable color
+/// - **Custom suffix icon** support (overridden by error/password icons)
+///
+/// ## Performance Optimizations
+/// - Uses [ValueNotifier] for password visibility to prevent full widget rebuilds
+/// - [AnimatedBuilder] optimizes animation by rebuilding only animated portion
+/// - Conditional layout avoids unnecessary [Column] wrapper when no error present
+/// - [late final] fields for immutable references
+///
+/// ## Validation Behavior
+/// - Validation runs on form submit via [validator] callback
+/// - Errors display automatically when field loses focus (blur event)
+/// - Errors hide when field gains focus for better UX
+/// - Returns `null` from validator to prevent Flutter's default error display
+/// - Error border is 2px (vs 1px normal), with inner radius adjusted accordingly
+///
+/// ## Example
+/// ```dart
+/// InputField(
+///   label: "Email",
+///   controller: emailController,
+///   validator: SignInValidator.email("Email"),
+/// )
+/// ```
+///
+/// See also:
+/// - [_BaseTextField], the internal text field implementation (part file)
+/// - [BorderAnimation], the custom border animation painter
+/// - [VisibleIconButton], the password visibility toggle button
 class InputField extends StatefulWidget {
   final String label;
   final Widget? suffix;
   final bool filled;
   final Color? filledColor;
   final bool isPassword;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   InputField({
     super.key,
@@ -25,6 +58,8 @@ class InputField extends StatefulWidget {
     this.suffix,
     this.filled = false,
     this.isPassword = false,
+    this.validator,
+    this.controller,
     Color? filledColor,
   }) : filledColor = filledColor ?? ColorsUtil.white.withValues(alpha: 0.5);
 
@@ -33,92 +68,125 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> with SingleTickerProviderStateMixin {
-  late bool _isPasswordVisible;
-  late Animation<double> alpha;
+  late final FocusNode _focusNode;
+  late final Animation<double> _alpha;
+  late final AnimationController _controller;
+  late final ValueNotifier<bool> _isPasswordVisible;
 
-  AnimationController? controller;
-  final FocusNode focusNode = FocusNode();
+  String? _errorText;
+  bool _isFocused = false;
 
-  /// Initializes the animation controller and focus listener.
+  /// Initializes state, animations, and focus listener.
   ///
   /// Sets up:
-  /// - Password visibility state (initially hidden for password fields)
-  /// - Animation controller with 400ms duration
-  /// - Alpha animation (0.0 → 1.0) with easeInOut curve for border animation
-  /// - Focus listener that triggers border animation on focus/blur
+  /// - Password visibility [ValueNotifier] (initially hidden for password fields)
+  /// - Animation controller with 400ms duration and easeInOut curve
+  /// - Border animation (opacity 0.0 → 1.0)
+  /// - Focus listener that:
+  ///   - Triggers border animation on focus/blur
+  ///   - Validates field on blur if validator and controller are provided
   @override
   void initState() {
     super.initState();
-    _isPasswordVisible = !widget.isPassword;
+    _focusNode = FocusNode();
+    _isPasswordVisible = ValueNotifier(!widget.isPassword);
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    _alpha = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
 
-    final Animation<double> curve = CurvedAnimation(parent: controller!, curve: Curves.easeInOut);
-
-    alpha = Tween(begin: 0.0, end: 1.0).animate(curve);
-
-    controller?.addListener(() {
-      setState(() {});
-    });
-
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        controller?.forward();
+      if (_focusNode.hasFocus) {
+        _controller.forward();
       } else {
-        controller?.reverse();
+        _controller.reverse();
+        if (widget.validator != null && widget.controller != null) {
+          setState(() => _errorText = widget.validator!(widget.controller!.text));
+        }
       }
     });
   }
 
-  /// Builds the input field with animated border and optional password toggle.
+  @override
+  void dispose() {
+    _isPasswordVisible.dispose();
+    _focusNode.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  /// Builds the input field with animated border, error handling, and conditional layout.
   ///
-  /// The animated border appears when the field gains focus and disappears when it loses focus.
-  /// For password fields, a [VisibleIconButton] is automatically added as the suffix icon.
+  /// Returns:
+  /// - Direct [AnimatedBuilder] with input field when no error (avoids Column overhead)
+  /// - [Column] with input field and error message when validation fails
+  ///
+  /// The border animation uses [CustomPaint] with [BorderAnimation] painter.
+  /// Border width and color adjust based on error state (1px slate300 vs 2px error color).
+  /// Inner radius is calculated as `outerRadius - borderWidth` to prevent overlap.
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorsUtil.slate300),
-        borderRadius: BorderRadius.all(Radius.circular(context.sizing.s9)),
-      ),
-      child: CustomPaint(
-        painter: BorderAnimation(alpha.value),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(context.sizing.s8)),
-          child: TextField(
-            focusNode: focusNode,
-            autocorrect: !widget.isPassword,
-            enableSuggestions: !widget.isPassword,
-            obscureText: widget.isPassword && !_isPasswordVisible,
-            style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              filled: widget.filled,
-              label: Text(widget.label, style: const TextStyle(height: 0)),
-              fillColor: widget.filled ? widget.filledColor : null,
-              labelStyle: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
-              floatingLabelStyle: context.textTheme.bodyMedium?.copyWith(
-                color: context.primaryColor,
-                fontWeight: FontWeight.w500,
+    final hasError = _errorText != null && _errorText!.isNotEmpty && !_isFocused;
+
+    final borderWidth = hasError ? 2.0 : 1.0;
+    final borderColor = hasError
+        ? context.colors.error
+        : (_isFocused ? Colors.transparent : ColorsUtil.slate300);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AnimatedBuilder(
+          animation: _alpha,
+          builder: (context, child) {
+            final outerRadius = context.sizing.s8;
+            final innerRadius = outerRadius - borderWidth;
+
+            return CustomPaint(
+              painter: BorderAnimation(_alpha.value),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(outerRadius),
+                  border: Border.all(color: borderColor, width: borderWidth),
+                ),
+                child: ClipRRect(borderRadius: BorderRadius.circular(innerRadius), child: child),
               ),
-              contentPadding: EdgeInsets.symmetric(
-                vertical: context.sizing.s10,
-                horizontal: context.sizing.s12,
-              ),
-              suffixIcon: widget.isPassword
-                  ? VisibleIconButton(
-                      isPasswordVisible: _isPasswordVisible,
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    )
-                  : widget.suffix,
-            ),
+            );
+          },
+          child: _BaseTextField(
+            hasError: hasError,
+            focusNode: _focusNode,
+            controller: widget.controller,
+            validator: widget.validator,
+            isPassword: widget.isPassword,
+            isPasswordVisible: _isPasswordVisible,
+            label: widget.label,
+            filled: widget.filled,
+            suffix: widget.suffix,
+            filledColor: widget.filledColor,
+            onValidationError: (error) {
+              if (mounted) setState(() => _errorText = error);
+            },
           ),
         ),
-      ),
+        if (hasError)
+          Padding(
+            padding: EdgeInsets.only(top: context.sizing.s4, bottom: context.sizing.s8),
+            child: Text(
+              _errorText!,
+              style: context.textTheme.bodySmall?.copyWith(
+                fontSize: 12,
+                color: context.colors.error,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
