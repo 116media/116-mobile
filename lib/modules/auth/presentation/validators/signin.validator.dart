@@ -1,4 +1,5 @@
-import '../../../../shared/utils/validators/validator.util.dart';
+import '../../../../shared/validators/shared.validator.dart';
+import '../../constants/auth.validation.constants.dart';
 
 /// Validation rules for sign-in form fields.
 ///
@@ -18,9 +19,9 @@ class SignInValidator {
   /// )
   /// ```
   static String? Function(String?) credentials(String fieldName) {
-    return ValidatorUtil.compose([
-      ValidatorUtil.required(fieldName),
-      ValidatorUtil.minmax(fieldName, MinMaxLength(min: 3, max: 20)),
+    return Validator.compose([
+      Validator.required(fieldName),
+      Validator.minmax(fieldName, MinMaxLength(min: kUsernameMinLength, max: kUsernameMaxLength)),
     ]);
   }
 
@@ -40,13 +41,14 @@ class SignInValidator {
   /// )
   /// ```
   static String? Function(String?) password(String fieldName) {
-    return ValidatorUtil.compose([
-      ValidatorUtil.required(fieldName),
+    return Validator.compose([
+      Validator.required(fieldName),
+      Validator.min(fieldName, kPasswordMinLength),
       (String? value) {
         if (value != null && value.isNotEmpty) {
-          final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\s\S]{6,}$');
+          final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\s\S]+$');
           if (!passwordRegex.hasMatch(value)) {
-            return '$fieldName must be at least 6 characters and contain 1 uppercase, 1 lowercase, 1 digit';
+            return '$fieldName must contain 1 uppercase, 1 lowercase, and 1 digit';
           }
         }
         return null;
