@@ -1,0 +1,132 @@
+/// Min/max length configuration for validation.
+class MinMaxLength {
+  final int? min;
+  final int max;
+
+  const MinMaxLength({this.min, required this.max});
+}
+
+/// Form validation result.
+class ValidationResult {
+  final bool isValid;
+  final String? errorMessage;
+
+  const ValidationResult({required this.isValid, this.errorMessage});
+
+  factory ValidationResult.valid() => const ValidationResult(isValid: true);
+  factory ValidationResult.invalid(String message) =>
+      ValidationResult(isValid: false, errorMessage: message);
+}
+
+/// Form validation utility for reusable validation rules.
+///
+/// Provides common validation functions that can be composed
+/// for form field validation with English error messages.
+class ValidatorUtil {
+  /// Creates a required field validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.required("Email")
+  /// ```
+  static String? Function(String?) required(String fieldName) {
+    return (String? value) {
+      if (value == null || value.trim().isEmpty) {
+        return '$fieldName is required';
+      }
+      return null;
+    };
+  }
+
+  /// Creates a maximum length validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.max("Username", 20)
+  /// ```
+  static String? Function(String?) max(String fieldName, int maxLength) {
+    return (String? value) {
+      if (value != null && value.length > maxLength) {
+        return '$fieldName must be at most $maxLength characters';
+      }
+      return null;
+    };
+  }
+
+  /// Creates a min/max length validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.minmax("Password", MinMaxLength(min: 6, max: 20))
+  /// ```
+  static String? Function(String?) minmax(String fieldName, MinMaxLength length) {
+    return (String? value) {
+      if (value != null) {
+        if (length.min != null && value.length < length.min!) {
+          return '$fieldName must be between ${length.min} and ${length.max} characters';
+        }
+        if (value.length > length.max) {
+          return '$fieldName must be between ${length.min} and ${length.max} characters';
+        }
+      }
+      return null;
+    };
+  }
+
+  /// Creates an email validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.email("Email")
+  /// ```
+  static String? Function(String?) email(String fieldName) {
+    return (String? value) {
+      if (value != null && value.isNotEmpty) {
+        final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+        if (!emailRegex.hasMatch(value)) {
+          return '$fieldName has an invalid format';
+        }
+      }
+      return null;
+    };
+  }
+
+  /// Creates a numeric-only validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.numericOnly("Phone")
+  /// ```
+  static String? Function(String?) numericOnly(String fieldName) {
+    return (String? value) {
+      if (value != null && value.isNotEmpty) {
+        final numericRegex = RegExp(r'^[0-9]+$');
+        if (!numericRegex.hasMatch(value)) {
+          return '$fieldName must contain only numbers';
+        }
+      }
+      return null;
+    };
+  }
+
+  /// Composes multiple validation functions into one.
+  ///
+  /// Runs each validator in sequence and returns the first error found.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.compose([
+  ///   ValidatorUtil.required("Email"),
+  ///   ValidatorUtil.email("Email"),
+  /// ])
+  /// ```
+  static String? Function(String?) compose(List<String? Function(String?)> validators) {
+    return (String? value) {
+      for (final validator in validators) {
+        final error = validator(value);
+        if (error != null) return error;
+      }
+      return null;
+    };
+  }
+}
