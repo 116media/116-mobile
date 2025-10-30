@@ -26,7 +26,6 @@ class _SignInDialogState extends State<SignInDialog> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(context.sizing.s24),
