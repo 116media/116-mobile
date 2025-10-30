@@ -177,7 +177,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
         ),
         if (hasError)
           Padding(
-            padding: EdgeInsets.only(top: context.sizing.s4, bottom: context.sizing.s8),
+            padding: EdgeInsets.only(top: context.sizing.s2, bottom: context.sizing.s8),
             child: Text(
               _errorText!,
               style: context.textTheme.bodySmall?.copyWith(
