@@ -9,6 +9,7 @@ class SignInValidator {
   ///
   /// Rules:
   /// - Required field
+  /// - Between 3 and 20 characters
   ///
   /// Example:
   /// ```dart
@@ -17,7 +18,10 @@ class SignInValidator {
   /// )
   /// ```
   static String? Function(String?) credentials(String fieldName) {
-    return ValidatorUtil.required(fieldName);
+    return ValidatorUtil.compose([
+      ValidatorUtil.required(fieldName),
+      ValidatorUtil.minmax(fieldName, MinMaxLength(min: 3, max: 20)),
+    ]);
   }
 
   /// Validation rules for password field.
