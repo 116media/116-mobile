@@ -30,9 +30,8 @@ class OnboardingView extends StatelessWidget {
         itemCount: onboardingItemList.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35),
+            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * context.sizing.s0_5),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Wrap(

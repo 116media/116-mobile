@@ -19,6 +19,7 @@ class OnboardingContent extends StatelessWidget {
   final PageController controller;
   final VoidCallback onSkip;
   final VoidCallback onGetStarted;
+  final VoidCallback onContinueAsGuest;
   final ValueChanged<int> onPageChanged;
 
   const OnboardingContent({
@@ -29,6 +30,7 @@ class OnboardingContent extends StatelessWidget {
     required this.onSkip,
     required this.onPageChanged,
     required this.onGetStarted,
+    required this.onContinueAsGuest,
   });
 
   @override
@@ -52,6 +54,7 @@ class OnboardingContent extends StatelessWidget {
           currentIndex: currentIndex,
           onSkip: onSkip,
           onGetStarted: onGetStarted,
+          onContinueAsGuest: onContinueAsGuest,
         ),
       ],
     );

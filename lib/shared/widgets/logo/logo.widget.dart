@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../shared/themes/extensions/build.context.extension.dart';
+
 /// Defines the type of logo to display.
 ///
 /// - [icon]: Displays the icon-only version of the logo
@@ -32,13 +34,7 @@ class Logo extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const Logo({
-    super.key,
-    required this.type,
-    required this.isDarkTheme,
-    this.width,
-    this.height,
-  });
+  const Logo({super.key, required this.type, required this.isDarkTheme, this.width, this.height});
 
   /// Constructs the SVG asset path based on the current theme and logo type.
   ///
@@ -62,8 +58,8 @@ class Logo extends StatelessWidget {
 
     return SvgPicture.asset(
       svgAssetPath,
-      width: width ?? MediaQuery.of(context).size.width * 0.2,
       height: height,
+      width: width ?? MediaQuery.of(context).size.width * context.sizing.s0_5,
       semanticsLabel: '$type logo',
     );
   }
