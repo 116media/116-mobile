@@ -95,17 +95,11 @@ class AuthRedirectButton extends StatelessWidget {
     );
 
     return PlatformWidget(
-      material: (context, platform) => Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          splashFactory: InkRipple.splashFactory,
-          borderRadius: BorderRadius.circular(context.sizing.s8),
-          splashColor: context.colors.primary.withAlpha(context.sizing.s24.toInt()),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: context.sizing.s12),
-            child: content,
-          ),
+      material: (context, platform) => GestureDetector(
+        onTap: onPressed,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: context.sizing.s12),
+          child: content,
         ),
       ),
       cupertino: (context, platform) =>
