@@ -56,6 +56,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   /// - Waits for animation to fully complete before navigating
   /// - Uses [whenComplete] to ensure navigation happens only after animation finishes
   /// - Navigates to [widget.nextScreen] with a [FadeRouteAnimation] transition
+  ///
+  /// **Timing:**
+  /// - Waits 2.5 seconds (synchronized with native splash removal) before starting animation
   @override
   void initState() {
     super.initState();
@@ -79,11 +82,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       ),
     );
 
-    // Start animation and navigate when it completes
-    _controller.forward().whenComplete(() {
-      if (mounted) {
-        Navigator.pushReplacement(context, FadeRouteAnimation(screen: widget.nextScreen));
-      }
+    // Wait for native splash to be removed (2.5s) before starting animation
+    Future.delayed(const Duration(milliseconds: kAnimationDuration), () {
+      _controller.forward().whenComplete(() {
+        if (mounted) {
+          Navigator.pushReplacement(context, FadeRouteAnimation(screen: widget.nextScreen));
+        }
+      });
     });
   }
 
