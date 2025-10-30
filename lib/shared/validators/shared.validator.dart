@@ -22,7 +22,7 @@ class ValidationResult {
 ///
 /// Provides common validation functions that can be composed
 /// for form field validation with English error messages.
-class ValidatorUtil {
+class Validator {
   /// Creates a required field validation function.
   ///
   /// Example:
@@ -38,6 +38,21 @@ class ValidatorUtil {
     };
   }
 
+  /// Creates a minimum length validation function.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: ValidatorUtil.min("Password", 6)
+  /// ```
+  static String? Function(String?) min(String fieldName, int minLength) {
+    return (String? value) {
+      if (value != null && value.length < minLength) {
+        return '$fieldName must be at least $minLength characters';
+      }
+      return null;
+    };
+  }
+
   /// Creates a maximum length validation function.
   ///
   /// Example:
@@ -47,7 +62,7 @@ class ValidatorUtil {
   static String? Function(String?) max(String fieldName, int maxLength) {
     return (String? value) {
       if (value != null && value.length > maxLength) {
-        return '$fieldName must be at most $maxLength characters';
+        return '$fieldName cannot exceed $maxLength characters';
       }
       return null;
     };
@@ -61,13 +76,13 @@ class ValidatorUtil {
   /// ```
   static String? Function(String?) minmax(String fieldName, MinMaxLength length) {
     return (String? value) {
-      if (value != null) {
-        if (length.min != null && value.length < length.min!) {
-          return '$fieldName must be between ${length.min} and ${length.max} characters';
-        }
-        if (value.length > length.max) {
-          return '$fieldName must be between ${length.min} and ${length.max} characters';
-        }
+      if (value == null) return null;
+
+      final isTooLong = value.length > length.max;
+      final isTooShort = length.min != null && value.length < length.min!;
+
+      if (isTooShort || isTooLong) {
+        return '$fieldName must be between ${length.min} and ${length.max} characters';
       }
       return null;
     };
