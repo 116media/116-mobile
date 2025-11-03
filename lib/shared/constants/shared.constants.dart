@@ -1,1 +1,1 @@
-const kAppName = '116';
+const String kAppName = '116';
