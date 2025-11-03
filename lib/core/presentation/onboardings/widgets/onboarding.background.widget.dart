@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import '../../../../shared/themes/extensions/build.context.extension.dart';
 import '../../../../shared/utils/colors.util.dart' show ColorsUtil;
 
-/// Onboarding background widget with blurred image and animated shapes.
+/// Onboarding background widget with blurred image and gradient overlay.
 ///
-/// Displays the onboarding background image covering entire screen with
-/// a blur effect and animated Rive shapes overlay.
+/// Displays the onboarding background image covering the top half of the screen
+/// with blur effect and gradient overlay, fading to solid color at the bottom.
 class OnboardingBackground extends StatefulWidget {
-  const OnboardingBackground({super.key, required this.backgroundImage});
-
   final String backgroundImage;
+
+  const OnboardingBackground({super.key, required this.backgroundImage});
 
   @override
   State<OnboardingBackground> createState() => _OnboardingBackgroundState();
