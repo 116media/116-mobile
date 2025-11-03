@@ -1,14 +1,14 @@
 // Animation duration
-const kAnimationDuration = 2500;
+const int kAnimationDuration = 2500;
 
 // Zoom animation values
-const kInitialScale = 25.0;
-const kFinalScale = 1.0;
-const kZoomStartInterval = 0.0;
-const kZoomEndInterval = 0.4;
+const double kInitialScale = 25.0;
+const double kFinalScale = 1.0;
+const double kZoomStartInterval = 0.0;
+const double kZoomEndInterval = 0.4;
 
 // Fade animation values
-const kFadeStartInterval = 0.8;
-const kFadeEndInterval = 1.0;
-const kInitialOpacity = 1.0;
-const kFinalOpacity = 0.0;
+const double kFadeStartInterval = 0.8;
+const double kFadeEndInterval = 1.0;
+const double kInitialOpacity = 1.0;
+const double kFinalOpacity = 0.0;
