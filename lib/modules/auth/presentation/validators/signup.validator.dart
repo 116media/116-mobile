@@ -1,5 +1,5 @@
 import '../../../../shared/validators/shared.validator.dart';
-import '../../constants/auth.validation.constants.dart';
+import '../constants/auth.validation.constants.dart';
 
 /// Validation rules for sign-up form fields.
 ///

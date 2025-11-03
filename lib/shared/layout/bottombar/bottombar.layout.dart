@@ -8,16 +8,15 @@ import '../../utils/colors.util.dart' show ColorsUtil;
 /// Provides a fixed bottom navigation with rounded top corners and theme
 /// integration. Supports dynamic tab selection and callbacks.
 class BottomBarLayout extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
   const BottomBarLayout({
     super.key,
-    required this.currentIndex,
     required this.onTap,
+    required this.currentIndex,
     this.items = const [],
   });
-
-  final int currentIndex;
-
-  final ValueChanged<int> onTap;
 
   /// List of navigation items to display.
   /// If empty, default items (Home, Discover, Shows, Favorite) will be used.

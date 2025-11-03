@@ -1,1 +1,1 @@
-const kIncrementPercentage = 0.25;
+const double kIncrementPercentage = 0.25;

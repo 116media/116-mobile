@@ -8,16 +8,16 @@ import '../../../../../shared/utils/colors.util.dart' show ColorsUtil;
 /// This widget is used within the [SlidingThemeToggle] to represent each theme choice
 /// (light or dark mode) with appropriate visual styling based on selection state.
 class ThemeOptions extends StatelessWidget {
+  final IconData icon;
+  final bool isSelected;
+  final String label;
+
   const ThemeOptions({
     super.key,
     required this.icon,
     required this.isSelected,
     required this.label,
   });
-
-  final IconData icon;
-  final bool isSelected;
-  final String label;
 
   @override
   Widget build(BuildContext context) {

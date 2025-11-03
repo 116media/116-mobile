@@ -1,11 +1,14 @@
 import 'package:cent16/card.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
 import '../../../shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
+import 'core/infrastructure/hive/init.hive.dart' show initializeHive;
 import 'core/presentation/onboardings/screens/onboarding.screen.dart' show OnboardingScreen;
+import 'core/presentation/splash/constants/splash.constants.dart' show kAnimationDuration;
 import 'core/presentation/splash/screens/splash.screen.dart' show SplashScreen;
 import 'modules/discover/presentation/screens/discover.screen.dart' show DiscoverScreen;
 import 'modules/favorite/presentation/screens/favorite.screen.dart' show FavoriteScreen;
@@ -16,9 +19,19 @@ import 'shared/themes/app.theme.dart' show AppTheme;
 
 /// The main entry point of the application.
 ///
-/// Initializes the app with [ThemeProvider] for theme management and launches
-/// the [App] widget wrapped in a [ChangeNotifierProvider] for state management.
-void main() {
+/// Initializes the app with:
+/// - Flutter bindings
+/// - Hive local database (for auth persistence)
+/// - [ThemeProvider] for theme management
+///
+/// Preserves the native splash screen until the animated splash is ready to display.
+void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Initialize Hive for local data persistence
+  await initializeHive();
+
   runApp(ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()));
 }
 
@@ -27,8 +40,23 @@ void main() {
 /// This widget sets up the [MaterialApp] with theme configurations and
 /// consumes the [ThemeProvider] to enable dynamic theme switching.
 ///
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Remove the native splash screen after 2.5s - synchronize with animated splash
+    Future.delayed(const Duration(milliseconds: kAnimationDuration), () {
+      FlutterNativeSplash.remove();
+    });
+  }
 
   /// Builds the root MaterialApp with theme provider integration.
   ///

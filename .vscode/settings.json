@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "appbar",
+    "ARGB",
     "borderdraw",
     "bottombar",
     "buildcontext",
@@ -12,6 +13,7 @@
     "faderoute",
     "favorited",
     "formtitle",
+    "fpdart",
     "Français",
     "gradlew",
     "iconify",
@@ -22,7 +24,9 @@
     "pbxuser",
     "perspectivev",
     "podspec",
+    "problemdetails",
     "pubspec",
+    "readfailed",
     "sconsign",
     "searchbar",
     "swiftpm",
@@ -30,10 +34,13 @@
     "Symbolication",
     "termsconditions",
     "themetoggle",
+    "usecase",
     "webp",
+    "writefailed",
     "xcconfig",
     "xcuserdata"
   ],
+  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**"],
   "dart.lineLength": 100,
   "[dart]": {
     "editor.rulers": [

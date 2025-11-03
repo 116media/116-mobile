@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../../../../../shared/themes/extensions/build.context.extension.dart';
 
@@ -15,11 +15,13 @@ enum AuthRedirectAction {
   forgotPassword,
 }
 
-/// A platform-aware text button that displays contextual authentication redirect messages.
+/// A Cupertino-style text button that displays contextual authentication redirect messages.
 ///
 /// This widget provides a flexible way to display authentication-related prompts
 /// with optional action links. The displayed text and link automatically adjust
 /// based on the [actionType] parameter.
+///
+/// Uses [CupertinoButton] for consistent iOS-style tap feedback across all platforms.
 class AuthRedirectButton extends StatelessWidget {
   final bool isLeft;
   final bool isCentered;
@@ -72,38 +74,30 @@ class AuthRedirectButton extends StatelessWidget {
     final mainText = textContent.mainText;
     final linkText = textContent.linkText;
 
-    final content = Row(
-      mainAxisAlignment: _getMainAxisAlignment(),
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          mainText,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        linkText != null
-            ? Text(
-                linkText,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: context.colors.primary,
-                  fontWeight: FontWeight.w800,
-                  decoration: TextDecoration.underline,
-                  decorationColor: context.colors.primary,
-                ),
-              )
-            : const SizedBox.shrink(),
-      ],
-    );
-
-    return PlatformWidget(
-      material: (context, platform) => GestureDetector(
-        onTap: onPressed,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: context.sizing.s12),
-          child: content,
-        ),
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: _getMainAxisAlignment(),
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            mainText,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          linkText != null
+              ? Text(
+                  linkText,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: context.colors.primary,
+                    fontWeight: FontWeight.w800,
+                    decoration: TextDecoration.underline,
+                    decorationColor: context.colors.primary,
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
-      cupertino: (context, platform) =>
-          PlatformTextButton(onPressed: onPressed, padding: EdgeInsets.zero, child: content),
     );
   }
 }
