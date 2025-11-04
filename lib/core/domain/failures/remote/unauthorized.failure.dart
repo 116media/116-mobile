@@ -1,6 +1,6 @@
-import 'package:http_status/http_status.dart';
-import 'server.failure.dart';
-import '../../../infrastructure/annotations/problem.mappable.annotation.dart';
+import 'package:http_status/http_status.dart' show HttpStatusCode;
+import 'server.failure.dart' show ServerFailure;
+import '../../../infrastructure/annotations/problem.mappable.annotation.dart' show ProblemMappable;
 
 /// Failure for 401 Unauthorized errors.
 ///
