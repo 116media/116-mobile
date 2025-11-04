@@ -1,7 +1,7 @@
-import 'package:http_status/http_status.dart';
+import 'package:http_status/http_status.dart' show HttpStatusCode;
 import '../../../../core/infrastructure/annotations/problem.mappable.annotation.dart'
     show ProblemMappable;
-import '../../../../core/domain/failures/remote/server.failure.dart';
+import '../../../../core/domain/failures/remote/server.failure.dart' show ServerFailure;
 
 /// Failure for 429 OTP Attempts Limit errors.
 ///
