@@ -1,6 +1,6 @@
 import 'package:http_status/http_status.dart' show HttpStatusCode;
 import 'server.exception.dart' show ServerException;
-import '../../annotations/problem.mappable.annotation.dart';
+import '../../annotations/problem.mappable.annotation.dart' show ProblemMappable;
 
 /// 403 Forbidden exception.
 ///
