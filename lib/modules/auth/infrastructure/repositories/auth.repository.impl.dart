@@ -5,9 +5,11 @@ import '../../../../core/infrastructure/exceptions/local/cache.exception.dart' s
 import '../../../../core/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
 import '../../../../core/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
-import '../../application/datasource/local/auth.local.datasource.dart' show IAuthLocalDataSource;
-import '../../application/datasource/remote/auth.remote.datasource.dart' show IAuthRemoteDataSource;
-import '../../application/repositories/auth.repository.dart' show IAuthRepository;
+import '../../application/datasource/local/auth.local.datasource.port.dart'
+    show IAuthLocalDataSource;
+import '../../application/datasource/remote/auth.remote.datasource.port.dart'
+    show IAuthRemoteDataSource;
+import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
@@ -22,11 +24,11 @@ import '../models/hive/user/user.model.dart' show UserModel;
 /// Part of the infrastructure layer in Clean Architecture.
 ///
 /// Converts exceptions to failures using [ProblemMapper] and returns [Either].
-class AuthRepositoryImpl implements IAuthRepository {
+class AuthRepository implements IAuthRepository {
   final IAuthLocalDataSource _localDataSource;
   final IAuthRemoteDataSource _remoteDataSource;
 
-  const AuthRepositoryImpl(this._remoteDataSource, this._localDataSource);
+  const AuthRepository(this._remoteDataSource, this._localDataSource);
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signIn(SignInCredentialsModel credentials) async {
