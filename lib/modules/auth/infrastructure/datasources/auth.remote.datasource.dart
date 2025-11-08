@@ -3,7 +3,7 @@ import 'package:chopper/chopper.dart';
 import '../../../../api/client/api_116.swagger.dart'
     show Api116, PublicLoginRequest, PublicLoginResponse, PublicSignUpResponse, PublicSignUpRequest;
 import '../../../../core/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
-import '../../application/datasource/remote/auth.remote.datasource.dart' show IAuthRemoteDataSource;
+import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 
