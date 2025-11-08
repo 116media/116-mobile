@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../../../shared/animations/fade.animation.dart' show FadeAnimation;
-import '../../../../../../shared/themes/extensions/build.context.extension.dart';
-import '../../../../../../shared/widgets/buttons/solid.button.dart' show SolidButton;
-import '../../../../../../shared/widgets/inputfields/inputfield.widget.dart' show InputField;
-import '../../../../../../shared/widgets/logo/logo.widget.dart' show Logo, LogoType;
+import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
+import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
+import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart' show InputField;
+import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
+import '../../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signup.validator.dart' show SignUpValidator;
 import '../../shared/buttons/guest.button.dart' show GuestButton;
@@ -53,10 +55,17 @@ class _SignUpFormState extends State<SignUpForm> {
       final password = _passwordController.text;
 
       // TODO: Implement sign-up logic
-      print('Email: $email');
-      print('Username: $username');
-      print('Password: $password');
+      debugPrint('Email: $email');
+      debugPrint('Username: $username');
+      debugPrint('Password: $password');
     }
+  }
+
+  /// Handles guest access navigation.
+  /// Closes the dialog and navigates to the home screen.
+  void _handleContinueAsGuest() {
+    Navigator.of(context).pop();
+    context.go(kHomeRoutePath);
   }
 
   @override
@@ -134,9 +143,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
             GuestButton(
               text: "Continue as guest",
-              onPressed: () {
-                // Redirect the user to the homepage as a guest
-              },
+              onPressed: _handleContinueAsGuest,
             ),
 
             AuthRedirectButton(
