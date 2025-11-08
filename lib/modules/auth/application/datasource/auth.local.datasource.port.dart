@@ -1,4 +1,4 @@
-import '../../../infrastructure/models/hive/user/user.model.dart' show UserModel;
+import '../../infrastructure/models/hive/user/user.model.dart' show UserModel;
 
 /// Local data source for authentication operations.
 ///
