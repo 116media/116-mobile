@@ -3,10 +3,8 @@ import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive/hive.dart' show Box, Hive;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116, $JsonSerializableConverter;
-import '../../application/datasource/local/auth.local.datasource.port.dart'
-    show IAuthLocalDataSource;
-import '../../application/datasource/remote/auth.remote.datasource.port.dart'
-    show IAuthRemoteDataSource;
+import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
+import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../application/usecases/signin.usecase.dart' show SignInUseCase;
 import '../../application/usecases/signup.usecase.dart' show SignUpUseCase;
@@ -15,7 +13,8 @@ import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../constants/hive.constants.dart' show kAuthBox;
 import '../datasources/auth.local.datasource.dart' show AuthLocalDataSource;
 import '../datasources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
-import '../repositories/auth.repository.impl.dart' show AuthRepository;
+import '../repositories/auth.cached.repository.dart' show AuthCachedRepository;
+import '../repositories/auth.remote.repository.dart' show AuthRemoteRepository;
 
 /// Registers all authentication module dependencies.
 Future<void> registerAuthDependencies(GetIt sl) async {
@@ -35,9 +34,10 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerSingleton<IAuthLocalDataSource>(AuthLocalDataSource(sl<Box<dynamic>>()));
   sl.registerSingleton<IAuthRemoteDataSource>(AuthRemoteDataSourceImpl(sl<Api116>()));
 
-  // Repository
+  // Repository (decorator pattern: cached wraps remote)
+  sl.registerSingleton<AuthRemoteRepository>(AuthRemoteRepository(sl<IAuthRemoteDataSource>()));
   sl.registerSingleton<IAuthRepository>(
-    AuthRepository(sl<IAuthRemoteDataSource>(), sl<IAuthLocalDataSource>()),
+    AuthCachedRepository(sl<AuthRemoteRepository>(), sl<IAuthLocalDataSource>()),
   );
 
   // Use cases
