@@ -1,7 +1,6 @@
-import '../../../../../api/client/api_116.swagger.dart'
-    show PublicLoginResponse, PublicSignUpResponse;
-import '../../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
-import '../../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
+import '../../../../api/client/api_116.swagger.dart' show PublicLoginResponse, PublicSignUpResponse;
+import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
+import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 
 /// Remote data source for authentication operations.
 ///
