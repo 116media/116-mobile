@@ -1,8 +1,9 @@
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
-import '../../../../core/domain/failures/failure.dart' show Failure;
-import '../../../../core/infrastructure/exceptions/local/cache.exception.dart' show CacheException;
-import '../../../../core/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
+import '../../../../shared/domain/failures/failure.dart' show Failure;
+import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
+    show CacheException;
+import '../../../../shared/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
 import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
