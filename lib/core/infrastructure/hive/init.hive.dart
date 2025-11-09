@@ -1,5 +1,5 @@
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart' show Hive;
+import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
 
 import '../../../modules/auth/infrastructure/constants/hive.constants.dart' show kAuthBox;
 
