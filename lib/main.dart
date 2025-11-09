@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
-import '../../../shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
-import '../../../shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
+import 'core/infrastructure/service.locator.dart' show ServiceLocator;
 import 'core/infrastructure/hive/init.hive.dart' show initializeHive;
+import 'shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
+import 'shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
 import 'core/presentation/onboardings/screens/onboarding.screen.dart' show OnboardingScreen;
 import 'core/presentation/splash/constants/splash.constants.dart' show kAnimationDuration;
 import 'core/presentation/splash/screens/splash.screen.dart' show SplashScreen;
@@ -22,6 +23,7 @@ import 'shared/themes/app.theme.dart' show AppTheme;
 /// Initializes the app with:
 /// - Flutter bindings
 /// - Hive local database (for auth persistence)
+/// - Dependency injection (GetIt)
 /// - [ThemeProvider] for theme management
 ///
 /// Preserves the native splash screen until the animated splash is ready to display.
@@ -31,6 +33,9 @@ void main() async {
 
   // Initialize Hive for local data persistence
   await initializeHive();
+
+  // Initialize dependency injection
+  await ServiceLocator.initialize();
 
   runApp(ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()));
 }
