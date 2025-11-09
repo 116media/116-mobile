@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart' show Either;
 
-import '../../../../core/domain/failures/failure.dart' show Failure;
+import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
