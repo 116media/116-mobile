@@ -2,7 +2,7 @@ import '../../../../domain/entities/file.entity.dart' show FileEntity;
 
 /// Hive model for persisting [FileEntity] to local storage.
 ///
-/// Uses JSON serialization for Hive storage without code generation.
+/// Uses Hive type adapters for efficient binary serialization.
 class FileModel {
   final String id;
   final String fileName;
@@ -21,32 +21,6 @@ class FileModel {
     required this.sizeInBytes,
     required this.isDeleted,
   });
-
-  /// Deserializes from JSON (used by Hive internally).
-  factory FileModel.fromJson(Map<String, dynamic> json) {
-    return FileModel(
-      id: json['id'] as String,
-      fileName: json['fileName'] as String,
-      originalFileName: json['originalFileName'] as String,
-      mimeType: json['mimeType'] as String,
-      storageUrl: json['storageUrl'] as String,
-      sizeInBytes: json['sizeInBytes'] as int,
-      isDeleted: json['isDeleted'] as bool,
-    );
-  }
-
-  /// Serializes to JSON (used by Hive internally).
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'fileName': fileName,
-      'originalFileName': originalFileName,
-      'mimeType': mimeType,
-      'storageUrl': storageUrl,
-      'sizeInBytes': sizeInBytes,
-      'isDeleted': isDeleted,
-    };
-  }
 
   /// Converts this model to a domain entity.
   FileEntity toEntity() {
