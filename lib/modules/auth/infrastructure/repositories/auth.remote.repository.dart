@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
-import '../../../../core/domain/failures/failure.dart' show Failure;
-import '../../../../core/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
-import '../../../../core/infrastructure/exceptions/remote/server.exception.dart'
+import '../../../../shared/domain/failures/failure.dart' show Failure;
+import '../../../../shared/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
+import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
