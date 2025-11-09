@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
-import '../../../../../core/domain/failures/failure.dart' show Failure;
+import '../../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
 
 /// Base class for all SignIn states.
