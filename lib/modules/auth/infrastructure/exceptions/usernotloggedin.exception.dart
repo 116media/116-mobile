@@ -1,7 +1,7 @@
 import 'package:http_status/http_status.dart' show HttpStatusCode;
-import '../../../../core/infrastructure/annotations/problem.mappable.annotation.dart'
+import '../../../../shared/infrastructure/annotations/problem.mappable.annotation.dart'
     show ProblemMappable;
-import '../../../../core/infrastructure/exceptions/remote/server.exception.dart'
+import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 
 /// 403 User Not Logged In exception.
