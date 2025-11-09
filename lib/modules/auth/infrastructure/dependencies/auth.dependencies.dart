@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart' show ChopperClient;
 import 'package:get_it/get_it.dart' show GetIt;
-import 'package:hive/hive.dart' show Box, Hive;
+import 'package:hive_ce/hive.dart' show Box, Hive;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116, $JsonSerializableConverter;
 import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
