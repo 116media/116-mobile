@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
-import '../../../../core/infrastructure/exceptions/local/readfailed.cache.exception.dart'
+import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
     show ReadFailedCacheException;
-import '../../../../core/infrastructure/exceptions/local/writefailed.cache.exception.dart'
+import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
     show WriteFailedCacheException;
 import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../constants/hive.constants.dart' show kTokenKey, kUserKey;
