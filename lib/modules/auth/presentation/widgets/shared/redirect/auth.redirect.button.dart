@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../shared/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 
 /// Enum representing different types of authentication redirect actions.
 ///
