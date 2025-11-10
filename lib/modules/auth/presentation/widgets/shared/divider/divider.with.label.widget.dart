@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../shared/themes/extensions/build.context.extension.dart';
-import '../../../../../../shared/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 
 /// A horizontal divider with centered text label.
 ///
