@@ -4,9 +4,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:colorful_iconify_flutter/icons/logos.dart';
 
-import '../../../../../../shared/extensions/string.extension.dart';
-import '../../../../../../shared/themes/extensions/build.context.extension.dart';
-import '../../../../../../shared/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../../shared/presentation/extensions/string.extension.dart';
+import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 
 /// Social media platform options for social login.
 enum SocialPlatform { google, facebook }
