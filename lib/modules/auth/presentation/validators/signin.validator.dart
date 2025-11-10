@@ -1,4 +1,4 @@
-import '../../../../shared/validators/shared.validator.dart';
+import '../../../../shared/presentation/validators/shared.validator.dart';
 import '../constants/auth.validation.constants.dart';
 
 /// Validation rules for sign-in form fields.
