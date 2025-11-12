@@ -5,6 +5,10 @@
 targets:
   $default:
     builders:
+      # Enable Hive code generation and schema migration
+      # hive_ce_generator|hive_schema_migrator:
+      #   enabled: true
+
       # Configure json_serializable to skip custom annotated files
       json_serializable:
         generate_for:
