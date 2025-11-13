@@ -1,6 +1,8 @@
-import 'file.entity.dart';
-import 'permission.entity.dart';
-import 'role.entity.dart';
+import 'package:equatable/equatable.dart' show Equatable;
+
+import 'file.entity.dart' show FileEntity;
+import 'permission.entity.dart' show PermissionEntity;
+import 'role.entity.dart' show RoleEntity;
 
 /// User entity representing authenticated users in the system.
 ///
@@ -8,7 +10,7 @@ import 'role.entity.dart';
 /// profile information, authorization data, and contact details including
 /// roles, permissions, auth provider, verification status, avatar, and
 /// country/phone information.
-class UserEntity {
+class UserEntity extends Equatable {
   final String id;
   final String? email;
   final String userName;
@@ -50,4 +52,27 @@ class UserEntity {
     this.createdAt,
     this.updatedAt,
   });
+
+  @override
+  List<Object?> get props => [
+    id,
+    email,
+    userName,
+    roles,
+    permissions,
+    authProvider,
+    isVerified,
+    isActive,
+    isLoggedIn,
+    lastLoginAt,
+    avatar,
+    countryName,
+    countryFlagUrl,
+    countryIsoCode,
+    countryDialCode,
+    partialPhoneNumber,
+    fullPhoneNumber,
+    createdAt,
+    updatedAt,
+  ];
 }

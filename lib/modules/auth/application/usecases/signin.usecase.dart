@@ -1,10 +1,10 @@
 import 'package:fpdart/fpdart.dart' show Either;
 
-import '../../../../core/application/usecase/usecase.port.dart' show IUseCase;
-import '../../../../core/domain/failures/failure.dart' show Failure;
+import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
+import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
-import '../repositories/auth.repository.dart' show IAuthRepository;
+import '../repositories/auth.repository.port.dart' show IAuthRepository;
 
 /// Sign-in use case implementing business logic for user authentication.
 ///

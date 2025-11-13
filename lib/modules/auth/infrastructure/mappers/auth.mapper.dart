@@ -1,9 +1,17 @@
-import '../../../../api/client/api_116.models.swagger.dart';
-import '../../domain/entities/auth.response.entity.dart';
-import '../../domain/entities/file.entity.dart';
-import '../../domain/entities/permission.entity.dart';
-import '../../domain/entities/role.entity.dart';
-import '../../domain/entities/user.entity.dart';
+import '../../../../api/client/api_116.models.swagger.dart'
+    show
+        AdminLoginResponse,
+        FileDto,
+        PermissionDto,
+        PublicLoginResponse,
+        PublicSignUpResponse,
+        RoleDto,
+        UserResponseDto;
+import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/file.entity.dart' show FileEntity;
+import '../../domain/entities/permission.entity.dart' show PermissionEntity;
+import '../../domain/entities/role.entity.dart' show RoleEntity;
+import '../../domain/entities/user.entity.dart' show UserEntity;
 
 /// Mapper for converting API DTOs to domain entities in the auth module.
 ///
@@ -15,11 +23,7 @@ class AuthMapper {
 
   /// Maps RoleDto to RoleEntity domain entity.
   static RoleEntity roleFromDto(RoleDto dto) {
-    return RoleEntity(
-      id: dto.id,
-      name: dto.name,
-      description: dto.description,
-    );
+    return RoleEntity(id: dto.id, name: dto.name, description: dto.description);
   }
 
   /// Maps PermissionDto to PermissionEntity domain entity.
@@ -72,25 +76,16 @@ class AuthMapper {
 
   /// Maps AdminLoginResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromDto(AdminLoginResponse response) {
-    return AuthResponseEntity(
-      token: response.token,
-      user: userFromDto(response.user),
-    );
+    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
   }
 
   /// Maps PublicLoginResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicLoginDto(PublicLoginResponse response) {
-    return AuthResponseEntity(
-      token: response.token,
-      user: userFromDto(response.user),
-    );
+    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
   }
 
   /// Maps PublicSignUpResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicSignUpDto(PublicSignUpResponse response) {
-    return AuthResponseEntity(
-      token: response.token,
-      user: userFromDto(response.user),
-    );
+    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
   }
 }

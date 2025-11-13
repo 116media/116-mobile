@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../shared/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 
 class TermsAndConditions extends StatelessWidget {
   const TermsAndConditions({super.key});

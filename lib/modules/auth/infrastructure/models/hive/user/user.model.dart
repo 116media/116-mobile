@@ -5,7 +5,7 @@ import '../role/role.model.dart' show RoleModel;
 
 /// Hive model for persisting [UserEntity] to local storage.
 ///
-/// Uses JSON serialization for Hive storage without code generation.
+/// Uses Hive type adapters for efficient binary serialization.
 class UserModel {
   final String id;
   final String? email;
@@ -48,62 +48,6 @@ class UserModel {
     this.createdAt,
     this.updatedAt,
   });
-
-  /// Deserializes from JSON (used by Hive internally).
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'] as String,
-      email: json['email'] as String?,
-      userName: json['userName'] as String,
-      roles: (json['roles'] as List<dynamic>)
-          .map((e) => RoleModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      permissions: (json['permissions'] as List<dynamic>)
-          .map((e) => PermissionModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      authProvider: json['authProvider'] as String,
-      isVerified: json['isVerified'] as bool,
-      isActive: json['isActive'] as bool,
-      isLoggedIn: json['isLoggedIn'] as bool,
-      lastLoginAt: json['lastLoginAt'] as String?,
-      avatar: json['avatar'] != null
-          ? FileModel.fromJson(json['avatar'] as Map<String, dynamic>)
-          : null,
-      countryName: json['countryName'] as String?,
-      countryFlagUrl: json['countryFlagUrl'] as String?,
-      countryIsoCode: json['countryIsoCode'] as String?,
-      countryDialCode: json['countryDialCode'] as String?,
-      partialPhoneNumber: json['partialPhoneNumber'] as String?,
-      fullPhoneNumber: json['fullPhoneNumber'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-    );
-  }
-
-  /// Serializes to JSON (used by Hive internally).
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'email': email,
-      'userName': userName,
-      'roles': roles.map((r) => r.toJson()).toList(),
-      'permissions': permissions.map((p) => p.toJson()).toList(),
-      'authProvider': authProvider,
-      'isVerified': isVerified,
-      'isActive': isActive,
-      'isLoggedIn': isLoggedIn,
-      'lastLoginAt': lastLoginAt,
-      'avatar': avatar?.toJson(),
-      'countryName': countryName,
-      'countryFlagUrl': countryFlagUrl,
-      'countryIsoCode': countryIsoCode,
-      'countryDialCode': countryDialCode,
-      'partialPhoneNumber': partialPhoneNumber,
-      'fullPhoneNumber': fullPhoneNumber,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
-  }
 
   /// Converts this model to a domain entity.
   UserEntity toEntity() {

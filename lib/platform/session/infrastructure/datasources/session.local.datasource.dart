@@ -1,0 +1,75 @@
+import 'dart:async' show Stream, StreamController;
+
+import 'package:hive_ce/hive.dart';
+
+import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
+    show ReadFailedCacheException;
+import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
+    show WriteFailedCacheException;
+import '../../application/datasource/session.local.datasource.port.dart'
+    show ISessionLocalDataSource;
+import '../constants/hive.constants.dart' show kSessionStateKey;
+import '../models/hive/session.state.model.dart' show SessionStateModel;
+
+/// Local data source implementation for session operations using Hive.
+///
+/// Concrete implementation that manages session state in Hive local storage.
+/// Handles persistence of onboarding, preferences, and auth status. Throws
+/// cache exceptions that will be converted to failures by the repository.
+class SessionLocalDataSource implements ISessionLocalDataSource {
+  final Box<dynamic> _sessionBox;
+  final StreamController<SessionStateModel> _sessionController;
+
+  SessionLocalDataSource(this._sessionBox)
+    : _sessionController = StreamController<SessionStateModel>.broadcast();
+
+  @override
+  Future<SessionStateModel?> getSessionState() async {
+    try {
+      return _sessionBox.get(kSessionStateKey) as SessionStateModel?;
+    } catch (e) {
+      throw ReadFailedCacheException(
+        detail: 'Failed to retrieve session state: $e',
+        instance: 'SessionLocalDataSource.getSessionState',
+      );
+    }
+  }
+
+  @override
+  Future<void> saveSessionState(SessionStateModel state) async {
+    try {
+      await _sessionBox.put(kSessionStateKey, state);
+      _sessionController.add(state);
+    } catch (e) {
+      throw WriteFailedCacheException(
+        detail: 'Failed to save session state: $e',
+        instance: 'SessionLocalDataSource.saveSessionState',
+      );
+    }
+  }
+
+  @override
+  Future<void> clearSessionState() async {
+    try {
+      await _sessionBox.delete(kSessionStateKey);
+      _sessionController.add(SessionStateModel.initial());
+    } catch (e) {
+      throw WriteFailedCacheException(
+        detail: 'Failed to clear session state: $e',
+        instance: 'SessionLocalDataSource.clearSessionState',
+      );
+    }
+  }
+
+  @override
+  Stream<SessionStateModel> watchSessionState() {
+    return _sessionController.stream;
+  }
+
+  /// Disposes the stream controller.
+  ///
+  /// Should be called when the datasource is no longer needed.
+  void dispose() {
+    _sessionController.close();
+  }
+}

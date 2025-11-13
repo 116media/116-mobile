@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 
-import '../../../../shared/themes/extensions/build.context.extension.dart';
+import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 
 /// Home screen displaying the main content feed.
 ///
@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: articles.map((article) {
           return Card(
-            elevation: 1,
+            elevation: 0,
             margin: EdgeInsets.only(bottom: context.sizing.s16),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
             child: Padding(

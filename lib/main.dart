@@ -1,27 +1,33 @@
-import 'package:cent16/card.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider, MultiBlocProvider;
+import 'package:flutter_native_splash/flutter_native_splash.dart' show FlutterNativeSplash;
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 
-import '../../../shared/layout/appbar/appbar.layout.dart' show AppBarLayout;
-import '../../../shared/layout/bottombar/bottombar.layout.dart' show BottomBarLayout;
-import 'core/infrastructure/hive/init.hive.dart' show initializeHive;
-import 'core/presentation/onboardings/screens/onboarding.screen.dart' show OnboardingScreen;
-import 'core/presentation/splash/constants/splash.constants.dart' show kAnimationDuration;
-import 'core/presentation/splash/screens/splash.screen.dart' show SplashScreen;
-import 'modules/discover/presentation/screens/discover.screen.dart' show DiscoverScreen;
-import 'modules/favorite/presentation/screens/favorite.screen.dart' show FavoriteScreen;
-import 'modules/home/presentation/screens/home.screen.dart' show HomeScreen;
-import 'modules/shows/presentation/screens/shows.screen.dart' show ShowsScreen;
-import 'shared/providers/theme.provider.dart' show ThemeProvider;
-import 'shared/themes/app.theme.dart' show AppTheme;
+import 'platform/connectivity/presentation/bloc/connectivity.bloc.dart' show ConnectivityBloc;
+import 'platform/connectivity/presentation/bloc/connectivity.event.dart'
+    show ConnectivityWatchStarted;
+import 'platform/connectivity/presentation/widgets/connectivity.banner.widget.dart'
+    show ConnectivityBanner;
+import 'platform/preferences/presentation/bloc/preferences.bloc.dart' show PreferencesBloc;
+import 'platform/preferences/presentation/bloc/preferences.event.dart' show PreferencesLoadStarted;
+import 'platform/preferences/presentation/bloc/preferences.state.dart'
+    show PreferencesState, PreferencesSuccess;
+import 'platform/session/presentation/bloc/session.bloc.dart' show SessionBloc;
+import 'platform/session/presentation/bloc/session.event.dart' show SessionLoadStarted;
+import 'platform/splash/presentation/constants/splash.constants.dart' show kAnimationDuration;
+import 'hive/init.hive.dart' show initializeHive;
+import 'shared/infrastructure/service.locator.dart' show ServiceLocator, sl;
+import 'shared/presentation/providers/theme.provider.dart' show ThemeProvider;
+import 'shared/presentation/router/app.router.dart' show AppRouter;
+import 'shared/presentation/themes/app.theme.dart' show AppTheme;
 
 /// The main entry point of the application.
 ///
 /// Initializes the app with:
 /// - Flutter bindings
 /// - Hive local database (for auth persistence)
+/// - Dependency injection (GetIt)
 /// - [ThemeProvider] for theme management
 ///
 /// Preserves the native splash screen until the animated splash is ready to display.
@@ -31,6 +37,9 @@ void main() async {
 
   // Initialize Hive for local data persistence
   await initializeHive();
+
+  // Initialize dependency injection
+  await ServiceLocator.initialize();
 
   runApp(ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()));
 }
@@ -48,9 +57,18 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  late final GoRouter _router;
+  late final SessionBloc _sessionBloc;
+  late final PreferencesBloc _preferencesBloc;
+
   @override
   void initState() {
     super.initState();
+
+    _sessionBloc = sl<SessionBloc>()..add(const SessionLoadStarted());
+    _preferencesBloc = sl<PreferencesBloc>()..add(const PreferencesLoadStarted());
+
+    _router = AppRouter(_sessionBloc).createRouter();
 
     // Remove the native splash screen after 2.5s - synchronize with animated splash
     Future.delayed(const Duration(milliseconds: kAnimationDuration), () {
@@ -58,86 +76,52 @@ class _AppState extends State<App> {
     });
   }
 
-  /// Builds the root MaterialApp with theme provider integration.
+  @override
+  void dispose() {
+    _sessionBloc.close();
+    _preferencesBloc.close();
+    super.dispose();
+  }
+
+  /// Builds the root MaterialApp with GoRouter, theme provider, and BLoC integration.
   ///
   /// Uses [Consumer] to listen to theme changes and rebuild the app
   /// when the user switches between light and dark modes.
+  ///
+  /// Wraps the app with multiple BLoCs for connectivity, session, and preferences management.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeProvider.themeMode,
-          home: const SplashScreen(nextScreen: OnboardingScreen()),
-        );
-      },
-    );
-  }
-}
-
-/// The main application screen with bottom navigation.
-///
-/// This screen provides the main navigation structure for the app with:
-/// - Collapsible app bar with search functionality
-/// - Bottom navigation bar with 4 sections
-/// - Dynamic content area that changes based on navigation selection
-///
-/// **Navigation Sections:**
-/// 1. Home - Main content feed
-/// 2. Discover - Content discovery
-/// 3. Shows - Shows/events listing
-/// 4. Favorite - User's favorited content
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  /// The currently selected bottom navigation index (0-3).
-  int _selectedIndex = 0;
-
-  /// The list of widgets corresponding to each navigation section.
-  final List<Widget> widgetOptions = const [
-    HomeScreen(),
-    DiscoverScreen(),
-    ShowsScreen(),
-    FavoriteScreen(),
-  ];
-
-  /// Handles bottom navigation item taps.
-  ///
-  /// Updates the selected index and triggers a rebuild to display
-  /// the corresponding screen.
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  /// Builds the main screen with app bar, content area, and bottom navigation.
-  ///
-  /// Uses a [CustomScrollView] with [SliverAppBar] for the collapsible header
-  /// and search bar functionality.
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          AppBarLayout(),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Container(padding: const EdgeInsets.all(18.0), child: Card4()),
-              widgetOptions.elementAt(_selectedIndex),
-            ]),
-          ),
-        ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<ConnectivityBloc>()..add(const ConnectivityWatchStarted()),
+        ),
+        BlocProvider.value(value: _sessionBloc),
+        BlocProvider.value(value: _preferencesBloc),
+      ],
+      child: BlocListener<PreferencesBloc, PreferencesState>(
+        listener: (context, state) {
+          // Sync preferences with ThemeProvider when preferences change
+          if (state is PreferencesSuccess) {
+            final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+            themeProvider.setThemeMode(state.preferences.themeMode);
+          }
+        },
+        child: Consumer<ThemeProvider>(
+          builder: (context, themeProvider, child) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: themeProvider.themeMode,
+              routerConfig: _router,
+              builder: (context, child) {
+                return ConnectivityBanner(child: child ?? const SizedBox.shrink());
+              },
+            );
+          },
+        ),
       ),
-      bottomNavigationBar: BottomBarLayout(currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
   }
 }
