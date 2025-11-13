@@ -13,8 +13,8 @@ import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../constants/hive.constants.dart' show kAuthBox;
 import '../datasources/auth.local.datasource.dart' show AuthLocalDataSource;
 import '../datasources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
-import '../repositories/cached.auth.repository.dart' show AuthCachedRepository;
-import '../repositories/remote.auth.repository.dart' show AuthRemoteRepository;
+import '../repositories/auth.cached.repository.dart' show AuthCachedRepository;
+import '../repositories/auth.remote.repository.dart' show AuthRemoteRepository;
 
 /// Registers all authentication module dependencies.
 Future<void> registerAuthDependencies(GetIt sl) async {
