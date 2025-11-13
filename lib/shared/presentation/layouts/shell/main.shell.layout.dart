@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../presentation/themes/extensions/build.context.extension.dart';
 import '../../../../card.dart' show Card4;
 import '../../../../modules/discover/presentation/constants/discover.constants.dart'
     show kDiscoverRoutePath;
@@ -73,7 +74,7 @@ class MainShellLayout extends StatelessWidget {
           const AppBarLayout(),
           SliverList(
             delegate: SliverChildListDelegate([
-              Container(padding: const EdgeInsets.all(18.0), child: Card4()),
+              Container(padding: EdgeInsets.all(context.sizing.s18), child: Card4()),
               child,
             ]),
           ),
