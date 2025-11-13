@@ -41,17 +41,4 @@ class ThemeProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  /// Toggles the application theme between light and dark modes.
-  ///
-  /// **Deprecated**: Use [setThemeMode] instead for better control.
-  ///
-  /// The [isDark] parameter determines which theme to apply:
-  /// - `true`: Switches to dark theme
-  /// - `false`: Switches to light theme
-  @Deprecated('Use setThemeMode instead')
-  void toggleTheme(bool isDark) {
-    themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners();
-  }
 }
