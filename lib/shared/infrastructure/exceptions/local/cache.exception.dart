@@ -7,18 +7,18 @@ import '../../../domain/enums/cache.error.enum.dart' show CacheErrorType;
 /// to [ProblemDetailsException] for consistency, containing error type,
 /// title, detail message, optional instance identifier, and extensions.
 class CacheException implements Exception {
-  final String title;
+  final CacheErrorType title;
   final String detail;
   final String? instance;
-  final CacheErrorType type;
-  final Map<String, dynamic>? extensions;
+  final String? traceId;
+  final String? timestamp;
 
   CacheException({
-    required this.type,
     required this.title,
     required this.detail,
     this.instance,
-    this.extensions,
+    this.traceId,
+    this.timestamp,
   });
 
   @override
