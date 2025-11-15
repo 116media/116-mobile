@@ -13,7 +13,7 @@ abstract class ISessionLocalDataSource {
   /// Persists session state to local storage.
   ///
   /// Stores the complete [state] model containing all session data.
-  Future<void> saveSessionState(SessionStateModel state);
+  Future<void> setSessionState(SessionStateModel state);
 
   /// Removes all session data from local storage.
   ///
