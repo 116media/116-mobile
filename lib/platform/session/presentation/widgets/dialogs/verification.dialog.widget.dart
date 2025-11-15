@@ -29,11 +29,7 @@ class VerificationDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Icon
-            Icon(
-              Icons.email_outlined,
-              size: context.sizing.s48,
-              color: context.primaryColor,
-            ),
+            Icon(Icons.email_outlined, size: context.sizing.s48, color: context.primaryColor),
             SizedBox(height: context.sizing.s16),
 
             // Title
@@ -59,6 +55,7 @@ class VerificationDialog extends StatelessWidget {
 
             // Resend verification button
             SolidButton(
+              isFull: true,
               text: 'Resend Verification Email',
               onPressed: () {
                 // TODO: Implement resend verification email
@@ -70,10 +67,7 @@ class VerificationDialog extends StatelessWidget {
             // Dismiss button
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: textColor.withValues(alpha: 0.7)),
-              ),
+              child: Text('Cancel', style: TextStyle(color: textColor.withValues(alpha: 0.7))),
             ),
           ],
         ),
