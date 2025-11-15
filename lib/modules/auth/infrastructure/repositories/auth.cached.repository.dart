@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
-import '../../../../shared/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
+import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
@@ -17,14 +17,14 @@ import '../models/hive/user/user.model.dart' show UserModel;
 /// Delegates remote operations to the inner repository, then persists
 /// successful results to local storage.
 class AuthCachedRepository implements IAuthRepository {
-  final IAuthRepository _innerRepository;
+  final IAuthRepository _remoteRepository;
   final IAuthLocalDataSource _localDataSource;
 
-  const AuthCachedRepository(this._innerRepository, this._localDataSource);
+  const AuthCachedRepository(this._remoteRepository, this._localDataSource);
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signIn(SignInCredentialsModel credentials) async {
-    final result = await _innerRepository.signIn(credentials);
+    final result = await _remoteRepository.signIn(credentials);
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
@@ -40,7 +40,7 @@ class AuthCachedRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signUp(SignUpCredentialsModel credentials) async {
-    final result = await _innerRepository.signUp(credentials);
+    final result = await _remoteRepository.signUp(credentials);
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
