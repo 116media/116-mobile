@@ -2,7 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import '../../../application/usecases/signin.usecase.dart' show SignInUseCase;
 import 'signin.event.dart' show SignInEvent, SignInSubmitted;
-import 'signin.state.dart' show SignInState, SignInInitial, SignInLoading, SignInSuccess, SignInFailure;
+import 'signin.state.dart'
+    show SignInState, SignInInitial, SignInLoading, SignInSuccess, SignInFailure;
 
 /// BLoC for handling sign in authentication flow.
 ///
@@ -16,10 +17,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<SignInSubmitted>(_onSignInSubmitted);
   }
 
-  Future<void> _onSignInSubmitted(
-    SignInSubmitted event,
-    Emitter<SignInState> emit,
-  ) async {
+  Future<void> _onSignInSubmitted(SignInSubmitted event, Emitter<SignInState> emit) async {
     emit(const SignInLoading());
 
     final result = await _signInUseCase.execute(event.credentials);
