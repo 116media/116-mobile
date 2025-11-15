@@ -6,10 +6,11 @@ import 'package:equatable/equatable.dart' show Equatable;
 /// from exceptions at the repository layer. They are used in the
 /// domain layer with `Either<Failure, T>` for functional error handling.
 abstract class Failure extends Equatable {
-  final String message;
+  final String title;
+  final String detail;
 
-  const Failure({required this.message});
+  const Failure({required this.title, required this.detail});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [title, detail];
 }
