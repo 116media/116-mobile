@@ -21,11 +21,16 @@ import '../repositories/session.repository.dart' show SessionRepository;
 Future<void> registerSessionDependencies(GetIt sl) async {
   // Hive box
   final sessionBox = await Hive.openBox<dynamic>(kSessionBox);
-  sl.registerSingleton<Box<dynamic>>(sessionBox, instanceName: 'sessionBox');
+  sl.registerSingleton<Box<dynamic>>(sessionBox, instanceName: kSessionBox);
 
   // Data source
   sl.registerSingleton<ISessionLocalDataSource>(
-    SessionLocalDataSource(sl<Box<dynamic>>(instanceName: 'sessionBox')),
+    SessionLocalDataSource(sl<Box<dynamic>>(instanceName: kSessionBox)),
+    dispose: (datasource) {
+      if (datasource is SessionLocalDataSource) {
+        datasource.dispose();
+      }
+    },
   );
 
   // Repository
