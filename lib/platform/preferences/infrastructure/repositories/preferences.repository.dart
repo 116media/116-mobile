@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
-import '../../../../shared/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
+import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/datasource/preferences.local.datasource.port.dart'
     show IPreferencesLocalDataSource;
 import '../../application/repositories/preferences.repository.port.dart'
@@ -25,9 +25,10 @@ class PreferencesRepository implements IPreferencesRepository {
   Future<Either<Failure, UserPreferencesEntity>> getPreferences() async {
     try {
       final model = await _localDataSource.getPreferences();
+
       // If no preferences exist, return defaults
-      final preferencesModel = model ?? UserPreferencesModel.defaults();
-      return Right(preferencesModel.toEntity());
+      final preferences = model ?? UserPreferencesModel.defaults();
+      return Right(preferences.toEntity());
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
@@ -37,16 +38,14 @@ class PreferencesRepository implements IPreferencesRepository {
   Future<Either<Failure, UserPreferencesEntity>> updateLanguage(String languageCode) async {
     try {
       // Get current preferences
-      final currentModel =
-          await _localDataSource.getPreferences() ?? UserPreferencesModel.defaults();
-      final currentEntity = currentModel.toEntity();
+      final model = await _localDataSource.getPreferences() ?? UserPreferencesModel.defaults();
 
       // Update language
-      final updatedEntity = currentEntity.copyWith(languageCode: languageCode);
+      final updatedEntity = model.toEntity().copyWith(languageCode: languageCode);
       final updatedModel = UserPreferencesModel.fromEntity(updatedEntity);
 
       // Save and return
-      await _localDataSource.savePreferences(updatedModel);
+      await _localDataSource.setPreferences(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
@@ -57,16 +56,14 @@ class PreferencesRepository implements IPreferencesRepository {
   Future<Either<Failure, UserPreferencesEntity>> updateThemeMode(AppThemeMode themeMode) async {
     try {
       // Get current preferences
-      final currentModel =
-          await _localDataSource.getPreferences() ?? UserPreferencesModel.defaults();
-      final currentEntity = currentModel.toEntity();
+      final model = await _localDataSource.getPreferences() ?? UserPreferencesModel.defaults();
 
       // Update theme mode
-      final updatedEntity = currentEntity.copyWith(themeMode: themeMode);
+      final updatedEntity = model.toEntity().copyWith(themeMode: themeMode);
       final updatedModel = UserPreferencesModel.fromEntity(updatedEntity);
 
       // Save and return
-      await _localDataSource.savePreferences(updatedModel);
+      await _localDataSource.setPreferences(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));

@@ -18,11 +18,16 @@ import '../repositories/preferences.repository.dart' show PreferencesRepository;
 Future<void> registerPreferencesDependencies(GetIt sl) async {
   // Hive box
   final preferencesBox = await Hive.openBox<dynamic>(kPreferencesBox);
-  sl.registerSingleton<Box<dynamic>>(preferencesBox, instanceName: 'preferencesBox');
+  sl.registerSingleton<Box<dynamic>>(preferencesBox, instanceName: kPreferencesBox);
 
   // Data source
   sl.registerSingleton<IPreferencesLocalDataSource>(
-    PreferencesLocalDataSource(sl<Box<dynamic>>(instanceName: 'preferencesBox')),
+    PreferencesLocalDataSource(sl<Box<dynamic>>(instanceName: kPreferencesBox)),
+    dispose: (datasource) {
+      if (datasource is PreferencesLocalDataSource) {
+        datasource.dispose();
+      }
+    },
   );
 
   // Repository

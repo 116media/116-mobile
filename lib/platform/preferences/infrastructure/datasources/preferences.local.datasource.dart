@@ -36,7 +36,7 @@ class PreferencesLocalDataSource implements IPreferencesLocalDataSource {
   }
 
   @override
-  Future<void> savePreferences(UserPreferencesModel preferences) async {
+  Future<void> setPreferences(UserPreferencesModel preferences) async {
     try {
       await _preferencesBox.put(kPreferencesKey, preferences);
       _preferencesController.add(preferences);
