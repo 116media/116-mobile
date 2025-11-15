@@ -22,6 +22,7 @@ class _BaseTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FocusNode focusNode;
   final bool isPassword;
+  final bool isDisabled;
   final ValueNotifier<bool> isPasswordVisible;
   final String label;
   final bool filled;
@@ -37,6 +38,7 @@ class _BaseTextField extends StatelessWidget {
     required this.validator,
     required this.focusNode,
     required this.isPassword,
+    required this.isDisabled,
     required this.isPasswordVisible,
     required this.label,
     required this.filled,
@@ -75,6 +77,7 @@ class _BaseTextField extends StatelessWidget {
         style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
         decoration: InputDecoration(
           filled: filled,
+          enabled: !isDisabled,
           border: InputBorder.none,
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
