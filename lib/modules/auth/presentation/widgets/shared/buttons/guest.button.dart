@@ -24,8 +24,8 @@ class GuestButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300;
     final textColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
+    final borderColor = context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300;
 
     return PlatformWidget(
       cupertino: (context, platform) => Container(
@@ -66,8 +66,8 @@ class GuestButton extends StatelessWidget {
           child: Text(
             text,
             style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
               color: textColor,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
