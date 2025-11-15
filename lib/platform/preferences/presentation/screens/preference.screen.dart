@@ -6,6 +6,8 @@ import '../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../shared/presentation/providers/theme.provider.dart';
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
+import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
+    show ButtonSize;
 import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../shared/presentation/widgets/header/header.title.dart' show HeaderTitle;
 import '../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
@@ -130,8 +132,9 @@ class _PreferenceScreenContent extends StatelessWidget {
 
                   // Continue Button
                   SolidButton(
-                    size: 'sm',
+                    isFull: true,
                     text: 'Continue',
+                    size: ButtonSize.sm,
                     onPressed: () => _handleSavePreference(context),
                   ),
                 ],

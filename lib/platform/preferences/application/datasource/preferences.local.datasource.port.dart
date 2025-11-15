@@ -13,7 +13,7 @@ abstract class IPreferencesLocalDataSource {
   /// Persists user preferences to local storage.
   ///
   /// Stores the [preferences] model containing language and theme data.
-  Future<void> savePreferences(UserPreferencesModel preferences);
+  Future<void> setPreferences(UserPreferencesModel preferences);
 
   /// Removes all preferences data from local storage.
   Future<void> clearPreferences();

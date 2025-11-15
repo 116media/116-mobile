@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
-import '../../../../shared/infrastructure/exceptions/problem.mapper.g.dart' show ProblemMapper;
+import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/datasource/session.local.datasource.port.dart'
     show ISessionLocalDataSource;
 import '../../application/repositories/session.repository.port.dart' show ISessionRepository;
@@ -25,8 +25,8 @@ class SessionRepository implements ISessionRepository {
     try {
       final model = await _localDataSource.getSessionState();
       // If no session exists, return initial state
-      final sessionModel = model ?? SessionStateModel.initial();
-      return Right(sessionModel.toEntity());
+      final session = model ?? SessionStateModel.initial();
+      return Right(session.toEntity());
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
@@ -36,15 +36,14 @@ class SessionRepository implements ISessionRepository {
   Future<Either<Failure, SessionStateEntity>> updateOnboardingStatus(bool completed) async {
     try {
       // Get current state
-      final currentModel = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
-      final currentEntity = currentModel.toEntity();
+      final current = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
 
       // Update onboarding status
-      final updatedEntity = currentEntity.copyWith(hasCompletedOnboarding: completed);
+      final updatedEntity = current.toEntity().copyWith(hasCompletedOnboarding: completed);
       final updatedModel = SessionStateModel.fromEntity(updatedEntity);
 
       // Save and return
-      await _localDataSource.saveSessionState(updatedModel);
+      await _localDataSource.setSessionState(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
@@ -55,15 +54,14 @@ class SessionRepository implements ISessionRepository {
   Future<Either<Failure, SessionStateEntity>> updatePreferencesStatus(bool completed) async {
     try {
       // Get current state
-      final currentModel = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
-      final currentEntity = currentModel.toEntity();
+      final current = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
 
       // Update preferences status
-      final updatedEntity = currentEntity.copyWith(hasSetPreferences: completed);
+      final updatedEntity = current.toEntity().copyWith(hasSetPreferences: completed);
       final updatedModel = SessionStateModel.fromEntity(updatedEntity);
 
       // Save and return
-      await _localDataSource.saveSessionState(updatedModel);
+      await _localDataSource.setSessionState(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
@@ -77,15 +75,14 @@ class SessionRepository implements ISessionRepository {
   ) async {
     try {
       // Get current state
-      final currentModel = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
-      final currentEntity = currentModel.toEntity();
+      final current = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
 
       // Update auth status
-      final updatedEntity = currentEntity.copyWith(authStatus: status, userId: userId);
+      final updatedEntity = current.toEntity().copyWith(authStatus: status, userId: userId);
       final updatedModel = SessionStateModel.fromEntity(updatedEntity);
 
       // Save and return
-      await _localDataSource.saveSessionState(updatedModel);
+      await _localDataSource.setSessionState(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));

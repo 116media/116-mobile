@@ -5,21 +5,21 @@
 /// and optional instance identifier and extensions.
 class ServerException implements Exception {
   final int status;
-  final String type;
   final String title;
   final String detail;
   final String? instance;
-  final Map<String, dynamic>? extensions;
+  final String? traceId;
+  final String? timestamp;
 
   ServerException({
-    required this.type,
     required this.title,
     required this.detail,
     required this.status,
     this.instance,
-    this.extensions,
+    this.traceId,
+    this.timestamp,
   });
 
   @override
-  String toString() => '$title: $detail (Status: $status)';
+  String toString() => '$status - $title: $detail';
 }

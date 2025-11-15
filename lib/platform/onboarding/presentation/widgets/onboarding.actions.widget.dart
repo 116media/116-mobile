@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
+import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
+    show ButtonSize;
 import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../modules/auth/presentation/widgets/shared/buttons/guest.button.dart'
     show GuestButton;
@@ -54,7 +56,12 @@ class OnboardingActions extends StatelessWidget {
               child: Column(
                 spacing: context.sizing.s12,
                 children: [
-                  SolidButton(size: "sm", text: "Sign In / Sign Up", onPressed: onGetStarted),
+                  SolidButton(
+                    isFull: true,
+                    size: ButtonSize.sm,
+                    text: "Sign In / Sign Up",
+                    onPressed: onGetStarted,
+                  ),
                   GuestButton(text: "Continue as guest", onPressed: onContinueAsGuest),
                 ],
               ),

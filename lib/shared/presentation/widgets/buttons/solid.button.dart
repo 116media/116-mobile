@@ -3,14 +3,17 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../themes/extensions/build.context.extension.dart';
 import '../../utils/colors.util.dart' show ColorsUtil;
+import 'enums/button.size.enum.dart' show ButtonSize;
 
 /// A solid button widget that adapts to the platform (iOS/Android).
 ///
 /// Provides consistent button styling with size variants across platforms.
 class SolidButton extends StatelessWidget {
   final String text;
-  final String size;
+  final ButtonSize size;
   final bool isFull;
+  final bool isDisabled;
+  final bool isLoading;
   final Color? textColor;
   final Color? background;
   final VoidCallback onPressed;
@@ -19,53 +22,73 @@ class SolidButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.textColor = Colors.white,
+    this.textColor = ColorsUtil.white,
     this.background = ColorsUtil.primary,
-    this.size = 'md',
+    this.size = ButtonSize.md,
     this.isFull = false,
+    this.isDisabled = false,
+    this.isLoading = false,
   });
 
   /// Returns the height based on the size variant.
-  double _getHeight() {
-    switch (size) {
-      case 'xs':
-        return 40.0;
-      case 'sm':
-        return 50.0;
-      case 'md':
-        return 60.0;
-      case 'lg':
-        return 70.0;
-      default:
-        return 60.0;
-    }
+  double _getHeight(BuildContext context) {
+    return switch (size) {
+      ButtonSize.xs => context.sizing.s40,
+      ButtonSize.sm => context.sizing.s48,
+      ButtonSize.md => context.sizing.s60,
+      ButtonSize.lg => context.sizing.s72,
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlatformElevatedButton(
-      padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
-      onPressed: onPressed,
-      material: (_, _) => MaterialElevatedButtonData(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          padding: EdgeInsets.zero,
-          backgroundColor: background,
-          splashFactory: InkRipple.splashFactory,
-          foregroundColor: ColorsUtil.white.withAlpha(context.sizing.s48.toInt()),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
+    final bool isButtonDisabled = isDisabled || isLoading;
+
+    return Opacity(
+      opacity: isButtonDisabled ? 0.6 : 1.0,
+      child: PlatformElevatedButton(
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
+        onPressed: isButtonDisabled ? null : onPressed,
+        material: (_, _) => MaterialElevatedButtonData(
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            padding: EdgeInsets.zero,
+            backgroundColor: background,
+            splashFactory: InkRipple.splashFactory,
+            foregroundColor: ColorsUtil.white.withValues(alpha: context.sizing.s48),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
+          ),
         ),
-      ),
-      cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
-      child: SizedBox(
-        height: _getHeight(),
-        width: isFull ? double.infinity : null,
-        child: Center(
-          child: Text(
-            text,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: textColor, fontWeight: FontWeight.w600),
+        cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: _getHeight(context),
+            minWidth: isFull ? double.infinity : 0,
+          ),
+          child: IntrinsicWidth(
+            child: Container(
+              height: _getHeight(context),
+              width: isFull ? double.infinity : null,
+              padding: EdgeInsets.symmetric(horizontal: context.sizing.s24),
+              child: Center(
+                child: isLoading
+                    ? SizedBox(
+                        width: context.sizing.s20,
+                        height: context.sizing.s20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: context.sizing.s2,
+                          valueColor: AlwaysStoppedAnimation<Color>(textColor ?? ColorsUtil.white),
+                        ),
+                      )
+                    : Text(
+                        text,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: textColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+              ),
+            ),
           ),
         ),
       ),

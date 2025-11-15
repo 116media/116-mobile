@@ -3,8 +3,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
+    show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
-import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart' show InputField;
+import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
+    show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
@@ -114,7 +117,12 @@ class _SignUpFormState extends State<SignUpForm> {
 
             FadeAnimation(
               delay: 0.65,
-              child: SolidButton(size: "sm", text: "Sign Up", onPressed: _handleSignUp),
+              child: SolidButton(
+                isFull: true,
+                text: "Sign Up",
+                size: ButtonSize.sm,
+                onPressed: _handleSignUp,
+              ),
             ),
 
             const DividerWithLabel(label: 'OR'),
@@ -141,10 +149,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ],
             ),
 
-            GuestButton(
-              text: "Continue as guest",
-              onPressed: _handleContinueAsGuest,
-            ),
+            GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
 
             AuthRedirectButton(
               isCentered: true,

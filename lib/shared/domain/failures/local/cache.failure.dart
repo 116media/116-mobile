@@ -1,4 +1,3 @@
-import '../../enums/cache.error.enum.dart' show CacheErrorType;
 import '../failure.dart' show Failure;
 
 /// Failure for local cache/storage operations.
@@ -6,17 +5,18 @@ import '../failure.dart' show Failure;
 /// Represents errors from local data sources like Hive, SharedPreferences,
 /// or SQLite. Converted from [CacheException] in the repository layer.
 class CacheFailure extends Failure {
-  final String title;
   final String? instance;
-  final CacheErrorType type;
+  final String? traceId;
+  final String? timestamp;
 
   const CacheFailure({
-    required this.type,
-    required this.title,
-    required super.message,
+    required super.title,
+    required super.detail,
     this.instance,
+    this.traceId,
+    this.timestamp,
   });
 
   @override
-  List<Object?> get props => [type, title, message, instance];
+  List<Object?> get props => [title, detail, instance, traceId, timestamp];
 }

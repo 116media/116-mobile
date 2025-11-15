@@ -7,19 +7,28 @@
     {
       "name": "mobile_116",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "env": {
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home"
+      }
     },
     {
       "name": "mobile_116 (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "env": {
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home"
+      }
     },
     {
       "name": "mobile_116 (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "env": {
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home"
+      }
     }
   ]
 }

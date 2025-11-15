@@ -49,6 +49,7 @@ class InputField extends StatefulWidget {
   final bool filled;
   final Color? filledColor;
   final bool isPassword;
+  final bool isDisabled;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
 
@@ -58,6 +59,7 @@ class InputField extends StatefulWidget {
     this.suffix,
     this.filled = false,
     this.isPassword = false,
+    this.isDisabled = false,
     this.validator,
     this.controller,
     Color? filledColor,
@@ -165,6 +167,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
             controller: widget.controller,
             validator: widget.validator,
             isPassword: widget.isPassword,
+            isDisabled: widget.isDisabled,
             isPasswordVisible: _isPasswordVisible,
             label: widget.label,
             filled: widget.filled,
@@ -181,7 +184,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
             child: Text(
               _errorText!,
               style: context.textTheme.bodySmall?.copyWith(
-                fontSize: 12,
+                fontSize: context.sizing.s12,
                 color: context.colors.error,
               ),
             ),
