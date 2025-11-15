@@ -36,7 +36,7 @@ class SessionLocalDataSource implements ISessionLocalDataSource {
   }
 
   @override
-  Future<void> saveSessionState(SessionStateModel state) async {
+  Future<void> setSessionState(SessionStateModel state) async {
     try {
       await _sessionBox.put(kSessionStateKey, state);
       _sessionController.add(state);
