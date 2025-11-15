@@ -2,7 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import '../../../application/usecases/signup.usecase.dart' show SignUpUseCase;
 import 'signup.event.dart' show SignUpEvent, SignUpSubmitted;
-import 'signup.state.dart' show SignUpState, SignUpInitial, SignUpLoading, SignUpSuccess, SignUpFailure;
+import 'signup.state.dart'
+    show SignUpState, SignUpInitial, SignUpLoading, SignUpSuccess, SignUpFailure;
 
 /// BLoC for handling sign up registration flow.
 ///
@@ -16,10 +17,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpSubmitted>(_onSignUpSubmitted);
   }
 
-  Future<void> _onSignUpSubmitted(
-    SignUpSubmitted event,
-    Emitter<SignUpState> emit,
-  ) async {
+  Future<void> _onSignUpSubmitted(SignUpSubmitted event, Emitter<SignUpState> emit) async {
     emit(const SignUpLoading());
 
     final result = await _signUpUseCase.execute(event.credentials);
