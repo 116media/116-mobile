@@ -3,23 +3,22 @@ import '../failure.dart' show Failure;
 /// Failure for API/server operations.
 ///
 /// Represents errors from remote data sources following RFC 7807 Problem Details.
-/// Converted from [ProblemDetailsException] in the repository layer.
+/// Converted from [ServerException] in the repository layer.
 class ServerFailure extends Failure {
-  final String type;
-  final String title;
-  final int statusCode;
+  final int status;
   final String? instance;
-  final Map<String, dynamic>? extensions;
+  final String? traceId;
+  final String? timestamp;
 
   const ServerFailure({
-    required this.type,
-    required this.title,
-    required super.message,
-    required this.statusCode,
+    required super.title,
+    required super.detail,
+    required this.status,
     this.instance,
-    this.extensions,
+    this.traceId,
+    this.timestamp,
   });
 
   @override
-  List<Object?> get props => [statusCode, type, title, message, instance, extensions];
+  List<Object?> get props => [status, title, detail, instance, traceId, timestamp];
 }
