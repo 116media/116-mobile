@@ -89,8 +89,8 @@ class _SignInFormState extends State<SignInForm> {
               children: [
                 Logo(
                   type: LogoType.icon,
-                  isDarkTheme: context.isDarkMode,
                   width: context.sizing.s64,
+                  isDarkTheme: context.isDarkMode,
                 ),
 
                 const AuthFormTitle(text: "Sign In to Continue"),
@@ -146,20 +146,20 @@ class _SignInFormState extends State<SignInForm> {
                   children: [
                     Expanded(
                       child: SocialLoginButton(
-                        platform: SocialPlatform.google,
                         isDisabled: isLoading,
                         onPressed: () {
                           // Handle Google login
                         },
+                        platform: SocialPlatform.google,
                       ),
                     ),
                     Expanded(
                       child: SocialLoginButton(
-                        platform: SocialPlatform.facebook,
                         isDisabled: isLoading,
                         onPressed: () {
                           // Handle Facebook login
                         },
+                        platform: SocialPlatform.facebook,
                       ),
                     ),
                   ],
