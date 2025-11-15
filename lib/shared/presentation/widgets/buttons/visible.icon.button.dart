@@ -1,3 +1,4 @@
+import 'package:cent16/shared/presentation/themes/extensions/build.context.extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -26,18 +27,18 @@ class VisibleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      padding: EdgeInsets.symmetric(horizontal: context.sizing.s4),
       child: PlatformIconButton(
         padding: EdgeInsets.zero,
         materialIcon: Icon(
-          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          size: context.sizing.s24,
           color: Theme.of(context).primaryColor,
-          size: 24,
+          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
         ),
         cupertinoIcon: Icon(
-          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          size: context.sizing.s24,
           color: Theme.of(context).primaryColor,
-          size: 24,
+          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
         ),
         onPressed: onPressed,
         material: (_, _) => MaterialIconButtonData(
