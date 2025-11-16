@@ -25,20 +25,25 @@ enum AuthRedirectAction {
 class AuthRedirectButton extends StatelessWidget {
   final bool isLeft;
   final bool isCentered;
+  final bool isDisabled;
   final VoidCallback onPressed;
   final AuthRedirectAction actionType;
+  final String? suffixText;
 
   /// Creates an authentication redirect button.
   ///
   /// The [onPressed] and [actionType] parameters are required.
   /// By default, the button is centered ([isCentered] = true) and
   /// left-aligned when not centered ([isLeft] = false).
+  /// The [suffixText] can be used to add additional text after the link (e.g., countdown timer).
   const AuthRedirectButton({
     super.key,
     required this.onPressed,
     required this.actionType,
     this.isCentered = true,
     this.isLeft = false,
+    this.isDisabled = false,
+    this.suffixText,
   });
 
   /// Returns the main text and optional link text based on the action type.
@@ -76,27 +81,35 @@ class AuthRedirectButton extends StatelessWidget {
 
     return CupertinoButton(
       padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: _getMainAxisAlignment(),
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            mainText,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-          ),
-          linkText != null
-              ? Text(
-                  linkText,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: context.colors.primary,
-                    fontWeight: FontWeight.w800,
-                    decoration: TextDecoration.underline,
-                    decorationColor: context.colors.primary,
-                  ),
-                )
-              : const SizedBox.shrink(),
-        ],
+      onPressed: isDisabled ? null : onPressed,
+      child: Opacity(
+        opacity: isDisabled ? 0.3 : 1.0,
+        child: Row(
+          mainAxisAlignment: _getMainAxisAlignment(),
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              mainText,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            linkText != null
+                ? Text(
+                    linkText,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: context.colors.primary,
+                      fontWeight: FontWeight.w800,
+                      decoration: TextDecoration.underline,
+                      decorationColor: context.colors.primary,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            if (suffixText != null)
+              Text(
+                suffixText!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+              ),
+          ],
+        ),
       ),
     );
   }
