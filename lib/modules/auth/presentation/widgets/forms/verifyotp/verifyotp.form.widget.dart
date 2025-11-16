@@ -9,7 +9,10 @@ import '../../../../../../shared/presentation/widgets/otppinfields/otppinfield.w
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../constants/auth.validation.constants.dart' show kOtpResendCountdown;
 import '../../../validators/verifyotp.validator.dart' show VerifyOtpValidator;
+import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
+import '../../shared/redirect/auth.redirect.button.dart'
+    show AuthRedirectButton, AuthRedirectAction;
 
 class VerifyOtpForm extends StatefulWidget {
   final String? email;
@@ -104,7 +107,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
       child: Column(
-        spacing: context.sizing.s12,
+        spacing: context.sizing.s20,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -112,58 +115,44 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
 
           const AuthFormTitle(text: "Verify Your Email"),
 
-          Text(
-            'Please enter the 6-digit code sent to ${widget.email ?? 'your email'}',
-            style: context.textTheme.bodyMedium?.copyWith(color: textColor.withValues(alpha: 0.7)),
+          RichText(
             textAlign: TextAlign.center,
+            text: TextSpan(
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: textColor.withValues(alpha: 0.7),
+              ),
+              children: [
+                const TextSpan(text: "Please enter the 6-digit verification code we've sent to "),
+                if (widget.email != null)
+                  TextSpan(
+                    text: widget.email!,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  )
+                else
+                  const TextSpan(text: 'your email'),
+              ],
+            ),
           ),
 
           // OTP Pin Field
           OtpPinField(
             length: 6,
             key: _otpKey,
+            isFilled: true,
             isDisabled: _isVerifying,
             onCompleted: _handleOtpCompleted,
             validator: VerifyOtpValidator.otp('OTP Code'),
           ),
 
           // Resend OTP button
-          TextButton(
-            onPressed: (_isVerifying || _countdown > 0) ? null : _handleResendOtp,
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Didn't receive code? ",
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: textColor.withValues(alpha: 0.7),
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Resend',
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: (_isVerifying || _countdown > 0)
-                          ? textColor.withValues(alpha: 0.3)
-                          : context.primaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (_countdown > 0)
-                    TextSpan(
-                      text: ' in $_countdown seconds',
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: textColor.withValues(alpha: 0.7),
-                      ),
-                    ),
-                ],
-              ),
-            ),
+          AuthRedirectButton(
+            onPressed: _handleResendOtp,
+            isDisabled: _isVerifying || _countdown > 0,
+            actionType: AuthRedirectAction.haveReceiveCode,
+            suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
           ),
 
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: TextStyle(color: textColor.withValues(alpha: 0.7))),
-          ),
+          OutlineButton(text: 'Cancel', onPressed: () => Navigator.of(context).pop()),
         ],
       ),
     );
