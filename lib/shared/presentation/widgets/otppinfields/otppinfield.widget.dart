@@ -22,6 +22,7 @@ part 'base.textfield.widget.dart';
 /// - **Auto-focus** on first box when widget mounts
 /// - **Disabled state** during verification
 /// - **Error state** with red borders and error message
+/// - **Optional filled background** with customizable color
 ///
 /// ## Performance Optimizations
 /// - [ValueListenableBuilder] prevents unnecessary rebuilds when checking focus state
@@ -43,25 +44,22 @@ part 'base.textfield.widget.dart';
 /// See also:
 /// - [BorderAnimation], the custom border animation painter
 class OtpPinField extends StatefulWidget {
-  /// Number of OTP boxes to display
   final int length;
-
-  /// Callback when all boxes are filled
+  final bool isFilled;
+  final Color? filledColor;
+  final bool isDisabled;
   final void Function(String)? onCompleted;
-
-  /// Validator function for the complete OTP
   final String? Function(String?)? validator;
 
-  /// Whether the field is disabled (during verification)
-  final bool isDisabled;
-
-  const OtpPinField({
+  OtpPinField({
     super.key,
     this.length = 6,
     this.onCompleted,
     this.validator,
     this.isDisabled = false,
-  });
+    this.isFilled = false,
+    Color? filledColor,
+  }) : filledColor = filledColor ?? ColorsUtil.white.withValues(alpha: 0.5);
 
   @override
   State<OtpPinField> createState() => OtpPinFieldState();
@@ -214,9 +212,10 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
   Widget build(BuildContext context) {
     final hasError = _errorText != null && _errorText!.isNotEmpty;
     final borderWidth = hasError ? 2.0 : 1.0;
-    final outerRadius = context.sizing.s8;
-    final innerRadius = outerRadius - borderWidth;
+
+    final outerRadius = context.sizing.s6;
     final errorColor = context.colors.error;
+    final innerRadius = outerRadius - borderWidth;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,7 +239,6 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
                       painter: BorderAnimation(_animations[index].value),
                       child: Container(
                         width: context.sizing.s48,
-                        height: context.sizing.s56,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(outerRadius),
                           border: Border.all(color: borderColor, width: borderWidth),
@@ -256,6 +254,8 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
               },
               child: _BaseTextField(
                 index: index,
+                filled: widget.isFilled,
+                filledColor: widget.filledColor,
                 controller: _controllers[index],
                 focusNode: _focusNodes[index],
                 isDisabled: widget.isDisabled,
@@ -271,8 +271,8 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
             child: Text(
               _errorText!,
               style: context.textTheme.bodySmall?.copyWith(
-                fontSize: context.sizing.s12,
                 color: errorColor,
+                fontSize: context.sizing.s12,
               ),
             ),
           ),

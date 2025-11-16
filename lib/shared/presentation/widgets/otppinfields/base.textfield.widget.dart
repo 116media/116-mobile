@@ -7,10 +7,13 @@ part of 'otppinfield.widget.dart';
 /// - Keyboard listener for backspace navigation
 /// - Auto-advance on input
 /// - Disabled state support
+/// - Optional filled background
 ///
 /// This class is private (part file) and should only be used by [OtpPinFieldState].
 class _BaseTextField extends StatelessWidget {
   final int index;
+  final bool filled;
+  final Color? filledColor;
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool isDisabled;
@@ -19,6 +22,8 @@ class _BaseTextField extends StatelessWidget {
 
   const _BaseTextField({
     required this.index,
+    required this.filled,
+    required this.filledColor,
     required this.controller,
     required this.focusNode,
     required this.isDisabled,
@@ -41,11 +46,16 @@ class _BaseTextField extends StatelessWidget {
           keyboardType: TextInputType.number,
           onChanged: onChanged,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          style: context.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w600),
-          decoration: const InputDecoration(
+          style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+          decoration: InputDecoration(
+            filled: filled,
+            fillColor: filledColor,
             counterText: '',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: context.sizing.s10,
+              horizontal: context.sizing.s12,
+            ),
           ),
         ),
       ),
