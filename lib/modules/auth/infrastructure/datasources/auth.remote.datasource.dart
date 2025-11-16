@@ -1,11 +1,19 @@
 import 'package:chopper/chopper.dart' show Response;
 
 import '../../../../api/client/api_116.swagger.dart'
-    show Api116, PublicLoginRequest, PublicLoginResponse, PublicSignUpResponse, PublicSignUpRequest;
+    show
+        Api116,
+        PublicLoginRequest,
+        PublicLoginResponse,
+        PublicSignUpResponse,
+        PublicSignUpRequest,
+        PublicVerifyOtpRequest,
+        PublicVerifyOtpResponse;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
+import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
 
 /// Implementation of [AuthRemoteDataSource] for authentication operations via REST API.
 ///
@@ -37,6 +45,23 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
         email: model.email,
         userName: model.userName,
         password: model.password,
+      ),
+    );
+
+    if (response.isSuccessful) {
+      return response.body!;
+    } else {
+      throw ProblemMapper.toException(response as Response);
+    }
+  }
+
+  @override
+  Future<PublicVerifyOtpResponse> verifyOtp(VerifyOtpCredentialsModel model) async {
+    final response = await _apiClient.PublicVerifyOtp(
+      body: PublicVerifyOtpRequest(
+        email: model.email,
+        code: model.otp,
+        purpose: model.purpose.name,
       ),
     );
 
