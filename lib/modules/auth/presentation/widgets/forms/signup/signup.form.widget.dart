@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, ReadContext;
 
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
@@ -10,6 +12,11 @@ import '../../../../../../shared/presentation/widgets/inputfields/inputfield.wid
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
+import '../../../bloc/signin/signin.bloc.dart' show SignInBloc;
+import '../../../bloc/signup/signup.bloc.dart';
+import '../../../bloc/signup/signup.event.dart';
+import '../../../bloc/signup/signup.state.dart';
+import '../../../models/signup.credentials.model.dart';
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signup.validator.dart' show SignUpValidator;
 import '../../shared/buttons/guest.button.dart' show GuestButton;
@@ -44,23 +51,32 @@ class _SignUpFormState extends State<SignUpForm> {
 
   /// Shows the sign-in dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
+  /// Wraps the dialog with [SignInBloc] provider.
   Future<void> _showSignInDialog() async {
-    await showAuthDialog(context, const SignInDialog(), closeExisting: true);
+    await showAuthDialog(
+      context,
+      BlocProvider(
+        create: (context) => sl<SignInBloc>(),
+        child: const SignInDialog(),
+      ),
+      closeExisting: true,
+    );
   }
 
   /// Handles form submission after validation.
+  ///
+  /// Dispatches [SignUpSubmitted] event to the [SignUpBloc] with user credentials.
   void _handleSignUp() {
     FocusScope.of(context).unfocus();
 
     if (_formKey.currentState?.validate() ?? false) {
-      final email = _emailController.text;
-      final username = _usernameController.text;
-      final password = _passwordController.text;
+      final credentials = SignUpCredentialsModel(
+        email: _emailController.text.trim(),
+        userName: _usernameController.text.trim(),
+        password: _passwordController.text,
+      );
 
-      // TODO: Implement sign-up logic
-      debugPrint('Email: $email');
-      debugPrint('Username: $username');
-      debugPrint('Password: $password');
+      context.read<SignUpBloc>().add(SignUpSubmitted(credentials));
     }
   }
 
@@ -73,92 +89,109 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
-        child: Column(
-          spacing: context.sizing.s12,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Logo(type: LogoType.icon, isDarkTheme: context.isDarkMode, width: context.sizing.s64),
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      builder: (context, state) {
+        final isLoading = state is SignUpLoading;
 
-            const AuthFormTitle(text: "Sign Up to Continue"),
-
-            Wrap(
+        return Form(
+          key: _formKey,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
+            child: Column(
               spacing: context.sizing.s12,
-              runSpacing: context.sizing.s12,
-              alignment: WrapAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InputField(
-                  filled: true,
-                  label: "Email",
-                  controller: _emailController,
-                  validator: SignUpValidator.email("Email"),
+                Logo(
+                  type: LogoType.icon,
+                  width: context.sizing.s64,
+                  isDarkTheme: context.isDarkMode,
                 ),
-                InputField(
-                  filled: true,
-                  label: "Username",
-                  controller: _usernameController,
-                  validator: SignUpValidator.username("Username"),
+
+                const AuthFormTitle(text: "Sign Up to Continue"),
+
+                Wrap(
+                  spacing: context.sizing.s12,
+                  runSpacing: context.sizing.s12,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    InputField(
+                      filled: true,
+                      label: "Email",
+                      isDisabled: isLoading,
+                      controller: _emailController,
+                      validator: SignUpValidator.email("Email"),
+                    ),
+                    InputField(
+                      filled: true,
+                      label: "Username",
+                      isDisabled: isLoading,
+                      controller: _usernameController,
+                      validator: SignUpValidator.username("Username"),
+                    ),
+                    InputField(
+                      filled: true,
+                      isPassword: true,
+                      label: "Password",
+                      isDisabled: isLoading,
+                      controller: _passwordController,
+                      validator: SignUpValidator.password("Password"),
+                    ),
+                  ],
                 ),
-                InputField(
-                  filled: true,
-                  isPassword: true,
-                  label: "Password",
-                  controller: _passwordController,
-                  validator: SignUpValidator.password("Password"),
+
+                TermsAndConditions(),
+
+                FadeAnimation(
+                  delay: 0.65,
+                  child: SolidButton(
+                    isFull: true,
+                    text: "Sign Up",
+                    size: ButtonSize.sm,
+                    isLoading: isLoading,
+                    isDisabled: isLoading,
+                    onPressed: _handleSignUp,
+                  ),
+                ),
+
+                const DividerWithLabel(label: 'OR'),
+
+                Row(
+                  spacing: context.sizing.s6,
+                  children: [
+                    Expanded(
+                      child: SocialLoginButton(
+                        isDisabled: isLoading,
+                        onPressed: () {
+                          // Handle Google login
+                        },
+                        platform: SocialPlatform.google,
+                      ),
+                    ),
+                    Expanded(
+                      child: SocialLoginButton(
+                        isDisabled: isLoading,
+                        onPressed: () {
+                          // Handle Facebook login
+                        },
+                        platform: SocialPlatform.facebook,
+                      ),
+                    ),
+                  ],
+                ),
+
+                GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+
+                AuthRedirectButton(
+                  isCentered: true,
+                  onPressed: _showSignInDialog,
+                  actionType: AuthRedirectAction.haveAccount,
                 ),
               ],
             ),
-
-            TermsAndConditions(),
-
-            FadeAnimation(
-              delay: 0.65,
-              child: SolidButton(
-                isFull: true,
-                text: "Sign Up",
-                size: ButtonSize.sm,
-                onPressed: _handleSignUp,
-              ),
-            ),
-
-            const DividerWithLabel(label: 'OR'),
-
-            Row(
-              spacing: context.sizing.s6,
-              children: [
-                Expanded(
-                  child: SocialLoginButton(
-                    platform: SocialPlatform.google,
-                    onPressed: () {
-                      // Handle Google login
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: SocialLoginButton(
-                    platform: SocialPlatform.facebook,
-                    onPressed: () {
-                      // Handle Facebook login
-                    },
-                  ),
-                ),
-              ],
-            ),
-
-            GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
-
-            AuthRedirectButton(
-              isCentered: true,
-              onPressed: _showSignInDialog,
-              actionType: AuthRedirectAction.haveAccount,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
