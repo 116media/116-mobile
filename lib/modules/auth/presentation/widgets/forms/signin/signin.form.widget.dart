@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, ReadContext;
 
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
+import '../../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
@@ -14,6 +15,7 @@ import '../../../../../home/presentation/constants/home.constants.dart' show kHo
 import '../../../bloc/signin/signin.bloc.dart';
 import '../../../bloc/signin/signin.event.dart';
 import '../../../bloc/signin/signin.state.dart';
+import '../../../bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../../../models/signin.credentials.model.dart';
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
@@ -47,8 +49,13 @@ class _SignInFormState extends State<SignInForm> {
 
   /// Shows the sign-up dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
+  /// Wraps the dialog with [SignUpBloc] provider.
   Future<void> _showSignUpDialog() async {
-    await showAuthDialog(context, const SignUpDialog(), closeExisting: true);
+    await showAuthDialog(
+      context,
+      BlocProvider(create: (context) => sl<SignUpBloc>(), child: const SignUpDialog()),
+      closeExisting: true,
+    );
   }
 
   /// Handles form submission after validation.
@@ -110,8 +117,8 @@ class _SignInFormState extends State<SignInForm> {
                     InputField(
                       filled: true,
                       isPassword: true,
-                      isDisabled: isLoading,
                       label: "Password",
+                      isDisabled: isLoading,
                       controller: _passwordController,
                       validator: SignInValidator.password("Password"),
                     ),
