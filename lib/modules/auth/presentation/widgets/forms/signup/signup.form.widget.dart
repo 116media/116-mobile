@@ -17,7 +17,7 @@ import '../../../bloc/signup/signup.state.dart';
 import '../../../models/signup.credentials.model.dart';
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signup.validator.dart' show SignUpValidator;
-import '../../shared/buttons/guest.button.dart' show GuestButton;
+import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/signin.dialog.widget.dart' show SignInDialog;
 import '../../shared/divider/divider.with.label.widget.dart' show DividerWithLabel;
@@ -50,11 +50,7 @@ class _SignUpFormState extends State<SignUpForm> {
   /// Shows the sign-in dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
   Future<void> _showSignInDialog() async {
-    await showAuthDialog(
-      context,
-      const SignInDialog(),
-      closeExisting: true,
-    );
+    await showAuthDialog(context, const SignInDialog(), closeExisting: true);
   }
 
   /// Handles form submission after validation.
@@ -110,21 +106,21 @@ class _SignUpFormState extends State<SignUpForm> {
                   alignment: WrapAlignment.center,
                   children: [
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       label: "Email",
                       isDisabled: isLoading,
                       controller: _emailController,
                       validator: SignUpValidator.email("Email"),
                     ),
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       label: "Username",
                       isDisabled: isLoading,
                       controller: _usernameController,
                       validator: SignUpValidator.username("Username"),
                     ),
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       isPassword: true,
                       label: "Password",
                       isDisabled: isLoading,
@@ -174,7 +170,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ],
                 ),
 
-                GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+                OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
 
                 AuthRedirectButton(
                   isCentered: true,

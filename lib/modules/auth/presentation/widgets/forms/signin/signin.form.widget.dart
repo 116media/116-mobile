@@ -17,7 +17,7 @@ import '../../../bloc/signin/signin.state.dart';
 import '../../../models/signin.credentials.model.dart';
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
-import '../../shared/buttons/guest.button.dart' show GuestButton;
+import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/signup.dialog.widget.dart' show SignUpDialog;
 import '../../shared/divider/divider.with.label.widget.dart' show DividerWithLabel;
@@ -48,11 +48,7 @@ class _SignInFormState extends State<SignInForm> {
   /// Shows the sign-up dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
   Future<void> _showSignUpDialog() async {
-    await showAuthDialog(
-      context,
-      const SignUpDialog(),
-      closeExisting: true,
-    );
+    await showAuthDialog(context, const SignUpDialog(), closeExisting: true);
   }
 
   /// Handles form submission after validation.
@@ -105,14 +101,14 @@ class _SignInFormState extends State<SignInForm> {
                   alignment: WrapAlignment.center,
                   children: [
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       isDisabled: isLoading,
                       label: "Email or username",
                       controller: _credentialsController,
                       validator: SignInValidator.credentials("Email or username"),
                     ),
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       isPassword: true,
                       label: "Password",
                       isDisabled: isLoading,
@@ -169,7 +165,7 @@ class _SignInFormState extends State<SignInForm> {
                   ],
                 ),
 
-                GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+                OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
 
                 AuthRedirectButton(
                   isCentered: true,
