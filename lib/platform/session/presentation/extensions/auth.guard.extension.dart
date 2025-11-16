@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, ReadContext;
 
-import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart' show SignInDialog;
+import '../../../../shared/infrastructure/service.locator.dart' show sl;
+import '../../../../modules/auth/presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
+import '../../../../modules/auth/presentation/utils/dialog.utils.dart' show showAuthDialog;
+import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
+    show SignInDialog;
+import '../../../../modules/auth/presentation/widgets/dialog/verifyotp.dialog.widget.dart'
+    show VerifyOtpDialog;
 import '../bloc/session.bloc.dart' show SessionBloc;
 import '../bloc/session.state.dart' show SessionSuccess;
-import '../widgets/dialogs/verification.dialog.widget.dart' show VerificationDialog;
 
 /// Extension on BuildContext for authentication guards.
 ///
@@ -48,30 +53,16 @@ extension AuthGuardExtension on BuildContext {
 
     // If unverified, show verification dialog
     if (session.shouldPromptVerification) {
-      await _showVerificationDialog();
+      await showAuthDialog(this, const VerifyOtpDialog(), closeExisting: true);
       return false;
     }
 
-    // If guest, show sign in dialog
-    await _showSignInDialog();
+    // If guest, show sign in dialog with BLoC provider
+    await showAuthDialog(
+      this,
+      BlocProvider(create: (context) => sl<SignInBloc>(), child: const SignInDialog()),
+      closeExisting: true,
+    );
     return false;
-  }
-
-  /// Shows the sign in dialog.
-  Future<void> _showSignInDialog() async {
-    await showDialog(
-      context: this,
-      builder: (context) => const SignInDialog(),
-      barrierDismissible: true,
-    );
-  }
-
-  /// Shows the verification dialog.
-  Future<void> _showVerificationDialog() async {
-    await showDialog(
-      context: this,
-      builder: (context) => const VerificationDialog(),
-      barrierDismissible: true,
-    );
   }
 }
