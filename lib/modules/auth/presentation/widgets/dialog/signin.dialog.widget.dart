@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener;
 import 'package:go_router/go_router.dart';
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
@@ -15,6 +15,10 @@ import '../forms/signin/signin.form.widget.dart' show SignInForm;
 /// This widget presents a modal dialog with rounded corners and theme-aware
 /// background color. The dialog is positioned at the bottom of the screen
 /// and contains the [SignInForm] widget with BLoC integration.
+///
+/// Listens to [SignInBloc] states and handles:
+/// - Success: Navigates to home screen
+/// - Failure: Shows error dialog
 class SignInDialog extends StatefulWidget {
   const SignInDialog({super.key});
 
@@ -36,8 +40,12 @@ class _SignInDialogState extends State<SignInDialog> {
         if (state is SignInSuccess) {
           Navigator.of(context).pop();
           context.go(kHomeRoutePath);
-        } else if (state is SignInFailure) {
+          return;
+        }
+
+        if (state is SignInFailure) {
           _showErrorMessage(state.failure.detail);
+          return;
         }
       },
       child: Scaffold(
