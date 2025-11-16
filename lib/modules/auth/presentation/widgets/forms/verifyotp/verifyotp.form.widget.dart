@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
-import '../../../../../../shared/presentation/widgets/inputfields/otppinfield.widget.dart'
+import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../../shared/presentation/widgets/otppinfields/otppinfield.widget.dart'
     show OtpPinField, OtpPinFieldState;
+import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
+import '../../../constants/auth.validation.constants.dart' show kOtpResendCountdown;
+import '../../../validators/verifyotp.validator.dart' show VerifyOtpValidator;
+import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
 
 class VerifyOtpForm extends StatefulWidget {
   final String? email;
@@ -14,8 +21,43 @@ class VerifyOtpForm extends StatefulWidget {
 }
 
 class _VerifyOtpFormState extends State<VerifyOtpForm> {
-  final GlobalKey<OtpPinFieldState> _otpKey = GlobalKey<OtpPinFieldState>();
+  Timer? _timer;
   bool _isVerifying = false;
+  int _countdown = kOtpResendCountdown;
+  final GlobalKey<OtpPinFieldState> _otpKey = GlobalKey<OtpPinFieldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  /// Starts the countdown timer
+  void _startCountdown() {
+    _timer?.cancel();
+    setState(() => _countdown = kOtpResendCountdown);
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
+      setState(() {
+        if (_countdown > 0) {
+          _countdown--;
+        } else {
+          timer.cancel();
+        }
+      });
+    });
+  }
 
   /// Handles OTP submission
   void _handleOtpCompleted(String otp) {
@@ -43,16 +85,21 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
 
   /// Handles resend OTP
   void _handleResendOtp() {
+    if (_countdown > 0) return;
+
     // TODO: Implement resend OTP logic
     debugPrint('Resending OTP to: ${widget.email}');
 
     // Clear current OTP
     _otpKey.currentState?.clear();
+
+    // Restart countdown
+    _startCountdown();
   }
 
   @override
   Widget build(BuildContext context) {
-    final textColor = context.isDarkMode ? Colors.white : Colors.black;
+    final textColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
@@ -61,20 +108,10 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Icon
-          Icon(Icons.email_outlined, size: context.sizing.s48, color: context.primaryColor),
+          Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
 
-          // Title
-          Text(
-            'Verify Your Email',
-            style: context.textTheme.titleLarge?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          const AuthFormTitle(text: "Verify Your Email"),
 
-          // Message
           Text(
             'Please enter the 6-digit code sent to ${widget.email ?? 'your email'}',
             style: context.textTheme.bodyMedium?.copyWith(color: textColor.withValues(alpha: 0.7)),
@@ -83,33 +120,46 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
 
           // OTP Pin Field
           OtpPinField(
-            key: _otpKey,
             length: 6,
+            key: _otpKey,
             isDisabled: _isVerifying,
             onCompleted: _handleOtpCompleted,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter OTP';
-              }
-              if (value.length != 6) {
-                return 'OTP must be 6 digits';
-              }
-              return null;
-            },
+            validator: VerifyOtpValidator.otp('OTP Code'),
           ),
 
           // Resend OTP button
           TextButton(
-            onPressed: _isVerifying ? null : _handleResendOtp,
-            child: Text(
-              'Resend OTP',
-              style: TextStyle(
-                color: _isVerifying ? textColor.withValues(alpha: 0.3) : context.primaryColor,
+            onPressed: (_isVerifying || _countdown > 0) ? null : _handleResendOtp,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Didn't receive code? ",
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: textColor.withValues(alpha: 0.7),
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'Resend',
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: (_isVerifying || _countdown > 0)
+                          ? textColor.withValues(alpha: 0.3)
+                          : context.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (_countdown > 0)
+                    TextSpan(
+                      text: ' in $_countdown seconds',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: textColor.withValues(alpha: 0.7),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
 
-          // Cancel button
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text('Cancel', style: TextStyle(color: textColor.withValues(alpha: 0.7))),
