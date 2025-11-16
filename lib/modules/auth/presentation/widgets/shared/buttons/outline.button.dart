@@ -4,23 +4,23 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 
-/// A platform-aware outlined button for guest access.
+/// A platform-aware outlined button for secondary actions.
 ///
-/// Displays an outlined button similar to social login buttons but without an icon,
-/// allowing users to continue without creating an account or signing in.
+/// Displays an outlined button with transparent background and border,
+/// suitable for cancel actions or secondary navigation.
 ///
 /// Example usage:
 /// ```dart
-/// GuestButton(
-///   text: 'Continuer sans compte',
-///   onPressed: () => Navigator.push(...MainScreen()),
+/// OutlineButton(
+///   text: 'Cancel',
+///   onPressed: () => Navigator.pop(context),
 /// )
 /// ```
-class GuestButton extends StatelessWidget {
+class OutlineButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const GuestButton({super.key, required this.text, required this.onPressed});
+  const OutlineButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
