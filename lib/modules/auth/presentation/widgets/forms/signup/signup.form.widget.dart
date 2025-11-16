@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, ReadContext;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
-import '../../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
@@ -12,7 +11,6 @@ import '../../../../../../shared/presentation/widgets/inputfields/inputfield.wid
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
-import '../../../bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../../bloc/signup/signup.bloc.dart';
 import '../../../bloc/signup/signup.event.dart';
 import '../../../bloc/signup/signup.state.dart';
@@ -51,14 +49,10 @@ class _SignUpFormState extends State<SignUpForm> {
 
   /// Shows the sign-in dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
-  /// Wraps the dialog with [SignInBloc] provider.
   Future<void> _showSignInDialog() async {
     await showAuthDialog(
       context,
-      BlocProvider(
-        create: (context) => sl<SignInBloc>(),
-        child: const SignInDialog(),
-      ),
+      const SignInDialog(),
       closeExisting: true,
     );
   }

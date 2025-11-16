@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider;
 import 'package:go_router/go_router.dart';
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
 import '../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
@@ -35,32 +36,35 @@ class _SignInDialogState extends State<SignInDialog> {
   Widget build(BuildContext context) {
     final backgroundColor = context.isDarkMode ? ColorsUtil.slate800 : ColorsUtil.slate200;
 
-    return BlocListener<SignInBloc, SignInState>(
-      listener: (context, state) {
-        if (state is SignInSuccess) {
-          Navigator.of(context).pop();
-          context.go(kHomeRoutePath);
-          return;
-        }
+    return BlocProvider(
+      create: (context) => sl<SignInBloc>(),
+      child: BlocListener<SignInBloc, SignInState>(
+        listener: (context, state) {
+          if (state is SignInSuccess) {
+            Navigator.of(context).pop();
+            context.go(kHomeRoutePath);
+            return;
+          }
 
-        if (state is SignInFailure) {
-          _showErrorMessage(state.failure.detail);
-          return;
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Align(
-          alignment: Alignment.bottomCenter,
-          child: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(context.sizing.s24),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+          if (state is SignInFailure) {
+            _showErrorMessage(state.failure.detail);
+            return;
+          }
+        },
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Align(
+            alignment: Alignment.bottomCenter,
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(context.sizing.s24),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+                ),
+                child: const Center(child: SignInForm()),
               ),
-              child: const Center(child: SignInForm()),
             ),
           ),
         ),

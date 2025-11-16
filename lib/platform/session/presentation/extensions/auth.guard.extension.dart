@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, ReadContext;
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 
-import '../../../../shared/infrastructure/service.locator.dart' show sl;
-import '../../../../modules/auth/presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../../../modules/auth/presentation/utils/dialog.utils.dart' show showAuthDialog;
 import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
     show SignInDialog;
@@ -57,10 +55,10 @@ extension AuthGuardExtension on BuildContext {
       return false;
     }
 
-    // If guest, show sign in dialog with BLoC provider
+    // If guest, show sign in dialog
     await showAuthDialog(
       this,
-      BlocProvider(create: (context) => sl<SignInBloc>(), child: const SignInDialog()),
+      const SignInDialog(),
       closeExisting: true,
     );
     return false;
