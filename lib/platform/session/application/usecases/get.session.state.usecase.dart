@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../repositories/session.repository.port.dart' show ISessionRepository;
 
 /// Use case for retrieving the current session state.
