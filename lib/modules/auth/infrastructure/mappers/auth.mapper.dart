@@ -4,6 +4,7 @@ import '../../../../api/client/api_116.models.swagger.dart'
         FileDto,
         PermissionDto,
         PublicLoginResponse,
+        PublicResendOtpResponse,
         PublicSignUpResponse,
         PublicVerifyOtpResponse,
         RoleDto,
@@ -11,6 +12,8 @@ import '../../../../api/client/api_116.models.swagger.dart'
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../domain/entities/file/file.entity.dart' show FileEntity;
 import '../../domain/entities/permission/permission.entity.dart' show PermissionEntity;
+import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
+    show ResendOtpResponseEntity;
 import '../../domain/entities/role/role.entity.dart' show RoleEntity;
 import '../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
@@ -95,5 +98,10 @@ class AuthMapper {
   /// Maps PublicVerifyOtpResponse to VerifyOtpResponseEntity domain entity.
   static VerifyOtpResponseEntity verifyOtpResponseFromDto(PublicVerifyOtpResponse response) {
     return VerifyOtpResponseEntity(isSuccess: response.isSuccess);
+  }
+
+  /// Maps PublicResendOtpResponse to ResendOtpResponseEntity domain entity.
+  static ResendOtpResponseEntity resendOtpResponseFromDto(PublicResendOtpResponse response) {
+    return ResendOtpResponseEntity(isSuccess: response.isSuccess);
   }
 }
