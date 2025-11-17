@@ -48,12 +48,14 @@ class OtpPinField extends StatefulWidget {
   final bool isFilled;
   final Color? filledColor;
   final bool isDisabled;
+  final TextEditingController? controller;
   final void Function(String)? onCompleted;
   final String? Function(String?)? validator;
 
   OtpPinField({
     super.key,
     this.length = 6,
+    this.controller,
     this.onCompleted,
     this.validator,
     this.isDisabled = false,
@@ -144,6 +146,9 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
 
     if (value.isEmpty) return;
 
+    // Update external controller
+    _updateExternalController();
+
     if (index == widget.length - 1) {
       _focusNodes[index].unfocus();
       _checkCompletion();
@@ -151,6 +156,13 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
     }
 
     _focusNodes[index + 1].requestFocus();
+  }
+
+  /// Updates the external controller with the current OTP value
+  void _updateExternalController() {
+    if (widget.controller == null) return;
+    final otp = _controllers.map((c) => c.text).join();
+    widget.controller!.text = otp;
   }
 
   /// Handles backspace navigation to previous box
@@ -173,6 +185,9 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
     for (int i = 0; i < digitsToFill; i++) {
       _controllers[startIndex + i].text = digits[i];
     }
+
+    // Update external controller after paste
+    _updateExternalController();
 
     if (digitsToFill >= availableBoxes) {
       _focusNodes[widget.length - 1].unfocus();
@@ -201,6 +216,9 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
     for (final controller in _controllers) {
       controller.clear();
     }
+
+    // Update external controller after clear
+    _updateExternalController();
 
     if (!mounted) return;
 
