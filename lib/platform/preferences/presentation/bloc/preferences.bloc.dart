@@ -49,29 +49,21 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
   /// Loads current preferences and subscribes to changes.
   /// Emits [PreferencesLoading] while loading, then [PreferencesSuccess]
   /// or [PreferencesFailure] based on the result.
-  Future<void> _onLoadStarted(
-    PreferencesLoadStarted event,
-    Emitter<PreferencesState> emit,
-  ) async {
+  Future<void> _onLoadStarted(PreferencesLoadStarted event, Emitter<PreferencesState> emit) async {
     emit(const PreferencesLoading());
 
     // Load current preferences
     final result = await _getPreferencesUseCase.execute(null);
 
-    result.fold(
-      (failure) => emit(PreferencesFailure(failure)),
-      (preferences) {
-        emit(PreferencesSuccess(preferences));
+    result.fold((failure) => emit(PreferencesFailure(failure)), (preferences) {
+      emit(PreferencesSuccess(preferences));
 
-        // Subscribe to preferences changes
-        _preferencesSubscription?.cancel();
-        _preferencesSubscription = _watchPreferencesUseCase.execute().listen(
-          (updatedPreferences) {
-            add(PreferencesStateChanged(updatedPreferences));
-          },
-        );
-      },
-    );
+      // Subscribe to preferences changes
+      _preferencesSubscription?.cancel();
+      _preferencesSubscription = _watchPreferencesUseCase.execute().listen((updatedPreferences) {
+        add(PreferencesStateChanged(updatedPreferences));
+      });
+    });
   }
 
   /// Handles the [PreferencesLanguageChanged] event.
