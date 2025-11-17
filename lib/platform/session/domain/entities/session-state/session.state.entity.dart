@@ -1,21 +1,23 @@
-import '../enums/auth.status.enum.dart' show AuthStatus;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../enums/auth.status.enum.dart' show AuthStatus;
+
+part 'session.state.entity.freezed.dart';
 
 /// Entity representing the current session state of the application.
 ///
 /// Tracks onboarding completion, preferences setup, and authentication status.
 /// Provides computed properties for access control and navigation decisions.
-class SessionStateEntity {
-  final bool hasCompletedOnboarding;
-  final bool hasSetPreferences;
-  final AuthStatus authStatus;
-  final String? userId;
+@freezed
+abstract class SessionStateEntity with _$SessionStateEntity {
+  const SessionStateEntity._();
 
-  const SessionStateEntity({
-    required this.hasCompletedOnboarding,
-    required this.hasSetPreferences,
-    required this.authStatus,
-    this.userId,
-  });
+  const factory SessionStateEntity({
+    required bool hasCompletedOnboarding,
+    required bool hasSetPreferences,
+    required AuthStatus authStatus,
+    String? userId,
+  }) = _SessionStateEntity;
 
   /// Returns true if user should see the preferences screen.
   /// Preferences are shown first, before onboarding.
@@ -38,18 +40,4 @@ class SessionStateEntity {
 
   /// Returns true if user is browsing as a guest (not logged in).
   bool get isGuest => authStatus == AuthStatus.guest;
-
-  SessionStateEntity copyWith({
-    bool? hasCompletedOnboarding,
-    bool? hasSetPreferences,
-    AuthStatus? authStatus,
-    String? userId,
-  }) {
-    return SessionStateEntity(
-      hasCompletedOnboarding: hasCompletedOnboarding ?? this.hasCompletedOnboarding,
-      hasSetPreferences: hasSetPreferences ?? this.hasSetPreferences,
-      authStatus: authStatus ?? this.authStatus,
-      userId: userId ?? this.userId,
-    );
-  }
 }
