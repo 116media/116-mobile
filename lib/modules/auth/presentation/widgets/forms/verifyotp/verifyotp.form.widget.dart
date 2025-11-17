@@ -1,13 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../../shared/presentation/widgets/otppinfields/otppinfield.widget.dart'
     show OtpPinField, OtpPinFieldState;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
+import '../../../bloc/verifyotp/verifyotp.bloc.dart';
+import '../../../bloc/verifyotp/verifyotp.event.dart';
+import '../../../bloc/verifyotp/verifyotp.state.dart';
 import '../../../constants/auth.validation.constants.dart' show kOtpResendCountdown;
+import '../../../../domain/enums/otppurpose.enum.dart' show OtpPurpose;
+import '../../../models/verifyotp.credentials.model.dart';
 import '../../../validators/verifyotp.validator.dart' show VerifyOtpValidator;
 import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
@@ -25,7 +31,6 @@ class VerifyOtpForm extends StatefulWidget {
 
 class _VerifyOtpFormState extends State<VerifyOtpForm> {
   Timer? _timer;
-  bool _isVerifying = false;
   int _countdown = kOtpResendCountdown;
   final GlobalKey<OtpPinFieldState> _otpKey = GlobalKey<OtpPinFieldState>();
 
@@ -64,26 +69,13 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
 
   /// Handles OTP submission
   void _handleOtpCompleted(String otp) {
-    setState(() => _isVerifying = true);
+    final credentials = VerifyOtpCredentialsModel(
+      otp: otp,
+      email: widget.email!,
+      purpose: OtpPurpose.emailVerification,
+    );
 
-    // TODO: Implement OTP verification
-    // If email not provided, fetch from cached user
-    // final email = widget.email ?? (await getUser()).email;
-    // final credentials = VerifyOtpCredentialsModel(
-    //   otp: otp,
-    //   email: email,
-    //   purpose: OtpPurpose.emailVerification,
-    // );
-
-    debugPrint('OTP entered: $otp for email: ${widget.email}');
-
-    // Simulate verification
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() => _isVerifying = false);
-        Navigator.of(context).pop();
-      }
-    });
+    context.read<VerifyOtpBloc>().add(VerifyOtpSubmitted(credentials));
   }
 
   /// Handles resend OTP
@@ -104,57 +96,63 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
   Widget build(BuildContext context) {
     final textColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
-      child: Column(
-        spacing: context.sizing.s20,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
+    return BlocBuilder<VerifyOtpBloc, VerifyOtpState>(
+      builder: (context, state) {
+        final isLoading = state is VerifyOtpLoading;
 
-          const AuthFormTitle(text: "Verify Your Email"),
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
+          child: Column(
+            spacing: context.sizing.s20,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
 
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: textColor.withValues(alpha: 0.7),
+              const AuthFormTitle(text: "Verify Your Email"),
+
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: textColor.withValues(alpha: 0.7),
+                  ),
+                  children: [
+                    const TextSpan(text: "Please enter the 6-digit verification code we've sent to "),
+                    if (widget.email != null)
+                      TextSpan(
+                        text: widget.email!,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      )
+                    else
+                      const TextSpan(text: 'your email'),
+                  ],
+                ),
               ),
-              children: [
-                const TextSpan(text: "Please enter the 6-digit verification code we've sent to "),
-                if (widget.email != null)
-                  TextSpan(
-                    text: widget.email!,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  )
-                else
-                  const TextSpan(text: 'your email'),
-              ],
-            ),
-          ),
 
-          // OTP Pin Field
-          OtpPinField(
-            length: 6,
-            key: _otpKey,
-            isFilled: true,
-            isDisabled: _isVerifying,
-            onCompleted: _handleOtpCompleted,
-            validator: VerifyOtpValidator.otp('OTP Code'),
-          ),
+              // OTP Pin Field
+              OtpPinField(
+                length: 6,
+                key: _otpKey,
+                isFilled: true,
+                isDisabled: isLoading,
+                onCompleted: _handleOtpCompleted,
+                validator: VerifyOtpValidator.otp('OTP Code'),
+              ),
 
-          // Resend OTP button
-          AuthRedirectButton(
-            onPressed: _handleResendOtp,
-            isDisabled: _isVerifying || _countdown > 0,
-            actionType: AuthRedirectAction.haveReceiveCode,
-            suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
-          ),
+              // Resend OTP button
+              AuthRedirectButton(
+                onPressed: _handleResendOtp,
+                isDisabled: isLoading || _countdown > 0,
+                actionType: AuthRedirectAction.haveReceiveCode,
+                suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
+              ),
 
-          OutlineButton(text: 'Cancel', onPressed: () => Navigator.of(context).pop()),
-        ],
-      ),
+              OutlineButton(text: 'Cancel', onPressed: () => Navigator.of(context).pop()),
+            ],
+          ),
+        );
+      },
     );
   }
 }
