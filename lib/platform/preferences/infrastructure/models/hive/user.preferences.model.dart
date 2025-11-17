@@ -1,4 +1,5 @@
-import '../../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../../../domain/enums/thememode.enum.dart' show AppThemeMode;
 
 /// Hive model for persisting [UserPreferencesEntity] to local storage.

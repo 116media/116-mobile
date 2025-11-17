@@ -1,7 +1,8 @@
 import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../../domain/enums/thememode.enum.dart' show AppThemeMode;
 
 /// Repository port for user preferences operations.
