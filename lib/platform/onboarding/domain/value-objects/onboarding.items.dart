@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
 import '../../../../shared/presentation/constants/shared.constants.dart' show kAppName;
-import '../entities/onboarding.item.entity.dart' show OnboardingItemEntity;
+import '../entities/onboarding-item/onboarding.item.entity.dart' show OnboardingItemEntity;
 
 /// Value Object representing the collection of onboarding items.
 ///
