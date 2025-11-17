@@ -1,4 +1,5 @@
-import '../../domain/entities/connectivity.status.entity.dart' show ConnectivityStatusEntity;
+import '../../domain/entities/connectivity-status/connectivity.status.entity.dart'
+    show ConnectivityStatusEntity;
 
 /// Repository port for connectivity operations.
 ///
