@@ -4,11 +4,14 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
-import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
+import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
-import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
+    show VerifyOtpResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
+import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
 import '../mappers/auth.mapper.dart' show AuthMapper;
 
 /// Remote authentication repository implementation.
@@ -38,6 +41,19 @@ class AuthRemoteRepository implements IAuthRepository {
       final response = await _remoteDataSource.signUp(credentials);
       final authEntity = AuthMapper.authResponseFromPublicSignUpDto(response);
       return Right(authEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
+
+  @override
+  Future<Either<Failure, VerifyOtpResponseEntity>> verifyOtp(
+    VerifyOtpCredentialsModel credentials,
+  ) async {
+    try {
+      final response = await _remoteDataSource.verifyOtp(credentials);
+      final verifyOtpEntity = AuthMapper.verifyOtpResponseFromDto(response);
+      return Right(verifyOtpEntity);
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
