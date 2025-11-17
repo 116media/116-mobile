@@ -4,10 +4,10 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
-import '../../application/datasource/session.local.datasource.port.dart'
+import '../../application/data-sources/session.local.datasource.port.dart'
     show ISessionLocalDataSource;
 import '../../application/repositories/session.repository.port.dart' show ISessionRepository;
-import '../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../../domain/enums/auth.status.enum.dart' show AuthStatus;
 import '../models/hive/session.state.model.dart' show SessionStateModel;
 

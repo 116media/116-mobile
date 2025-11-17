@@ -1,4 +1,4 @@
-import '../../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../../../domain/enums/auth.status.enum.dart' show AuthStatus;
 
 /// Hive model for persisting [SessionStateEntity] to local storage.

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive_ce/hive.dart' show Box, Hive;
 
-import '../../application/datasource/session.local.datasource.port.dart'
+import '../../application/data-sources/session.local.datasource.port.dart'
     show ISessionLocalDataSource;
 import '../../application/repositories/session.repository.port.dart' show ISessionRepository;
 import '../../application/usecases/clear.session.usecase.dart' show ClearSessionUseCase;
@@ -14,7 +14,7 @@ import '../../application/usecases/update.preferences.status.usecase.dart'
 import '../../application/usecases/watch.session.state.usecase.dart' show WatchSessionStateUseCase;
 import '../../presentation/bloc/session.bloc.dart' show SessionBloc;
 import '../constants/hive.constants.dart' show kSessionBox;
-import '../datasources/session.local.datasource.dart' show SessionLocalDataSource;
+import '../data-sources/session.local.datasource.dart' show SessionLocalDataSource;
 import '../repositories/session.repository.dart' show SessionRepository;
 
 /// Registers all session module dependencies.
