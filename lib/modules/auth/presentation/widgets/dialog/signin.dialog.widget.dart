@@ -10,7 +10,6 @@ import '../../../../home/presentation/constants/home.constants.dart' show kHomeR
 import '../../bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../bloc/signin/signin.state.dart' show SignInState, SignInSuccess, SignInFailure;
 import '../forms/signin/signin.form.widget.dart' show SignInForm;
-import '../forms/verifyotp/verifyotp.form.widget.dart' show VerifyOtpForm;
 
 /// A dialog widget that displays the sign-in form.
 ///
@@ -64,7 +63,7 @@ class _SignInDialogState extends State<SignInDialog> {
                   color: backgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
                 ),
-                child: const Center(child: VerifyOtpForm(email: "sigmacool@gmail.com")),
+                child: const Center(child: SignInForm()),
               ),
             ),
           ),
