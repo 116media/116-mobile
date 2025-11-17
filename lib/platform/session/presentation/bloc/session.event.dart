@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
-import '../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 
 /// Base class for all session events.
 abstract class SessionEvent extends Equatable {
