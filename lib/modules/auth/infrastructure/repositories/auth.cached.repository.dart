@@ -4,11 +4,14 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
-import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
+import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
-import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
+    show VerifyOtpResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
+import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
 import '../models/hive/user/user.model.dart' show UserModel;
 
 /// Cached authentication repository (decorator pattern).
@@ -51,6 +54,31 @@ class AuthCachedRepository implements IAuthRepository {
       } on CacheException catch (exception) {
         return Left(ProblemMapper.toFailure(exception));
       }
+    });
+  }
+
+  @override
+  Future<Either<Failure, VerifyOtpResponseEntity>> verifyOtp(
+    VerifyOtpCredentialsModel credentials,
+  ) async {
+    final result = await _remoteRepository.verifyOtp(credentials);
+
+    // Update cached user's isVerified status if successful
+    return result.fold((failure) => Left(failure), (verifyOtpEntity) async {
+      if (verifyOtpEntity.isSuccess) {
+        try {
+          final cachedUser = await _localDataSource.getUser();
+          if (cachedUser != null) {
+            final userEntity = cachedUser.toEntity();
+            final updatedEntity = userEntity.copyWith(isVerified: true);
+            final updatedUser = UserModel.fromEntity(updatedEntity);
+            await _localDataSource.setUser(updatedUser);
+          }
+        } on CacheException catch (exception) {
+          return Left(ProblemMapper.toFailure(exception));
+        }
+      }
+      return Right(verifyOtpEntity);
     });
   }
 }
