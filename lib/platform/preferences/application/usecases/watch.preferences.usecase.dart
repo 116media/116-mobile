@@ -1,5 +1,6 @@
 import '../../../../shared/application/usecases/stream.usecase.port.dart' show IStreamUseCase;
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../repositories/preferences.repository.port.dart' show IPreferencesRepository;
 
 /// Use case for watching preferences changes.
