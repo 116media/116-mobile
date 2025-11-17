@@ -5,9 +5,11 @@ import '../../../../api/client/api_116.swagger.dart' show Api116;
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
+import '../../application/usecases/resendotp.usecase.dart' show ResendOtpUseCase;
 import '../../application/usecases/signin.usecase.dart' show SignInUseCase;
 import '../../application/usecases/signup.usecase.dart' show SignUpUseCase;
 import '../../application/usecases/verifyotp.usecase.dart' show VerifyOtpUseCase;
+import '../../presentation/bloc/resendotp/resendotp.bloc.dart' show ResendOtpBloc;
 import '../../presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../../presentation/bloc/verifyotp/verifyotp.bloc.dart' show VerifyOtpBloc;
@@ -39,9 +41,11 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerFactory<SignInUseCase>(() => SignInUseCase(sl<IAuthRepository>()));
   sl.registerFactory<SignUpUseCase>(() => SignUpUseCase(sl<IAuthRepository>()));
   sl.registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl<IAuthRepository>()));
+  sl.registerFactory<ResendOtpUseCase>(() => ResendOtpUseCase(sl<IAuthRepository>()));
 
   // BLoCs
   sl.registerFactory<SignInBloc>(() => SignInBloc(sl<SignInUseCase>()));
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(sl<SignUpUseCase>()));
   sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl<VerifyOtpUseCase>()));
+  sl.registerFactory<ResendOtpBloc>(() => ResendOtpBloc(sl<ResendOtpUseCase>()));
 }
