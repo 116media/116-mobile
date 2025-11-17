@@ -2,16 +2,18 @@ import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive_ce/hive.dart' show Box, Hive;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116;
-import '../../application/datasource/auth.local.datasource.port.dart' show IAuthLocalDataSource;
-import '../../application/datasource/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
+import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
+import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../application/usecases/signin.usecase.dart' show SignInUseCase;
 import '../../application/usecases/signup.usecase.dart' show SignUpUseCase;
+import '../../application/usecases/verifyotp.usecase.dart' show VerifyOtpUseCase;
 import '../../presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
+import '../../presentation/bloc/verifyotp/verifyotp.bloc.dart' show VerifyOtpBloc;
 import '../constants/hive.constants.dart' show kAuthBox;
-import '../datasources/auth.local.datasource.dart' show AuthLocalDataSource;
-import '../datasources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
+import '../data-sources/auth.local.datasource.dart' show AuthLocalDataSource;
+import '../data-sources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
 import '../repositories/auth.cached.repository.dart' show AuthCachedRepository;
 import '../repositories/auth.remote.repository.dart' show AuthRemoteRepository;
 
@@ -36,8 +38,10 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   // Use cases
   sl.registerFactory<SignInUseCase>(() => SignInUseCase(sl<IAuthRepository>()));
   sl.registerFactory<SignUpUseCase>(() => SignUpUseCase(sl<IAuthRepository>()));
+  sl.registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl<IAuthRepository>()));
 
   // BLoCs
   sl.registerFactory<SignInBloc>(() => SignInBloc(sl<SignInUseCase>()));
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(sl<SignUpUseCase>()));
+  sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl<VerifyOtpUseCase>()));
 }
