@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
+import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
+    show ButtonSize;
+import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../../../shared/presentation/widgets/otppinfields/otppinfield.widget.dart'
     show OtpPinField, OtpPinFieldState;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
@@ -32,16 +36,19 @@ class VerifyOtpForm extends StatefulWidget {
 class _VerifyOtpFormState extends State<VerifyOtpForm> {
   Timer? _timer;
   int _countdown = kOtpResendCountdown;
+  final TextEditingController _otpController = TextEditingController();
   final GlobalKey<OtpPinFieldState> _otpKey = GlobalKey<OtpPinFieldState>();
 
   @override
   void initState() {
     super.initState();
     _startCountdown();
+    _otpController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
+    _otpController.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -67,10 +74,12 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
     });
   }
 
-  /// Handles OTP submission
-  void _handleOtpCompleted(String otp) {
+  /// Handles verify button press
+  void _handleVerifyOtp() {
+    if (_otpController.text.length != 6) return;
+
     final credentials = VerifyOtpCredentialsModel(
-      otp: otp,
+      otp: _otpController.text,
       email: widget.email!,
       purpose: OtpPurpose.emailVerification,
     );
@@ -118,7 +127,9 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
                     color: textColor.withValues(alpha: 0.7),
                   ),
                   children: [
-                    const TextSpan(text: "Please enter the 6-digit verification code we've sent to "),
+                    const TextSpan(
+                      text: "Please enter the 6-digit verification code we've sent to ",
+                    ),
                     if (widget.email != null)
                       TextSpan(
                         text: widget.email!,
@@ -136,8 +147,21 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
                 key: _otpKey,
                 isFilled: true,
                 isDisabled: isLoading,
-                onCompleted: _handleOtpCompleted,
+                controller: _otpController,
                 validator: VerifyOtpValidator.otp('OTP Code'),
+              ),
+
+              // Verify button
+              FadeAnimation(
+                delay: 0.65,
+                child: SolidButton(
+                  isFull: true,
+                  text: "Verify",
+                  size: ButtonSize.sm,
+                  isLoading: isLoading,
+                  isDisabled: isLoading || _otpController.text.length != 6,
+                  onPressed: _handleVerifyOtp,
+                ),
               ),
 
               // Resend OTP button
