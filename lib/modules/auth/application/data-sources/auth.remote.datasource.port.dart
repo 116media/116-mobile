@@ -3,11 +3,14 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicForgotPasswordResponse,
         PublicLoginResponse,
         PublicResendOtpResponse,
+        PublicResetPasswordResponse,
         PublicSignUpResponse,
         PublicVerifyOtpResponse;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
     show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
+import '../../presentation/models/resetpassword.credentials.model.dart'
+    show ResetPasswordCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
@@ -76,4 +79,15 @@ abstract class IAuthRemoteDataSource {
   /// - [ServerException] if the server returns an error response (e.g., email not found)
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   Future<PublicForgotPasswordResponse> forgotPassword(ForgotPasswordCredentialsModel credentials);
+
+  /// Resets user password using OTP code and new password.
+  ///
+  /// Calls the PublicResetPassword API endpoint to reset the password.
+  ///
+  /// **Returns:** [PublicResetPasswordResponse] with success status.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response (e.g., invalid OTP)
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicResetPasswordResponse> resetPassword(ResetPasswordCredentialsModel credentials);
 }
