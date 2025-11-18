@@ -10,14 +10,14 @@ abstract class ForgotPasswordEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Event triggered when user requests password reset.
+/// Event triggered when user submits password reset.
 ///
 /// Initiates the forgot password flow by sending a password reset OTP
 /// to the user's email address.
-class ForgotPasswordRequested extends ForgotPasswordEvent {
+class ForgotPasswordSubmitted extends ForgotPasswordEvent {
   final ForgotPasswordCredentialsModel credentials;
 
-  const ForgotPasswordRequested(this.credentials);
+  const ForgotPasswordSubmitted(this.credentials);
 
   @override
   List<Object?> get props => [credentials];

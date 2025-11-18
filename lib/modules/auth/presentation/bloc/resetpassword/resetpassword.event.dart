@@ -14,10 +14,10 @@ abstract class ResetPasswordEvent extends Equatable {
 ///
 /// Initiates the password reset flow by validating the OTP code
 /// and updating the user's password to the new password provided.
-class ResetPasswordRequested extends ResetPasswordEvent {
+class ResetPasswordSubmitted extends ResetPasswordEvent {
   final ResetPasswordCredentialsModel credentials;
 
-  const ResetPasswordRequested(this.credentials);
+  const ResetPasswordSubmitted(this.credentials);
 
   @override
   List<Object?> get props => [credentials];

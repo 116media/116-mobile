@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import '../../../application/usecases/forgotpassword.usecase.dart' show ForgotPasswordUseCase;
-import 'forgotpassword.event.dart' show ForgotPasswordEvent, ForgotPasswordRequested;
+import 'forgotpassword.event.dart' show ForgotPasswordEvent, ForgotPasswordSubmitted;
 import 'forgotpassword.state.dart'
     show
         ForgotPasswordState,
@@ -20,11 +20,11 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
   final ForgotPasswordUseCase _forgotPasswordUseCase;
 
   ForgotPasswordBloc(this._forgotPasswordUseCase) : super(const ForgotPasswordInitial()) {
-    on<ForgotPasswordRequested>(_onForgotPasswordRequested);
+    on<ForgotPasswordSubmitted>(_onForgotPasswordSubmitted);
   }
 
-  Future<void> _onForgotPasswordRequested(
-    ForgotPasswordRequested event,
+  Future<void> _onForgotPasswordSubmitted(
+    ForgotPasswordSubmitted event,
     Emitter<ForgotPasswordState> emit,
   ) async {
     emit(const ForgotPasswordLoading());
