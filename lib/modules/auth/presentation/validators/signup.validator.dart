@@ -60,15 +60,7 @@ class SignUpValidator {
     return Validator.compose([
       Validator.required(fieldName),
       Validator.min(fieldName, kPasswordMinLength),
-      (String? value) {
-        if (value != null && value.isNotEmpty) {
-          final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\s\S]+$');
-          if (!passwordRegex.hasMatch(value)) {
-            return '$fieldName must contain 1 uppercase, 1 lowercase, and 1 digit';
-          }
-        }
-        return null;
-      },
+      Validator.password(fieldName),
     ]);
   }
 }
