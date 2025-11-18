@@ -124,6 +124,54 @@ class Validator {
     };
   }
 
+  /// Creates a password strength validation function.
+  ///
+  /// Rules:
+  /// - At least 1 uppercase letter
+  /// - At least 1 lowercase letter
+  /// - At least 1 digit (0-9)
+  /// - Minimum length enforced via separate min() validator
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: Validator.compose([
+  ///   Validator.required("Password"),
+  ///   Validator.min("Password", 6),
+  ///   Validator.password("Password"),
+  /// ])
+  /// ```
+  static String? Function(String?) password(String fieldName) {
+    return (String? value) {
+      if (value != null && value.isNotEmpty) {
+        final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\s\S]+$');
+        if (!passwordRegex.hasMatch(value)) {
+          return '$fieldName must contain 1 uppercase, 1 lowercase, and 1 digit';
+        }
+      }
+      return null;
+    };
+  }
+
+  /// Creates a password confirmation validation function.
+  ///
+  /// Validates that the confirmation password matches the original password.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: Validator.compose([
+  ///   Validator.required("Confirm Password"),
+  ///   Validator.confirmPassword("Confirm Password", passwordController.text),
+  /// ])
+  /// ```
+  static String? Function(String?) confirmPassword(String fieldName, String? passwordValue) {
+    return (String? value) {
+      if (value != null && value.isNotEmpty && value != passwordValue) {
+        return 'Passwords do not match';
+      }
+      return null;
+    };
+  }
+
   /// Composes multiple validation functions into one.
   ///
   /// Runs each validator in sequence and returns the first error found.
