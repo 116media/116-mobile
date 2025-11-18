@@ -7,10 +7,14 @@ import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show Prob
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
+    show ForgotPasswordResponseEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
+import '../../presentation/models/forgotpassword.credentials.model.dart'
+    show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
@@ -92,5 +96,14 @@ class AuthCachedRepository implements IAuthRepository {
     // No caching needed - resendOtp is a transient operation that only triggers
     // an email send. The success/failure result doesn't need to be persisted.
     return _remoteRepository.resendOtp(credentials);
+  }
+
+  @override
+  Future<Either<Failure, ForgotPasswordResponseEntity>> forgotPassword(
+    ForgotPasswordCredentialsModel credentials,
+  ) async {
+    // No caching needed - forgotPassword is a transient operation that only triggers
+    // a password reset OTP email send. The success/failure result doesn't need to be persisted.
+    return _remoteRepository.forgotPassword(credentials);
   }
 }
