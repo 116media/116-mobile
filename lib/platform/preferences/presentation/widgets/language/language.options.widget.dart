@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
-import '../../../domain/entities/language.entity.dart' show LanguageEntity;
+import '../../../domain/entities/language/language.entity.dart' show LanguageEntity;
 
 /// A selectable card widget representing a single language option.
 ///

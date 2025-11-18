@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive_ce/hive.dart' show Box, Hive;
 
-import '../../application/datasource/preferences.local.datasource.port.dart'
+import '../../application/data-sources/preferences.local.datasource.port.dart'
     show IPreferencesLocalDataSource;
 import '../../application/repositories/preferences.repository.port.dart'
     show IPreferencesRepository;
@@ -11,7 +11,7 @@ import '../../application/usecases/update.theme.mode.usecase.dart' show UpdateTh
 import '../../application/usecases/watch.preferences.usecase.dart' show WatchPreferencesUseCase;
 import '../../presentation/bloc/preferences.bloc.dart' show PreferencesBloc;
 import '../constants/hive.constants.dart' show kPreferencesBox;
-import '../datasources/preferences.local.datasource.dart' show PreferencesLocalDataSource;
+import '../data-sources/preferences.local.datasource.dart' show PreferencesLocalDataSource;
 import '../repositories/preferences.repository.dart' show PreferencesRepository;
 
 /// Registers all preferences module dependencies.

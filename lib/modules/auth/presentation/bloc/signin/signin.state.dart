@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
 import '../../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 
 /// Base class for all SignIn states.
 abstract class SignInState extends Equatable {

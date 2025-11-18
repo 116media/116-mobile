@@ -1,4 +1,4 @@
-import '../../../../domain/entities/user.entity.dart' show UserEntity;
+import '../../../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../file/file.model.dart' show FileModel;
 import '../permission/permission.model.dart' show PermissionModel;
 import '../role/role.model.dart' show RoleModel;

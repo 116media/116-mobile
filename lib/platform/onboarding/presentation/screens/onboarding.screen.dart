@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 
-import '../../../../modules/auth/presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
@@ -78,10 +76,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   /// Onboarding will be marked complete after dialog dismisses.
   Future<void> _handleSkip() async {
     if (mounted) {
-      await showAuthDialog(
-        context,
-        BlocProvider(create: (context) => sl<SignInBloc>(), child: const SignInDialog()),
-      );
+      await showAuthDialog(context, const SignInDialog());
       await _markOnboardingCompleted();
     }
   }
@@ -92,10 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   /// Onboarding will be marked complete after dialog dismisses.
   Future<void> _handleGetStarted() async {
     if (mounted) {
-      await showAuthDialog(
-        context,
-        BlocProvider(create: (context) => sl<SignInBloc>(), child: const SignInDialog()),
-      );
+      await showAuthDialog(context, const SignInDialog());
       await _markOnboardingCompleted();
     }
   }

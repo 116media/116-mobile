@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 
 /// Base class for all preferences states.
 abstract class PreferencesState extends Equatable {

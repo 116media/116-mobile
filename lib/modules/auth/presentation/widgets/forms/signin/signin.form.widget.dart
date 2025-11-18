@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
@@ -17,7 +17,7 @@ import '../../../bloc/signin/signin.state.dart';
 import '../../../models/signin.credentials.model.dart';
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
-import '../../shared/buttons/guest.button.dart' show GuestButton;
+import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/signup.dialog.widget.dart' show SignUpDialog;
 import '../../shared/divider/divider.with.label.widget.dart' show DividerWithLabel;
@@ -101,17 +101,17 @@ class _SignInFormState extends State<SignInForm> {
                   alignment: WrapAlignment.center,
                   children: [
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       isDisabled: isLoading,
                       label: "Email or username",
                       controller: _credentialsController,
                       validator: SignInValidator.credentials("Email or username"),
                     ),
                     InputField(
-                      filled: true,
+                      isFilled: true,
                       isPassword: true,
-                      isDisabled: isLoading,
                       label: "Password",
+                      isDisabled: isLoading,
                       controller: _passwordController,
                       validator: SignInValidator.password("Password"),
                     ),
@@ -165,7 +165,7 @@ class _SignInFormState extends State<SignInForm> {
                   ],
                 ),
 
-                GuestButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+                OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
 
                 AuthRedirectButton(
                   isCentered: true,

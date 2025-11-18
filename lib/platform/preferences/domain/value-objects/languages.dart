@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
-import '../entities/language.entity.dart' show LanguageEntity;
+import '../entities/language/language.entity.dart' show LanguageEntity;
 
 /// Value Object representing the collection of supported languages.
 ///

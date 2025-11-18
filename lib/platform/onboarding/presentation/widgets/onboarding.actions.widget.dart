@@ -6,8 +6,8 @@ import '../../../../shared/presentation/animations/fade.animation.dart' show Fad
 import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
-import '../../../../modules/auth/presentation/widgets/shared/buttons/guest.button.dart'
-    show GuestButton;
+import '../../../../modules/auth/presentation/widgets/shared/buttons/outline.button.dart'
+    show OutlineButton;
 import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 
 /// Widget that displays action buttons for onboarding screens.
@@ -62,7 +62,7 @@ class OnboardingActions extends StatelessWidget {
                     text: "Sign In / Sign Up",
                     onPressed: onGetStarted,
                   ),
-                  GuestButton(text: "Continue as guest", onPressed: onContinueAsGuest),
+                  OutlineButton(text: "Continue as guest", onPressed: onContinueAsGuest),
                 ],
               ),
             ),

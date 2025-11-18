@@ -1,9 +1,15 @@
 import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
+    show ResendOtpResponseEntity;
+import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
+    show VerifyOtpResponseEntity;
+import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
+import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
 
 /// Repository port (interface) for authentication operations.
 ///
@@ -25,4 +31,16 @@ abstract class IAuthRepository {
   /// Returns [Right] with [AuthResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, AuthResponseEntity>> signUp(SignUpCredentialsModel credentials);
+
+  /// Verifies OTP code for email verification using the [VerifyOtpCredentialsModel].
+  ///
+  /// Returns [Right] with [VerifyOtpResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, VerifyOtpResponseEntity>> verifyOtp(VerifyOtpCredentialsModel credentials);
+
+  /// Resends a new OTP verification code using the [ResendOtpCredentialsModel].
+  ///
+  /// Returns [Right] with [ResendOtpResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, ResendOtpResponseEntity>> resendOtp(ResendOtpCredentialsModel credentials);
 }

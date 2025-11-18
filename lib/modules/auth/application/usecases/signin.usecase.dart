@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../repositories/auth.repository.port.dart' show IAuthRepository;
 

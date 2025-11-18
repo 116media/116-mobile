@@ -18,7 +18,7 @@ const String kApiDocsFormatPath = 'scripts/api/api.docs.format.dart';
 /// The base URL of the backend API server.
 ///
 /// This should point to your local or remote API server.
-const String kApiBaseUrl = 'http://10.0.2.2:5025';
+const String kApiBaseUrl = 'http://localhost:5025';
 
 /// The Swagger/OpenAPI specification endpoint.
 ///

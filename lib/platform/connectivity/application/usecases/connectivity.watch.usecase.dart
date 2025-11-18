@@ -1,5 +1,6 @@
 import '../../../../shared/application/usecases/stream.usecase.port.dart' show IStreamUseCase;
-import '../../domain/entities/connectivity.status.entity.dart' show ConnectivityStatusEntity;
+import '../../domain/entities/connectivity-status/connectivity.status.entity.dart'
+    show ConnectivityStatusEntity;
 import '../repositories/connectivity.repository.port.dart' show IConnectivityRepository;
 
 /// Use case for watching connectivity status changes.

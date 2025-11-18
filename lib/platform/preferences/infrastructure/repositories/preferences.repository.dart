@@ -4,11 +4,12 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
-import '../../application/datasource/preferences.local.datasource.port.dart'
+import '../../application/data-sources/preferences.local.datasource.port.dart'
     show IPreferencesLocalDataSource;
 import '../../application/repositories/preferences.repository.port.dart'
     show IPreferencesRepository;
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../../domain/enums/thememode.enum.dart' show AppThemeMode;
 import '../models/hive/user.preferences.model.dart' show UserPreferencesModel;
 

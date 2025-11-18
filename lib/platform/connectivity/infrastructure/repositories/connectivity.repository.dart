@@ -1,8 +1,9 @@
-import '../../application/datasource/connectivity.datasource.port.dart'
+import '../../application/data-sources/connectivity.datasource.port.dart'
     show IConnectivityDataSource;
 import '../../application/repositories/connectivity.repository.port.dart'
     show IConnectivityRepository;
-import '../../domain/entities/connectivity.status.entity.dart' show ConnectivityStatusEntity;
+import '../../domain/entities/connectivity-status/connectivity.status.entity.dart'
+    show ConnectivityStatusEntity;
 
 /// Implementation of connectivity repository.
 ///

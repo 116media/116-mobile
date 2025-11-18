@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../../domain/enums/thememode.enum.dart' show AppThemeMode;
 
 /// Base class for all preferences events.

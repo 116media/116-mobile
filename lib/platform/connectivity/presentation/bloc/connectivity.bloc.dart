@@ -1,5 +1,6 @@
 import 'dart:async' show StreamSubscription;
 
+import 'package:flutter/widgets.dart' show AppLifecycleListener;
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import '../../application/usecases/connectivity.watch.usecase.dart' show ConnectivityWatchUseCase;
@@ -22,11 +23,22 @@ import 'connectivity.state.dart'
 class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   final ConnectivityWatchUseCase _connectivityWatchUseCase;
   StreamSubscription? _connectivitySubscription;
+  AppLifecycleListener? _lifecycleListener;
   bool _wasDisconnected = false;
 
   ConnectivityBloc(this._connectivityWatchUseCase) : super(const ConnectivityInitial()) {
     on<ConnectivityWatchStarted>(_onWatchStarted);
     on<ConnectivityStatusChanged>(_onStatusChanged);
+    _initLifecycleListener();
+  }
+
+  /// Initialize app lifecycle listener to pause/resume connectivity stream.
+  void _initLifecycleListener() {
+    _lifecycleListener = AppLifecycleListener(
+      onHide: () => _connectivitySubscription?.pause(),
+      onPause: () => _connectivitySubscription?.pause(),
+      onResume: () => _connectivitySubscription?.resume(),
+    );
   }
 
   /// Handles the [ConnectivityWatchStarted] event.
@@ -80,6 +92,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   @override
   Future<void> close() {
     _connectivitySubscription?.cancel();
+    _lifecycleListener?.dispose();
     return super.close();
   }
 }

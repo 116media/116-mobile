@@ -2,7 +2,8 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/user.preferences.entity.dart' show UserPreferencesEntity;
+import '../../domain/entities/user-preferences/user.preferences.entity.dart'
+    show UserPreferencesEntity;
 import '../../domain/enums/thememode.enum.dart' show AppThemeMode;
 import '../repositories/preferences.repository.port.dart' show IPreferencesRepository;
 

@@ -46,7 +46,7 @@ part 'base.textfield.widget.dart';
 class InputField extends StatefulWidget {
   final String label;
   final Widget? suffix;
-  final bool filled;
+  final bool isFilled;
   final Color? filledColor;
   final bool isPassword;
   final bool isDisabled;
@@ -57,7 +57,7 @@ class InputField extends StatefulWidget {
     super.key,
     required this.label,
     this.suffix,
-    this.filled = false,
+    this.isFilled = false,
     this.isPassword = false,
     this.isDisabled = false,
     this.validator,
@@ -135,9 +135,10 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     final hasError = _errorText != null && _errorText!.isNotEmpty && !_isFocused;
 
+    final errorColor = context.colors.error;
     final borderWidth = hasError ? 2.0 : 1.0;
     final borderColor = hasError
-        ? context.colors.error
+        ? errorColor
         : (_isFocused ? Colors.transparent : ColorsUtil.slate300);
 
     return Column(
@@ -147,7 +148,7 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
         AnimatedBuilder(
           animation: _alpha,
           builder: (context, child) {
-            final outerRadius = context.sizing.s8;
+            final outerRadius = context.sizing.s6;
             final innerRadius = outerRadius - borderWidth;
 
             return CustomPaint(
@@ -164,14 +165,14 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
           child: _BaseTextField(
             hasError: hasError,
             focusNode: _focusNode,
-            controller: widget.controller,
             validator: widget.validator,
+            controller: widget.controller,
             isPassword: widget.isPassword,
             isDisabled: widget.isDisabled,
             isPasswordVisible: _isPasswordVisible,
             label: widget.label,
-            filled: widget.filled,
             suffix: widget.suffix,
+            filled: widget.isFilled,
             filledColor: widget.filledColor,
             onValidationError: (error) {
               if (mounted) setState(() => _errorText = error);
@@ -184,8 +185,8 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
             child: Text(
               _errorText!,
               style: context.textTheme.bodySmall?.copyWith(
+                color: errorColor,
                 fontSize: context.sizing.s12,
-                color: context.colors.error,
               ),
             ),
           ),

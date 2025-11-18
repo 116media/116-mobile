@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../../domain/enums/auth.status.enum.dart' show AuthStatus;
 
 /// Repository port for session state operations.
@@ -31,10 +31,7 @@ abstract class ISessionRepository {
   ///
   /// Returns [Right] with updated [SessionStateEntity] on success,
   /// or [Left] with [Failure] if update fails.
-  Future<Either<Failure, SessionStateEntity>> updateAuthStatus(
-    AuthStatus status,
-    String? userId,
-  );
+  Future<Either<Failure, SessionStateEntity>> updateAuthStatus(AuthStatus status, String? userId);
 
   /// Clears all session data (logout).
   ///

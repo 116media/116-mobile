@@ -1,5 +1,5 @@
 import '../../../../shared/application/usecases/stream.usecase.port.dart' show IStreamUseCase;
-import '../../domain/entities/session.state.entity.dart' show SessionStateEntity;
+import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../repositories/session.repository.port.dart' show ISessionRepository;
 
 /// Use case for watching session state changes.

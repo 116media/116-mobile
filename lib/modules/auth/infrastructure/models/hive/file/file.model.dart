@@ -1,4 +1,4 @@
-import '../../../../domain/entities/file.entity.dart' show FileEntity;
+import '../../../../domain/entities/file/file.entity.dart' show FileEntity;
 
 /// Hive model for persisting [FileEntity] to local storage.
 ///
