@@ -7,10 +7,14 @@ import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show Prob
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
+    show ForgotPasswordResponseEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
+import '../../presentation/models/forgotpassword.credentials.model.dart'
+    show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
@@ -70,6 +74,19 @@ class AuthRemoteRepository implements IAuthRepository {
       final response = await _remoteDataSource.resendOtp(credentials);
       final resendOtpEntity = AuthMapper.resendOtpResponseFromDto(response);
       return Right(resendOtpEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ForgotPasswordResponseEntity>> forgotPassword(
+    ForgotPasswordCredentialsModel credentials,
+  ) async {
+    try {
+      final response = await _remoteDataSource.forgotPassword(credentials);
+      final forgotPasswordEntity = AuthMapper.forgotPasswordResponseFromDto(response);
+      return Right(forgotPasswordEntity);
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
