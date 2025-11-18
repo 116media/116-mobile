@@ -9,6 +9,8 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicLoginResponse,
         PublicResendOtpRequest,
         PublicResendOtpResponse,
+        PublicResetPasswordRequest,
+        PublicResetPasswordResponse,
         PublicSignUpResponse,
         PublicSignUpRequest,
         PublicVerifyOtpRequest,
@@ -22,6 +24,8 @@ import '../../application/data-sources/auth.remote.datasource.port.dart' show IA
 import '../../presentation/models/forgotpassword.credentials.model.dart'
     show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
+import '../../presentation/models/resetpassword.credentials.model.dart'
+    show ResetPasswordCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
@@ -126,6 +130,29 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
     try {
       final response = await _apiClient.PublicForgotPassword(
         body: PublicForgotPasswordRequest(email: model.email),
+      );
+
+      if (response.isSuccessful) {
+        return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicResetPasswordResponse> resetPassword(ResetPasswordCredentialsModel model) async {
+    try {
+      final response = await _apiClient.PublicResetPassword(
+        body: PublicResetPasswordRequest(
+          email: model.email,
+          code: model.code,
+          newPassword: model.newPassword,
+        ),
       );
 
       if (response.isSuccessful) {
