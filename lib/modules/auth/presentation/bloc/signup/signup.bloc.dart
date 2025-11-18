@@ -24,7 +24,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     result.fold(
       (failure) => emit(SignUpFailure(failure)),
-      (authResponse) => emit(SignUpSuccess(authResponse)),
+      (response) => emit(SignUpSuccess(response)),
     );
   }
 }
