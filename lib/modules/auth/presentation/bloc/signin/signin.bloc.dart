@@ -24,7 +24,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     result.fold(
       (failure) => emit(SignInFailure(failure)),
-      (authResponse) => emit(SignInSuccess(authResponse)),
+      (response) => emit(SignInSuccess(response)),
     );
   }
 }
