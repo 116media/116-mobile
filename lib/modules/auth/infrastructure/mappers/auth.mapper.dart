@@ -3,6 +3,7 @@ import '../../../../api/client/api_116.models.swagger.dart'
         AdminLoginResponse,
         FileDto,
         PermissionDto,
+        PublicForgotPasswordResponse,
         PublicLoginResponse,
         PublicResendOtpResponse,
         PublicSignUpResponse,
@@ -11,6 +12,8 @@ import '../../../../api/client/api_116.models.swagger.dart'
         UserResponseDto;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../domain/entities/file/file.entity.dart' show FileEntity;
+import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
+    show ForgotPasswordResponseEntity;
 import '../../domain/entities/permission/permission.entity.dart' show PermissionEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
@@ -103,5 +106,11 @@ class AuthMapper {
   /// Maps PublicResendOtpResponse to ResendOtpResponseEntity domain entity.
   static ResendOtpResponseEntity resendOtpResponseFromDto(PublicResendOtpResponse response) {
     return ResendOtpResponseEntity(isSuccess: response.isSuccess);
+  }
+
+  /// Maps PublicForgotPasswordResponse to ForgotPasswordResponseEntity domain entity.
+  static ForgotPasswordResponseEntity forgotPasswordResponseFromDto(
+      PublicForgotPasswordResponse response) {
+    return ForgotPasswordResponseEntity(isSuccess: response.isSuccess, email: response.email);
   }
 }
