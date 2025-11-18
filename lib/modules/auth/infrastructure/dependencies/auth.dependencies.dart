@@ -10,6 +10,7 @@ import '../../application/usecases/resendotp.usecase.dart' show ResendOtpUseCase
 import '../../application/usecases/signin.usecase.dart' show SignInUseCase;
 import '../../application/usecases/signup.usecase.dart' show SignUpUseCase;
 import '../../application/usecases/verifyotp.usecase.dart' show VerifyOtpUseCase;
+import '../../presentation/bloc/forgotpassword/forgotpassword.bloc.dart' show ForgotPasswordBloc;
 import '../../presentation/bloc/resendotp/resendotp.bloc.dart' show ResendOtpBloc;
 import '../../presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
@@ -50,4 +51,5 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(sl<SignUpUseCase>()));
   sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl<VerifyOtpUseCase>()));
   sl.registerFactory<ResendOtpBloc>(() => ResendOtpBloc(sl<ResendOtpUseCase>()));
+  sl.registerFactory<ForgotPasswordBloc>(() => ForgotPasswordBloc(sl<ForgotPasswordUseCase>()));
 }
