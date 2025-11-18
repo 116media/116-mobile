@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
+import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
+    show OnboardingUtil;
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
@@ -72,9 +74,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
   /// Handles guest access navigation.
   /// Closes the dialog and navigates to the home screen.
-  void _handleContinueAsGuest() {
-    Navigator.of(context).pop();
-    context.go(kHomeRoutePath);
+  void _handleContinueAsGuest() async {
+    await OnboardingUtil.markCompleted();
+
+    if (mounted) {
+      Navigator.of(context).pop();
+      context.go(kHomeRoutePath);
+    }
   }
 
   @override

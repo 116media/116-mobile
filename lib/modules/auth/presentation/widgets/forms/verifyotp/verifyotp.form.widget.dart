@@ -30,8 +30,15 @@ import '../../shared/redirect/auth.redirect.button.dart'
 
 class VerifyOtpForm extends StatefulWidget {
   final String? email;
+  final OtpPurpose purpose;
+  final void Function(String otp)? onOtpSubmitted;
 
-  const VerifyOtpForm({super.key, this.email});
+  const VerifyOtpForm({
+    super.key,
+    this.email,
+    this.purpose = OtpPurpose.emailVerification,
+    this.onOtpSubmitted,
+  });
 
   @override
   State<VerifyOtpForm> createState() => _VerifyOtpFormState();
@@ -42,11 +49,6 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
   int _countdown = kOtpResendCountdown;
   final TextEditingController _otpController = TextEditingController();
   final GlobalKey<OtpPinFieldState> _otpKey = GlobalKey<OtpPinFieldState>();
-
-  /// Clears the OTP input field
-  void clearOtp() {
-    _otpKey.currentState?.clear();
-  }
 
   @override
   void initState() {
@@ -87,12 +89,14 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
   void _handleVerifyOtp() {
     if (_otpController.text.length != 6) return;
 
+    final otp = _otpController.text;
     final credentials = VerifyOtpCredentialsModel(
       email: widget.email!,
-      otp: _otpController.text,
-      purpose: OtpPurpose.emailVerification,
+      otp: otp,
+      purpose: widget.purpose,
     );
 
+    widget.onOtpSubmitted?.call(otp);
     context.read<VerifyOtpBloc>().add(VerifyOtpSubmitted(credentials));
   }
 
@@ -100,17 +104,10 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
   void _handleResendOtp() {
     if (_countdown > 0) return;
 
-    final credentials = ResendOtpCredentialsModel(
-      email: widget.email!,
-      purpose: OtpPurpose.emailVerification,
-    );
+    final credentials = ResendOtpCredentialsModel(email: widget.email!, purpose: widget.purpose);
+    context.read<ResendOtpBloc>().add(ResendOtpSubmitted(credentials));
 
-    context.read<ResendOtpBloc>().add(ResendOtpRequested(credentials));
-
-    // Clear current OTP
     _otpKey.currentState?.clear();
-
-    // Restart countdown
     _startCountdown();
   }
 
@@ -165,6 +162,14 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             validator: VerifyOtpValidator.otp('OTP Code'),
           ),
 
+          // Resend OTP button
+          AuthRedirectButton(
+            onPressed: _handleResendOtp,
+            isDisabled: isLoading || _countdown > 0,
+            actionType: AuthRedirectAction.haveReceiveCode,
+            suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
+          ),
+
           // Verify button
           FadeAnimation(
             delay: 0.65,
@@ -176,14 +181,6 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
               isDisabled: isLoading || _otpController.text.length != 6,
               onPressed: _handleVerifyOtp,
             ),
-          ),
-
-          // Resend OTP button
-          AuthRedirectButton(
-            onPressed: _handleResendOtp,
-            isDisabled: isLoading || _countdown > 0,
-            actionType: AuthRedirectAction.haveReceiveCode,
-            suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
           ),
 
           OutlineButton(text: 'Cancel', onPressed: () => Navigator.of(context).pop()),
