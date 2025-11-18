@@ -3,6 +3,8 @@ import 'package:chopper/chopper.dart' show Response;
 import '../../../../api/client/api_116.swagger.dart'
     show
         Api116,
+        PublicForgotPasswordRequest,
+        PublicForgotPasswordResponse,
         PublicLoginRequest,
         PublicLoginResponse,
         PublicResendOtpRequest,
@@ -17,6 +19,8 @@ import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.da
     show UnknownException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
+import '../../presentation/models/forgotpassword.credentials.model.dart'
+    show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
@@ -103,6 +107,25 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
     try {
       final response = await _apiClient.PublicResendOtp(
         body: PublicResendOtpRequest(email: model.email, purpose: model.purpose.value),
+      );
+
+      if (response.isSuccessful) {
+        return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicForgotPasswordResponse> forgotPassword(ForgotPasswordCredentialsModel model) async {
+    try {
+      final response = await _apiClient.PublicForgotPassword(
+        body: PublicForgotPasswordRequest(email: model.email),
       );
 
       if (response.isSuccessful) {
