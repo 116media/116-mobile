@@ -6,6 +6,7 @@ import '../../../../api/client/api_116.models.swagger.dart'
         PublicForgotPasswordResponse,
         PublicLoginResponse,
         PublicResendOtpResponse,
+        PublicResetPasswordResponse,
         PublicSignUpResponse,
         PublicVerifyOtpResponse,
         RoleDto,
@@ -17,6 +18,8 @@ import '../../domain/entities/forgotpassword-response/forgotpassword.response.en
 import '../../domain/entities/permission/permission.entity.dart' show PermissionEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
+import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
+    show ResetPasswordResponseEntity;
 import '../../domain/entities/role/role.entity.dart' show RoleEntity;
 import '../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
@@ -112,5 +115,11 @@ class AuthMapper {
   static ForgotPasswordResponseEntity forgotPasswordResponseFromDto(
       PublicForgotPasswordResponse response) {
     return ForgotPasswordResponseEntity(isSuccess: response.isSuccess, email: response.email);
+  }
+
+  /// Maps PublicResetPasswordResponse to ResetPasswordResponseEntity domain entity.
+  static ResetPasswordResponseEntity resetPasswordResponseFromDto(
+      PublicResetPasswordResponse response) {
+    return ResetPasswordResponseEntity(isSuccess: response.isSuccess);
   }
 }
