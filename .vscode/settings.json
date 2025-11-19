@@ -36,6 +36,7 @@
     "readfailed",
     "resendotp",
     "Resends",
+    "resetpassword",
     "sconsign",
     "searchbar",
     "simctl",
