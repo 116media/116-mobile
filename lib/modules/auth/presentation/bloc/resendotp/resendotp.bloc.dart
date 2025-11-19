@@ -1,10 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
-import '../../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../application/usecases/resendotp.usecase.dart' show ResendOtpUseCase;
-import '../../../domain/entities/resendotp-response/resendotp.response.entity.dart'
-    show ResendOtpResponseEntity;
-import 'resendotp.event.dart' show ResendOtpEvent, ResendOtpRequested;
+import 'resendotp.event.dart' show ResendOtpEvent, ResendOtpSubmitted;
 import 'resendotp.state.dart'
     show ResendOtpState, ResendOtpInitial, ResendOtpLoading, ResendOtpSuccess, ResendOtpFailure;
 
@@ -22,17 +19,17 @@ class ResendOtpBloc extends Bloc<ResendOtpEvent, ResendOtpState> {
   final ResendOtpUseCase _resendOtpUseCase;
 
   ResendOtpBloc(this._resendOtpUseCase) : super(const ResendOtpInitial()) {
-    on<ResendOtpRequested>(_onResendOtpRequested);
+    on<ResendOtpSubmitted>(_onResendOtpSubmitted);
   }
 
-  Future<void> _onResendOtpRequested(ResendOtpRequested event, Emitter<ResendOtpState> emit) async {
+  Future<void> _onResendOtpSubmitted(ResendOtpSubmitted event, Emitter<ResendOtpState> emit) async {
     emit(const ResendOtpLoading());
 
     final result = await _resendOtpUseCase.execute(event.credentials);
 
     result.fold(
-      (Failure failure) => emit(ResendOtpFailure(failure)),
-      (ResendOtpResponseEntity response) => emit(ResendOtpSuccess(response)),
+      (failure) => emit(ResendOtpFailure(failure)),
+      (response) => emit(ResendOtpSuccess(response)),
     );
   }
 }

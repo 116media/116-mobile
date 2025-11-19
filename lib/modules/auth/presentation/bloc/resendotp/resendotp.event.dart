@@ -10,17 +10,17 @@ abstract class ResendOtpEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Event triggered when user requests to resend OTP.
+/// Event triggered when user submits to resend OTP.
 ///
 /// This event can be used across different OTP flows:
 /// - Email verification
 /// - Password reset
 /// - Two-factor authentication
 /// - Account recovery
-class ResendOtpRequested extends ResendOtpEvent {
+class ResendOtpSubmitted extends ResendOtpEvent {
   final ResendOtpCredentialsModel credentials;
 
-  const ResendOtpRequested(this.credentials);
+  const ResendOtpSubmitted(this.credentials);
 
   @override
   List<Object?> get props => [credentials];

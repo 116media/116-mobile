@@ -2,11 +2,19 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
+import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
+    show ForgotPasswordResponseEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
+import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
+    show ResetPasswordResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
+import '../../presentation/models/forgotpassword.credentials.model.dart'
+    show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
+import '../../presentation/models/resetpassword.credentials.model.dart'
+    show ResetPasswordCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
@@ -43,4 +51,18 @@ abstract class IAuthRepository {
   /// Returns [Right] with [ResendOtpResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, ResendOtpResponseEntity>> resendOtp(ResendOtpCredentialsModel credentials);
+
+  /// Initiates password reset flow by sending OTP using the [ForgotPasswordCredentialsModel].
+  ///
+  /// Returns [Right] with [ForgotPasswordResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, ForgotPasswordResponseEntity>> forgotPassword(
+      ForgotPasswordCredentialsModel credentials);
+
+  /// Resets user password using OTP code and new password from [ResetPasswordCredentialsModel].
+  ///
+  /// Returns [Right] with [ResetPasswordResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, ResetPasswordResponseEntity>> resetPassword(
+      ResetPasswordCredentialsModel credentials);
 }

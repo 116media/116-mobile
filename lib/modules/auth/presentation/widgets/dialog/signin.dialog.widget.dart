@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider;
 
+import '../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
+    show OnboardingUtil;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -28,8 +30,17 @@ class SignInDialog extends StatefulWidget {
 }
 
 class _SignInDialogState extends State<SignInDialog> {
-  void _showErrorMessage(String message) {
-    DialogUtil.error(context, message: message);
+  Future<void> _signInStateListener(BuildContext ctx, SignInState state) async {
+    if (state is SignInSuccess) {
+      await OnboardingUtil.markCompleted();
+
+      if (!ctx.mounted) return;
+
+      Navigator.of(ctx).pop();
+      ctx.go(kHomeRoutePath);
+    } else if (state is SignInFailure) {
+      DialogUtil.error(context, message: state.failure.detail);
+    }
   }
 
   @override
@@ -39,18 +50,7 @@ class _SignInDialogState extends State<SignInDialog> {
     return BlocProvider(
       create: (context) => sl<SignInBloc>(),
       child: BlocListener<SignInBloc, SignInState>(
-        listener: (context, state) {
-          if (state is SignInSuccess) {
-            Navigator.of(context).pop();
-            context.go(kHomeRoutePath);
-            return;
-          }
-
-          if (state is SignInFailure) {
-            _showErrorMessage(state.failure.detail);
-            return;
-          }
-        },
+        listener: _signInStateListener,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Align(

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart'
     show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
 import 'package:go_router/go_router.dart';
 
+import '../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
+    show OnboardingUtil;
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -37,14 +39,6 @@ class VerifyOtpDialog extends StatefulWidget {
 class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
   final GlobalKey<State<VerifyOtpForm>> _formKey = GlobalKey<State<VerifyOtpForm>>();
 
-  void _showErrorMessage(String message) {
-    DialogUtil.error(context, message: message);
-  }
-
-  void _showSuccessMessage(String message) {
-    DialogUtil.success(context, message: message);
-  }
-
   void _clearOtpField() {
     final formState = _formKey.currentState;
     if (formState != null) {
@@ -52,20 +46,37 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
     }
   }
 
-  void _handleVerificationSuccess(BuildContext ctx) {
-    final rootContext = Navigator.of(ctx, rootNavigator: true).context;
+  Future<void> _verifyOtpStateListener(BuildContext ctx, VerifyOtpState state) async {
+    if (state is VerifyOtpSuccess) {
+      final rootContext = Navigator.of(ctx, rootNavigator: true).context;
+      await OnboardingUtil.markCompleted();
+      if (!ctx.mounted) return;
+      Navigator.of(ctx).pop();
+      ctx.go(kHomeRoutePath);
 
-    Navigator.of(ctx).pop();
-    ctx.go(kHomeRoutePath);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (rootContext.mounted) {
+          DialogUtil.success(
+            rootContext,
+            message: "Your account verification completed! You're all set to continue.",
+          );
+        }
+      });
+    } else if (state is VerifyOtpFailure) {
+      _clearOtpField();
+      DialogUtil.error(context, message: state.failure.detail);
+    }
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (rootContext.mounted) {
-        DialogUtil.success(
-          rootContext,
-          message: "Your account verification completed! You're all set to continue.",
-        );
-      }
-    });
+  void _resendOtpStateListener(ResendOtpState state) {
+    if (state is ResendOtpSuccess) {
+      DialogUtil.success(
+        context,
+        message: 'New verification code sent successfully! Please check your email.',
+      );
+    } else if (state is ResendOtpFailure) {
+      DialogUtil.error(context, message: state.failure.detail);
+    }
   }
 
   @override
@@ -80,33 +91,10 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
       child: MultiBlocListener(
         listeners: [
           BlocListener<VerifyOtpBloc, VerifyOtpState>(
-            listener: (context, state) {
-              if (state is VerifyOtpSuccess) {
-                _handleVerificationSuccess(context);
-                return;
-              }
-
-              if (state is VerifyOtpFailure) {
-                _clearOtpField();
-                _showErrorMessage(state.failure.detail);
-                return;
-              }
-            },
+            listener: (context, state) => _verifyOtpStateListener(context, state),
           ),
           BlocListener<ResendOtpBloc, ResendOtpState>(
-            listener: (context, state) {
-              if (state is ResendOtpSuccess) {
-                _showSuccessMessage(
-                  'New verification code sent successfully! Please check your email.',
-                );
-                return;
-              }
-
-              if (state is ResendOtpFailure) {
-                _showErrorMessage(state.failure.detail);
-                return;
-              }
-            },
+            listener: (context, state) => _resendOtpStateListener(state),
           ),
         ],
         child: Scaffold(

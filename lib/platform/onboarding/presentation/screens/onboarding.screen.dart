@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
-import '../../../../shared/infrastructure/service.locator.dart' show sl;
-import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../modules/auth/presentation/utils/dialog.utils.dart' show showAuthDialog;
 import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
     show SignInDialog;
-import '../../../session/application/usecases/update.onboarding.status.usecase.dart'
-    show UpdateOnboardingStatusUseCase;
+import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
+import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 import '../constants/onboarding.constants.dart' show kProgressIncrement;
+import '../utils/onboarding.util.dart' show OnboardingUtil;
 import '../widgets/onboarding.background.widget.dart' show OnboardingBackground;
 import '../widgets/onboarding.content.widget.dart' show OnboardingContent;
 
@@ -62,33 +60,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     });
   }
 
-  /// Marks onboarding as completed in session state.
-  ///
-  /// This ensures the user won't see the onboarding screen again on future app launches.
-  Future<void> _markOnboardingCompleted() async {
-    final updateOnboardingStatusUseCase = sl<UpdateOnboardingStatusUseCase>();
-    await updateOnboardingStatusUseCase.execute(true);
-  }
-
   /// Handles the skip button action.
   ///
-  /// Shows the sign-in dialog without marking onboarding as completed.
-  /// Onboarding will be marked complete after dialog dismisses.
+  /// Shows the sign-in dialog.
+  /// Onboarding will be marked complete when user signs in/up successfully.
   Future<void> _handleSkip() async {
     if (mounted) {
       await showAuthDialog(context, const SignInDialog());
-      await _markOnboardingCompleted();
     }
   }
 
   /// Handles the get started button action.
   ///
-  /// Shows the sign-in dialog without marking onboarding as completed.
-  /// Onboarding will be marked complete after dialog dismisses.
+  /// Shows the sign-in dialog.
+  /// Onboarding will be marked complete when user signs in/up successfully.
   Future<void> _handleGetStarted() async {
     if (mounted) {
       await showAuthDialog(context, const SignInDialog());
-      await _markOnboardingCompleted();
     }
   }
 
@@ -97,7 +85,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   /// Marks onboarding as completed and navigates to the home screen.
   /// The router will automatically redirect based on session state.
   Future<void> _handleContinueAsGuest() async {
-    await _markOnboardingCompleted();
+    await OnboardingUtil.markCompleted();
+
     if (mounted) {
       context.go(kHomeRoutePath);
     }

@@ -28,18 +28,13 @@ class SignUpDialog extends StatefulWidget {
 }
 
 class _SignUpDialogState extends State<SignUpDialog> {
-  /// Shows an error dialog with the provided message.
-  void _showErrorMessage(String message) {
-    DialogUtil.error(context, message: message);
-  }
-
-  /// Shows the verification dialog for account verification.
-  ///
-  /// Closes the signup dialog and displays the verification dialog
-  /// for the user to enter their OTP code. Passes the user's email
-  /// from the signup response for display and OTP submission.
-  Future<void> _showVerificationDialog(String email) async {
-    await showAuthDialog(context, VerifyOtpDialog(email: email), closeExisting: true);
+  Future<void> _signUpStateListener(BuildContext context, SignUpState state) async {
+    if (state is SignUpSuccess) {
+      final String email = state.authResponse.user.email ?? '';
+      await showAuthDialog(context, VerifyOtpDialog(email: email), closeExisting: true);
+    } else if (state is SignUpFailure) {
+      DialogUtil.error(context, message: state.failure.detail);
+    }
   }
 
   @override
@@ -49,18 +44,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
     return BlocProvider(
       create: (context) => sl<SignUpBloc>(),
       child: BlocListener<SignUpBloc, SignUpState>(
-        listener: (context, state) {
-          if (state is SignUpSuccess) {
-            final email = state.authResponse.user.email ?? '';
-            _showVerificationDialog(email);
-            return;
-          }
-
-          if (state is SignUpFailure) {
-            _showErrorMessage(state.failure.detail);
-            return;
-          }
-        },
+        listener: _signUpStateListener,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Align(

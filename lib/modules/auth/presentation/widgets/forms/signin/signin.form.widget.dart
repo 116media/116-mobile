@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
+import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
+    show OnboardingUtil;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
@@ -19,6 +21,7 @@ import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
 import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
+import '../../dialog/forgotpassword.dialog.widget.dart' show ForgotPasswordDialog;
 import '../../dialog/signup.dialog.widget.dart' show SignUpDialog;
 import '../../shared/divider/divider.with.label.widget.dart' show DividerWithLabel;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
@@ -51,6 +54,12 @@ class _SignInFormState extends State<SignInForm> {
     await showAuthDialog(context, const SignUpDialog(), closeExisting: true);
   }
 
+  /// Shows the forgot password dialog with a slide-up animation.
+  /// Closes the current dialog before opening the new one.
+  Future<void> _showForgotPasswordDialog() async {
+    await showAuthDialog(context, const ForgotPasswordDialog(), closeExisting: true);
+  }
+
   /// Handles form submission after validation.
   void _handleSignIn() {
     FocusScope.of(context).unfocus();
@@ -67,9 +76,13 @@ class _SignInFormState extends State<SignInForm> {
 
   /// Handles guest access navigation.
   /// Closes the dialog and navigates to the home screen.
-  void _handleContinueAsGuest() {
-    Navigator.of(context).pop();
-    context.go(kHomeRoutePath);
+  void _handleContinueAsGuest() async {
+    await OnboardingUtil.markCompleted();
+
+    if (mounted) {
+      Navigator.of(context).pop();
+      context.go(kHomeRoutePath);
+    }
   }
 
   @override
@@ -118,9 +131,7 @@ class _SignInFormState extends State<SignInForm> {
                     AuthRedirectButton(
                       isCentered: false,
                       actionType: AuthRedirectAction.forgotPassword,
-                      onPressed: () {
-                        // should display the 'forgot password' dialog
-                      },
+                      onPressed: _showForgotPasswordDialog,
                     ),
                   ],
                 ),
