@@ -8,6 +8,8 @@ import '../../../../../../shared/presentation/animations/fade.animation.dart' sh
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
+import '../../../../../../shared/presentation/widgets/buttons/outline.button.dart'
+    show OutlineButton;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../../../../shared/presentation/widgets/otppinfields/otppinfield.widget.dart'
@@ -19,11 +21,10 @@ import '../../../bloc/resendotp/resendotp.state.dart' show ResendOtpLoading;
 import '../../../bloc/verifyotp/verifyotp.bloc.dart' show VerifyOtpBloc;
 import '../../../bloc/verifyotp/verifyotp.event.dart' show VerifyOtpSubmitted;
 import '../../../bloc/verifyotp/verifyotp.state.dart' show VerifyOtpLoading;
-import '../../../constants/auth.validation.constants.dart' show kOtpResendCountdown;
+import '../../../constants/auth.validation.constants.dart' show kOtpLength, kOtpResendCountdown;
 import '../../../models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
 import '../../../models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
 import '../../../validators/verifyotp.validator.dart' show VerifyOtpValidator;
-import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
 import '../../shared/redirect/auth.redirect.button.dart'
     show AuthRedirectButton, AuthRedirectAction;
@@ -83,7 +84,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
 
   /// Handles verify button press
   void _handleVerifyOtp() {
-    if (_otpController.text.length != 6) return;
+    if (_otpController.text.length != kOtpLength) return;
 
     final otp = _otpController.text;
     final credentials = VerifyOtpCredentialsModel(
@@ -173,7 +174,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
               size: ButtonSize.sm,
               isLoading: isLoading,
               onPressed: _handleVerifyOtp,
-              isDisabled: isLoading || _otpController.text.length != 6,
+              isDisabled: isLoading || _otpController.text.length != kOtpLength,
             ),
           ),
 

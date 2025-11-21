@@ -1,5 +1,5 @@
-import '../../../../shared/presentation/validators/shared.validator.dart';
-import '../constants/auth.validation.constants.dart';
+import '../../../../shared/presentation/validators/shared.validator.dart' show Validator;
+import '../constants/auth.validation.constants.dart' show kPasswordMinLength;
 
 /// Validation rules for reset password form fields.
 ///

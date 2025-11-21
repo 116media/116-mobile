@@ -1,4 +1,6 @@
-import '../../../../shared/presentation/validators/shared.validator.dart';
+import '../../../../shared/presentation/validators/shared.validator.dart'
+    show Validator, MinMaxLength;
+import '../constants/auth.validation.constants.dart' show kOtpLength;
 
 /// Validation rules for OTP verification form fields.
 ///
@@ -22,7 +24,7 @@ class VerifyOtpValidator {
     return Validator.compose([
       Validator.required(fieldName),
       Validator.numericOnly(fieldName),
-      Validator.minmax(fieldName, const MinMaxLength(min: 6, max: 6)),
+      Validator.minmax(fieldName, const MinMaxLength(min: kOtpLength, max: kOtpLength)),
     ]);
   }
 }
