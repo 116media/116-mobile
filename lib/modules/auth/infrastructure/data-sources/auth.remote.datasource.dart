@@ -13,6 +13,8 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicResetPasswordResponse,
         PublicSignUpResponse,
         PublicSignUpRequest,
+        PublicSocialLoginRequest,
+        PublicSocialLoginResponse,
         PublicVerifyOtpRequest,
         PublicVerifyOtpResponse;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
@@ -21,6 +23,8 @@ import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.da
     show UnknownException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
+import '../../domain/entities/social-profile/social.profile.entity.dart' show SocialProfileEntity;
+import '../../domain/enums/authprovider.enum.dart' show AuthProvider;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
     show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
@@ -88,8 +92,8 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
     try {
       final response = await _apiClient.PublicVerifyOtp(
         body: PublicVerifyOtpRequest(
-          email: model.email,
           code: model.otp,
+          email: model.email,
           purpose: model.purpose.value,
         ),
       );
@@ -149,14 +153,62 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
     try {
       final response = await _apiClient.PublicResetPassword(
         body: PublicResetPasswordRequest(
-          email: model.email,
           code: model.code,
+          email: model.email,
           newPassword: model.newPassword,
         ),
       );
 
       if (response.isSuccessful) {
         return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicSocialLoginResponse> signInWithGoogle(SocialProfileEntity profile) async {
+    try {
+      final response = await _apiClient.PublicSocialLogin(
+        body: PublicSocialLoginRequest(
+          email: profile.email,
+          avatarUrl: profile.photoUrl,
+          provider: AuthProvider.google.value,
+          userName: profile.displayName ?? profile.email.split('@')[0],
+        ),
+      );
+
+      if (response.isSuccessful) {
+        return PublicSocialLoginResponse(user: response.body!.user, token: response.body!.token);
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicSocialLoginResponse> signInWithFacebook(SocialProfileEntity profile) async {
+    try {
+      final response = await _apiClient.PublicSocialLogin(
+        body: PublicSocialLoginRequest(
+          email: profile.email,
+          avatarUrl: profile.photoUrl,
+          provider: AuthProvider.facebook.value,
+          userName: profile.displayName ?? profile.email.split('@')[0],
+        ),
+      );
+
+      if (response.isSuccessful) {
+        return PublicSocialLoginResponse(user: response.body!.user, token: response.body!.token);
       } else {
         throw ProblemMapper.toException(response as Response);
       }

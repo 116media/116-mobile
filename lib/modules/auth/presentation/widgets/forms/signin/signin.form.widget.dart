@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, SelectContext;
 
 import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
     show OnboardingUtil;
@@ -9,17 +9,24 @@ import '../../../../../../shared/presentation/animations/fade.animation.dart' sh
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
+import '../../../../../../shared/presentation/widgets/buttons/outline.button.dart'
+    show OutlineButton;
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
 import '../../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
-import '../../../bloc/signin/signin.bloc.dart';
-import '../../../bloc/signin/signin.event.dart';
-import '../../../bloc/signin/signin.state.dart';
-import '../../../models/signin.credentials.model.dart';
+import '../../../bloc/facebooksignin/facebooksignin.bloc.dart' show FacebookSignInBloc;
+import '../../../bloc/facebooksignin/facebooksignin.event.dart' show FacebookSignInSubmitted;
+import '../../../bloc/facebooksignin/facebooksignin.state.dart' show FacebookSignInLoading;
+import '../../../bloc/googlesignin/googlesignin.bloc.dart' show GoogleSignInBloc;
+import '../../../bloc/googlesignin/googlesignin.event.dart' show GoogleSignInSubmitted;
+import '../../../bloc/googlesignin/googlesignin.state.dart' show GoogleSignInLoading;
+import '../../../bloc/signin/signin.bloc.dart' show SignInBloc;
+import '../../../bloc/signin/signin.event.dart' show SignInSubmitted;
+import '../../../bloc/signin/signin.state.dart' show SignInLoading;
+import '../../../models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
-import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/forgotpassword.dialog.widget.dart' show ForgotPasswordDialog;
 import '../../dialog/signup.dialog.widget.dart' show SignUpDialog;
@@ -85,109 +92,117 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
+  /// Handles Google sign-in.
+  void _handleGoogleSignIn() {
+    context.read<GoogleSignInBloc>().add(const GoogleSignInSubmitted());
+  }
+
+  /// Handles Facebook sign-in.
+  void _handleFacebookSignIn() {
+    context.read<FacebookSignInBloc>().add(const FacebookSignInSubmitted());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SignInBloc, SignInState>(
-      builder: (context, state) {
-        final isLoading = state is SignInLoading;
+    final isGoogleLoading = context.select<GoogleSignInBloc, bool>(
+      (bloc) => bloc.state is GoogleSignInLoading,
+    );
+    final isFacebookLoading = context.select<FacebookSignInBloc, bool>(
+      (bloc) => bloc.state is FacebookSignInLoading,
+    );
+    final isLoading = context.select<SignInBloc, bool>((bloc) => bloc.state is SignInLoading);
 
-        return Form(
-          key: _formKey,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
-            child: Column(
+    final isSocialLoading = isGoogleLoading || isFacebookLoading;
+
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
+        child: Column(
+          spacing: context.sizing.s12,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
+
+            const AuthFormTitle(text: "Sign In to Continue"),
+
+            Wrap(
               spacing: context.sizing.s12,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              runSpacing: context.sizing.s12,
+              alignment: WrapAlignment.center,
               children: [
-                Logo(
-                  type: LogoType.icon,
-                  width: context.sizing.s64,
-                  isDarkTheme: context.isDarkMode,
+                InputField(
+                  isFilled: true,
+                  isDisabled: isLoading,
+                  label: "Email or username",
+                  controller: _credentialsController,
+                  validator: SignInValidator.credentials("Email or username"),
                 ),
-
-                const AuthFormTitle(text: "Sign In to Continue"),
-
-                Wrap(
-                  spacing: context.sizing.s12,
-                  runSpacing: context.sizing.s12,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    InputField(
-                      isFilled: true,
-                      isDisabled: isLoading,
-                      label: "Email or username",
-                      controller: _credentialsController,
-                      validator: SignInValidator.credentials("Email or username"),
-                    ),
-                    InputField(
-                      isFilled: true,
-                      isPassword: true,
-                      label: "Password",
-                      isDisabled: isLoading,
-                      controller: _passwordController,
-                      validator: SignInValidator.password("Password"),
-                    ),
-                    AuthRedirectButton(
-                      isCentered: false,
-                      actionType: AuthRedirectAction.forgotPassword,
-                      onPressed: _showForgotPasswordDialog,
-                    ),
-                  ],
+                InputField(
+                  isFilled: true,
+                  isPassword: true,
+                  label: "Password",
+                  isDisabled: isLoading,
+                  controller: _passwordController,
+                  validator: SignInValidator.password("Password"),
                 ),
-
-                TermsAndConditions(),
-
-                FadeAnimation(
-                  delay: 0.65,
-                  child: SolidButton(
-                    isFull: true,
-                    text: "Sign In",
-                    size: ButtonSize.sm,
-                    isLoading: isLoading,
-                    isDisabled: isLoading,
-                    onPressed: _handleSignIn,
-                  ),
-                ),
-
-                const DividerWithLabel(label: 'OR'),
-
-                Row(
-                  spacing: context.sizing.s6,
-                  children: [
-                    Expanded(
-                      child: SocialLoginButton(
-                        isDisabled: isLoading,
-                        onPressed: () {
-                          // Handle Google login
-                        },
-                        platform: SocialPlatform.google,
-                      ),
-                    ),
-                    Expanded(
-                      child: SocialLoginButton(
-                        isDisabled: isLoading,
-                        onPressed: () {
-                          // Handle Facebook login
-                        },
-                        platform: SocialPlatform.facebook,
-                      ),
-                    ),
-                  ],
-                ),
-
-                OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
-
                 AuthRedirectButton(
-                  isCentered: true,
-                  onPressed: _showSignUpDialog,
-                  actionType: AuthRedirectAction.dontHaveAccount,
+                  isCentered: false,
+                  actionType: AuthRedirectAction.forgotPassword,
+                  onPressed: _showForgotPasswordDialog,
                 ),
               ],
             ),
-          ),
-        );
-      },
+
+            TermsAndConditions(),
+
+            FadeAnimation(
+              delay: 0.65,
+              child: SolidButton(
+                isFull: true,
+                text: "Sign In",
+                size: ButtonSize.sm,
+                isLoading: isLoading,
+                isDisabled: isLoading,
+                onPressed: _handleSignIn,
+              ),
+            ),
+
+            const DividerWithLabel(label: 'OR'),
+
+            Row(
+              spacing: context.sizing.s6,
+              children: [
+                Expanded(
+                  child: SocialLoginButton(
+                    onPressed: _handleGoogleSignIn,
+                    platform: SocialPlatform.google,
+                    isLoading: isGoogleLoading,
+                    isDisabled: isLoading || isSocialLoading,
+                  ),
+                ),
+                Expanded(
+                  child: SocialLoginButton(
+                    onPressed: _handleFacebookSignIn,
+                    platform: SocialPlatform.facebook,
+                    isLoading: isFacebookLoading,
+                    isDisabled: isLoading || isSocialLoading,
+                  ),
+                ),
+              ],
+            ),
+
+            OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+
+            AuthRedirectButton(
+              isCentered: true,
+              onPressed: _showSignUpDialog,
+              actionType: AuthRedirectAction.dontHaveAccount,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

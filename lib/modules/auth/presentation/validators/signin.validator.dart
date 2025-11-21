@@ -1,5 +1,7 @@
-import '../../../../shared/presentation/validators/shared.validator.dart';
-import '../constants/auth.validation.constants.dart';
+import '../../../../shared/presentation/validators/shared.validator.dart'
+    show Validator, MinMaxLength;
+import '../constants/auth.validation.constants.dart'
+    show kPasswordMinLength, kUsernameMinLength, kUsernameMaxLength;
 
 /// Validation rules for sign-in form fields.
 ///

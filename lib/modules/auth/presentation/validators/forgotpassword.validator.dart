@@ -1,4 +1,4 @@
-import '../../../../shared/presentation/validators/shared.validator.dart';
+import '../../../../shared/presentation/validators/shared.validator.dart' show Validator;
 
 /// Validation rules for forgot password form fields.
 ///
@@ -18,9 +18,6 @@ class ForgotPasswordValidator {
   /// )
   /// ```
   static String? Function(String?) email(String fieldName) {
-    return Validator.compose([
-      Validator.required(fieldName),
-      Validator.email(fieldName),
-    ]);
+    return Validator.compose([Validator.required(fieldName), Validator.email(fieldName)]);
   }
 }

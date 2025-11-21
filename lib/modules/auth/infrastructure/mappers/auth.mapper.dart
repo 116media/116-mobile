@@ -1,6 +1,5 @@
 import '../../../../api/client/api_116.models.swagger.dart'
     show
-        AdminLoginResponse,
         FileDto,
         PermissionDto,
         PublicForgotPasswordResponse,
@@ -8,6 +7,7 @@ import '../../../../api/client/api_116.models.swagger.dart'
         PublicResendOtpResponse,
         PublicResetPasswordResponse,
         PublicSignUpResponse,
+        PublicSocialLoginResponse,
         PublicVerifyOtpResponse,
         RoleDto,
         UserResponseDto;
@@ -86,11 +86,6 @@ class AuthMapper {
     );
   }
 
-  /// Maps AdminLoginResponse to AuthResponseEntity domain entity.
-  static AuthResponseEntity authResponseFromDto(AdminLoginResponse response) {
-    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
-  }
-
   /// Maps PublicLoginResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicLoginDto(PublicLoginResponse response) {
     return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
@@ -98,6 +93,11 @@ class AuthMapper {
 
   /// Maps PublicSignUpResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicSignUpDto(PublicSignUpResponse response) {
+    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
+  }
+
+  /// Maps PublicSocialLoginResponse to AuthResponseEntity domain entity.
+  static AuthResponseEntity authResponseFromPublicSocialLoginDto(PublicSocialLoginResponse response) {
     return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
   }
 
@@ -113,13 +113,15 @@ class AuthMapper {
 
   /// Maps PublicForgotPasswordResponse to ForgotPasswordResponseEntity domain entity.
   static ForgotPasswordResponseEntity forgotPasswordResponseFromDto(
-      PublicForgotPasswordResponse response) {
+    PublicForgotPasswordResponse response,
+  ) {
     return ForgotPasswordResponseEntity(isSuccess: response.isSuccess, email: response.email);
   }
 
   /// Maps PublicResetPasswordResponse to ResetPasswordResponseEntity domain entity.
   static ResetPasswordResponseEntity resetPasswordResponseFromDto(
-      PublicResetPasswordResponse response) {
+    PublicResetPasswordResponse response,
+  ) {
     return ResetPasswordResponseEntity(isSuccess: response.isSuccess);
   }
 }

@@ -1,10 +1,14 @@
 import 'package:hive_ce/hive.dart';
-import 'package:cent16/modules/auth/infrastructure/models/hive/file/file.model.dart';
-import 'package:cent16/modules/auth/infrastructure/models/hive/permission/permission.model.dart';
-import 'package:cent16/modules/auth/infrastructure/models/hive/role/role.model.dart';
-import 'package:cent16/modules/auth/infrastructure/models/hive/user/user.model.dart';
-import 'package:cent16/platform/preferences/infrastructure/models/hive/user.preferences.model.dart';
-import 'package:cent16/platform/session/infrastructure/models/hive/session.state.model.dart';
+
+import '../modules/auth/infrastructure/models/hive/file/file.model.dart' show FileModel;
+import '../modules/auth/infrastructure/models/hive/permission/permission.model.dart'
+    show PermissionModel;
+import '../modules/auth/infrastructure/models/hive/role/role.model.dart' show RoleModel;
+import '../modules/auth/infrastructure/models/hive/user/user.model.dart' show UserModel;
+import '../platform/preferences/infrastructure/models/hive/user.preferences.model.dart'
+    show UserPreferencesModel;
+import '../platform/session/infrastructure/models/hive/session.state.model.dart'
+    show SessionStateModel;
 
 @GenerateAdapters([
   AdapterSpec<RoleModel>(),

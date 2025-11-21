@@ -65,4 +65,22 @@ abstract class IAuthRepository {
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, ResetPasswordResponseEntity>> resetPassword(
       ResetPasswordCredentialsModel credentials);
+
+  /// Authenticates user with Google using OAuth.
+  ///
+  /// Orchestrates Google sign-in flow by getting profile from Google SDK
+  /// and sending it to backend for authentication.
+  ///
+  /// Returns [Right] with [AuthResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, AuthResponseEntity>> signInWithGoogle();
+
+  /// Authenticates user with Facebook using OAuth.
+  ///
+  /// Orchestrates Facebook sign-in flow by getting profile from Facebook SDK
+  /// and sending it to backend for authentication.
+  ///
+  /// Returns [Right] with [AuthResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, AuthResponseEntity>> signInWithFacebook();
 }

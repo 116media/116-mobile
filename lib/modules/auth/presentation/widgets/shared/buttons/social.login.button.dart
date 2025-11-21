@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart'
+    show PlatformWidget, PlatformTextButton;
 
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:colorful_iconify_flutter/icons/logos.dart';
@@ -21,17 +23,20 @@ enum SocialPlatform { google, facebook }
 /// SocialLoginButton(
 ///   platform: SocialPlatform.google,
 ///   onPressed: () => _handleGoogleLogin(),
+///   isLoading: false,
 /// )
 /// ```
 class SocialLoginButton extends StatelessWidget {
   final SocialPlatform platform;
   final VoidCallback onPressed;
+  final bool isLoading;
   final bool isDisabled;
 
   const SocialLoginButton({
     super.key,
     required this.platform,
     required this.onPressed,
+    this.isLoading = false,
     this.isDisabled = false,
   });
 
@@ -44,6 +49,23 @@ class SocialLoginButton extends StatelessWidget {
   /// Returns the display text by capitalizing the platform enum name.
   String get _text => platform.name.toCapitalized();
 
+  /// Builds the button content row with icon and text
+  Widget _buildButtonContent(BuildContext context, Color textColor, Widget spinner) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: context.sizing.s20,
+          height: context.sizing.s20,
+          child: isLoading ? spinner : Iconify(_iconData, size: context.sizing.s20),
+        ),
+        SizedBox(width: context.sizing.s12),
+        Text(_text, style: context.buttonTextStyle(textColor)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
@@ -54,8 +76,8 @@ class SocialLoginButton extends StatelessWidget {
       child: PlatformWidget(
         cupertino: (_, _) => Container(
           decoration: BoxDecoration(
-            border: Border.all(color: borderColor, width: 1.5),
             borderRadius: BorderRadius.circular(context.sizing.s8),
+            border: Border.all(color: borderColor, width: context.sizing.s1_5),
           ),
           child: PlatformTextButton(
             onPressed: isDisabled ? null : onPressed,
@@ -63,20 +85,10 @@ class SocialLoginButton extends StatelessWidget {
               vertical: context.sizing.s14,
               horizontal: context.sizing.s16,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Iconify(_iconData, size: context.sizing.s24),
-                SizedBox(width: context.sizing.s12),
-                Text(
-                  _text,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+            child: _buildButtonContent(
+              context,
+              textColor,
+              CupertinoActivityIndicator(color: textColor),
             ),
           ),
         ),
@@ -89,23 +101,16 @@ class SocialLoginButton extends StatelessWidget {
             ),
             backgroundColor: Colors.transparent,
             splashFactory: InkRipple.splashFactory,
-            side: BorderSide(color: borderColor, width: 1.5),
+            side: BorderSide(color: borderColor, width: context.sizing.s1_5),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Iconify(_iconData, size: context.sizing.s24),
-              SizedBox(width: context.sizing.s12),
-              Text(
-                _text,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
-                ),
-              ),
-            ],
+          child: _buildButtonContent(
+            context,
+            textColor,
+            CircularProgressIndicator(
+              strokeWidth: context.sizing.s2,
+              valueColor: AlwaysStoppedAnimation<Color>(textColor),
+            ),
           ),
         ),
       ),

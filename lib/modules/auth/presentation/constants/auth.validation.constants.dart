@@ -1,3 +1,6 @@
+/// Otp length constraint
+const int kOtpLength = 6;
+
 /// Username validation constraints
 const int kUsernameMinLength = 3;
 const int kUsernameMaxLength = 20;

@@ -27,9 +27,14 @@ class PreferencesRepository implements IPreferencesRepository {
     try {
       final model = await _localDataSource.getPreferences();
 
-      // If no preferences exist, return defaults
-      final preferences = model ?? UserPreferencesModel.defaults();
-      return Right(preferences.toEntity());
+      // If no preferences exist, create and save defaults
+      if (model == null) {
+        final defaults = UserPreferencesModel.defaults();
+        await _localDataSource.setPreferences(defaults);
+        return Right(defaults.toEntity());
+      }
+
+      return Right(model.toEntity());
     } on CacheException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
