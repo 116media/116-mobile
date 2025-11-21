@@ -27,4 +27,10 @@ extension ThemeExtension on BuildContext {
 
   /// Quick access to SizingTheme extension
   Sizing get sizing => Theme.of(this).extension<Sizing>()!;
+
+  /// Button text style with consistent font weight
+  TextStyle buttonTextStyle(Color color) => textTheme.bodyMedium!.copyWith(
+        color: color,
+        fontWeight: FontWeight.w600,
+      );
 }
