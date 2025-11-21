@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
-import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
@@ -10,10 +10,11 @@ import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart'
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
-import '../../../bloc/forgotpassword/forgotpassword.bloc.dart';
-import '../../../bloc/forgotpassword/forgotpassword.event.dart';
-import '../../../bloc/forgotpassword/forgotpassword.state.dart';
-import '../../../models/forgotpassword.credentials.model.dart';
+import '../../../bloc/forgotpassword/forgotpassword.bloc.dart' show ForgotPasswordBloc;
+import '../../../bloc/forgotpassword/forgotpassword.event.dart' show ForgotPasswordSubmitted;
+import '../../../bloc/forgotpassword/forgotpassword.state.dart'
+    show ForgotPasswordLoading, ForgotPasswordState;
+import '../../../models/forgotpassword.credentials.model.dart' show ForgotPasswordCredentialsModel;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/forgotpassword.validator.dart' show ForgotPasswordValidator;
 import '../../dialog/signin.dialog.widget.dart' show SignInDialog;

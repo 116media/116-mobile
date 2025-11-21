@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
-import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
@@ -10,10 +10,11 @@ import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart'
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
-import '../../../bloc/resetpassword/resetpassword.bloc.dart';
-import '../../../bloc/resetpassword/resetpassword.event.dart';
-import '../../../bloc/resetpassword/resetpassword.state.dart';
-import '../../../models/resetpassword.credentials.model.dart';
+import '../../../bloc/resetpassword/resetpassword.bloc.dart' show ResetPasswordBloc;
+import '../../../bloc/resetpassword/resetpassword.event.dart' show ResetPasswordSubmitted;
+import '../../../bloc/resetpassword/resetpassword.state.dart'
+    show ResetPasswordLoading, ResetPasswordState;
+import '../../../models/resetpassword.credentials.model.dart' show ResetPasswordCredentialsModel;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/resetpassword.validator.dart' show ResetPasswordValidator;
 import '../../dialog/signin.dialog.widget.dart' show SignInDialog;
