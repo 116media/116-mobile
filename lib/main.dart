@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider, MultiBlocProvider;
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:flutter_native_splash/flutter_native_splash.dart' show FlutterNativeSplash;
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 
 import 'platform/connectivity/presentation/bloc/connectivity.bloc.dart' show ConnectivityBloc;
@@ -34,6 +35,9 @@ import 'shared/presentation/themes/app.theme.dart' show AppTheme;
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
 
   // Initialize Hive for local data persistence
   await initializeHive();
