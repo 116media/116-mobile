@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart'
+    show
+        PlatformElevatedButton,
+        MaterialElevatedButtonData,
+        CupertinoElevatedButtonData,
+        PlatformWidget;
 
 import '../../themes/extensions/build.context.extension.dart';
 import '../../utils/colors.util.dart' show ColorsUtil;
@@ -43,51 +49,46 @@ class SolidButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isButtonDisabled = isDisabled || isLoading;
+    final spinnerColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
 
-    return Opacity(
-      opacity: isButtonDisabled ? 0.6 : 1.0,
-      child: PlatformElevatedButton(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
-        onPressed: isButtonDisabled ? null : onPressed,
-        material: (_, _) => MaterialElevatedButtonData(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            padding: EdgeInsets.zero,
-            backgroundColor: background,
-            splashFactory: InkRipple.splashFactory,
-            foregroundColor: ColorsUtil.white.withValues(alpha: context.sizing.s48),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
-          ),
+    return PlatformElevatedButton(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: context.sizing.s12),
+      onPressed: isButtonDisabled ? null : onPressed,
+      material: (_, _) => MaterialElevatedButtonData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          padding: EdgeInsets.zero,
+          backgroundColor: background,
+          splashFactory: InkRipple.splashFactory,
+          foregroundColor: ColorsUtil.white.withValues(alpha: context.sizing.s48),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
         ),
-        cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: _getHeight(context),
-            minWidth: isFull ? double.infinity : 0,
-          ),
-          child: IntrinsicWidth(
-            child: Container(
-              height: _getHeight(context),
-              width: isFull ? double.infinity : null,
-              padding: EdgeInsets.symmetric(horizontal: context.sizing.s24),
-              child: Center(
-                child: isLoading
-                    ? SizedBox(
-                        width: context.sizing.s20,
-                        height: context.sizing.s20,
-                        child: CircularProgressIndicator(
+      ),
+      cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: _getHeight(context),
+          minWidth: isFull ? double.infinity : 0,
+        ),
+        child: IntrinsicWidth(
+          child: Container(
+            height: _getHeight(context),
+            width: isFull ? double.infinity : null,
+            padding: EdgeInsets.symmetric(horizontal: context.sizing.s24),
+            child: Center(
+              child: isLoading
+                  ? SizedBox(
+                      width: context.sizing.s20,
+                      height: context.sizing.s20,
+                      child: PlatformWidget(
+                        cupertino: (_, _) => CupertinoActivityIndicator(color: spinnerColor),
+                        material: (_, _) => CircularProgressIndicator(
                           strokeWidth: context.sizing.s2,
-                          valueColor: AlwaysStoppedAnimation<Color>(textColor ?? ColorsUtil.white),
-                        ),
-                      )
-                    : Text(
-                        text,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: textColor,
-                          fontWeight: FontWeight.w600,
+                          valueColor: AlwaysStoppedAnimation<Color>(spinnerColor),
                         ),
                       ),
-              ),
+                    )
+                  : Text(text, style: context.buttonTextStyle(textColor!)),
             ),
           ),
         ),
