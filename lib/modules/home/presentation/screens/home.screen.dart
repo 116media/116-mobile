@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
+import '../widgets/greeting/greeting.card.widget.dart' show GreetingCard;
 
 /// Home screen displaying the main content feed.
 ///
 /// Renders a scrollable list of content cards with theme integration.
+/// Includes a personalized greeting for authenticated users at the top.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -43,30 +45,33 @@ class HomeScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: context.sizing.s16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: articles.map((article) {
-          return Card(
-            elevation: 0,
-            margin: EdgeInsets.only(bottom: context.sizing.s16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
-            child: Padding(
-              padding: EdgeInsets.all(context.sizing.s24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    article['title']!,
-                    style: TextStyle(fontSize: context.sizing.s20, fontWeight: FontWeight.bold),
-                  ),
-                  Gap(context.sizing.s16),
-                  Text(
-                    article['content']!,
-                    style: TextStyle(fontSize: context.sizing.s16, height: context.sizing.s1_5),
-                  ),
-                ],
+        children: [
+          const GreetingCard(),
+          ...articles.map((article) {
+            return Card(
+              elevation: 0,
+              margin: EdgeInsets.only(bottom: context.sizing.s16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
+              child: Padding(
+                padding: EdgeInsets.all(context.sizing.s24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      article['title']!,
+                      style: TextStyle(fontSize: context.sizing.s20, fontWeight: FontWeight.bold),
+                    ),
+                    Gap(context.sizing.s16),
+                    Text(
+                      article['content']!,
+                      style: TextStyle(fontSize: context.sizing.s16, height: context.sizing.s1_5),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }),
+        ],
       ),
     );
   }
