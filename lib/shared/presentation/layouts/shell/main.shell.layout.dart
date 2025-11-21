@@ -1,8 +1,7 @@
+import 'package:cent16/shared/presentation/themes/extensions/build.context.extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../presentation/themes/extensions/build.context.extension.dart';
-import '../../../../card.dart' show Card4;
 import '../../../../modules/discover/presentation/constants/discover.constants.dart'
     show kDiscoverRoutePath;
 import '../../../../modules/favorite/presentation/constants/favorite.constants.dart'
@@ -72,11 +71,11 @@ class MainShellLayout extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           const AppBarLayout(),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Container(padding: EdgeInsets.all(context.sizing.s18), child: Card4()),
-              child,
-            ]),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: context.sizing.s12),
+              child: child,
+            ),
           ),
         ],
       ),
