@@ -3,8 +3,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'
 
 import '../../../../shared/infrastructure/exceptions/remote/socialauth.exception.dart'
     show SocialAuthException;
-import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.dart'
-    show UnknownException;
 import '../../application/data-sources/facebook.auth.datasource.port.dart'
     show IFacebookAuthDataSource;
 import '../../domain/entities/social-profile/social.profile.entity.dart' show SocialProfileEntity;
