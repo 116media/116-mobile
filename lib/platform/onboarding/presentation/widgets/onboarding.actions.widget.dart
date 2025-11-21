@@ -6,8 +6,7 @@ import '../../../../shared/presentation/animations/fade.animation.dart' show Fad
 import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
-import '../../../../modules/auth/presentation/widgets/shared/buttons/outline.button.dart'
-    show OutlineButton;
+import '../../../../shared/presentation/widgets/buttons/outline.button.dart' show OutlineButton;
 import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 
 /// Widget that displays action buttons for onboarding screens.

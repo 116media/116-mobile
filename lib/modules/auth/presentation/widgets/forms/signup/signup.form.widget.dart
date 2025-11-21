@@ -8,6 +8,8 @@ import '../../../../../../shared/presentation/animations/fade.animation.dart' sh
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
+import '../../../../../../shared/presentation/widgets/buttons/outline.button.dart'
+    show OutlineButton;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
@@ -25,7 +27,6 @@ import '../../../bloc/signup/signup.state.dart' show SignUpLoading;
 import '../../../models/signup.credentials.model.dart' show SignUpCredentialsModel;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signup.validator.dart' show SignUpValidator;
-import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/signin.dialog.widget.dart' show SignInDialog;
 import '../../shared/divider/divider.with.label.widget.dart' show DividerWithLabel;
