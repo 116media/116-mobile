@@ -9,6 +9,8 @@ import '../../../../../../shared/presentation/animations/fade.animation.dart' sh
 import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
+import '../../../../../../shared/presentation/widgets/buttons/outline.button.dart'
+    show OutlineButton;
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
 import '../../../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
@@ -25,7 +27,6 @@ import '../../../bloc/signin/signin.state.dart' show SignInLoading;
 import '../../../models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../../utils/dialog.utils.dart' show showAuthDialog;
 import '../../../validators/signin.validator.dart' show SignInValidator;
-import '../../shared/buttons/outline.button.dart' show OutlineButton;
 import '../../shared/buttons/social.login.button.dart' show SocialLoginButton, SocialPlatform;
 import '../../dialog/forgotpassword.dialog.widget.dart' show ForgotPasswordDialog;
 import '../../dialog/signup.dialog.widget.dart' show SignUpDialog;
@@ -177,6 +178,7 @@ class _SignInFormState extends State<SignInForm> {
                   child: SocialLoginButton(
                     onPressed: _handleGoogleSignIn,
                     platform: SocialPlatform.google,
+                    isLoading: isGoogleLoading,
                     isDisabled: isLoading || isSocialLoading,
                   ),
                 ),
@@ -184,6 +186,7 @@ class _SignInFormState extends State<SignInForm> {
                   child: SocialLoginButton(
                     onPressed: _handleFacebookSignIn,
                     platform: SocialPlatform.facebook,
+                    isLoading: isFacebookLoading,
                     isDisabled: isLoading || isSocialLoading,
                   ),
                 ),
