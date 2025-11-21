@@ -34,6 +34,8 @@ dependencies:
   internet_connection_checker_plus: ^2.9.1
   go_router: ^17.0.0
   panara_dialogs: ^0.1.5
+  google_sign_in: ^7.2.0
+  flutter_facebook_auth: ^7.1.2
 
 dev_dependencies:
   flutter_test:
