@@ -2,10 +2,12 @@ import '../../../../api/client/api_116.swagger.dart'
     show
         PublicForgotPasswordResponse,
         PublicLoginResponse,
+        PublicSocialLoginResponse,
         PublicResendOtpResponse,
         PublicResetPasswordResponse,
         PublicSignUpResponse,
         PublicVerifyOtpResponse;
+import '../../domain/entities/social-profile/social.profile.entity.dart' show SocialProfileEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
     show ForgotPasswordCredentialsModel;
 import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
@@ -90,4 +92,26 @@ abstract class IAuthRemoteDataSource {
   /// - [ServerException] if the server returns an error response (e.g., invalid OTP)
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   Future<PublicResetPasswordResponse> resetPassword(ResetPasswordCredentialsModel credentials);
+
+  /// Authenticates user with Google and sends profile data to backend.
+  ///
+  /// Sends Google profile data to backend API for user creation/authentication.
+  ///
+  /// **Returns:** [PublicLoginResponse] containing auth token and user data.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicSocialLoginResponse> signInWithGoogle(SocialProfileEntity profile);
+
+  /// Authenticates user with Facebook and sends profile data to backend.
+  ///
+  /// Sends Facebook profile data to backend API for user creation/authentication.
+  ///
+  /// **Returns:** [PublicLoginResponse] containing auth token and user data.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicSocialLoginResponse> signInWithFacebook(SocialProfileEntity profile);
 }
