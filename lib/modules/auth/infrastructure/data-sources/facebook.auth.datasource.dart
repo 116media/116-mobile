@@ -25,8 +25,9 @@ class FacebookAuthDataSource implements IFacebookAuthDataSource {
         permissions: ['email', 'public_profile'],
       );
 
+      /// Check login status: success, cancelled, or error
       if (result.status != LoginStatus.success) {
-        throw SocialAuthException('Facebook sign-in was cancelled by the user');
+        throw SocialAuthException('Facebook sign-in cancelled by the user');
       }
 
       final userData = await _facebookAuth.getUserData();
@@ -38,8 +39,8 @@ class FacebookAuthDataSource implements IFacebookAuthDataSource {
       );
     } on SocialAuthException {
       rethrow;
-    } catch (_) {
-      throw UnknownException();
+    } catch (e) {
+      throw SocialAuthException("Unexpected Facebook Sign-In error: $e");
     }
   }
 }
