@@ -1,10 +1,11 @@
 import 'dart:math' show min;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart'
+    show KeyEvent, KeyDownEvent, LogicalKeyboardKey, FilteringTextInputFormatter;
 
-import '../../animations/border.animation.dart' show BorderAnimation;
 import '../../themes/extensions/build.context.extension.dart';
+import '../../animations/border.animation.dart' show BorderAnimation;
 import '../../utils/colors.util.dart' show ColorsUtil;
 
 part 'base.textfield.widget.dart';
