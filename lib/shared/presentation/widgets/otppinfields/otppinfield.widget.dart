@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show KeyEvent, KeyDownEvent, LogicalKeyboardKey, FilteringTextInputFormatter;
 
+import '../../../../modules/auth/presentation/constants/auth.validation.constants.dart'
+    show kOtpLength;
 import '../../themes/extensions/build.context.extension.dart';
 import '../../animations/border.animation.dart' show BorderAnimation;
 import '../../utils/colors.util.dart' show ColorsUtil;
@@ -55,7 +57,7 @@ class OtpPinField extends StatefulWidget {
 
   OtpPinField({
     super.key,
-    this.length = 6,
+    this.length = kOtpLength,
     this.controller,
     this.onCompleted,
     this.validator,
@@ -230,10 +232,10 @@ class OtpPinFieldState extends State<OtpPinField> with TickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     final hasError = _errorText != null && _errorText!.isNotEmpty;
-    final borderWidth = hasError ? 2.0 : 1.0;
 
     final outerRadius = context.sizing.s6;
     final errorColor = context.colors.error;
+    final borderWidth = hasError ? 2.0 : 1.0;
     final innerRadius = outerRadius - borderWidth;
 
     return Column(
