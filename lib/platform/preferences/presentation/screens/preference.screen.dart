@@ -133,7 +133,7 @@ class _PreferenceScreenContent extends StatelessWidget {
                   // Continue Button
                   SolidButton(
                     isFull: true,
-                    text: 'Continue',
+                    text: "Continue",
                     size: ButtonSize.sm,
                     onPressed: () => _handleSavePreference(context),
                   ),
