@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
+import '../../../../../platform/session/application/usecases/update.auth.status.usecase.dart'
+    show UpdateAuthStatusUseCase;
+import '../../../../../platform/session/domain/enums/auth.status.enum.dart' show AuthStatus;
 import '../../../application/usecases/facebooksignin.usecase.dart' show FacebookSignInUseCase;
 import 'facebooksignin.event.dart' show FacebookSignInEvent, FacebookSignInSubmitted;
 import 'facebooksignin.state.dart'
@@ -8,12 +11,15 @@ import 'facebooksignin.state.dart'
 /// BLoC for handling Facebook sign-in authentication flow.
 ///
 /// Manages Facebook sign-in state and coordinates with FacebookSignInUseCase to
-/// authenticate users via Facebook OAuth. Emits different states based on the
-/// authentication result (loading, success, failure).
+/// authenticate users via Facebook OAuth. Updates session auth status on success.
+/// Emits different states based on the authentication result
+/// (loading, success, failure).
 class FacebookSignInBloc extends Bloc<FacebookSignInEvent, FacebookSignInState> {
   final FacebookSignInUseCase _facebookSignInUseCase;
+  final UpdateAuthStatusUseCase _updateAuthStatusUseCase;
 
-  FacebookSignInBloc(this._facebookSignInUseCase) : super(const FacebookSignInInitial()) {
+  FacebookSignInBloc(this._facebookSignInUseCase, this._updateAuthStatusUseCase)
+      : super(const FacebookSignInInitial()) {
     on<FacebookSignInSubmitted>(_onFacebookSignInSubmitted);
   }
 
@@ -22,9 +28,17 @@ class FacebookSignInBloc extends Bloc<FacebookSignInEvent, FacebookSignInState> 
 
     final result = await _facebookSignInUseCase.execute(null);
 
-    result.fold(
-      (failure) => emit(FacebookSignInFailure(failure)),
-      (response) => emit(FacebookSignInSuccess(response)),
+    await result.fold(
+      (failure) async => emit(FacebookSignInFailure(failure)),
+      (response) async {
+        // Social login users are already verified by the provider
+        await _updateAuthStatusUseCase.execute((
+          status: AuthStatus.authenticated,
+          userId: response.user.id,
+        ));
+
+        emit(FacebookSignInSuccess(response));
+      },
     );
   }
 }
