@@ -119,4 +119,36 @@ class AuthCachedRepository implements IAuthRepository {
     // The success/failure result doesn't need to be persisted.
     return _remoteRepository.resetPassword(credentials);
   }
+
+  @override
+  Future<Either<Failure, AuthResponseEntity>> signInWithGoogle() async {
+    final result = await _remoteRepository.signInWithGoogle();
+
+    // Only persist if successful
+    return result.fold((failure) => Left(failure), (authEntity) async {
+      try {
+        await _localDataSource.setToken(authEntity.token);
+        await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
+        return Right(authEntity);
+      } on CacheException catch (exception) {
+        return Left(ProblemMapper.toFailure(exception));
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, AuthResponseEntity>> signInWithFacebook() async {
+    final result = await _remoteRepository.signInWithFacebook();
+
+    // Only persist if successful
+    return result.fold((failure) => Left(failure), (authEntity) async {
+      try {
+        await _localDataSource.setToken(authEntity.token);
+        await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
+        return Right(authEntity);
+      } on CacheException catch (exception) {
+        return Left(ProblemMapper.toFailure(exception));
+      }
+    });
+  }
 }
