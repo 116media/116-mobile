@@ -1,6 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart'
     show GoogleSignIn, GoogleSignInAccount, GoogleSignInAuthentication, GoogleSignInException;
 
+import '../../../../shared/application/configs/env.config.dart' show EnvConfig;
 import '../../../../shared/infrastructure/exceptions/remote/socialauth.exception.dart'
     show SocialAuthException;
 import '../../application/data-sources/google.auth.datasource.port.dart' show IGoogleAuthDataSource;
@@ -37,9 +38,7 @@ class GoogleAuthDataSource implements IGoogleAuthDataSource {
         idToken: auth.idToken,
       );
     } on GoogleSignInException catch (e) {
-      throw SocialAuthException(
-        "Google sign-in failed: ${e.code.name} - ${e.description ?? 'Unknown error'}",
-      );
+      throw SocialAuthException("Google sign-in: ${e.description}");
     } on SocialAuthException {
       rethrow;
     } catch (e) {
@@ -56,7 +55,7 @@ class GoogleAuthDataSource implements IGoogleAuthDataSource {
   /// Throws [SocialAuthException] if initialization fails.
   Future<void> _initGoogleSignIn() async {
     try {
-      await _googleSignIn.initialize();
+      await _googleSignIn.initialize(serverClientId: EnvConfig.googleServerClientId);
       _isGoogleSignInInitialized = true;
     } catch (e) {
       throw SocialAuthException("Failed to initialize Google Sign-In: $e");
