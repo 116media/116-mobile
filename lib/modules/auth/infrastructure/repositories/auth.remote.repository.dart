@@ -5,6 +5,9 @@ import '../../../../shared/infrastructure/exceptions/remote/server.exception.dar
     show ServerException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
+import '../../application/data-sources/facebook.auth.datasource.port.dart'
+    show IFacebookAuthDataSource;
+import '../../application/data-sources/google.auth.datasource.port.dart' show IGoogleAuthDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
@@ -32,8 +35,14 @@ import '../mappers/auth.mapper.dart' show AuthMapper;
 /// Part of the infrastructure layer in Clean Architecture.
 class AuthRemoteRepository implements IAuthRepository {
   final IAuthRemoteDataSource _remoteDataSource;
+  final IGoogleAuthDataSource _googleAuthDataSource;
+  final IFacebookAuthDataSource _facebookAuthDataSource;
 
-  const AuthRemoteRepository(this._remoteDataSource);
+  const AuthRemoteRepository(
+    this._remoteDataSource,
+    this._googleAuthDataSource,
+    this._facebookAuthDataSource,
+  );
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signIn(SignInCredentialsModel credentials) async {
@@ -104,6 +113,36 @@ class AuthRemoteRepository implements IAuthRepository {
       final response = await _remoteDataSource.resetPassword(credentials);
       final resetPasswordEntity = AuthMapper.resetPasswordResponseFromDto(response);
       return Right(resetPasswordEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthResponseEntity>> signInWithGoogle() async {
+    try {
+      // Step 1: Get user profile from Google SDK
+      final profile = await _googleAuthDataSource.signIn();
+
+      // Step 2: Send profile to backend and get auth response
+      final response = await _remoteDataSource.signInWithGoogle(profile);
+      final authEntity = AuthMapper.authResponseFromPublicSocialLoginDto(response);
+      return Right(authEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthResponseEntity>> signInWithFacebook() async {
+    try {
+      // Step 1: Get user profile from Facebook SDK
+      final profile = await _facebookAuthDataSource.signIn();
+
+      // Step 2: Send profile to backend and get auth response
+      final response = await _remoteDataSource.signInWithFacebook(profile);
+      final authEntity = AuthMapper.authResponseFromPublicSocialLoginDto(response);
+      return Right(authEntity);
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
