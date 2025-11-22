@@ -14,7 +14,7 @@ class TermsAndConditions extends StatelessWidget {
         children: [
           TextSpan(
             text: "By continuing, you acknowledge that you understand and agree to the ",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: context.textTheme.bodySmall,
           ),
           WidgetSpan(
             child: GestureDetector(
@@ -23,7 +23,7 @@ class TermsAndConditions extends StatelessWidget {
               },
               child: Text(
                 "Terms & Conditions",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   color: context.colors.primary,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
@@ -32,7 +32,7 @@ class TermsAndConditions extends StatelessWidget {
               ),
             ),
           ),
-          TextSpan(text: " and ", style: Theme.of(context).textTheme.bodySmall),
+          TextSpan(text: " and ", style: context.textTheme.bodySmall),
           WidgetSpan(
             child: GestureDetector(
               onTap: () {
@@ -40,7 +40,7 @@ class TermsAndConditions extends StatelessWidget {
               },
               child: Text(
                 "Privacy Policy",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                style: context.textTheme.bodySmall?.copyWith(
                   color: context.colors.primary,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,

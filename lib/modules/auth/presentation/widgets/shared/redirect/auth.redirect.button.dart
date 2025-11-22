@@ -90,12 +90,12 @@ class AuthRedirectButton extends StatelessWidget {
           children: [
             Text(
               mainText,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+              style: context.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
             ),
             linkText != null
                 ? Text(
                     linkText,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: context.textTheme.bodySmall?.copyWith(
                       color: context.colors.primary,
                       fontWeight: FontWeight.w800,
                       decoration: TextDecoration.underline,
@@ -106,7 +106,7 @@ class AuthRedirectButton extends StatelessWidget {
             if (suffixText != null)
               Text(
                 suffixText!,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+                style: context.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
               ),
           ],
         ),

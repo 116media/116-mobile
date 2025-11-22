@@ -55,11 +55,11 @@ class GreetingCard extends StatelessWidget {
                 children: [
                   Text(
                     "Hi, ${userName.toCapitalized()} 👋",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: context.textTheme.headlineMedium,
                   ),
                   Text(
                     "When words stop coming out, music pops up.",
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    style: context.textTheme.labelSmall?.copyWith(
                       color: context.isDarkMode
                           ? ColorsUtil.white.withValues(alpha: context.sizing.s0_5)
                           : ColorsUtil.black.withValues(alpha: context.sizing.s0_5),
