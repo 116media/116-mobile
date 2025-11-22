@@ -18,6 +18,7 @@ import '../../utils/colors.util.dart' show ColorsUtil;
 ///   onPressed: () => Navigator.pop(context),
 ///   isLoading: false,
 ///   isDisabled: false,
+///   color: ColorsUtil.primary, // Optional custom color for border and text
 /// )
 /// ```
 class OutlineButton extends StatelessWidget {
@@ -25,6 +26,7 @@ class OutlineButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;
   final bool isDisabled;
+  final Color? color;
 
   const OutlineButton({
     super.key,
@@ -32,12 +34,15 @@ class OutlineButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.isDisabled = false,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
-    final borderColor = context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300;
+    final defaultTextColor = context.isDarkMode ? ColorsUtil.white : ColorsUtil.black;
+    final defaultBorderColor = context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300;
+    final textColor = color ?? defaultTextColor;
+    final borderColor = color ?? defaultBorderColor;
     final bool isButtonDisabled = isDisabled || isLoading;
 
     return Opacity(
