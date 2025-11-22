@@ -11,10 +11,12 @@ import 'package:flutter/material.dart';
 /// - [context]: The build context
 /// - [dialog]: The dialog widget to display
 /// - [closeExisting]: Whether to close existing dialog before opening new one (default: false)
+/// - [barrierDismissible]: Whether tapping outside the dialog dismisses it (default: false)
 Future<void> showAuthDialog(
   BuildContext context,
   Widget dialog, {
   bool closeExisting = false,
+  bool barrierDismissible = false,
 }) async {
   if (closeExisting) {
     Navigator.of(context).pop();
@@ -24,8 +26,9 @@ Future<void> showAuthDialog(
 
   await showGeneralDialog<Widget>(
     context: context,
-    barrierDismissible: false,
-    transitionDuration: const Duration(milliseconds: 500),
+    barrierDismissible: barrierDismissible,
+    barrierLabel: barrierDismissible ? 'Dismiss' : null,
+    transitionDuration: const Duration(milliseconds: 350),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       Tween<Offset> tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
       return SlideTransition(
