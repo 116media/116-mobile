@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/colors.util.dart' show ColorsUtil;
 import 'sizing.theme.dart' show SizingTheme;
 import 'themedata/bottomnav.themedata.dart' show BottomNavThemeData;
+import 'themedata/navbar.themedata.dart' show NavBarThemeData;
 
 /// Defines the application's theme configurations for both light and dark modes.
 ///
@@ -23,6 +24,7 @@ class AppTheme {
       secondary: ColorsUtil.secondary,
       error: ColorsUtil.error,
     ),
+    appBarTheme: NavBarThemeData.lightTheme,
     bottomNavigationBarTheme: BottomNavThemeData.lightTheme,
     extensions: <ThemeExtension<dynamic>>[SizingTheme.values],
   );
@@ -40,6 +42,7 @@ class AppTheme {
       secondary: ColorsUtil.secondary,
       error: ColorsUtil.error,
     ),
+    appBarTheme: NavBarThemeData.darkTheme,
     bottomNavigationBarTheme: BottomNavThemeData.darkTheme,
     extensions: <ThemeExtension<dynamic>>[SizingTheme.values],
   );
