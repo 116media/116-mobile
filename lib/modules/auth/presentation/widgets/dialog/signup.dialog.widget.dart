@@ -9,6 +9,8 @@ import '../../../../../shared/presentation/themes/extensions/build.context.exten
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
+import '../../../../../shared/presentation/widgets/bottom-sheet/bottomsheet.pullbar.dart'
+    show BottomSheetPullBar;
 import '../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../bloc/facebooksignin/facebooksignin.bloc.dart' show FacebookSignInBloc;
 import '../../bloc/facebooksignin/facebooksignin.state.dart'
@@ -32,7 +34,9 @@ import 'verifyotp.dialog.widget.dart' show VerifyOtpDialog;
 /// - Success with unverified account: Shows verification dialog
 /// - Failure: Shows error dialog
 class SignUpDialog extends StatefulWidget {
-  const SignUpDialog({super.key});
+  final VoidCallback? onGuestContinue;
+
+  const SignUpDialog({super.key, this.onGuestContinue});
 
   @override
   State<SignUpDialog> createState() => _SignUpDialogState();
@@ -88,21 +92,35 @@ class _SignUpDialogState extends State<SignUpDialog> {
         listeners: [
           BlocListener<SignUpBloc, SignUpState>(listener: _signUpStateListener),
           BlocListener<GoogleSignInBloc, GoogleSignInState>(listener: _googleSignInStateListener),
-          BlocListener<FacebookSignInBloc, FacebookSignInState>(listener: _facebookSignInStateListener),
+          BlocListener<FacebookSignInBloc, FacebookSignInState>(
+            listener: _facebookSignInStateListener,
+          ),
         ],
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(context.sizing.s24),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+          body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.of(context).pop(),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () {}, // Prevent taps on dialog content from closing it
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(context.sizing.s24),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+                    ),
+                    child: Column(
+                      children: [
+                        const BottomSheetPullBar(),
+                        Center(child: SignUpForm(onGuestContinue: widget.onGuestContinue)),
+                      ],
+                    ),
+                  ),
                 ),
-                child: const Center(child: SignUpForm()),
               ),
             ),
           ),
