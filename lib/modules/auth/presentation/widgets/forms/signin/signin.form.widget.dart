@@ -37,7 +37,9 @@ import '../../shared/redirect/auth.redirect.button.dart'
 import '../../shared/termsconditions/termsconditions.widget.dart' show TermsAndConditions;
 
 class SignInForm extends StatefulWidget {
-  const SignInForm({super.key});
+  final VoidCallback? onGuestContinue;
+
+  const SignInForm({super.key, this.onGuestContinue});
 
   @override
   State<SignInForm> createState() => _SignInFormState();
@@ -57,8 +59,13 @@ class _SignInFormState extends State<SignInForm> {
 
   /// Shows the sign-up dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
+  /// Passes the onGuestContinue callback to maintain consistent behavior.
   Future<void> _showSignUpDialog() async {
-    await showAuthDialog(context, const SignUpDialog(), closeExisting: true);
+    await showAuthDialog(
+      context,
+      SignUpDialog(onGuestContinue: widget.onGuestContinue),
+      closeExisting: true,
+    );
   }
 
   /// Shows the forgot password dialog with a slide-up animation.
@@ -81,14 +88,21 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
-  /// Handles guest access navigation.
-  /// Closes the dialog and navigates to the home screen.
+  /// Handles guest access.
+  /// Closes the dialog and executes the onGuestContinue callback if provided,
+  /// otherwise defaults to navigating to home.
   void _handleContinueAsGuest() async {
     await OnboardingUtil.markCompleted();
 
     if (mounted) {
       Navigator.of(context).pop();
-      context.go(kHomeRoutePath);
+
+      // If custom callback provided, use it; otherwise navigate to home
+      if (widget.onGuestContinue != null) {
+        widget.onGuestContinue!();
+      } else {
+        context.go(kHomeRoutePath);
+      }
     }
   }
 
@@ -119,7 +133,7 @@ class _SignInFormState extends State<SignInForm> {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: context.sizing.s32),
         child: Column(
-          spacing: context.sizing.s12,
+          spacing: context.sizing.s16,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -172,10 +186,11 @@ class _SignInFormState extends State<SignInForm> {
             const DividerWithLabel(label: 'OR'),
 
             Row(
-              spacing: context.sizing.s6,
+              spacing: context.sizing.s12,
               children: [
                 Expanded(
                   child: SocialLoginButton(
+                    size: ButtonSize.sm,
                     onPressed: _handleGoogleSignIn,
                     platform: SocialPlatform.google,
                     isLoading: isGoogleLoading,
@@ -184,6 +199,7 @@ class _SignInFormState extends State<SignInForm> {
                 ),
                 Expanded(
                   child: SocialLoginButton(
+                    size: ButtonSize.sm,
                     onPressed: _handleFacebookSignIn,
                     platform: SocialPlatform.facebook,
                     isLoading: isFacebookLoading,
@@ -193,7 +209,11 @@ class _SignInFormState extends State<SignInForm> {
               ],
             ),
 
-            OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+            OutlineButton(
+              size: ButtonSize.sm,
+              text: "Continue as guest",
+              onPressed: _handleContinueAsGuest,
+            ),
 
             AuthRedirectButton(
               isCentered: true,
