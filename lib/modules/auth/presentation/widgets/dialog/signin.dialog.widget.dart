@@ -9,6 +9,8 @@ import '../../../../../shared/presentation/themes/extensions/build.context.exten
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
+import '../../../../../shared/presentation/widgets/bottom-sheet/bottomsheet.pullbar.dart'
+    show BottomSheetPullBar;
 import '../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../bloc/facebooksignin/facebooksignin.bloc.dart' show FacebookSignInBloc;
 import '../../bloc/facebooksignin/facebooksignin.state.dart'
@@ -30,7 +32,9 @@ import '../forms/signin/signin.form.widget.dart' show SignInForm;
 /// - Success: Navigates to home screen
 /// - Failure: Shows error dialog
 class SignInDialog extends StatefulWidget {
-  const SignInDialog({super.key});
+  final VoidCallback? onGuestContinue;
+
+  const SignInDialog({super.key, this.onGuestContinue});
 
   @override
   State<SignInDialog> createState() => _SignInDialogState();
@@ -90,21 +94,35 @@ class _SignInDialogState extends State<SignInDialog> {
         listeners: [
           BlocListener<SignInBloc, SignInState>(listener: _signInStateListener),
           BlocListener<GoogleSignInBloc, GoogleSignInState>(listener: _googleSignInStateListener),
-          BlocListener<FacebookSignInBloc, FacebookSignInState>(listener: _facebookSignInStateListener),
+          BlocListener<FacebookSignInBloc, FacebookSignInState>(
+            listener: _facebookSignInStateListener,
+          ),
         ],
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(context.sizing.s24),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+          body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.of(context).pop(),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () {}, // Prevent taps on dialog content from closing it
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(context.sizing.s24),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
+                    ),
+                    child: Column(
+                      children: [
+                        const BottomSheetPullBar(),
+                        Center(child: SignInForm(onGuestContinue: widget.onGuestContinue)),
+                      ],
+                    ),
+                  ),
                 ),
-                child: const Center(child: SignInForm()),
               ),
             ),
           ),
