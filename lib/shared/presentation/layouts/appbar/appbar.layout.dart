@@ -10,7 +10,10 @@ import '../searchbar/searchbar.layout.dart' show SearchBarLayout;
 /// plus a search bar in the bottom section. Uses [SliverAppBar] for
 /// scroll behavior integration.
 class AppBarLayout extends StatelessWidget {
-  const AppBarLayout({super.key});
+  /// Callback triggered when the hamburger menu button is tapped.
+  final VoidCallback? onMenuTap;
+
+  const AppBarLayout({super.key, this.onMenuTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +28,7 @@ class AppBarLayout extends StatelessWidget {
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Colors.white),
         iconSize: context.sizing.s32,
-        onPressed: () {
-          /// TODO: Implement hamburger menu action
-        },
+        onPressed: onMenuTap,
       ),
       title: Logo(type: LogoType.plain, isDarkTheme: true, height: context.sizing.s32),
       actions: [
