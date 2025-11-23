@@ -13,6 +13,7 @@ import '../../../platform/preferences/presentation/routes/preferences.route.dart
     show preferencesRoutes;
 import '../../../platform/session/presentation/bloc/session.bloc.dart' show SessionBloc;
 import '../../../platform/session/presentation/bloc/session.state.dart' show SessionSuccess;
+import '../../../platform/settings/presentation/routes/settings.route.dart' show settingsRoutes;
 import '../../../platform/splash/presentation/constants/splash.constants.dart'
     show kSplashRoutePath;
 import '../../../platform/splash/presentation/routes/splash.route.dart' show splashRoutes;
@@ -84,7 +85,7 @@ class AppRouter {
         return null;
       },
       refreshListenable: SessionBlocRefreshNotifier(sessionBloc),
-      routes: [...splashRoutes, ...preferencesRoutes, ...onboardingRoutes, ...mainShellRoutes],
+      routes: [...splashRoutes, ...preferencesRoutes, ...onboardingRoutes, ...settingsRoutes, ...mainShellRoutes],
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Page not found: ${state.uri.path}'))),
     );
