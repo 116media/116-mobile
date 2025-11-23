@@ -58,9 +58,9 @@ class LanguageOption extends StatelessWidget {
                       Text(
                         language.nativeName,
                         style: TextStyle(
-                          fontSize: context.sizing.s16,
-                          fontWeight: FontWeight.w600,
                           color: textColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: context.sizing.s16,
                         ),
                       ),
                       Text(
