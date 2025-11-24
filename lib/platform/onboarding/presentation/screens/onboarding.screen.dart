@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 
 import '../../../../modules/auth/presentation/utils/dialog.utils.dart' show showAuthDialog;
 import '../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
