@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute;
 
 import '../constants/onboarding.constants.dart' show kOnboardingRoutePath, kOnboardingRouteName;
 import '../screens/onboarding.screen.dart' show OnboardingScreen;

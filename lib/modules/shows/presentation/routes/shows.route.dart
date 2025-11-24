@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute;
 
 import '../constants/shows.constants.dart' show kShowsRoutePath, kShowsRouteName;
 import '../screens/shows.screen.dart' show ShowsScreen;

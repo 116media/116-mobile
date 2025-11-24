@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute;
 
 import '../constants/home.constants.dart' show kHomeRoutePath, kHomeRouteName;
 import '../screens/home.screen.dart' show HomeScreen;

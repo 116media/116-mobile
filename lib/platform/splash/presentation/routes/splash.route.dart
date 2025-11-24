@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute;
 
 import '../constants/splash.constants.dart' show kSplashRoutePath, kSplashRouteName;
 import '../screens/splash.screen.dart' show SplashScreen;

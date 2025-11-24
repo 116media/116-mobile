@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show ShellRoute;
 
 import '../../../../modules/discover/presentation/routes/discover.route.dart' show discoverRoutes;
 import '../../../../modules/favorite/presentation/routes/favorite.route.dart' show favoriteRoutes;

@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute;
 
 import '../constants/favorite.constants.dart' show kFavoriteRoutePath, kFavoriteRouteName;
 import '../screens/favorite.screen.dart' show FavoriteScreen;
