@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouter, GoRouterState;
 
 import '../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../layouts/shell/main.shell.route.dart' show mainShellRoutes;
@@ -85,7 +85,13 @@ class AppRouter {
         return null;
       },
       refreshListenable: SessionBlocRefreshNotifier(sessionBloc),
-      routes: [...splashRoutes, ...preferencesRoutes, ...onboardingRoutes, ...settingsRoutes, ...mainShellRoutes],
+      routes: [
+        ...splashRoutes,
+        ...preferencesRoutes,
+        ...onboardingRoutes,
+        ...settingsRoutes,
+        ...mainShellRoutes,
+      ],
       errorBuilder: (context, state) =>
           Scaffold(body: Center(child: Text('Page not found: ${state.uri.path}'))),
     );
