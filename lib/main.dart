@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider, MultiBlocProvider;
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:flutter_native_splash/flutter_native_splash.dart' show FlutterNativeSplash;
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouter;
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 
 import 'platform/connectivity/presentation/bloc/connectivity.bloc.dart' show ConnectivityBloc;
