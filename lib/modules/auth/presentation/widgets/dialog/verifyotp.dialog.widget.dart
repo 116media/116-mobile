@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'
     show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 
 import '../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
     show OnboardingUtil;
@@ -9,6 +9,8 @@ import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
+import '../../../../../shared/presentation/widgets/bottom-sheet/bottomsheet.pullbar.dart'
+    show BottomSheetPullBar;
 import '../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../bloc/resendotp/resendotp.bloc.dart' show ResendOtpBloc;
 import '../../bloc/resendotp/resendotp.state.dart'
@@ -109,8 +111,13 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
                   color: backgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),
                 ),
-                child: Center(
-                  child: VerifyOtpForm(key: _formKey, email: widget.email),
+                child: Column(
+                  children: [
+                    const BottomSheetPullBar(),
+                    Center(
+                      child: VerifyOtpForm(key: _formKey, email: widget.email),
+                    ),
+                  ],
                 ),
               ),
             ),

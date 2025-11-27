@@ -14,26 +14,29 @@ class LanguageOption extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final LanguageEntity language;
+  final Color? unselectedColor;
 
   const LanguageOption({
     super.key,
     required this.onTap,
     required this.language,
     required this.isSelected,
+    this.unselectedColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.isDarkMode;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final backgroundColor = unselectedColor ?? context.backgroundColor;
+    final textColor = isDarkMode ? ColorsUtil.white : ColorsUtil.black;
     final selectedColor = isDarkMode ? ColorsUtil.slate700 : ColorsUtil.slate200;
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(context.sizing.s8),
-        color: isSelected ? selectedColor : context.backgroundColor,
+        color: isSelected ? selectedColor : backgroundColor,
         border: Border.all(
-          width: isSelected ? context.sizing.s2 : context.sizing.s1,
+          width: isSelected ? context.sizing.s2_5 : context.sizing.s1,
           color: isSelected ? context.primaryColor : selectedColor,
         ),
       ),
@@ -58,9 +61,9 @@ class LanguageOption extends StatelessWidget {
                       Text(
                         language.nativeName,
                         style: TextStyle(
-                          fontSize: context.sizing.s16,
-                          fontWeight: FontWeight.w600,
                           color: textColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: context.sizing.s16,
                         ),
                       ),
                       Text(

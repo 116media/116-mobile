@@ -4,6 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart' show GoogleSignIn;
 import 'package:hive_ce/hive.dart' show Box, Hive;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116;
+import '../../../../platform/session/application/usecases/update.auth.status.usecase.dart'
+    show UpdateAuthStatusUseCase;
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../../application/data-sources/auth.remote.datasource.port.dart' show IAuthRemoteDataSource;
 import '../../application/data-sources/facebook.auth.datasource.port.dart'
@@ -71,12 +73,22 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerFactory<FacebookSignInUseCase>(() => FacebookSignInUseCase(sl<IAuthRepository>()));
 
   // BLoCs
-  sl.registerFactory<SignInBloc>(() => SignInBloc(sl<SignInUseCase>()));
-  sl.registerFactory<SignUpBloc>(() => SignUpBloc(sl<SignUpUseCase>()));
-  sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl<VerifyOtpUseCase>()));
+  sl.registerFactory<SignInBloc>(
+    () => SignInBloc(sl<SignInUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
+  sl.registerFactory<SignUpBloc>(
+    () => SignUpBloc(sl<SignUpUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
+  sl.registerFactory<VerifyOtpBloc>(
+    () => VerifyOtpBloc(sl<VerifyOtpUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
   sl.registerFactory<ResendOtpBloc>(() => ResendOtpBloc(sl<ResendOtpUseCase>()));
   sl.registerFactory<ForgotPasswordBloc>(() => ForgotPasswordBloc(sl<ForgotPasswordUseCase>()));
   sl.registerFactory<ResetPasswordBloc>(() => ResetPasswordBloc(sl<ResetPasswordUseCase>()));
-  sl.registerFactory<GoogleSignInBloc>(() => GoogleSignInBloc(sl<GoogleSignInUseCase>()));
-  sl.registerFactory<FacebookSignInBloc>(() => FacebookSignInBloc(sl<FacebookSignInUseCase>()));
+  sl.registerFactory<GoogleSignInBloc>(
+    () => GoogleSignInBloc(sl<GoogleSignInUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
+  sl.registerFactory<FacebookSignInBloc>(
+    () => FacebookSignInBloc(sl<FacebookSignInUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
 }

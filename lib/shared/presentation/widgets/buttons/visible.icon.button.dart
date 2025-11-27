@@ -32,12 +32,12 @@ class VisibleIconButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         materialIcon: Icon(
           size: context.sizing.s24,
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
           isPasswordVisible ? Icons.visibility : Icons.visibility_off,
         ),
         cupertinoIcon: Icon(
           size: context.sizing.s24,
-          color: Theme.of(context).primaryColor,
+          color: context.primaryColor,
           isPasswordVisible ? Icons.visibility : Icons.visibility_off,
         ),
         onPressed: onPressed,

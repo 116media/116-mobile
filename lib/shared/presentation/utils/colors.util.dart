@@ -277,12 +277,12 @@ class ColorsUtil {
   static const Color rose800 = Color(0xFF9F1239);
   static const Color rose900 = Color(0xFF881337);
 
-  static const Color twitter = Color.fromRGBO(29, 161, 242, 1.0);
-  static const Color instagram = Color.fromRGBO(225, 48, 108, 1.0);
-  static const Color facebook = Color.fromRGBO(66, 103, 178, 1.0);
-  static const Color youtube = Color.fromRGBO(255, 0, 0, 1.0);
-  static const Color google = Color.fromRGBO(228, 94, 82, 1.0);
-  static const Color whatsapp = Color.fromRGBO(37, 211, 102, 1.0);
+  static const Color twitter = Color(0xFF1DA1F2);
+  static const Color instagram = Color(0xFFE1306C);
+  static const Color facebook = Color(0xFF1877F2);
+  static const Color youtube = Color(0xFFFF0000);
+  static const Color google = Color(0xFFE45E52);
+  static const Color whatsapp = Color(0xFF25D366);
 
   static MaterialColor get primarySwatch => _createMaterialColor(primary);
   static MaterialColor get secondarySwatch => _createMaterialColor(secondary);

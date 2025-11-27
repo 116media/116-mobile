@@ -64,7 +64,7 @@ class SolidButton extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
         ),
       ),
-      cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero),
+      cupertino: (_, _) => CupertinoElevatedButtonData(padding: EdgeInsets.zero, color: background),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: _getHeight(context),

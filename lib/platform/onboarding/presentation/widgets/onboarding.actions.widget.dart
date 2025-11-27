@@ -61,7 +61,11 @@ class OnboardingActions extends StatelessWidget {
                     text: "Sign In / Sign Up",
                     onPressed: onGetStarted,
                   ),
-                  OutlineButton(text: "Continue as guest", onPressed: onContinueAsGuest),
+                  OutlineButton(
+                    size: ButtonSize.sm,
+                    text: "Continue as guest",
+                    onPressed: onContinueAsGuest,
+                  ),
                 ],
               ),
             ),
@@ -74,7 +78,7 @@ class OnboardingActions extends StatelessWidget {
                 onPressed: onSkip,
                 child: Text(
                   'Skip',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: context.textTheme.bodyMedium?.copyWith(
                     color: textColor.withValues(alpha: context.sizing.s0_5),
                     fontWeight: FontWeight.w500,
                   ),

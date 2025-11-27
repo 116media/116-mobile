@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, ReadContext;
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 
 import '../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../shared/presentation/providers/theme.provider.dart';

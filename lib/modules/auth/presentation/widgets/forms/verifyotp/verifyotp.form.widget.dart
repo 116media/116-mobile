@@ -178,7 +178,11 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             ),
           ),
 
-          OutlineButton(text: 'Cancel', onPressed: () => Navigator.of(context).pop()),
+          OutlineButton(
+            text: 'Cancel',
+            size: ButtonSize.sm,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ],
       ),
     );

@@ -9,6 +9,8 @@ import 'package:colorful_iconify_flutter/icons/logos.dart';
 import '../../../../../../shared/presentation/extensions/string.extension.dart';
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
+    show ButtonSize;
 
 /// Social media platform options for social login.
 enum SocialPlatform { google, facebook }
@@ -24,6 +26,7 @@ enum SocialPlatform { google, facebook }
 ///   platform: SocialPlatform.google,
 ///   onPressed: () => _handleGoogleLogin(),
 ///   isLoading: false,
+///   size: ButtonSize.md,
 /// )
 /// ```
 class SocialLoginButton extends StatelessWidget {
@@ -31,6 +34,7 @@ class SocialLoginButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;
   final bool isDisabled;
+  final ButtonSize size;
 
   const SocialLoginButton({
     super.key,
@@ -38,7 +42,18 @@ class SocialLoginButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.isDisabled = false,
+    this.size = ButtonSize.md,
   });
+
+  /// Returns the height based on the size variant.
+  double _getHeight(BuildContext context) {
+    return switch (size) {
+      ButtonSize.xs => context.sizing.s40,
+      ButtonSize.sm => context.sizing.s48,
+      ButtonSize.md => context.sizing.s60,
+      ButtonSize.lg => context.sizing.s72,
+    };
+  }
 
   /// Returns the iconify icon string for the specified platform.
   String get _iconData => {
@@ -73,43 +88,48 @@ class SocialLoginButton extends StatelessWidget {
 
     return Opacity(
       opacity: isDisabled ? 0.6 : 1.0,
-      child: PlatformWidget(
-        cupertino: (_, _) => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(context.sizing.s8),
-            border: Border.all(color: borderColor, width: context.sizing.s1_5),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: _getHeight(context)),
+        child: PlatformWidget(
+          cupertino: (_, _) => Container(
+            height: _getHeight(context),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(context.sizing.s8),
+              border: Border.all(color: borderColor, width: context.sizing.s1_5),
+            ),
+            child: PlatformTextButton(
+              onPressed: isDisabled ? null : onPressed,
+              padding: EdgeInsets.symmetric(
+                vertical: context.sizing.s12,
+                horizontal: context.sizing.s16,
+              ),
+              child: _buildButtonContent(
+                context,
+                textColor,
+                CupertinoActivityIndicator(color: textColor),
+              ),
+            ),
           ),
-          child: PlatformTextButton(
+          material: (_, _) => OutlinedButton(
             onPressed: isDisabled ? null : onPressed,
-            padding: EdgeInsets.symmetric(
-              vertical: context.sizing.s14,
-              horizontal: context.sizing.s16,
+            style: OutlinedButton.styleFrom(
+              minimumSize: Size.fromHeight(_getHeight(context)),
+              padding: EdgeInsets.symmetric(
+                vertical: context.sizing.s12,
+                horizontal: context.sizing.s16,
+              ),
+              backgroundColor: Colors.transparent,
+              splashFactory: InkRipple.splashFactory,
+              side: BorderSide(color: borderColor, width: context.sizing.s1_5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
             ),
             child: _buildButtonContent(
               context,
               textColor,
-              CupertinoActivityIndicator(color: textColor),
-            ),
-          ),
-        ),
-        material: (_, _) => OutlinedButton(
-          onPressed: isDisabled ? null : onPressed,
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(
-              vertical: context.sizing.s14,
-              horizontal: context.sizing.s16,
-            ),
-            backgroundColor: Colors.transparent,
-            splashFactory: InkRipple.splashFactory,
-            side: BorderSide(color: borderColor, width: context.sizing.s1_5),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s8)),
-          ),
-          child: _buildButtonContent(
-            context,
-            textColor,
-            CircularProgressIndicator(
-              strokeWidth: context.sizing.s2,
-              valueColor: AlwaysStoppedAnimation<Color>(textColor),
+              CircularProgressIndicator(
+                strokeWidth: context.sizing.s2,
+                valueColor: AlwaysStoppedAnimation<Color>(textColor),
+              ),
             ),
           ),
         ),

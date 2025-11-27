@@ -49,7 +49,7 @@ class OnboardingView extends StatelessWidget {
                       child: Text(
                         textAlign: TextAlign.center,
                         onboardingItems.all[index].title,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        style: context.textTheme.titleLarge?.copyWith(
                           color: textColor,
                           fontWeight: FontWeight.w700,
                           fontSize: context.sizing.s24,
@@ -63,7 +63,7 @@ class OnboardingView extends StatelessWidget {
                       child: Text(
                         textAlign: TextAlign.center,
                         onboardingItems.all[index].description,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: context.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           fontSize: context.sizing.s16,
                           color: textColor.withValues(alpha: context.sizing.s0_5),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, SelectContext;
 
 import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
@@ -36,7 +36,9 @@ import '../../shared/redirect/auth.redirect.button.dart'
 import '../../shared/termsconditions/termsconditions.widget.dart' show TermsAndConditions;
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+  final VoidCallback? onGuestContinue;
+
+  const SignUpForm({super.key, this.onGuestContinue});
 
   @override
   State<SignUpForm> createState() => _SignUpFormState();
@@ -58,8 +60,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
   /// Shows the sign-in dialog with a slide-up animation.
   /// Closes the current dialog before opening the new one.
+  /// Passes the onGuestContinue callback to maintain consistent behavior.
   Future<void> _showSignInDialog() async {
-    await showAuthDialog(context, const SignInDialog(), closeExisting: true);
+    await showAuthDialog(
+      context,
+      SignInDialog(onGuestContinue: widget.onGuestContinue),
+      closeExisting: true,
+    );
   }
 
   /// Handles form submission after validation.
@@ -79,14 +86,20 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  /// Handles guest access navigation.
-  /// Closes the dialog and navigates to the home screen.
+  /// Handles guest access.
+  /// Closes the dialog and executes the onGuestContinue callback if provided,
+  /// otherwise defaults to navigating to home.
   void _handleContinueAsGuest() async {
     await OnboardingUtil.markCompleted();
 
     if (mounted) {
       Navigator.of(context).pop();
-      context.go(kHomeRoutePath);
+
+      if (widget.onGuestContinue != null) {
+        widget.onGuestContinue!();
+      } else {
+        context.go(kHomeRoutePath);
+      }
     }
   }
 
@@ -172,10 +185,11 @@ class _SignUpFormState extends State<SignUpForm> {
             const DividerWithLabel(label: 'OR'),
 
             Row(
-              spacing: context.sizing.s6,
+              spacing: context.sizing.s12,
               children: [
                 Expanded(
                   child: SocialLoginButton(
+                    size: ButtonSize.sm,
                     onPressed: _handleGoogleSignIn,
                     platform: SocialPlatform.google,
                     isDisabled: isLoading || isSocialLoading,
@@ -183,6 +197,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 Expanded(
                   child: SocialLoginButton(
+                    size: ButtonSize.sm,
                     onPressed: _handleFacebookSignIn,
                     platform: SocialPlatform.facebook,
                     isDisabled: isLoading || isSocialLoading,
@@ -191,7 +206,11 @@ class _SignUpFormState extends State<SignUpForm> {
               ],
             ),
 
-            OutlineButton(text: "Continue as guest", onPressed: _handleContinueAsGuest),
+            OutlineButton(
+              size: ButtonSize.sm,
+              text: "Continue as guest",
+              onPressed: _handleContinueAsGuest,
+            ),
 
             AuthRedirectButton(
               isCentered: true,
