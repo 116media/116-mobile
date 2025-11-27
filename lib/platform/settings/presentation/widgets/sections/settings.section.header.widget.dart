@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 
-/// Section header for settings groups.
+/// Simple header widget used to label sections within the settings page.
+///
+/// Displays the provided [title] with section-appropriate styling and spacing,
+/// helping visually separate different groups of settings items.
 class SettingsSectionHeader extends StatelessWidget {
   final String title;
 
