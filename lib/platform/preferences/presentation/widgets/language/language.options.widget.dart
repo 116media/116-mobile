@@ -3,11 +3,13 @@ import 'package:gap/gap.dart';
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
+import '../../../../../shared/presentation/widgets/country-picker/country.flag.widget.dart'
+    show CountryFlagImage;
 import '../../../domain/entities/language/language.entity.dart' show LanguageEntity;
 
 /// A selectable card widget representing a single language option.
 ///
-/// This widget displays a language choice with its flag emoji, native name,
+/// This widget displays a language choice with its flag widget, native name,
 /// and English name. It provides visual feedback for selection state and
 /// supports tap interactions.
 class LanguageOption extends StatelessWidget {
@@ -47,13 +49,17 @@ class LanguageOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(context.sizing.s8),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: context.sizing.s12,
-              vertical: context.sizing.s6,
+              vertical: context.sizing.s16,
+              horizontal: context.sizing.s16,
             ),
             child: Row(
               children: [
-                Text(language.flagEmoji, style: TextStyle(fontSize: context.sizing.s48)),
-                Gap(context.sizing.s20),
+                CountryFlagImage(
+                  country: language.country,
+                  width: context.sizing.s44,
+                  height: context.sizing.s32,
+                ),
+                Gap(context.sizing.s16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
