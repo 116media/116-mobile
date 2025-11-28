@@ -9,7 +9,7 @@ import '../../../../../platform/preferences/presentation/bloc/preferences.event.
 import '../../../../../platform/preferences/presentation/widgets/language/language.options.widget.dart'
     show LanguageOption;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
-import '../../../../../shared/presentation/widgets/bottom-sheet/bottomsheet.pullbar.dart'
+import '../../../../../shared/presentation/widgets/bottomsheet/bottomsheet.pullbar.dart'
     show BottomSheetPullBar;
 import '../../../../../shared/presentation/widgets/header/header.title.dart' show HeaderTitle;
 
