@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LanguageEntity {
 
- String get code; String get nativeName; String get englishName; String get flagEmoji;
+ String get code; String get nativeName; String get englishName; WorldCountry get country;
 /// Create a copy of LanguageEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LanguageEntityCopyWith<LanguageEntity> get copyWith => _$LanguageEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LanguageEntity&&(identical(other.code, code) || other.code == code)&&(identical(other.nativeName, nativeName) || other.nativeName == nativeName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.flagEmoji, flagEmoji) || other.flagEmoji == flagEmoji));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LanguageEntity&&(identical(other.code, code) || other.code == code)&&(identical(other.nativeName, nativeName) || other.nativeName == nativeName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.country, country) || other.country == country));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,nativeName,englishName,flagEmoji);
+int get hashCode => Object.hash(runtimeType,code,nativeName,englishName,country);
 
 @override
 String toString() {
-  return 'LanguageEntity(code: $code, nativeName: $nativeName, englishName: $englishName, flagEmoji: $flagEmoji)';
+  return 'LanguageEntity(code: $code, nativeName: $nativeName, englishName: $englishName, country: $country)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LanguageEntityCopyWith<$Res>  {
   factory $LanguageEntityCopyWith(LanguageEntity value, $Res Function(LanguageEntity) _then) = _$LanguageEntityCopyWithImpl;
 @useResult
 $Res call({
- String code, String nativeName, String englishName, String flagEmoji
+ String code, String nativeName, String englishName, WorldCountry country
 });
 
 
@@ -62,13 +62,13 @@ class _$LanguageEntityCopyWithImpl<$Res>
 
 /// Create a copy of LanguageEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? nativeName = null,Object? englishName = null,Object? flagEmoji = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? nativeName = null,Object? englishName = null,Object? country = null,}) {
   return _then(_self.copyWith(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,nativeName: null == nativeName ? _self.nativeName : nativeName // ignore: cast_nullable_to_non_nullable
 as String,englishName: null == englishName ? _self.englishName : englishName // ignore: cast_nullable_to_non_nullable
-as String,flagEmoji: null == flagEmoji ? _self.flagEmoji : flagEmoji // ignore: cast_nullable_to_non_nullable
-as String,
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as WorldCountry,
   ));
 }
 
@@ -153,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String nativeName,  String englishName,  String flagEmoji)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String nativeName,  String englishName,  WorldCountry country)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LanguageEntity() when $default != null:
-return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);case _:
+return $default(_that.code,_that.nativeName,_that.englishName,_that.country);case _:
   return orElse();
 
 }
@@ -174,10 +174,10 @@ return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String nativeName,  String englishName,  String flagEmoji)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String nativeName,  String englishName,  WorldCountry country)  $default,) {final _that = this;
 switch (_that) {
 case _LanguageEntity():
-return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);case _:
+return $default(_that.code,_that.nativeName,_that.englishName,_that.country);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +194,10 @@ return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String nativeName,  String englishName,  String flagEmoji)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String nativeName,  String englishName,  WorldCountry country)?  $default,) {final _that = this;
 switch (_that) {
 case _LanguageEntity() when $default != null:
-return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);case _:
+return $default(_that.code,_that.nativeName,_that.englishName,_that.country);case _:
   return null;
 
 }
@@ -209,13 +209,13 @@ return $default(_that.code,_that.nativeName,_that.englishName,_that.flagEmoji);c
 
 
 class _LanguageEntity implements LanguageEntity {
-  const _LanguageEntity({required this.code, required this.nativeName, required this.englishName, required this.flagEmoji});
+  const _LanguageEntity({required this.code, required this.nativeName, required this.englishName, required this.country});
   
 
 @override final  String code;
 @override final  String nativeName;
 @override final  String englishName;
-@override final  String flagEmoji;
+@override final  WorldCountry country;
 
 /// Create a copy of LanguageEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +227,16 @@ _$LanguageEntityCopyWith<_LanguageEntity> get copyWith => __$LanguageEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LanguageEntity&&(identical(other.code, code) || other.code == code)&&(identical(other.nativeName, nativeName) || other.nativeName == nativeName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.flagEmoji, flagEmoji) || other.flagEmoji == flagEmoji));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LanguageEntity&&(identical(other.code, code) || other.code == code)&&(identical(other.nativeName, nativeName) || other.nativeName == nativeName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.country, country) || other.country == country));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,nativeName,englishName,flagEmoji);
+int get hashCode => Object.hash(runtimeType,code,nativeName,englishName,country);
 
 @override
 String toString() {
-  return 'LanguageEntity(code: $code, nativeName: $nativeName, englishName: $englishName, flagEmoji: $flagEmoji)';
+  return 'LanguageEntity(code: $code, nativeName: $nativeName, englishName: $englishName, country: $country)';
 }
 
 
@@ -247,7 +247,7 @@ abstract mixin class _$LanguageEntityCopyWith<$Res> implements $LanguageEntityCo
   factory _$LanguageEntityCopyWith(_LanguageEntity value, $Res Function(_LanguageEntity) _then) = __$LanguageEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String code, String nativeName, String englishName, String flagEmoji
+ String code, String nativeName, String englishName, WorldCountry country
 });
 
 
@@ -264,13 +264,13 @@ class __$LanguageEntityCopyWithImpl<$Res>
 
 /// Create a copy of LanguageEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? nativeName = null,Object? englishName = null,Object? flagEmoji = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? nativeName = null,Object? englishName = null,Object? country = null,}) {
   return _then(_LanguageEntity(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,nativeName: null == nativeName ? _self.nativeName : nativeName // ignore: cast_nullable_to_non_nullable
 as String,englishName: null == englishName ? _self.englishName : englishName // ignore: cast_nullable_to_non_nullable
-as String,flagEmoji: null == flagEmoji ? _self.flagEmoji : flagEmoji // ignore: cast_nullable_to_non_nullable
-as String,
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as WorldCountry,
   ));
 }
 
