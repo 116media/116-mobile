@@ -18,7 +18,7 @@ class Languages extends Equatable {
         code: 'en',
         nativeName: 'English',
         englishName: 'English',
-        country: WorldCountry.usa(),
+        country: WorldCountry.gbr(),
       ),
       LanguageEntity(
         code: 'fr',
