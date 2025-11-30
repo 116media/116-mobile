@@ -62,7 +62,7 @@ class _GuestProfileCardState extends State<GuestProfileCard> {
             textAlign: TextAlign.center,
             style: context.textTheme.bodyMedium?.copyWith(color: ColorsUtil.gray500),
           ),
-          SizedBox(height: context.sizing.s24),
+          Gap(context.sizing.s24),
           FadeAnimation(
             delay: 0.65,
             child: SolidButton(
