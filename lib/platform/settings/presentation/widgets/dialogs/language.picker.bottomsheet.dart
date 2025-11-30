@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
+import 'package:gap/gap.dart' show Gap;
 
 import '../../../../../platform/preferences/domain/value-objects/languages.dart' show Languages;
 import '../../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
@@ -73,7 +74,7 @@ class LanguagePickerContent extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               itemCount: supportedLanguages.count,
-              separatorBuilder: (context, index) => SizedBox(height: context.sizing.s12),
+              separatorBuilder: (context, index) => Gap(context.sizing.s12),
               itemBuilder: (context, index) {
                 final language = supportedLanguages.all[index];
                 final isSelected = currentLanguageCode == language.code;
