@@ -8,7 +8,7 @@ import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUt
 import '../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
-import '../dialogs/edit.profile.dialog.dart' show EditProfileDialog;
+import '../dialogs/updateprofile.dialog.widget.dart' show UpdateProfileDialog;
 
 /// Profile card widget for authenticated users in the settings screen.
 ///
@@ -23,7 +23,7 @@ class AuthenticatedProfileCard extends StatelessWidget {
   void _showEditProfileDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => EditProfileDialog(user: user),
+      builder: (context) => UpdateProfileDialog(user: user),
     );
   }
 
