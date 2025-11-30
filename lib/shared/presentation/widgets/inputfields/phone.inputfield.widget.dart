@@ -21,6 +21,7 @@ import 'inputfield.widget.dart' show InputField;
 class PhoneInputField extends StatefulWidget {
   final String label;
   final bool isFilled;
+  final bool isDisabled;
   final WorldCountry? initialCountry;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -33,6 +34,7 @@ class PhoneInputField extends StatefulWidget {
     this.validator,
     this.controller,
     this.isFilled = false,
+    this.isDisabled = false,
     this.onCountryChanged,
   });
 
@@ -66,10 +68,11 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     return InputField(
       label: widget.label,
       isFilled: widget.isFilled,
+      isDisabled: widget.isDisabled,
       validator: widget.validator,
       controller: widget.controller,
       prefix: GestureDetector(
-        onTap: _showCountryPicker,
+        onTap: widget.isDisabled ? null : _showCountryPicker,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
