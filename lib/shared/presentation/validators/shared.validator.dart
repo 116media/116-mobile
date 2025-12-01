@@ -1,3 +1,5 @@
+import 'package:country_phone_validator/country_phone_validator.dart' show CountryUtils, Country;
+
 /// Min/max length configuration for validation.
 class MinMaxLength {
   final int? min;
@@ -168,6 +170,53 @@ class Validator {
       if (value != null && value.isNotEmpty && value != passwordValue) {
         return 'Passwords do not match';
       }
+      return null;
+    };
+  }
+
+  /// Creates a phone number validation function.
+  ///
+  /// This validator expects:
+  /// - A **dial code** such as `+250`
+  /// - A **national number only** (digits only, no country code)
+  ///
+  /// The dial code is used to retrieve country information (min/max national
+  /// number length) from `country_phone_validator`, and the national number
+  /// is validated against those constraints.
+  ///
+  /// Example:
+  /// ```dart
+  /// validator: Validator.compose([
+  ///   Validator.required("Phone"),
+  ///   Validator.phone("Phone", "+250"),
+  /// ])
+  /// ```
+  static String? Function(String?) telephone(String fieldName, String? dialCode) {
+    return (String? value) {
+      if ([value, dialCode].any((s) => s?.trim().isEmpty ?? true)) {
+        return null;
+      }
+
+      final national = value!.replaceAll(RegExp(r'[^0-9]'), '');
+
+      if (national.isEmpty) {
+        return '$fieldName must only contain numbers';
+      }
+
+      // Get country data using dial code
+      final Country? country = CountryUtils.getCountryByDialCode(dialCode!);
+
+      if (country == null) {
+        return "Unknown dial code: $dialCode";
+      }
+
+      final bool isValid = CountryUtils.validatePhoneNumber(national, country.dialCode);
+
+      if (!isValid) {
+        return '$fieldName must be '
+            '${country.phoneMinLength}–${country.phoneMaxLength} digits';
+      }
+
       return null;
     };
   }
