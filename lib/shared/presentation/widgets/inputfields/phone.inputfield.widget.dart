@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show FilteringTextInputFormatter;
+import 'package:flutter/services.dart'
+    show FilteringTextInputFormatter, LengthLimitingTextInputFormatter;
 import 'package:gap/gap.dart' show Gap;
 import 'package:world_countries/world_countries.dart' show IddExtension, WorldCountry;
 
+import '../../constants/shared.constants.dart' show kMaxNationalPhoneLength;
 import '../../themes/extensions/build.context.extension.dart';
 import '../../utils/input.formatters.util.dart' show NoLeadingZeroFormatter;
 import '../country-picker/country.flag.widget.dart' show CountryFlagImage;
@@ -68,8 +70,8 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     return InputField(
       label: widget.label,
       isFilled: widget.isFilled,
-      isDisabled: widget.isDisabled,
       validator: widget.validator,
+      isDisabled: widget.isDisabled,
       controller: widget.controller,
       prefix: GestureDetector(
         onTap: widget.isDisabled ? null : _showCountryPicker,
@@ -92,7 +94,11 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
         ),
       ),
       keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly, NoLeadingZeroFormatter()],
+      inputFormatters: [
+        NoLeadingZeroFormatter(),
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(kMaxNationalPhoneLength),
+      ],
     );
   }
 }
