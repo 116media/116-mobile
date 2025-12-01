@@ -139,7 +139,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                   label: 'Username',
                   isDisabled: isLoading,
                   controller: _userNameController,
-                  validator: UpdateProfileValidator.username('Username'),
+                  validator: UpdateProfileValidator.userName('Username'),
                 ),
                 PhoneInputField(
                   isFilled: true,

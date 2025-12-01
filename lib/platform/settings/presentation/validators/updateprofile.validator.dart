@@ -17,10 +17,10 @@ class UpdateProfileValidator {
   /// Example:
   /// ```dart
   /// TextFormField(
-  ///   validator: UpdateProfileValidator.username("Username"),
+  ///   validator: UpdateProfileValidator.userName("Username"),
   /// )
   /// ```
-  static String? Function(String?) username(String fieldName) {
+  static String? Function(String?) userName(String fieldName) {
     return Validator.compose([
       Validator.required(fieldName),
       Validator.minmax(fieldName, MinMaxLength(min: kUsernameMinLength, max: kUsernameMaxLength)),

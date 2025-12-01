@@ -33,10 +33,10 @@ class SignUpValidator {
   /// Example:
   /// ```dart
   /// TextFormField(
-  ///   validator: SignUpValidator.username("Username"),
+  ///   validator: SignUpValidator.userName("Username"),
   /// )
   /// ```
-  static String? Function(String?) username(String fieldName) {
+  static String? Function(String?) userName(String fieldName) {
     return Validator.compose([
       Validator.required(fieldName),
       Validator.minmax(fieldName, MinMaxLength(min: kUsernameMinLength, max: kUsernameMaxLength)),
