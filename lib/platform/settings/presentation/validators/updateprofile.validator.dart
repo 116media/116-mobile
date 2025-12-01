@@ -27,6 +27,19 @@ class UpdateProfileValidator {
     ]);
   }
 
+  /// Validation rules for the phone number field.
+  ///
+  /// Rules:
+  /// - Optional field (empty value passes)
+  /// - Uses [Validator.telephone] to validate national numbers with a provided [dialCodeValue]
+  /// - Only digits allowed, max length enforced inside [Validator.telephone]
+  ///
+  /// Example:
+  /// ```dart
+  /// TextFormField(
+  ///   validator: UpdateProfileValidator.phoneNumber("Phone", "+250"),
+  /// )
+  /// ```
   static String? Function(String?) phoneNumber(String fieldName, String? dialCodeValue) {
     return Validator.compose([Validator.telephone(fieldName, dialCodeValue)]);
   }

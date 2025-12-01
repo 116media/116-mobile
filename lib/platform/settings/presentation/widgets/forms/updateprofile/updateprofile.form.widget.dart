@@ -22,6 +22,7 @@ import '../../../bloc/updateprofile/updateprofile.bloc.dart' show UpdateProfileB
 import '../../../bloc/updateprofile/updateprofile.event.dart' show UpdateProfileSubmitted;
 import '../../../bloc/updateprofile/updateprofile.state.dart' show UpdateProfileLoading;
 import '../../../models/profile.model.dart' show ProfileModel;
+import '../../../validators/updateprofile.validator.dart' show UpdateProfileValidator;
 
 /// Form widget for updating user profile information.
 ///
@@ -138,6 +139,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                   label: 'Username',
                   isDisabled: isLoading,
                   controller: _userNameController,
+                  validator: UpdateProfileValidator.username('Username'),
                 ),
                 PhoneInputField(
                   isFilled: true,
@@ -146,6 +148,10 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                   controller: _phoneController,
                   initialCountry: _selectedCountry,
                   onCountryChanged: _onCountrySelected,
+                  validator: UpdateProfileValidator.phoneNumber(
+                    'Telephone',
+                    _selectedCountry?.idd.phoneCode(),
+                  ),
                 ),
               ],
             ),
