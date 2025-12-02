@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
+import 'package:world_countries/world_countries.dart' show WorldCountry;
 
 import '../../../../../modules/auth/infrastructure/models/hive/user/user.model.dart' show UserModel;
+import '../../../../country/presentation/bloc/country.bloc.dart' show CountryBloc;
+import '../../../../country/presentation/bloc/country.event.dart' show CountryLoadStarted;
+import '../../../../country/presentation/bloc/country.state.dart' show CountryState, CountrySuccess;
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -27,6 +32,19 @@ class UpdateProfileDialog extends StatefulWidget {
 }
 
 class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
+  WorldCountry? _initialCountry;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set initial country from user data if available
+    if (widget.user?.countryIsoCode != null) {
+      _initialCountry = WorldCountry.maybeFromCode(widget.user!.countryIsoCode!);
+    }
+  }
+
+  /// Handles UpdateProfileBloc state changes for success and failure.
   void _updateProfileStateListener(BuildContext ctx, UpdateProfileState state) {
     if (state is UpdateProfileSuccess) {
       final rootContext = Navigator.of(ctx, rootNavigator: true).context;
@@ -42,14 +60,37 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
     }
   }
 
+  /// Handles CountryBloc state changes to set initial country from Hive.
+  void _countryStateListener(BuildContext ctx, CountryState state) {
+    // Only set country if user doesn't already have country data
+    if (widget.user?.countryIsoCode == null && _initialCountry == null) {
+      if (state is CountrySuccess && state.country != null && state.country!.isoCode != null) {
+        final country = WorldCountry.maybeFromCodeShort(state.country!.isoCode!);
+        if (country != null) {
+          setState(() {
+            _initialCountry = country;
+          });
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.isDarkMode ? ColorsUtil.slate800 : ColorsUtil.slate200;
 
-    return BlocProvider(
-      create: (context) => sl<UpdateProfileBloc>(),
-      child: BlocListener<UpdateProfileBloc, UpdateProfileState>(
-        listener: (context, state) => _updateProfileStateListener(context, state),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<UpdateProfileBloc>()),
+        BlocProvider(create: (context) => sl<CountryBloc>()..add(const CountryLoadStarted())),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<UpdateProfileBloc, UpdateProfileState>(
+            listener: _updateProfileStateListener,
+          ),
+          BlocListener<CountryBloc, CountryState>(listener: _countryStateListener),
+        ],
         child: Dialog(
           backgroundColor: backgroundColor,
           alignment: Alignment.bottomCenter,
@@ -62,7 +103,9 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const BottomSheetPullBar(),
-                  Center(child: UpdateProfileForm(user: widget.user)),
+                  Center(
+                    child: UpdateProfileForm(user: widget.user, initialCountry: _initialCountry),
+                  ),
                 ],
               ),
             ),
