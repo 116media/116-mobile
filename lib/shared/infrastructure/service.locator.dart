@@ -12,6 +12,8 @@ import '../../modules/auth/infrastructure/dependencies/auth.dependencies.dart'
     show registerAuthDependencies;
 import '../../platform/connectivity/infrastructure/dependencies/connectivity.dependencies.dart'
     show registerConnectivityDependencies;
+import '../../platform/country/infrastructure/dependencies/country.dependencies.dart'
+    show registerCountryDependencies;
 import '../../platform/preferences/infrastructure/dependencies/preferences.dependencies.dart'
     show registerPreferencesDependencies;
 import '../../platform/session/infrastructure/dependencies/session.dependencies.dart'
@@ -48,6 +50,7 @@ class ServiceLocator {
     sl.registerSingleton<Api116>(Api116.create(client: chopper));
 
     await registerConnectivityDependencies(sl);
+    await registerCountryDependencies(sl);
     await registerPreferencesDependencies(sl);
     await registerSessionDependencies(sl);
     await registerAuthDependencies(sl);
