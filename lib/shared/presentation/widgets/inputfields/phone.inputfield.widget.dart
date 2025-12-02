@@ -53,6 +53,18 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     _selectedCountry = widget.initialCountry ?? WorldCountry.list.first;
   }
 
+  @override
+  void didUpdateWidget(PhoneInputField oldWidget) {
+    /// Updates the selected country when `initialCountry` changes,
+    /// Ensuring the country code updates when loaded asynchronously from Hive.
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialCountry != widget.initialCountry && widget.initialCountry != null) {
+      setState(() {
+        _selectedCountry = widget.initialCountry!;
+      });
+    }
+  }
+
   Future<void> _showCountryPicker() async {
     final country = await showCountryPickerBottomSheet(context, initialCountry: _selectedCountry);
     if (country != null) {
