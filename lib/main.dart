@@ -10,6 +10,8 @@ import 'platform/connectivity/presentation/bloc/connectivity.event.dart'
     show ConnectivityWatchStarted;
 import 'platform/connectivity/presentation/widgets/connectivity.banner.widget.dart'
     show ConnectivityBanner;
+import 'platform/country/application/usecases/initialize.country.usecase.dart'
+    show InitializeCountryUseCase;
 import 'platform/preferences/presentation/bloc/preferences.bloc.dart' show PreferencesBloc;
 import 'platform/preferences/presentation/bloc/preferences.event.dart' show PreferencesLoadStarted;
 import 'platform/preferences/presentation/bloc/preferences.state.dart'
@@ -44,6 +46,10 @@ void main() async {
 
   // Initialize dependency injection
   await ServiceLocator.initialize();
+
+  // Initialize country data from IP on app start
+  final initCountryUseCase = sl<InitializeCountryUseCase>();
+  await initCountryUseCase.execute(null);
 
   runApp(ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()));
 }
