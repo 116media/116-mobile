@@ -6,8 +6,8 @@ import '../../../domain/enums/thememode.enum.dart' show AppThemeMode;
 ///
 /// Uses Hive type adapters for efficient binary serialization.
 class UserPreferencesModel {
-  final String languageCode;
   final String themeMode;
+  final String languageCode;
 
   const UserPreferencesModel({required this.languageCode, required this.themeMode});
 
@@ -25,8 +25,8 @@ class UserPreferencesModel {
   /// Creates a model from a domain entity.
   factory UserPreferencesModel.fromEntity(UserPreferencesEntity entity) {
     return UserPreferencesModel(
-      languageCode: entity.languageCode,
       themeMode: entity.themeMode.name,
+      languageCode: entity.languageCode,
     );
   }
 

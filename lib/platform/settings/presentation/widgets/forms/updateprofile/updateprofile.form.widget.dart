@@ -30,8 +30,9 @@ import '../../../validators/updateprofile.validator.dart' show UpdateProfileVali
 /// Integrates with UpdateProfileBloc for state management.
 class UpdateProfileForm extends StatefulWidget {
   final UserModel? user;
+  final WorldCountry? initialCountry;
 
-  const UpdateProfileForm({super.key, this.user});
+  const UpdateProfileForm({super.key, this.user, this.initialCountry});
 
   @override
   State<UpdateProfileForm> createState() => _UpdateProfileFormState();
@@ -50,15 +51,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
     _userNameController = TextEditingController(text: widget.user?.userName ?? '');
     _emailController = TextEditingController(text: widget.user?.email ?? '');
     _phoneController = TextEditingController(text: widget.user?.partialPhoneNumber ?? '');
-
-    // Set initial country if user has country data
-    if (widget.user?.countryIsoCode != null) {
-      try {
-        _selectedCountry = WorldCountry.fromCode(widget.user!.countryIsoCode!);
-      } catch (_) {
-        // If country code is invalid, leave as null
-      }
-    }
+    _selectedCountry = widget.initialCountry;
   }
 
   @override
