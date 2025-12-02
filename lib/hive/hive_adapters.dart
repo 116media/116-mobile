@@ -5,6 +5,8 @@ import '../modules/auth/infrastructure/models/hive/permission/permission.model.d
     show PermissionModel;
 import '../modules/auth/infrastructure/models/hive/role/role.model.dart' show RoleModel;
 import '../modules/auth/infrastructure/models/hive/user/user.model.dart' show UserModel;
+import '../platform/country/infrastructure/models/hive/country/country.model.dart'
+    show CountryModel;
 import '../platform/preferences/infrastructure/models/hive/user.preferences.model.dart'
     show UserPreferencesModel;
 import '../platform/session/infrastructure/models/hive/session.state.model.dart'
@@ -17,5 +19,6 @@ import '../platform/session/infrastructure/models/hive/session.state.model.dart'
   AdapterSpec<UserModel>(),
   AdapterSpec<UserPreferencesModel>(),
   AdapterSpec<SessionStateModel>(),
+  AdapterSpec<CountryModel>(),
 ])
 part 'hive_adapters.g.dart';
