@@ -16,13 +16,11 @@ import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart'
 import '../../../../../../shared/presentation/widgets/header/header.title.dart' show HeaderTitle;
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
-import '../../../../../../shared/presentation/widgets/inputfields/phone.inputfield.widget.dart'
-    show PhoneInputField;
 import '../../../bloc/updateprofile/updateprofile.bloc.dart' show UpdateProfileBloc;
 import '../../../bloc/updateprofile/updateprofile.event.dart' show UpdateProfileSubmitted;
 import '../../../bloc/updateprofile/updateprofile.state.dart' show UpdateProfileLoading;
 import '../../../models/profile.model.dart' show ProfileModel;
-import '../../../validators/updateprofile.validator.dart' show UpdateProfileValidator;
+import 'editable.fields.widget.dart' show EditableFormFields;
 
 /// Form widget for updating user profile information.
 ///
@@ -40,26 +38,62 @@ class UpdateProfileForm extends StatefulWidget {
 
 class _UpdateProfileFormState extends State<UpdateProfileForm> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _userNameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
+  late final TextEditingController _userNameController;
   WorldCountry? _selectedCountry;
+
+  // Store initial values to detect changes
+  late final String _initialPhone;
+  late final String _initialUserName;
+  late final String? _initialCountryCode;
 
   @override
   void initState() {
     super.initState();
-    _userNameController = TextEditingController(text: widget.user?.userName ?? '');
-    _emailController = TextEditingController(text: widget.user?.email ?? '');
-    _phoneController = TextEditingController(text: widget.user?.partialPhoneNumber ?? '');
+
+    // Store initial values
+    final initialEmail = widget.user?.email ?? '';
+    _initialUserName = widget.user?.userName ?? '';
+    _initialPhone = widget.user?.partialPhoneNumber ?? '';
+    _initialCountryCode = widget.initialCountry?.code;
+
+    // Initialize controllers with initial values
+    _emailController = TextEditingController(text: initialEmail);
+    _userNameController = TextEditingController(text: _initialUserName);
+    _phoneController = TextEditingController(text: _initialPhone);
     _selectedCountry = widget.initialCountry;
+
+    // Add listeners to text controllers to rebuild on change
+    _userNameController.addListener(_onFormFieldChanged);
+    _phoneController.addListener(_onFormFieldChanged);
   }
 
   @override
   void dispose() {
-    _userNameController.dispose();
+    /// Remove listeners
+    _userNameController.removeListener(_onFormFieldChanged);
+    _phoneController.removeListener(_onFormFieldChanged);
+
+    /// Dispose controllers
     _emailController.dispose();
     _phoneController.dispose();
+    _userNameController.dispose();
     super.dispose();
+  }
+
+  /// Checks if any form field has been modified from its initial value.
+  bool get _hasFormChanged {
+    final userNameChanged = _userNameController.text != _initialUserName;
+    final phoneChanged = _phoneController.text != _initialPhone;
+    final countryChanged = _selectedCountry?.code != _initialCountryCode;
+
+    return userNameChanged || phoneChanged || countryChanged;
+  }
+
+  /// Triggers rebuild when text field values change.
+  void _onFormFieldChanged() {
+    setState(() {});
   }
 
   void _onCountrySelected(WorldCountry country) {
@@ -69,22 +103,26 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
   }
 
   void _handleUpdateProfile() {
-    if (_formKey.currentState?.validate() ?? false) {
-      FocusScope.of(context).unfocus();
+    final form = _formKey.currentState;
+    if (form == null || !form.validate()) return;
 
-      final profile = ProfileModel(
-        email: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
-        userName: _userNameController.text.trim().isEmpty ? null : _userNameController.text.trim(),
-        countryName: _selectedCountry?.internationalName,
-        countryIsoCode: _selectedCountry?.code,
-        countryDialCode: _selectedCountry?.idd.phoneCode(),
-        partialPhoneNumber: _phoneController.text.trim().isEmpty
-            ? null
-            : _phoneController.text.trim(),
-      );
+    FocusScope.of(context).unfocus();
 
-      context.read<UpdateProfileBloc>().add(UpdateProfileSubmitted(profile));
-    }
+    final country = _selectedCountry;
+    final phone = _phoneController.text.trim();
+    final email = _emailController.text.trim();
+    final username = _userNameController.text.trim();
+
+    final profile = ProfileModel(
+      email: email.isEmpty ? null : email,
+      userName: username.isEmpty ? null : username,
+      countryName: country?.internationalName,
+      countryIsoCode: country?.code,
+      countryDialCode: country?.idd.phoneCode(),
+      partialPhoneNumber: phone.isEmpty ? null : phone,
+    );
+
+    context.read<UpdateProfileBloc>().add(UpdateProfileSubmitted(profile));
   }
 
   @override
@@ -122,31 +160,12 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
               color: context.isDarkMode ? ColorsUtil.slate600 : ColorsUtil.slate300,
             ),
 
-            Wrap(
-              spacing: context.sizing.s12,
-              runSpacing: context.sizing.s12,
-              alignment: WrapAlignment.center,
-              children: [
-                InputField(
-                  isFilled: true,
-                  label: 'Username',
-                  isDisabled: isLoading,
-                  controller: _userNameController,
-                  validator: UpdateProfileValidator.userName('Username'),
-                ),
-                PhoneInputField(
-                  isFilled: true,
-                  label: 'Telephone',
-                  isDisabled: isLoading,
-                  controller: _phoneController,
-                  initialCountry: _selectedCountry,
-                  onCountryChanged: _onCountrySelected,
-                  validator: UpdateProfileValidator.phoneNumber(
-                    'Telephone',
-                    _selectedCountry?.idd.phoneCode(),
-                  ),
-                ),
-              ],
+            EditableFormFields(
+              isDisabled: isLoading,
+              userNameController: _userNameController,
+              phoneController: _phoneController,
+              selectedCountry: _selectedCountry,
+              onCountryChanged: _onCountrySelected,
             ),
 
             Gap(context.sizing.s12),
@@ -158,7 +177,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                 text: "Save Changes",
                 size: ButtonSize.sm,
                 isLoading: isLoading,
-                isDisabled: isLoading,
+                isDisabled: isLoading || !_hasFormChanged,
                 onPressed: _handleUpdateProfile,
               ),
             ),
