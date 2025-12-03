@@ -1,4 +1,4 @@
-import 'package:country_phone_validator/country_phone_validator.dart' show CountryUtils, Country;
+import 'package:phone_numbers_parser/phone_numbers_parser.dart' show PhoneNumber, PhoneNumberType;
 
 /// Min/max length configuration for validation.
 class MinMaxLength {
@@ -174,21 +174,24 @@ class Validator {
     };
   }
 
-  /// Creates a phone number validation function.
+  /// Creates a phone number validator for a specific field and country.
   ///
   /// This validator expects:
-  /// - A **dial code** such as `+250`
-  /// - A **national number only** (digits only, no country code)
+  /// - A **dial code** (e.g., `+243`) representing the destination country.
+  /// - A **national number** (digits only, without the country code).
   ///
-  /// The dial code is used to retrieve country information (min/max national
-  /// number length) from `country_phone_validator`, and the national number
-  /// is validated against those constraints.
+  /// It combines the dial code and the national number to form a full
+  /// international number, which is then parsed and validated using
+  /// `PhoneNumber.parse()` from the `phone_numbers_parser` package.
+  /// Validation includes:
+  ///   - Correct number structure and length for the country.
+  ///   - Valid mobile number prefixes for the country.
   ///
-  /// Example:
+  /// Example usage:
   /// ```dart
   /// validator: Validator.compose([
   ///   Validator.required("Phone"),
-  ///   Validator.phone("Phone", "+250"),
+  ///   Validator.telephone("Phone", "+243"),
   /// ])
   /// ```
   static String? Function(String?) telephone(String fieldName, String? dialCode) {
@@ -197,24 +200,29 @@ class Validator {
         return null;
       }
 
-      final national = value!.replaceAll(RegExp(r'[^0-9]'), '');
-
-      if (national.isEmpty) {
+      final nsn = value!.replaceAll(RegExp(r'[^0-9]'), '');
+      if (nsn.isEmpty) {
         return '$fieldName must only contain numbers';
       }
 
-      // Get country data using dial code
-      final Country? country = CountryUtils.getCountryByDialCode(dialCode!);
+      // Build full international number
+      final full = '${dialCode!.replaceAll(' ', '')}$nsn';
 
-      if (country == null) {
-        return "Unknown dial code: $dialCode";
+      PhoneNumber phone;
+      try {
+        phone = PhoneNumber.parse(full);
+      } catch (_) {
+        return '$fieldName is invalid for the selected country';
       }
 
-      final bool isValid = CountryUtils.validatePhoneNumber(national, country.dialCode);
+      // Structural + range validation
+      if (!phone.isValid()) {
+        return '$fieldName is invalid for the selected country';
+      }
 
-      if (!isValid) {
-        return '$fieldName must be '
-            '${country.phoneMinLength}–${country.phoneMaxLength} digits';
+      // Requires a mobile number not FAX/landline
+      if (!phone.isValid(type: PhoneNumberType.mobile)) {
+        return '$fieldName must be a valid mobile number the selected country';
       }
 
       return null;
