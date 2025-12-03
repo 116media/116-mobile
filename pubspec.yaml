@@ -41,8 +41,8 @@ dependencies:
   package_info_plus: ^9.0.0
   world_countries: 3.9.4
   world_flags: ^2.9.1
-  country_phone_validator: ^1.0.2
   ip_country_lookup: ^1.0.3
+  phone_numbers_parser: ^9.0.17
 
 dev_dependencies:
   flutter_test:
