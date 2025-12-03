@@ -2,6 +2,7 @@ import 'package:hive_ce/hive.dart' show Hive;
 import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
 
 import '../modules/auth/infrastructure/constants/hive.constants.dart' show kAuthBox;
+import '../platform/country/infrastructure/constants/hive.constants.dart' show kCountryBox;
 import '../platform/preferences/infrastructure/constants/hive.constants.dart' show kPreferencesBox;
 import '../platform/session/infrastructure/constants/hive.constants.dart' show kSessionBox;
 import 'hive_registrar.g.dart' show HiveRegistrar;
@@ -37,6 +38,7 @@ Future<void> initializeHive() async {
   await Hive.openBox(kAuthBox);
   await Hive.openBox(kPreferencesBox);
   await Hive.openBox(kSessionBox);
+  await Hive.openBox(kCountryBox);
 }
 
 /// Closes all Hive boxes and cleans up resources.

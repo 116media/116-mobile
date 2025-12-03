@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../themes/extensions/build.context.extension.dart';
 import '../../animations/border.animation.dart' show BorderAnimation;
@@ -45,6 +46,7 @@ part 'base.textfield.widget.dart';
 /// - [VisibleIconButton], the password visibility toggle button
 class InputField extends StatefulWidget {
   final String label;
+  final Widget? prefix;
   final Widget? suffix;
   final bool isFilled;
   final Color? filledColor;
@@ -52,16 +54,21 @@ class InputField extends StatefulWidget {
   final bool isDisabled;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   InputField({
     super.key,
     required this.label,
+    this.prefix,
     this.suffix,
     this.isFilled = false,
     this.isPassword = false,
     this.isDisabled = false,
     this.validator,
     this.controller,
+    this.keyboardType,
+    this.inputFormatters,
     Color? filledColor,
   }) : filledColor = filledColor ?? ColorsUtil.white.withValues(alpha: 0.5);
 
@@ -172,8 +179,11 @@ class _InputFieldState extends State<InputField> with SingleTickerProviderStateM
             isPasswordVisible: _isPasswordVisible,
             label: widget.label,
             suffix: widget.suffix,
+            prefix: widget.prefix,
             filled: widget.isFilled,
             filledColor: widget.filledColor,
+            keyboardType: widget.keyboardType,
+            inputFormatters: widget.inputFormatters,
             onValidationError: (error) {
               if (mounted) setState(() => _errorText = error);
             },

@@ -25,6 +25,15 @@ abstract class IAuthLocalDataSource {
   /// - [CacheException] if reading from local storage fails
   Future<UserModel?> getUser();
 
+  /// Watches the stored user information reactively.
+  /// The stream also emits the current value immediately upon subscription.
+  ///
+  /// **Returns:** A broadcast [Stream] of [UserModel?] that updates whenever data changes.
+  ///
+  /// **Throws:**
+  /// - [CacheException] if watching local storage fails
+  Stream<UserModel?> watchUser();
+
   /// Persists the authentication token to local storage.
   ///
   /// Stores the JWT token for subsequent authenticated API requests.

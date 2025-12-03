@@ -27,9 +27,12 @@ class _BaseTextField extends StatelessWidget {
   final String label;
   final bool filled;
   final Color? filledColor;
+  final Widget? prefix;
   final Widget? suffix;
   final bool hasError;
   final Function(String?) onValidationError;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   static const _kLabelStyle = TextStyle(height: 0);
 
@@ -43,9 +46,12 @@ class _BaseTextField extends StatelessWidget {
     required this.label,
     required this.filled,
     required this.filledColor,
+    required this.prefix,
     required this.suffix,
     required this.hasError,
     required this.onValidationError,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   /// Builds the text field with [ValueListenableBuilder] for password visibility.
@@ -74,14 +80,19 @@ class _BaseTextField extends StatelessWidget {
         autocorrect: !isPassword,
         enableSuggestions: !isPassword,
         obscureText: isPassword && !isVisible,
-        style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        style: context.textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: isDisabled ? context.textTheme.bodyMedium?.color?.withValues(alpha: 0.5) : null,
+        ),
         decoration: InputDecoration(
           filled: filled,
           enabled: !isDisabled,
           border: InputBorder.none,
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
-          fillColor: filled ? filledColor : null,
+          fillColor: filled ? (isDisabled ? filledColor?.withValues(alpha: 0) : filledColor) : null,
           label: Text(label, style: _kLabelStyle),
           errorStyle: const TextStyle(height: 0.01, fontSize: 0),
           labelStyle: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
@@ -93,6 +104,7 @@ class _BaseTextField extends StatelessWidget {
             vertical: context.sizing.s10,
             horizontal: context.sizing.s12,
           ),
+          prefix: prefix,
           suffixIcon: hasError
               ? Icon(Icons.error_outline, color: context.colors.error, size: context.sizing.s20)
               : isPassword

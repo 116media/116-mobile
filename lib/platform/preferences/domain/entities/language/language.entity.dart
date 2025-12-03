@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:world_countries/world_countries.dart' show WorldCountry;
 
 part 'language.entity.freezed.dart';
 
@@ -12,6 +13,6 @@ abstract class LanguageEntity with _$LanguageEntity {
     required String code,
     required String nativeName,
     required String englishName,
-    required String flagEmoji,
+    required WorldCountry country,
   }) = _LanguageEntity;
 }

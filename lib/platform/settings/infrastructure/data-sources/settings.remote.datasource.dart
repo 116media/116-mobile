@@ -1,0 +1,51 @@
+import 'package:chopper/chopper.dart' show Response;
+
+import '../../../../api/client/api_116.swagger.dart'
+    show Api116, PublicUpdateOwnProfileRequest, PublicUpdateOwnProfileResponse;
+import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
+    show ServerException;
+import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.dart'
+    show UnknownException;
+import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
+import '../../application/data-sources/settings.remote.datasource.port.dart'
+    show ISettingsRemoteDataSource;
+import '../../presentation/models/profile.model.dart' show ProfileModel;
+
+/// Implementation of [ISettingsRemoteDataSource] for settings operations via REST API.
+///
+/// Handles communication with the backend profile endpoints using the
+/// generated [Api116] client. Converts HTTP error responses to typed exceptions
+/// using [ProblemMapper]. Network errors (SocketException, timeouts, etc.) are
+/// caught and converted to [UnknownException].
+class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
+  final Api116 _apiClient;
+
+  const SettingsRemoteDataSourceImpl(this._apiClient);
+
+  @override
+  Future<PublicUpdateOwnProfileResponse> updateProfile(ProfileModel model) async {
+    try {
+      final response = await _apiClient.PublicUpdateOwnProfile(
+        body: PublicUpdateOwnProfileRequest(
+          email: model.email,
+          userName: model.userName,
+          countryName: model.countryName,
+          countryFlagUrl: model.countryFlagUrl,
+          countryIsoCode: model.countryIsoCode,
+          countryDialCode: model.countryDialCode,
+          partialPhoneNumber: model.partialPhoneNumber,
+        ),
+      );
+
+      if (response.isSuccessful) {
+        return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+}

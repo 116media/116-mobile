@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart' show Equatable;
+import 'package:world_countries/world_countries.dart' show WorldCountry;
 
 import '../entities/language/language.entity.dart' show LanguageEntity;
 
@@ -12,9 +13,19 @@ class Languages extends Equatable {
   const Languages._(this._languages);
 
   factory Languages.defaults() {
-    return const Languages._([
-      LanguageEntity(code: 'en', nativeName: 'English', englishName: 'English', flagEmoji: '🇬🇧'),
-      LanguageEntity(code: 'fr', nativeName: 'Français', englishName: 'French', flagEmoji: '🇫🇷'),
+    return Languages._([
+      LanguageEntity(
+        code: 'en',
+        nativeName: 'English',
+        englishName: 'English',
+        country: WorldCountry.gbr(),
+      ),
+      LanguageEntity(
+        code: 'fr',
+        englishName: 'French',
+        nativeName: 'Français',
+        country: WorldCountry.fra(),
+      ),
     ]);
   }
 

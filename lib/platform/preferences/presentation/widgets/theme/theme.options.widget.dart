@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart' show Gap;
 
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -36,7 +37,7 @@ class ThemeOptions extends StatelessWidget {
               color: textColor,
             ),
           ),
-          SizedBox(width: context.sizing.s8),
+          Gap(context.sizing.s8),
           Icon(icon, size: context.sizing.s20, color: textColor),
         ],
       ),

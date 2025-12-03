@@ -1,7 +1,6 @@
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' show FacebookAuth;
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:google_sign_in/google_sign_in.dart' show GoogleSignIn;
-import 'package:hive_ce/hive.dart' show Box, Hive;
 
 import '../../../../api/client/api_116.swagger.dart' show Api116;
 import '../../../../platform/session/application/usecases/update.auth.status.usecase.dart'
@@ -28,8 +27,6 @@ import '../../presentation/bloc/resetpassword/resetpassword.bloc.dart' show Rese
 import '../../presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
 import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../../presentation/bloc/verifyotp/verifyotp.bloc.dart' show VerifyOtpBloc;
-import '../constants/hive.constants.dart' show kAuthBox;
-import '../data-sources/auth.local.datasource.dart' show AuthLocalDataSource;
 import '../data-sources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
 import '../data-sources/facebook.auth.datasource.dart' show FacebookAuthDataSource;
 import '../data-sources/google.auth.datasource.dart' show GoogleAuthDataSource;
@@ -37,15 +34,11 @@ import '../repositories/auth.cached.repository.dart' show AuthCachedRepository;
 import '../repositories/auth.remote.repository.dart' show AuthRemoteRepository;
 
 /// Registers all authentication module dependencies.
+///
+/// Note: Auth box and local datasource are already registered in ServiceLocator
+/// before Chopper client initialization (needed for AuthInterceptor).
 Future<void> registerAuthDependencies(GetIt sl) async {
-  // Hive box
-  final authBox = await Hive.openBox<dynamic>(kAuthBox);
-  sl.registerSingleton<Box<dynamic>>(authBox, instanceName: kAuthBox);
-
-  // Data sources
-  sl.registerSingleton<IAuthLocalDataSource>(
-    AuthLocalDataSource(sl<Box<dynamic>>(instanceName: kAuthBox)),
-  );
+  // Data sources (auth local datasource already registered in ServiceLocator)
   sl.registerSingleton<IAuthRemoteDataSource>(AuthRemoteDataSourceImpl(sl<Api116>()));
   sl.registerSingleton<IGoogleAuthDataSource>(GoogleAuthDataSource(GoogleSignIn.instance));
   sl.registerSingleton<IFacebookAuthDataSource>(FacebookAuthDataSource(FacebookAuth.instance));

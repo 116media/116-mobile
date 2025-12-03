@@ -9,7 +9,7 @@ import '../../../../../shared/presentation/themes/extensions/build.context.exten
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
-import '../../../../../shared/presentation/widgets/bottom-sheet/bottomsheet.pullbar.dart'
+import '../../../../../shared/presentation/widgets/bottomsheet/bottomsheet.pullbar.dart'
     show BottomSheetPullBar;
 import '../../../../home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../bloc/facebooksignin/facebooksignin.bloc.dart' show FacebookSignInBloc;

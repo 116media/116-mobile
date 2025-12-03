@@ -155,7 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   label: "Username",
                   isDisabled: isLoading,
                   controller: _usernameController,
-                  validator: SignUpValidator.username("Username"),
+                  validator: SignUpValidator.userName("Username"),
                 ),
                 InputField(
                   isFilled: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
+import 'package:gap/gap.dart' show Gap;
 import 'package:go_router/go_router.dart' show GoRouter;
 
 import '../../../../platform/session/presentation/bloc/session.bloc.dart' show SessionBloc;
@@ -53,7 +54,7 @@ class SideMenuLayout extends StatelessWidget {
                   color: ColorsUtil.white,
                 ),
               ),
-              SizedBox(height: context.sizing.s16),
+              Gap(context.sizing.s16),
               Text(
                 isAuthenticated ? 'Welcome back!' : 'Guest User',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -62,7 +63,7 @@ class SideMenuLayout extends StatelessWidget {
                 ),
               ),
               if (!isAuthenticated) ...[
-                SizedBox(height: context.sizing.s8),
+                Gap(context.sizing.s8),
                 Text(
                   'Sign in to access all features',
                   style: Theme.of(

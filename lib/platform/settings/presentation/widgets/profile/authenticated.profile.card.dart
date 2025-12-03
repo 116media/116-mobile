@@ -8,6 +8,7 @@ import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUt
 import '../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
+import '../dialogs/updateprofile.dialog.widget.dart' show UpdateProfileDialog;
 
 /// Profile card widget for authenticated users in the settings screen.
 ///
@@ -19,12 +20,12 @@ class AuthenticatedProfileCard extends StatelessWidget {
 
   const AuthenticatedProfileCard({super.key, this.user});
 
-  // void _showEditProfileDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => EditProfileDialog(user: user),
-  //   );
-  // }
+  void _showEditProfileDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => UpdateProfileDialog(user: user),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +94,7 @@ class AuthenticatedProfileCard extends StatelessWidget {
               text: "Edit Profile",
               isLoading: false,
               isDisabled: false,
-              onPressed: () => {
-                //TODO: Implement update profile functionality
-              },
+              onPressed: () => _showEditProfileDialog(context),
             ),
           ),
         ],

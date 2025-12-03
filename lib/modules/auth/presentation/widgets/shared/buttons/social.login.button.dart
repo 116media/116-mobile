@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart'
     show PlatformWidget, PlatformTextButton;
+import 'package:gap/gap.dart' show Gap;
 
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:colorful_iconify_flutter/icons/logos.dart';
@@ -75,7 +76,7 @@ class SocialLoginButton extends StatelessWidget {
           height: context.sizing.s20,
           child: isLoading ? spinner : Iconify(_iconData, size: context.sizing.s20),
         ),
-        SizedBox(width: context.sizing.s12),
+        Gap(context.sizing.s12),
         Text(_text, style: context.buttonTextStyle(textColor)),
       ],
     );

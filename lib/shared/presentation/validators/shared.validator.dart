@@ -1,3 +1,5 @@
+import 'package:phone_numbers_parser/phone_numbers_parser.dart' show PhoneNumber, PhoneNumberType;
+
 /// Min/max length configuration for validation.
 class MinMaxLength {
   final int? min;
@@ -168,6 +170,61 @@ class Validator {
       if (value != null && value.isNotEmpty && value != passwordValue) {
         return 'Passwords do not match';
       }
+      return null;
+    };
+  }
+
+  /// Creates a phone number validator for a specific field and country.
+  ///
+  /// This validator expects:
+  /// - A **dial code** (e.g., `+243`) representing the destination country.
+  /// - A **national number** (digits only, without the country code).
+  ///
+  /// It combines the dial code and the national number to form a full
+  /// international number, which is then parsed and validated using
+  /// `PhoneNumber.parse()` from the `phone_numbers_parser` package.
+  /// Validation includes:
+  ///   - Correct number structure and length for the country.
+  ///   - Valid mobile number prefixes for the country.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// validator: Validator.compose([
+  ///   Validator.required("Phone"),
+  ///   Validator.telephone("Phone", "+243"),
+  /// ])
+  /// ```
+  static String? Function(String?) telephone(String fieldName, String? dialCode) {
+    return (String? value) {
+      if ([value, dialCode].any((s) => s?.trim().isEmpty ?? true)) {
+        return null;
+      }
+
+      final nsn = value!.replaceAll(RegExp(r'[^0-9]'), '');
+      if (nsn.isEmpty) {
+        return '$fieldName must only contain numbers';
+      }
+
+      // Build full international number
+      final full = '${dialCode!.replaceAll(' ', '')}$nsn';
+
+      PhoneNumber phone;
+      try {
+        phone = PhoneNumber.parse(full);
+      } catch (_) {
+        return '$fieldName is invalid for the selected country';
+      }
+
+      // Structural + range validation
+      if (!phone.isValid()) {
+        return '$fieldName is invalid for the selected country';
+      }
+
+      // Requires a mobile number not FAX/landline
+      if (!phone.isValid(type: PhoneNumberType.mobile)) {
+        return '$fieldName must be a valid mobile number the selected country';
+      }
+
       return null;
     };
   }

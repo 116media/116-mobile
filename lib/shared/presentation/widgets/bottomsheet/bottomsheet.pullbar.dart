@@ -8,7 +8,6 @@ import '../../utils/colors.util.dart' show ColorsUtil;
 /// Displays a centered horizontal bar that indicates the sheet can be dragged.
 /// Commonly used at the top of bottom sheets to provide a visual affordance
 /// for the drag-to-dismiss gesture.
-/// ```
 class BottomSheetPullBar extends StatelessWidget {
   const BottomSheetPullBar({super.key});
 

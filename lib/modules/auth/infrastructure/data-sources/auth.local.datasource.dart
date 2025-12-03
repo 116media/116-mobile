@@ -1,4 +1,4 @@
-import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
     show ReadFailedCacheException;
@@ -74,6 +74,22 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       throw WriteFailedCacheException(
         detail: 'Failed to clear token: $e',
         instance: 'AuthLocalDataSource.clearToken',
+      );
+    }
+  }
+
+  @override
+  Stream<UserModel?> watchUser() async* {
+    try {
+      yield _authBox.get(kUserKey) as UserModel?;
+
+      await for (final event in _authBox.watch(key: kUserKey)) {
+        yield event.value as UserModel?;
+      }
+    } catch (e) {
+      throw ReadFailedCacheException(
+        detail: 'Failed to watch user: $e',
+        instance: 'AuthLocalDataSource.watchUser',
       );
     }
   }

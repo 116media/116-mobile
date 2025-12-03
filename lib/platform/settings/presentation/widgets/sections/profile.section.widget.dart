@@ -19,11 +19,6 @@ import '../profile/guest.profile.card.dart' show GuestProfileCard;
 class ProfileSection extends StatelessWidget {
   const ProfileSection({super.key});
 
-  Future<UserModel?> _getUser() async {
-    final localDataSource = sl<IAuthLocalDataSource>();
-    return localDataSource.getUser();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SessionBloc, SessionState>(
@@ -34,11 +29,11 @@ class ProfileSection extends StatelessWidget {
           return GuestProfileCard();
         }
 
-        return FutureBuilder<UserModel?>(
-          future: _getUser(),
+        return StreamBuilder<UserModel?>(
+          stream: sl<IAuthLocalDataSource>().watchUser(),
           builder: (context, snapshot) {
-            final user = snapshot.data;
-            return AuthenticatedProfileCard(user: user);
+            if (!isAuthenticated) return GuestProfileCard();
+            return AuthenticatedProfileCard(user: snapshot.data);
           },
         );
       },
