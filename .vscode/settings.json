@@ -59,6 +59,7 @@
     "thememode",
     "themetoggle",
     "UDID",
+    "updateavatar",
     "updateprofile",
     "usecase",
     "usecases",
@@ -69,7 +70,7 @@
     "xcrun",
     "xcuserdata"
   ],
-  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**"],
+  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**", "/ios/**", "/android/**"],
   "dart.lineLength": 100,
   "[dart]": {
     "editor.rulers": [
