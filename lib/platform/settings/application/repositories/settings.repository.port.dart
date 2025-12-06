@@ -8,11 +8,20 @@ import '../../presentation/models/profile.model.dart' show ProfileModel;
 /// Port interface for settings repository.
 ///
 /// Defines contract for profile update operations following the repository pattern.
-/// Returns Either<Failure, Success> for functional error handling.
+///
+/// **Returns:** [Either<Failure, Success>] for functional error handling.
 abstract class ISettingsRepository {
   /// Updates the authenticated user's profile information.
   ///
   /// Returns [Right] with [ProfileResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, ProfileResponseEntity>> updateProfile(ProfileModel profile);
+
+  /// Updates the authenticated user's avatar.
+  ///
+  /// Takes an [avatarUrl] (the Cloudinary secure URL) and updates the user's avatar.
+  ///
+  /// Returns [Right] with [ProfileResponseEntity] on success,
+  /// or [Left] with [Failure] on error.
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl);
 }
