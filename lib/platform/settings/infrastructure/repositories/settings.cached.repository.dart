@@ -38,4 +38,20 @@ class SettingsCachedRepository implements ISettingsRepository {
       }
     });
   }
+
+  @override
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl) async {
+    final result = await _remoteRepository.updateAvatar(avatarUrl);
+
+    // Only persist if successful
+    return result.fold((failure) => Left(failure), (profileResponse) async {
+      try {
+        // Update cached user data with the updated avatar
+        await _localDataSource.setUser(UserModel.fromEntity(profileResponse.user));
+        return Right(profileResponse);
+      } on CacheException catch (exception) {
+        return Left(ProblemMapper.toFailure(exception));
+      }
+    });
+  }
 }
