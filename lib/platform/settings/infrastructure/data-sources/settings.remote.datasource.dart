@@ -1,7 +1,12 @@
 import 'package:chopper/chopper.dart' show Response;
 
 import '../../../../api/client/api_116.swagger.dart'
-    show Api116, PublicUpdateOwnProfileRequest, PublicUpdateOwnProfileResponse;
+    show
+        Api116,
+        PublicUpdateOwnProfileRequest,
+        PublicUpdateOwnProfileResponse,
+        PublicUpdateAvatarRequest,
+        PublicUpdateAvatarResponse;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.dart'
@@ -35,6 +40,25 @@ class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
           countryDialCode: model.countryDialCode,
           partialPhoneNumber: model.partialPhoneNumber,
         ),
+      );
+
+      if (response.isSuccessful) {
+        return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicUpdateAvatarResponse> updateAvatar(String avatarUrl) async {
+    try {
+      final response = await _apiClient.PublicUpdateAvatar(
+        body: PublicUpdateAvatarRequest(avatarUrl: avatarUrl),
       );
 
       if (response.isSuccessful) {
