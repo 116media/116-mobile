@@ -41,4 +41,6 @@ targets:
               file_name: "api_116.json"
           separate_models: true                   # Generate models in separate files
           use_path_for_request_names: false       # Use operation IDs for method names
+          multipart_file_type: "MultipartFile"    # Use MultipartFile for file uploads
+
             
