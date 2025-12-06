@@ -589,18 +589,31 @@
         "tags": [
           "admin::profile"
         ],
-        "summary": "Update admin user avatar",
-        "description": "    Updates the authenticated admin user's avatar by providing a new avatar URL.\n    This endpoint allows logged-in admin users to update their profile avatar from an external URL.\n    The system will download and store the avatar file, and automatically delete any previous avatar.\n    \n\n    Admin users only need to have active accounts (no verification requirement).\n    \n\n    **Authentication Requirements:**\n\n    - Admin user must be logged in (JWT token required)\n\n    - Must have Admin or SuperAdmin role\n\n    - Account must be active\n\n    \n\n    **Request Requirements:**\n\n    - Valid avatar URL (required)\n\n    - URL must be accessible and point to a valid image\n\n    - Maximum URL length: 2048 characters\n\n    \n\n    **Avatar Management:**\n\n    - Previous avatar is automatically deleted when updating\n\n    - New avatar is downloaded and stored in the system\n\n    - Supports common image formats (JPEG, PNG, GIF, WebP)\n\n    - Smart deduplication: if the same URL is provided again, no duplicate download occurs\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated admin user information including new avatar\n\n    - Returns 400 Bad Request for invalid avatar URL format\n\n    - Returns 401 Unauthorized for unauthenticated requests\n\n    - Returns 403 Forbidden for non-admin users or inactive accounts\n\n    - Returns 404 Not Found when admin user doesn't exist\n\n    \n\n    **Security Features:**\n\n    - Only authenticated admin users can update their own avatar\n\n    - Role-based authorization (Admin/SuperAdmin required)\n\n    - Account activity verification (active accounts only)\n\n    - URL validation to ensure proper format\n\n    - Automatic cleanup of old avatar files\n\n    \n\n    **Process Flow:**\n\n    1. Validates admin authentication and account status\n\n    2. Validates the provided avatar URL format\n\n    3. Downloads the new avatar from the URL\n\n    4. Deletes the previous avatar file (if exists)\n\n    5. Updates admin user record with new avatar reference\n\n    6. Returns updated admin user information with avatar details",
+        "summary": "Update admin user avatar via file upload",
+        "description": "    Updates the authenticated admin user's avatar by uploading an image file.\n\n    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.\n    The system will automatically delete any previous avatar when a new one is uploaded.\n    \n\n    Admin users only need to have active accounts (no verification requirement).\n    \n\n    **Authentication Requirements:**\n\n    - Admin user must be logged in (JWT token required)\n\n    - Must have Admin or SuperAdmin role\n\n    - Account must be active\n\n    \n\n    **Request Requirements:**\n\n    - Content-Type: multipart/form-data\n\n    - Form field name: \"avatarFile\"\\n\n    - Allowed file types: JPEG, PNG, GIF, WebP\\n\n    - Maximum file size: 1MB\\n\n    - File must be a valid image\\n\n    \\n\n    **Avatar Management:**\\n\n    - Previous avatar is automatically deleted from cloud storage\\n\n    - Images are stored in Cloudinary with automatic optimization\\n\n    - Secure HTTPS URLs are generated for accessing avatars\\n\n    - Smart quality optimization and format conversion\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with updated admin user information including new avatar\\n\n    - Returns 400 Bad Request for invalid file type, size, or missing file\\n\n    - Returns 401 Unauthorized for unauthenticated requests\\n\n    - Returns 403 Forbidden for non-admin users or inactive accounts\\n\n    - Returns 404 Not Found when admin user doesn't exist\\n\n    \\n\n    **Security Features:**\\n\n    - Only authenticated admin users can update their own avatar\\n\n    - Role-based authorization (Admin/SuperAdmin required)\\n\n    - Account activity verification (active accounts only)\\n\n    - File type and size validation\\n\n    - Automatic cleanup of old avatar files from cloud storage\\n\n    - Secure signed uploads to Cloudinary\\n\n    \\n\n    **Process Flow:**\\n\n    1. Validates admin authentication and account status\\n\n    2. Validates the uploaded file (type, size, format)\\n\n    3. Uploads the new avatar to Cloudinary cloud storage\\n\n    4. Deletes the previous avatar from cloud storage (if exists)\\n\n    5. Updates admin user record with new avatar reference\\n\n    6. Returns updated admin user information with avatar details\\n\n    \\n\n    **Example cURL Request:**\\n\n    ```\n    curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \\\n      -H \"Authorization: Bearer ADMIN_JWT_TOKEN\" \\\n      -F \"avatarFile=@/path/to/image.jpg\"\n    ```",
         "operationId": "AdminUpdateAvatar",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AdminUpdateAvatarRequest"
+                "required": [
+                  "avatarFile"
+                ],
+                "type": "object",
+                "properties": {
+                  "avatarFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "avatarFile": {
+                  "style": "form"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "400": {
@@ -1344,18 +1357,31 @@
         "tags": [
           "public::profile"
         ],
-        "summary": "Update user avatar",
-        "description": "    Updates the authenticated user's avatar by providing a new avatar URL.\n\n    This endpoint allows logged-in users to update their profile avatar from an external URL.\n    The system will download and store the avatar file, and automatically delete any previous avatar.\n    Only verified users can update their avatar to maintain profile quality and security.\n    \n\n    **Authentication Requirements:**\n\n    - User must be logged in (JWT token required)\n\n    - Account must be active and verified\n\n    \n\n    **Request Requirements:**\n\n    - Valid avatar URL (required)\n\n    - URL must be accessible and point to a valid image\n\n    - Maximum URL length: 2048 characters\n\n    \n\n    **Avatar Management:**\n\n    - Previous avatar is automatically deleted when updating\n\n    - New avatar is downloaded and stored in the system\n\n    - Supports common image formats (JPEG, PNG, GIF, WebP)\n\n    - Smart deduplication: if the same URL is provided again, no duplicate download occurs\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated user information including new avatar\n\n    - Returns 400 Bad Request for invalid avatar URL format\n\n    - Returns 401 Unauthorized for unauthenticated requests\n\n    - Returns 403 Forbidden for inactive or unverified accounts\n\n    - Returns 404 Not Found when user doesn't exist\n\n    \n\n    **Security Features:**\n\n    - Only the authenticated user can update their own avatar\n\n    - Account verification required (verified accounts only)\n\n    - URL validation to ensure proper format\n\n    - Automatic cleanup of old avatar files\n\n    \n\n    **Process Flow:**\n\n    1. Validates user authentication and account status\n\n    2. Validates the provided avatar URL format\n\n    3. Downloads the new avatar from the URL\n\n    4. Deletes the previous avatar file (if exists)\n\n    5. Updates user record with new avatar reference\n\n    6. Returns updated user information with avatar details.",
+        "summary": "Update user avatar via file upload",
+        "description": "    Updates the authenticated user's avatar by uploading an image file.\n\n    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.\n    The system will automatically delete any previous avatar when a new one is uploaded.\n    Only verified users can update their avatar to maintain profile quality and security.\n    \n\n    **Authentication Requirements:**\n\n    - User must be logged in (JWT token required)\n\n    - Account must be active and verified\n\n    \n\n    **Request Requirements:**\n\n    - Content-Type: multipart/form-data\n\n    - Form field name: \"avatarFile\"\\n\n    - Allowed file types: JPEG, PNG, GIF, WebP\\n\n    - Maximum file size: 1MB\\n\n    - File must be a valid image\\n\n    \\n\n    **Avatar Management:**\\n\n    - Previous avatar is automatically deleted from cloud storage\\n\n    - Images are stored in Cloudinary with automatic optimization\\n\n    - Secure HTTPS URLs are generated for accessing avatars\\n\n    - Smart quality optimization and format conversion\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with updated user information including new avatar\\n\n    - Returns 400 Bad Request for invalid file type, size, or missing file\\n\n    - Returns 401 Unauthorized for unauthenticated requests\\n\n    - Returns 403 Forbidden for inactive or unverified accounts\\n\n    - Returns 404 Not Found when user doesn't exist\\n\n    \\n\n    **Security Features:**\\n\n    - Only the authenticated user can update their own avatar\\n\n    - Account verification required (verified accounts only)\\n\n    - File type and size validation\\n\n    - Automatic cleanup of old avatar files from cloud storage\\n\n    - Secure signed uploads to Cloudinary\\n\n    \\n\n    **Process Flow:**\\n\n    1. Validates user authentication and account status\\n\n    2. Validates the uploaded file (type, size, format)\\n\n    3. Uploads the new avatar to Cloudinary cloud storage\\n\n    4. Deletes the previous avatar from cloud storage (if exists)\\n\n    5. Updates user record with new avatar reference\\n\n    6. Returns updated user information with avatar details\\n\n    \\n\n    **Example cURL Request:**\\n\n    ```\n    curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \\\n      -H \"Authorization: Bearer YOUR_JWT_TOKEN\" \\\n      -F \"avatarFile=@/path/to/image.jpg\"\n    ```",
         "operationId": "PublicUpdateAvatar",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/PublicUpdateAvatarRequest"
+                "required": [
+                  "avatarFile"
+                ],
+                "type": "object",
+                "properties": {
+                  "avatarFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "avatarFile": {
+                  "style": "form"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "400": {
@@ -1582,18 +1608,6 @@
         "properties": {
           "isSuccess": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdminUpdateAvatarRequest": {
-        "required": [
-          "avatarUrl"
-        ],
-        "type": "object",
-        "properties": {
-          "avatarUrl": {
-            "type": "string"
           }
         },
         "additionalProperties": false
@@ -2021,18 +2035,6 @@
             "$ref": "#/components/schemas/UserResponseDto"
           },
           "token": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PublicUpdateAvatarRequest": {
-        "required": [
-          "avatarUrl"
-        ],
-        "type": "object",
-        "properties": {
-          "avatarUrl": {
             "type": "string"
           }
         },
