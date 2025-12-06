@@ -31,4 +31,15 @@ class SettingsRemoteRepository implements ISettingsRepository {
       return Left(ProblemMapper.toFailure(exception));
     }
   }
+
+  @override
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl) async {
+    try {
+      final response = await _remoteDataSource.updateAvatar(avatarUrl);
+      final profileEntity = SettingsMapper.avatarResponseFromDto(response);
+      return Right(profileEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
 }
