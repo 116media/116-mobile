@@ -1,3 +1,5 @@
+import 'dart:io' show File;
+
 import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
@@ -15,13 +17,15 @@ abstract class ISettingsRepository {
   ///
   /// Returns [Right] with [ProfileResponseEntity] on success,
   /// or [Left] with [Failure] on error.
-  Future<Either<Failure, ProfileResponseEntity>> updateProfile(ProfileModel profile);
+  Future<Either<Failure, ProfileResponseEntity>> updateProfile(
+    ProfileModel profile,
+  );
 
   /// Updates the authenticated user's avatar.
   ///
-  /// Takes an [avatarUrl] (the Cloudinary secure URL) and updates the user's avatar.
+  /// Takes an [avatarFile] (the image file to upload via multipart form-data).
   ///
   /// Returns [Right] with [ProfileResponseEntity] on success,
   /// or [Left] with [Failure] on error.
-  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl);
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(File avatarFile);
 }
