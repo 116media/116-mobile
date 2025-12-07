@@ -1,3 +1,5 @@
+import 'dart:io' show File;
+
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
 import '../../../../modules/auth/application/data-sources/auth.local.datasource.port.dart'
@@ -40,8 +42,8 @@ class SettingsCachedRepository implements ISettingsRepository {
   }
 
   @override
-  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl) async {
-    final result = await _remoteRepository.updateAvatar(avatarUrl);
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(File avatarFile) async {
+    final result = await _remoteRepository.updateAvatar(avatarFile);
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (profileResponse) async {

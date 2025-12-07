@@ -1,3 +1,5 @@
+import 'dart:io' show File;
+
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
 import '../../../../shared/domain/failures/failure.dart' show Failure;
@@ -33,9 +35,9 @@ class SettingsRemoteRepository implements ISettingsRepository {
   }
 
   @override
-  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(String avatarUrl) async {
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(File avatarFile) async {
     try {
-      final response = await _remoteDataSource.updateAvatar(avatarUrl);
+      final response = await _remoteDataSource.updateAvatar(avatarFile);
       final profileEntity = SettingsMapper.avatarResponseFromDto(response);
       return Right(profileEntity);
     } on ServerException catch (exception) {

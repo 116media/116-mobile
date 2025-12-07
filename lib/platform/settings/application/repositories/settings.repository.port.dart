@@ -17,9 +17,7 @@ abstract class ISettingsRepository {
   ///
   /// Returns [Right] with [ProfileResponseEntity] on success,
   /// or [Left] with [Failure] on error.
-  Future<Either<Failure, ProfileResponseEntity>> updateProfile(
-    ProfileModel profile,
-  );
+  Future<Either<Failure, ProfileResponseEntity>> updateProfile(ProfileModel profile);
 
   /// Updates the authenticated user's avatar.
   ///
