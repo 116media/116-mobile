@@ -16,16 +16,4 @@ abstract class EnvConfig {
   ///
   /// Expected environment variable: `GOOGLE_SERVER_CLIENT_ID`
   static String? get googleServerClientId => dotenv.get("GOOGLE_SERVER_CLIENT_ID");
-
-  /// Retrieves all Cloudinary configuration values as a record.
-  ///
-  /// Returns a tuple containing:
-  /// - `cloudName`: Cloudinary cloud name
-  /// - `apiKey`: Cloudinary API key
-  ///
-  /// Expected environment variables:
-  /// - `CLOUDINARY_CLOUD_NAME`
-  /// - `CLOUDINARY_API_KEY`
-  static ({String cloudName, String apiKey}) get cloudinaryConfig =>
-      (cloudName: dotenv.get("CLOUDINARY_CLOUD_NAME"), apiKey: dotenv.get("CLOUDINARY_API_KEY"));
 }
