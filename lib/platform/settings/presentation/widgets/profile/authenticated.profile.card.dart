@@ -8,6 +8,7 @@ import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUt
 import '../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
+import '../dialogs/updateavatar.dialog.widget.dart' show UpdateAvatarDialog;
 import '../dialogs/updateprofile.dialog.widget.dart' show UpdateProfileDialog;
 
 /// Profile card widget for authenticated users in the settings screen.
@@ -27,6 +28,13 @@ class AuthenticatedProfileCard extends StatelessWidget {
     );
   }
 
+  void _showUpdateAvatarDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => UpdateAvatarDialog(user: user),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final email = user?.email ?? '';
@@ -38,23 +46,30 @@ class AuthenticatedProfileCard extends StatelessWidget {
       child: Column(
         children: [
           // Avatar with edit badge
-          Stack(
-            children: [
-              CircleAvatar(
-                radius: context.sizing.s48,
-                backgroundColor: context.primaryColor.withValues(alpha: 0.1),
-                backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-                child: avatarUrl == null
-                    ? Icon(Icons.person, size: context.sizing.s48, color: context.primaryColor)
-                    : null,
-              ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    // TODO: Implement avatar change functionality
-                  },
+          GestureDetector(
+            onTap: () => _showUpdateAvatarDialog(context),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(context.sizing.s98),
+                    border: Border.all(
+                      width: context.sizing.s5,
+                      color: context.primaryColor.withValues(alpha: 0.25),
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: context.sizing.s48,
+                    backgroundColor: context.primaryColor.withValues(alpha: 0.1),
+                    backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                    child: avatarUrl == null
+                        ? Icon(Icons.person, size: context.sizing.s48, color: context.primaryColor)
+                        : null,
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
                   child: Container(
                     padding: EdgeInsets.all(context.sizing.s6),
                     decoration: BoxDecoration(
@@ -68,8 +83,8 @@ class AuthenticatedProfileCard extends StatelessWidget {
                     child: Icon(Icons.camera_alt, size: context.sizing.s16, color: Colors.white),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Gap(context.sizing.s16),
 
