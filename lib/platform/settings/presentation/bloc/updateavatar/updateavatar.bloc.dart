@@ -12,9 +12,8 @@ import 'updateavatar.state.dart'
 
 /// BLoC for handling avatar update flow.
 ///
-/// Manages avatar update state and coordinates with UpdateAvatarUseCase to
-/// upload image to Cloudinary and update user avatar via API. Emits different
-/// states based on the update result (loading, success, failure).
+/// Manages avatar update state and coordinates with UpdateAvatarUseCase.
+/// Emits different states based on the update result (loading, success, failure).
 class UpdateAvatarBloc extends Bloc<UpdateAvatarEvent, UpdateAvatarState> {
   final UpdateAvatarUseCase _updateAvatarUseCase;
 
