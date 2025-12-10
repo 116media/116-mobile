@@ -5,6 +5,11 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart' show Pla
 import '../../../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 
+/// Full-screen loading overlay with platform-specific spinner.
+///
+/// Displays a semi-transparent black backdrop with a centered loading spinner.
+/// Uses CupertinoActivityIndicator on iOS and CircularProgressIndicator on Android.
+/// Covers the entire parent widget using Positioned.fill.
 class LoadingOverlay extends StatelessWidget {
   const LoadingOverlay({super.key});
 

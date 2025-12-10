@@ -8,6 +8,10 @@ import '../../../../../../shared/presentation/widgets/buttons/enums/button.size.
 import '../../../../../../shared/presentation/widgets/buttons/outline.button.dart';
 import '../../../../../../shared/presentation/widgets/buttons/solid.button.dart';
 
+/// Action buttons for the UpdateAvatarDialog.
+///
+/// Provides three buttons: Camera, Gallery, and Cancel.
+/// Buttons are disabled during upload to prevent multiple submissions.
 class ActionButtons extends StatelessWidget {
   final bool isUploading;
   final VoidCallback onCamera;
