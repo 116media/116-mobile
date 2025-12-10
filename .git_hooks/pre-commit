@@ -29,7 +29,7 @@ echo ""
 echo -e "${YELLOW}🔎 Checking for common issues...${NC}"
 
 # Check for debug print statements in lib folder (excluding commented lines)
-if git diff --cached --name-only | grep -E '^lib/.*\.dart$' | xargs grep -n 'print(' 2>/dev/null | grep -vE '^\s*(//|///|\*)' ; then
+if git diff --cached --name-only | grep -E '^lib/.*\.dart$' | xargs grep -n 'print(' 2>/dev/null | grep -vE ':\s*(//|///|\*)' ; then
     echo ""
     echo -e "${YELLOW}🚨 Warning: Found print() statements in staged files${NC}"
     echo ""
