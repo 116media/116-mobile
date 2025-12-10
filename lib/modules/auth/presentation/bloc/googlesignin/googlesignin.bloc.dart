@@ -6,7 +6,12 @@ import '../../../../../platform/session/domain/enums/auth.status.enum.dart' show
 import '../../../application/usecases/googlesignin.usecase.dart' show GoogleSignInUseCase;
 import 'googlesignin.event.dart' show GoogleSignInEvent, GoogleSignInSubmitted;
 import 'googlesignin.state.dart'
-    show GoogleSignInState, GoogleSignInInitial, GoogleSignInLoading, GoogleSignInSuccess, GoogleSignInFailure;
+    show
+        GoogleSignInState,
+        GoogleSignInInitial,
+        GoogleSignInLoading,
+        GoogleSignInSuccess,
+        GoogleSignInFailure;
 
 /// BLoC for handling Google sign-in authentication flow.
 ///
@@ -19,26 +24,26 @@ class GoogleSignInBloc extends Bloc<GoogleSignInEvent, GoogleSignInState> {
   final UpdateAuthStatusUseCase _updateAuthStatusUseCase;
 
   GoogleSignInBloc(this._googleSignInUseCase, this._updateAuthStatusUseCase)
-      : super(const GoogleSignInInitial()) {
+    : super(const GoogleSignInInitial()) {
     on<GoogleSignInSubmitted>(_onGoogleSignInSubmitted);
   }
 
-  Future<void> _onGoogleSignInSubmitted(GoogleSignInSubmitted event, Emitter<GoogleSignInState> emit) async {
+  Future<void> _onGoogleSignInSubmitted(
+    GoogleSignInSubmitted event,
+    Emitter<GoogleSignInState> emit,
+  ) async {
     emit(const GoogleSignInLoading());
 
     final result = await _googleSignInUseCase.execute(null);
 
-    await result.fold(
-      (failure) async => emit(GoogleSignInFailure(failure)),
-      (response) async {
-        // Social login users are already verified by the provider
-        await _updateAuthStatusUseCase.execute((
-          status: AuthStatus.authenticated,
-          userId: response.user.id,
-        ));
+    await result.fold((failure) async => emit(GoogleSignInFailure(failure)), (response) async {
+      // Social login users are already verified by the provider
+      await _updateAuthStatusUseCase.execute((
+        status: AuthStatus.authenticated,
+        userId: response.user.id,
+      ));
 
-        emit(GoogleSignInSuccess(response));
-      },
-    );
+      emit(GoogleSignInSuccess(response));
+    });
   }
 }

@@ -6,7 +6,12 @@ import '../../../../../platform/session/domain/enums/auth.status.enum.dart' show
 import '../../../application/usecases/facebooksignin.usecase.dart' show FacebookSignInUseCase;
 import 'facebooksignin.event.dart' show FacebookSignInEvent, FacebookSignInSubmitted;
 import 'facebooksignin.state.dart'
-    show FacebookSignInState, FacebookSignInInitial, FacebookSignInLoading, FacebookSignInSuccess, FacebookSignInFailure;
+    show
+        FacebookSignInState,
+        FacebookSignInInitial,
+        FacebookSignInLoading,
+        FacebookSignInSuccess,
+        FacebookSignInFailure;
 
 /// BLoC for handling Facebook sign-in authentication flow.
 ///
@@ -19,26 +24,26 @@ class FacebookSignInBloc extends Bloc<FacebookSignInEvent, FacebookSignInState> 
   final UpdateAuthStatusUseCase _updateAuthStatusUseCase;
 
   FacebookSignInBloc(this._facebookSignInUseCase, this._updateAuthStatusUseCase)
-      : super(const FacebookSignInInitial()) {
+    : super(const FacebookSignInInitial()) {
     on<FacebookSignInSubmitted>(_onFacebookSignInSubmitted);
   }
 
-  Future<void> _onFacebookSignInSubmitted(FacebookSignInSubmitted event, Emitter<FacebookSignInState> emit) async {
+  Future<void> _onFacebookSignInSubmitted(
+    FacebookSignInSubmitted event,
+    Emitter<FacebookSignInState> emit,
+  ) async {
     emit(const FacebookSignInLoading());
 
     final result = await _facebookSignInUseCase.execute(null);
 
-    await result.fold(
-      (failure) async => emit(FacebookSignInFailure(failure)),
-      (response) async {
-        // Social login users are already verified by the provider
-        await _updateAuthStatusUseCase.execute((
-          status: AuthStatus.authenticated,
-          userId: response.user.id,
-        ));
+    await result.fold((failure) async => emit(FacebookSignInFailure(failure)), (response) async {
+      // Social login users are already verified by the provider
+      await _updateAuthStatusUseCase.execute((
+        status: AuthStatus.authenticated,
+        userId: response.user.id,
+      ));
 
-        emit(FacebookSignInSuccess(response));
-      },
-    );
+      emit(FacebookSignInSuccess(response));
+    });
   }
 }

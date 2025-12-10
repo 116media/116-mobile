@@ -9,10 +9,7 @@ part 'api_116.models.swagger.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AdminChangePasswordRequest {
-  const AdminChangePasswordRequest({
-    required this.oldPassword,
-    required this.newPassword,
-  });
+  const AdminChangePasswordRequest({required this.oldPassword, required this.newPassword});
 
   factory AdminChangePasswordRequest.fromJson(Map<String, dynamic> json) =>
       _$AdminChangePasswordRequestFromJson(json);
@@ -31,15 +28,9 @@ class AdminChangePasswordRequest {
     return identical(this, other) ||
         (other is AdminChangePasswordRequest &&
             (identical(other.oldPassword, oldPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.oldPassword,
-                  oldPassword,
-                )) &&
+                const DeepCollectionEquality().equals(other.oldPassword, oldPassword)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.newPassword,
-                  newPassword,
-                )));
+                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
   }
 
   @override
@@ -53,10 +44,7 @@ class AdminChangePasswordRequest {
 }
 
 extension $AdminChangePasswordRequestExtension on AdminChangePasswordRequest {
-  AdminChangePasswordRequest copyWith({
-    String? oldPassword,
-    String? newPassword,
-  }) {
+  AdminChangePasswordRequest copyWith({String? oldPassword, String? newPassword}) {
     return AdminChangePasswordRequest(
       oldPassword: oldPassword ?? this.oldPassword,
       newPassword: newPassword ?? this.newPassword,
@@ -93,18 +81,14 @@ class AdminChangePasswordResponse {
     return identical(this, other) ||
         (other is AdminChangePasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminChangePasswordResponseExtension on AdminChangePasswordResponse {
@@ -145,8 +129,7 @@ class AdminForgotPasswordRequest {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
 }
 
 extension $AdminForgotPasswordRequestExtension on AdminForgotPasswordRequest {
@@ -155,18 +138,13 @@ extension $AdminForgotPasswordRequestExtension on AdminForgotPasswordRequest {
   }
 
   AdminForgotPasswordRequest copyWithWrapped({Wrapped<String>? email}) {
-    return AdminForgotPasswordRequest(
-      email: (email != null ? email.value : this.email),
-    );
+    return AdminForgotPasswordRequest(email: (email != null ? email.value : this.email));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class AdminForgotPasswordResponse {
-  const AdminForgotPasswordResponse({
-    required this.isSuccess,
-    required this.email,
-  });
+  const AdminForgotPasswordResponse({required this.isSuccess, required this.email});
 
   factory AdminForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
       _$AdminForgotPasswordResponseFromJson(json);
@@ -185,10 +163,7 @@ class AdminForgotPasswordResponse {
     return identical(this, other) ||
         (other is AdminForgotPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )) &&
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)));
   }
@@ -211,10 +186,7 @@ extension $AdminForgotPasswordResponseExtension on AdminForgotPasswordResponse {
     );
   }
 
-  AdminForgotPasswordResponse copyWithWrapped({
-    Wrapped<bool>? isSuccess,
-    Wrapped<String>? email,
-  }) {
+  AdminForgotPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess, Wrapped<String>? email}) {
     return AdminForgotPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
       email: (email != null ? email.value : this.email),
@@ -248,8 +220,7 @@ class AdminGetOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $AdminGetOwnProfileResponseExtension on AdminGetOwnProfileResponse {
@@ -258,9 +229,7 @@ extension $AdminGetOwnProfileResponseExtension on AdminGetOwnProfileResponse {
   }
 
   AdminGetOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return AdminGetOwnProfileResponse(
-      user: (user != null ? user.value : this.user),
-    );
+    return AdminGetOwnProfileResponse(user: (user != null ? user.value : this.user));
   }
 }
 
@@ -287,10 +256,7 @@ class AdminLoginRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(
-                  other.password,
-                  password,
-                )));
+                const DeepCollectionEquality().equals(other.password, password)));
   }
 
   @override
@@ -305,16 +271,10 @@ class AdminLoginRequest {
 
 extension $AdminLoginRequestExtension on AdminLoginRequest {
   AdminLoginRequest copyWith({String? email, String? password}) {
-    return AdminLoginRequest(
-      email: email ?? this.email,
-      password: password ?? this.password,
-    );
+    return AdminLoginRequest(email: email ?? this.email, password: password ?? this.password);
   }
 
-  AdminLoginRequest copyWithWrapped({
-    Wrapped<String>? email,
-    Wrapped<String>? password,
-  }) {
+  AdminLoginRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? password}) {
     return AdminLoginRequest(
       email: (email != null ? email.value : this.email),
       password: (password != null ? password.value : this.password),
@@ -360,16 +320,10 @@ class AdminLoginResponse {
 
 extension $AdminLoginResponseExtension on AdminLoginResponse {
   AdminLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return AdminLoginResponse(
-      user: user ?? this.user,
-      token: token ?? this.token,
-    );
+    return AdminLoginResponse(user: user ?? this.user, token: token ?? this.token);
   }
 
-  AdminLoginResponse copyWithWrapped({
-    Wrapped<UserResponseDto>? user,
-    Wrapped<String>? token,
-  }) {
+  AdminLoginResponse copyWithWrapped({Wrapped<UserResponseDto>? user, Wrapped<String>? token}) {
     return AdminLoginResponse(
       user: (user != null ? user.value : this.user),
       token: (token != null ? token.value : this.token),
@@ -415,16 +369,10 @@ class AdminResendOtpRequest {
 
 extension $AdminResendOtpRequestExtension on AdminResendOtpRequest {
   AdminResendOtpRequest copyWith({String? email, String? purpose}) {
-    return AdminResendOtpRequest(
-      email: email ?? this.email,
-      purpose: purpose ?? this.purpose,
-    );
+    return AdminResendOtpRequest(email: email ?? this.email, purpose: purpose ?? this.purpose);
   }
 
-  AdminResendOtpRequest copyWithWrapped({
-    Wrapped<String>? email,
-    Wrapped<String>? purpose,
-  }) {
+  AdminResendOtpRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? purpose}) {
     return AdminResendOtpRequest(
       email: (email != null ? email.value : this.email),
       purpose: (purpose != null ? purpose.value : this.purpose),
@@ -451,18 +399,14 @@ class AdminResendOtpResponse {
     return identical(this, other) ||
         (other is AdminResendOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminResendOtpResponseExtension on AdminResendOtpResponse {
@@ -508,10 +452,7 @@ class AdminResetPasswordRequest {
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.newPassword,
-                  newPassword,
-                )));
+                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
   }
 
   @override
@@ -526,11 +467,7 @@ class AdminResetPasswordRequest {
 }
 
 extension $AdminResetPasswordRequestExtension on AdminResetPasswordRequest {
-  AdminResetPasswordRequest copyWith({
-    String? email,
-    String? code,
-    String? newPassword,
-  }) {
+  AdminResetPasswordRequest copyWith({String? email, String? code, String? newPassword}) {
     return AdminResetPasswordRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -570,18 +507,14 @@ class AdminResetPasswordResponse {
     return identical(this, other) ||
         (other is AdminResetPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminResetPasswordResponseExtension on AdminResetPasswordResponse {
@@ -615,18 +548,14 @@ class AdminSignOutResponse {
     return identical(this, other) ||
         (other is AdminSignOutResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminSignOutResponseExtension on AdminSignOutResponse {
@@ -635,9 +564,7 @@ extension $AdminSignOutResponseExtension on AdminSignOutResponse {
   }
 
   AdminSignOutResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
-    return AdminSignOutResponse(
-      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
-    );
+    return AdminSignOutResponse(isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess));
   }
 }
 
@@ -667,8 +594,7 @@ class AdminUpdateAvatarResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $AdminUpdateAvatarResponseExtension on AdminUpdateAvatarResponse {
@@ -677,9 +603,7 @@ extension $AdminUpdateAvatarResponseExtension on AdminUpdateAvatarResponse {
   }
 
   AdminUpdateAvatarResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return AdminUpdateAvatarResponse(
-      user: (user != null ? user.value : this.user),
-    );
+    return AdminUpdateAvatarResponse(user: (user != null ? user.value : this.user));
   }
 }
 
@@ -719,35 +643,20 @@ class AdminUpdateOwnProfileRequest {
     return identical(this, other) ||
         (other is AdminUpdateOwnProfileRequest &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(
-                  other.userName,
-                  userName,
-                )) &&
+                const DeepCollectionEquality().equals(other.userName, userName)) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(
-                  other.countryName,
-                  countryName,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
             (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.countryFlagUrl,
-                  countryFlagUrl,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryIsoCode,
-                  countryIsoCode,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryDialCode,
-                  countryDialCode,
-                )));
+                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)));
   }
 
   @override
@@ -764,8 +673,7 @@ class AdminUpdateOwnProfileRequest {
       runtimeType.hashCode;
 }
 
-extension $AdminUpdateOwnProfileRequestExtension
-    on AdminUpdateOwnProfileRequest {
+extension $AdminUpdateOwnProfileRequestExtension on AdminUpdateOwnProfileRequest {
   AdminUpdateOwnProfileRequest copyWith({
     String? userName,
     String? countryName,
@@ -795,18 +703,12 @@ extension $AdminUpdateOwnProfileRequestExtension
     return AdminUpdateOwnProfileRequest(
       userName: (userName != null ? userName.value : this.userName),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null
-          ? countryFlagUrl.value
-          : this.countryFlagUrl),
+      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      countryIsoCode: (countryIsoCode != null
-          ? countryIsoCode.value
-          : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null
-          ? countryDialCode.value
-          : this.countryDialCode),
+      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
     );
   }
 }
@@ -837,32 +739,22 @@ class AdminUpdateOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
-extension $AdminUpdateOwnProfileResponseExtension
-    on AdminUpdateOwnProfileResponse {
+extension $AdminUpdateOwnProfileResponseExtension on AdminUpdateOwnProfileResponse {
   AdminUpdateOwnProfileResponse copyWith({UserResponseDto? user}) {
     return AdminUpdateOwnProfileResponse(user: user ?? this.user);
   }
 
-  AdminUpdateOwnProfileResponse copyWithWrapped({
-    Wrapped<UserResponseDto>? user,
-  }) {
-    return AdminUpdateOwnProfileResponse(
-      user: (user != null ? user.value : this.user),
-    );
+  AdminUpdateOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
+    return AdminUpdateOwnProfileResponse(user: (user != null ? user.value : this.user));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class AdminVerifyOtpRequest {
-  const AdminVerifyOtpRequest({
-    required this.email,
-    required this.code,
-    required this.purpose,
-  });
+  const AdminVerifyOtpRequest({required this.email, required this.code, required this.purpose});
 
   factory AdminVerifyOtpRequest.fromJson(Map<String, dynamic> json) =>
       _$AdminVerifyOtpRequestFromJson(json);
@@ -902,11 +794,7 @@ class AdminVerifyOtpRequest {
 }
 
 extension $AdminVerifyOtpRequestExtension on AdminVerifyOtpRequest {
-  AdminVerifyOtpRequest copyWith({
-    String? email,
-    String? code,
-    String? purpose,
-  }) {
+  AdminVerifyOtpRequest copyWith({String? email, String? code, String? purpose}) {
     return AdminVerifyOtpRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -946,18 +834,14 @@ class AdminVerifyOtpResponse {
     return identical(this, other) ||
         (other is AdminVerifyOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminVerifyOtpResponseExtension on AdminVerifyOtpResponse {
@@ -984,8 +868,7 @@ class FileDto {
     required this.isDeleted,
   });
 
-  factory FileDto.fromJson(Map<String, dynamic> json) =>
-      _$FileDtoFromJson(json);
+  factory FileDto.fromJson(Map<String, dynamic> json) => _$FileDtoFromJson(json);
 
   static const toJsonFactory = _$FileDtoToJson;
   Map<String, dynamic> toJson() => _$FileDtoToJson(this);
@@ -1010,38 +893,19 @@ class FileDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is FileDto &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.fileName, fileName) ||
-                const DeepCollectionEquality().equals(
-                  other.fileName,
-                  fileName,
-                )) &&
+                const DeepCollectionEquality().equals(other.fileName, fileName)) &&
             (identical(other.originalFileName, originalFileName) ||
-                const DeepCollectionEquality().equals(
-                  other.originalFileName,
-                  originalFileName,
-                )) &&
+                const DeepCollectionEquality().equals(other.originalFileName, originalFileName)) &&
             (identical(other.mimeType, mimeType) ||
-                const DeepCollectionEquality().equals(
-                  other.mimeType,
-                  mimeType,
-                )) &&
+                const DeepCollectionEquality().equals(other.mimeType, mimeType)) &&
             (identical(other.storageUrl, storageUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.storageUrl,
-                  storageUrl,
-                )) &&
+                const DeepCollectionEquality().equals(other.storageUrl, storageUrl)) &&
             (identical(other.sizeInBytes, sizeInBytes) ||
-                const DeepCollectionEquality().equals(
-                  other.sizeInBytes,
-                  sizeInBytes,
-                )) &&
+                const DeepCollectionEquality().equals(other.sizeInBytes, sizeInBytes)) &&
             (identical(other.isDeleted, isDeleted) ||
-                const DeepCollectionEquality().equals(
-                  other.isDeleted,
-                  isDeleted,
-                )));
+                const DeepCollectionEquality().equals(other.isDeleted, isDeleted)));
   }
 
   @override
@@ -1092,9 +956,7 @@ extension $FileDtoExtension on FileDto {
     return FileDto(
       id: (id != null ? id.value : this.id),
       fileName: (fileName != null ? fileName.value : this.fileName),
-      originalFileName: (originalFileName != null
-          ? originalFileName.value
-          : this.originalFileName),
+      originalFileName: (originalFileName != null ? originalFileName.value : this.originalFileName),
       mimeType: (mimeType != null ? mimeType.value : this.mimeType),
       storageUrl: (storageUrl != null ? storageUrl.value : this.storageUrl),
       sizeInBytes: (sizeInBytes != null ? sizeInBytes.value : this.sizeInBytes),
@@ -1112,8 +974,7 @@ class PermissionDto {
     required this.description,
   });
 
-  factory PermissionDto.fromJson(Map<String, dynamic> json) =>
-      _$PermissionDtoFromJson(json);
+  factory PermissionDto.fromJson(Map<String, dynamic> json) => _$PermissionDtoFromJson(json);
 
   static const toJsonFactory = _$PermissionDtoToJson;
   Map<String, dynamic> toJson() => _$PermissionDtoToJson(this);
@@ -1132,20 +993,13 @@ class PermissionDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PermissionDto &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.resource, resource) ||
-                const DeepCollectionEquality().equals(
-                  other.resource,
-                  resource,
-                )) &&
+                const DeepCollectionEquality().equals(other.resource, resource)) &&
             (identical(other.action, action) ||
                 const DeepCollectionEquality().equals(other.action, action)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality().equals(
-                  other.description,
-                  description,
-                )));
+                const DeepCollectionEquality().equals(other.description, description)));
   }
 
   @override
@@ -1161,12 +1015,7 @@ class PermissionDto {
 }
 
 extension $PermissionDtoExtension on PermissionDto {
-  PermissionDto copyWith({
-    String? id,
-    String? resource,
-    String? action,
-    String? description,
-  }) {
+  PermissionDto copyWith({String? id, String? resource, String? action, String? description}) {
     return PermissionDto(
       id: id ?? this.id,
       resource: resource ?? this.resource,
@@ -1192,16 +1041,9 @@ extension $PermissionDtoExtension on PermissionDto {
 
 @JsonSerializable(explicitToJson: true)
 class ProblemDetails {
-  const ProblemDetails({
-    this.type,
-    this.title,
-    this.status,
-    this.detail,
-    this.instance,
-  });
+  const ProblemDetails({this.type, this.title, this.status, this.detail, this.instance});
 
-  factory ProblemDetails.fromJson(Map<String, dynamic> json) =>
-      _$ProblemDetailsFromJson(json);
+  factory ProblemDetails.fromJson(Map<String, dynamic> json) => _$ProblemDetailsFromJson(json);
 
   static const toJsonFactory = _$ProblemDetailsToJson;
   Map<String, dynamic> toJson() => _$ProblemDetailsToJson(this);
@@ -1231,10 +1073,7 @@ class ProblemDetails {
             (identical(other.detail, detail) ||
                 const DeepCollectionEquality().equals(other.detail, detail)) &&
             (identical(other.instance, instance) ||
-                const DeepCollectionEquality().equals(
-                  other.instance,
-                  instance,
-                )));
+                const DeepCollectionEquality().equals(other.instance, instance)));
   }
 
   @override
@@ -1286,10 +1125,7 @@ extension $ProblemDetailsExtension on ProblemDetails {
 
 @JsonSerializable(explicitToJson: true)
 class PublicChangePasswordRequest {
-  const PublicChangePasswordRequest({
-    required this.oldPassword,
-    required this.newPassword,
-  });
+  const PublicChangePasswordRequest({required this.oldPassword, required this.newPassword});
 
   factory PublicChangePasswordRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicChangePasswordRequestFromJson(json);
@@ -1308,15 +1144,9 @@ class PublicChangePasswordRequest {
     return identical(this, other) ||
         (other is PublicChangePasswordRequest &&
             (identical(other.oldPassword, oldPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.oldPassword,
-                  oldPassword,
-                )) &&
+                const DeepCollectionEquality().equals(other.oldPassword, oldPassword)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.newPassword,
-                  newPassword,
-                )));
+                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
   }
 
   @override
@@ -1330,10 +1160,7 @@ class PublicChangePasswordRequest {
 }
 
 extension $PublicChangePasswordRequestExtension on PublicChangePasswordRequest {
-  PublicChangePasswordRequest copyWith({
-    String? oldPassword,
-    String? newPassword,
-  }) {
+  PublicChangePasswordRequest copyWith({String? oldPassword, String? newPassword}) {
     return PublicChangePasswordRequest(
       oldPassword: oldPassword ?? this.oldPassword,
       newPassword: newPassword ?? this.newPassword,
@@ -1370,22 +1197,17 @@ class PublicChangePasswordResponse {
     return identical(this, other) ||
         (other is PublicChangePasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
-extension $PublicChangePasswordResponseExtension
-    on PublicChangePasswordResponse {
+extension $PublicChangePasswordResponseExtension on PublicChangePasswordResponse {
   PublicChangePasswordResponse copyWith({bool? isSuccess}) {
     return PublicChangePasswordResponse(isSuccess: isSuccess ?? this.isSuccess);
   }
@@ -1423,8 +1245,7 @@ class PublicForgotPasswordRequest {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
 }
 
 extension $PublicForgotPasswordRequestExtension on PublicForgotPasswordRequest {
@@ -1433,18 +1254,13 @@ extension $PublicForgotPasswordRequestExtension on PublicForgotPasswordRequest {
   }
 
   PublicForgotPasswordRequest copyWithWrapped({Wrapped<String>? email}) {
-    return PublicForgotPasswordRequest(
-      email: (email != null ? email.value : this.email),
-    );
+    return PublicForgotPasswordRequest(email: (email != null ? email.value : this.email));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicForgotPasswordResponse {
-  const PublicForgotPasswordResponse({
-    required this.isSuccess,
-    required this.email,
-  });
+  const PublicForgotPasswordResponse({required this.isSuccess, required this.email});
 
   factory PublicForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
       _$PublicForgotPasswordResponseFromJson(json);
@@ -1463,10 +1279,7 @@ class PublicForgotPasswordResponse {
     return identical(this, other) ||
         (other is PublicForgotPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )) &&
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)));
   }
@@ -1481,8 +1294,7 @@ class PublicForgotPasswordResponse {
       runtimeType.hashCode;
 }
 
-extension $PublicForgotPasswordResponseExtension
-    on PublicForgotPasswordResponse {
+extension $PublicForgotPasswordResponseExtension on PublicForgotPasswordResponse {
   PublicForgotPasswordResponse copyWith({bool? isSuccess, String? email}) {
     return PublicForgotPasswordResponse(
       isSuccess: isSuccess ?? this.isSuccess,
@@ -1490,10 +1302,7 @@ extension $PublicForgotPasswordResponseExtension
     );
   }
 
-  PublicForgotPasswordResponse copyWithWrapped({
-    Wrapped<bool>? isSuccess,
-    Wrapped<String>? email,
-  }) {
+  PublicForgotPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess, Wrapped<String>? email}) {
     return PublicForgotPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
       email: (email != null ? email.value : this.email),
@@ -1527,8 +1336,7 @@ class PublicGetOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $PublicGetOwnProfileResponseExtension on PublicGetOwnProfileResponse {
@@ -1536,12 +1344,8 @@ extension $PublicGetOwnProfileResponseExtension on PublicGetOwnProfileResponse {
     return PublicGetOwnProfileResponse(user: user ?? this.user);
   }
 
-  PublicGetOwnProfileResponse copyWithWrapped({
-    Wrapped<UserResponseDto>? user,
-  }) {
-    return PublicGetOwnProfileResponse(
-      user: (user != null ? user.value : this.user),
-    );
+  PublicGetOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
+    return PublicGetOwnProfileResponse(user: (user != null ? user.value : this.user));
   }
 }
 
@@ -1566,15 +1370,9 @@ class PublicLoginRequest {
     return identical(this, other) ||
         (other is PublicLoginRequest &&
             (identical(other.credentials, credentials) ||
-                const DeepCollectionEquality().equals(
-                  other.credentials,
-                  credentials,
-                )) &&
+                const DeepCollectionEquality().equals(other.credentials, credentials)) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(
-                  other.password,
-                  password,
-                )));
+                const DeepCollectionEquality().equals(other.password, password)));
   }
 
   @override
@@ -1595,10 +1393,7 @@ extension $PublicLoginRequestExtension on PublicLoginRequest {
     );
   }
 
-  PublicLoginRequest copyWithWrapped({
-    Wrapped<String>? credentials,
-    Wrapped<String>? password,
-  }) {
+  PublicLoginRequest copyWithWrapped({Wrapped<String>? credentials, Wrapped<String>? password}) {
     return PublicLoginRequest(
       credentials: (credentials != null ? credentials.value : this.credentials),
       password: (password != null ? password.value : this.password),
@@ -1644,16 +1439,10 @@ class PublicLoginResponse {
 
 extension $PublicLoginResponseExtension on PublicLoginResponse {
   PublicLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return PublicLoginResponse(
-      user: user ?? this.user,
-      token: token ?? this.token,
-    );
+    return PublicLoginResponse(user: user ?? this.user, token: token ?? this.token);
   }
 
-  PublicLoginResponse copyWithWrapped({
-    Wrapped<UserResponseDto>? user,
-    Wrapped<String>? token,
-  }) {
+  PublicLoginResponse copyWithWrapped({Wrapped<UserResponseDto>? user, Wrapped<String>? token}) {
     return PublicLoginResponse(
       user: (user != null ? user.value : this.user),
       token: (token != null ? token.value : this.token),
@@ -1699,16 +1488,10 @@ class PublicResendOtpRequest {
 
 extension $PublicResendOtpRequestExtension on PublicResendOtpRequest {
   PublicResendOtpRequest copyWith({String? email, String? purpose}) {
-    return PublicResendOtpRequest(
-      email: email ?? this.email,
-      purpose: purpose ?? this.purpose,
-    );
+    return PublicResendOtpRequest(email: email ?? this.email, purpose: purpose ?? this.purpose);
   }
 
-  PublicResendOtpRequest copyWithWrapped({
-    Wrapped<String>? email,
-    Wrapped<String>? purpose,
-  }) {
+  PublicResendOtpRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? purpose}) {
     return PublicResendOtpRequest(
       email: (email != null ? email.value : this.email),
       purpose: (purpose != null ? purpose.value : this.purpose),
@@ -1735,18 +1518,14 @@ class PublicResendOtpResponse {
     return identical(this, other) ||
         (other is PublicResendOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicResendOtpResponseExtension on PublicResendOtpResponse {
@@ -1792,10 +1571,7 @@ class PublicResetPasswordRequest {
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(
-                  other.newPassword,
-                  newPassword,
-                )));
+                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
   }
 
   @override
@@ -1810,11 +1586,7 @@ class PublicResetPasswordRequest {
 }
 
 extension $PublicResetPasswordRequestExtension on PublicResetPasswordRequest {
-  PublicResetPasswordRequest copyWith({
-    String? email,
-    String? code,
-    String? newPassword,
-  }) {
+  PublicResetPasswordRequest copyWith({String? email, String? code, String? newPassword}) {
     return PublicResetPasswordRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -1854,18 +1626,14 @@ class PublicResetPasswordResponse {
     return identical(this, other) ||
         (other is PublicResetPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicResetPasswordResponseExtension on PublicResetPasswordResponse {
@@ -1899,18 +1667,14 @@ class PublicSignOutResponse {
     return identical(this, other) ||
         (other is PublicSignOutResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicSignOutResponseExtension on PublicSignOutResponse {
@@ -1919,19 +1683,13 @@ extension $PublicSignOutResponseExtension on PublicSignOutResponse {
   }
 
   PublicSignOutResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
-    return PublicSignOutResponse(
-      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
-    );
+    return PublicSignOutResponse(isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicSignUpRequest {
-  const PublicSignUpRequest({
-    required this.email,
-    required this.userName,
-    required this.password,
-  });
+  const PublicSignUpRequest({required this.email, required this.userName, required this.password});
 
   factory PublicSignUpRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicSignUpRequestFromJson(json);
@@ -1954,15 +1712,9 @@ class PublicSignUpRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(
-                  other.userName,
-                  userName,
-                )) &&
+                const DeepCollectionEquality().equals(other.userName, userName)) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(
-                  other.password,
-                  password,
-                )));
+                const DeepCollectionEquality().equals(other.password, password)));
   }
 
   @override
@@ -1977,11 +1729,7 @@ class PublicSignUpRequest {
 }
 
 extension $PublicSignUpRequestExtension on PublicSignUpRequest {
-  PublicSignUpRequest copyWith({
-    String? email,
-    String? userName,
-    String? password,
-  }) {
+  PublicSignUpRequest copyWith({String? email, String? userName, String? password}) {
     return PublicSignUpRequest(
       email: email ?? this.email,
       userName: userName ?? this.userName,
@@ -2110,20 +1858,11 @@ class PublicSocialLoginRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(
-                  other.userName,
-                  userName,
-                )) &&
+                const DeepCollectionEquality().equals(other.userName, userName)) &&
             (identical(other.avatarUrl, avatarUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.avatarUrl,
-                  avatarUrl,
-                )) &&
+                const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl)) &&
             (identical(other.provider, provider) ||
-                const DeepCollectionEquality().equals(
-                  other.provider,
-                  provider,
-                )));
+                const DeepCollectionEquality().equals(other.provider, provider)));
   }
 
   @override
@@ -2206,10 +1945,7 @@ class PublicSocialLoginResponse {
 
 extension $PublicSocialLoginResponseExtension on PublicSocialLoginResponse {
   PublicSocialLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return PublicSocialLoginResponse(
-      user: user ?? this.user,
-      token: token ?? this.token,
-    );
+    return PublicSocialLoginResponse(user: user ?? this.user, token: token ?? this.token);
   }
 
   PublicSocialLoginResponse copyWithWrapped({
@@ -2249,8 +1985,7 @@ class PublicUpdateAvatarResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $PublicUpdateAvatarResponseExtension on PublicUpdateAvatarResponse {
@@ -2259,9 +1994,7 @@ extension $PublicUpdateAvatarResponseExtension on PublicUpdateAvatarResponse {
   }
 
   PublicUpdateAvatarResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return PublicUpdateAvatarResponse(
-      user: (user != null ? user.value : this.user),
-    );
+    return PublicUpdateAvatarResponse(user: (user != null ? user.value : this.user));
   }
 }
 
@@ -2306,35 +2039,20 @@ class PublicUpdateOwnProfileRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(
-                  other.userName,
-                  userName,
-                )) &&
+                const DeepCollectionEquality().equals(other.userName, userName)) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(
-                  other.countryName,
-                  countryName,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
             (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.countryFlagUrl,
-                  countryFlagUrl,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryIsoCode,
-                  countryIsoCode,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryDialCode,
-                  countryDialCode,
-                )));
+                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)));
   }
 
   @override
@@ -2352,8 +2070,7 @@ class PublicUpdateOwnProfileRequest {
       runtimeType.hashCode;
 }
 
-extension $PublicUpdateOwnProfileRequestExtension
-    on PublicUpdateOwnProfileRequest {
+extension $PublicUpdateOwnProfileRequestExtension on PublicUpdateOwnProfileRequest {
   PublicUpdateOwnProfileRequest copyWith({
     String? email,
     String? userName,
@@ -2387,18 +2104,12 @@ extension $PublicUpdateOwnProfileRequestExtension
       email: (email != null ? email.value : this.email),
       userName: (userName != null ? userName.value : this.userName),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null
-          ? countryFlagUrl.value
-          : this.countryFlagUrl),
+      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      countryIsoCode: (countryIsoCode != null
-          ? countryIsoCode.value
-          : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null
-          ? countryDialCode.value
-          : this.countryDialCode),
+      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
     );
   }
 }
@@ -2429,32 +2140,22 @@ class PublicUpdateOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
-extension $PublicUpdateOwnProfileResponseExtension
-    on PublicUpdateOwnProfileResponse {
+extension $PublicUpdateOwnProfileResponseExtension on PublicUpdateOwnProfileResponse {
   PublicUpdateOwnProfileResponse copyWith({UserResponseDto? user}) {
     return PublicUpdateOwnProfileResponse(user: user ?? this.user);
   }
 
-  PublicUpdateOwnProfileResponse copyWithWrapped({
-    Wrapped<UserResponseDto>? user,
-  }) {
-    return PublicUpdateOwnProfileResponse(
-      user: (user != null ? user.value : this.user),
-    );
+  PublicUpdateOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
+    return PublicUpdateOwnProfileResponse(user: (user != null ? user.value : this.user));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicVerifyOtpRequest {
-  const PublicVerifyOtpRequest({
-    required this.email,
-    required this.code,
-    required this.purpose,
-  });
+  const PublicVerifyOtpRequest({required this.email, required this.code, required this.purpose});
 
   factory PublicVerifyOtpRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicVerifyOtpRequestFromJson(json);
@@ -2494,11 +2195,7 @@ class PublicVerifyOtpRequest {
 }
 
 extension $PublicVerifyOtpRequestExtension on PublicVerifyOtpRequest {
-  PublicVerifyOtpRequest copyWith({
-    String? email,
-    String? code,
-    String? purpose,
-  }) {
+  PublicVerifyOtpRequest copyWith({String? email, String? code, String? purpose}) {
     return PublicVerifyOtpRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -2538,18 +2235,14 @@ class PublicVerifyOtpResponse {
     return identical(this, other) ||
         (other is PublicVerifyOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(
-                  other.isSuccess,
-                  isSuccess,
-                )));
+                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicVerifyOtpResponseExtension on PublicVerifyOtpResponse {
@@ -2566,14 +2259,9 @@ extension $PublicVerifyOtpResponseExtension on PublicVerifyOtpResponse {
 
 @JsonSerializable(explicitToJson: true)
 class RoleDto {
-  const RoleDto({
-    required this.id,
-    required this.name,
-    required this.description,
-  });
+  const RoleDto({required this.id, required this.name, required this.description});
 
-  factory RoleDto.fromJson(Map<String, dynamic> json) =>
-      _$RoleDtoFromJson(json);
+  factory RoleDto.fromJson(Map<String, dynamic> json) => _$RoleDtoFromJson(json);
 
   static const toJsonFactory = _$RoleDtoToJson;
   Map<String, dynamic> toJson() => _$RoleDtoToJson(this);
@@ -2590,15 +2278,11 @@ class RoleDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is RoleDto &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality().equals(
-                  other.description,
-                  description,
-                )));
+                const DeepCollectionEquality().equals(other.description, description)));
   }
 
   @override
@@ -2658,8 +2342,7 @@ class UserResponseDto {
     this.updatedAt,
   });
 
-  factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$UserResponseDtoFromJson(json);
+  factory UserResponseDto.fromJson(Map<String, dynamic> json) => _$UserResponseDtoFromJson(json);
 
   static const toJsonFactory = _$UserResponseDtoToJson;
   Map<String, dynamic> toJson() => _$UserResponseDtoToJson(this);
@@ -2708,89 +2391,46 @@ class UserResponseDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is UserResponseDto &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(
-                  other.userName,
-                  userName,
-                )) &&
+                const DeepCollectionEquality().equals(other.userName, userName)) &&
             (identical(other.roles, roles) ||
                 const DeepCollectionEquality().equals(other.roles, roles)) &&
             (identical(other.permissions, permissions) ||
-                const DeepCollectionEquality().equals(
-                  other.permissions,
-                  permissions,
-                )) &&
+                const DeepCollectionEquality().equals(other.permissions, permissions)) &&
             (identical(other.authProvider, authProvider) ||
-                const DeepCollectionEquality().equals(
-                  other.authProvider,
-                  authProvider,
-                )) &&
+                const DeepCollectionEquality().equals(other.authProvider, authProvider)) &&
             (identical(other.isVerified, isVerified) ||
-                const DeepCollectionEquality().equals(
-                  other.isVerified,
-                  isVerified,
-                )) &&
+                const DeepCollectionEquality().equals(other.isVerified, isVerified)) &&
             (identical(other.isActive, isActive) ||
-                const DeepCollectionEquality().equals(
-                  other.isActive,
-                  isActive,
-                )) &&
+                const DeepCollectionEquality().equals(other.isActive, isActive)) &&
             (identical(other.isLoggedIn, isLoggedIn) ||
-                const DeepCollectionEquality().equals(
-                  other.isLoggedIn,
-                  isLoggedIn,
-                )) &&
+                const DeepCollectionEquality().equals(other.isLoggedIn, isLoggedIn)) &&
             (identical(other.lastLoginAt, lastLoginAt) ||
-                const DeepCollectionEquality().equals(
-                  other.lastLoginAt,
-                  lastLoginAt,
-                )) &&
+                const DeepCollectionEquality().equals(other.lastLoginAt, lastLoginAt)) &&
             (identical(other.avatar, avatar) ||
                 const DeepCollectionEquality().equals(other.avatar, avatar)) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(
-                  other.countryName,
-                  countryName,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
             (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.countryFlagUrl,
-                  countryFlagUrl,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryIsoCode,
-                  countryIsoCode,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(
-                  other.countryDialCode,
-                  countryDialCode,
-                )) &&
+                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.fullPhoneNumber, fullPhoneNumber) ||
-                const DeepCollectionEquality().equals(
-                  other.fullPhoneNumber,
-                  fullPhoneNumber,
-                )) &&
+                const DeepCollectionEquality().equals(other.fullPhoneNumber, fullPhoneNumber)) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality().equals(
-                  other.createdAt,
-                  createdAt,
-                )) &&
+                const DeepCollectionEquality().equals(other.createdAt, createdAt)) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality().equals(
-                  other.updatedAt,
-                  updatedAt,
-                )));
+                const DeepCollectionEquality().equals(other.updatedAt, updatedAt)));
   }
 
   @override
@@ -2892,30 +2532,20 @@ extension $UserResponseDtoExtension on UserResponseDto {
       userName: (userName != null ? userName.value : this.userName),
       roles: (roles != null ? roles.value : this.roles),
       permissions: (permissions != null ? permissions.value : this.permissions),
-      authProvider: (authProvider != null
-          ? authProvider.value
-          : this.authProvider),
+      authProvider: (authProvider != null ? authProvider.value : this.authProvider),
       isVerified: (isVerified != null ? isVerified.value : this.isVerified),
       isActive: (isActive != null ? isActive.value : this.isActive),
       isLoggedIn: (isLoggedIn != null ? isLoggedIn.value : this.isLoggedIn),
       lastLoginAt: (lastLoginAt != null ? lastLoginAt.value : this.lastLoginAt),
       avatar: (avatar != null ? avatar.value : this.avatar),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null
-          ? countryFlagUrl.value
-          : this.countryFlagUrl),
-      countryIsoCode: (countryIsoCode != null
-          ? countryIsoCode.value
-          : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null
-          ? countryDialCode.value
-          : this.countryDialCode),
+      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
+      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      fullPhoneNumber: (fullPhoneNumber != null
-          ? fullPhoneNumber.value
-          : this.fullPhoneNumber),
+      fullPhoneNumber: (fullPhoneNumber != null ? fullPhoneNumber.value : this.fullPhoneNumber),
       createdAt: (createdAt != null ? createdAt.value : this.createdAt),
       updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
     );
@@ -2926,49 +2556,38 @@ extension $UserResponseDtoExtension on UserResponseDto {
 class ApiV1AdminProfileAvatarPatch$RequestBody {
   const ApiV1AdminProfileAvatarPatch$RequestBody({required this.avatarFile});
 
-  factory ApiV1AdminProfileAvatarPatch$RequestBody.fromJson(
-    Map<String, dynamic> json,
-  ) => _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(json);
+  factory ApiV1AdminProfileAvatarPatch$RequestBody.fromJson(Map<String, dynamic> json) =>
+      _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(json);
 
   static const toJsonFactory = _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson;
-  Map<String, dynamic> toJson() =>
-      _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(this);
+  Map<String, dynamic> toJson() => _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(this);
 
   @JsonKey(name: 'avatarFile')
   final String avatarFile;
-  static const fromJsonFactory =
-      _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson;
+  static const fromJsonFactory = _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApiV1AdminProfileAvatarPatch$RequestBody &&
             (identical(other.avatarFile, avatarFile) ||
-                const DeepCollectionEquality().equals(
-                  other.avatarFile,
-                  avatarFile,
-                )));
+                const DeepCollectionEquality().equals(other.avatarFile, avatarFile)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
 }
 
 extension $ApiV1AdminProfileAvatarPatch$RequestBodyExtension
     on ApiV1AdminProfileAvatarPatch$RequestBody {
   ApiV1AdminProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
-    return ApiV1AdminProfileAvatarPatch$RequestBody(
-      avatarFile: avatarFile ?? this.avatarFile,
-    );
+    return ApiV1AdminProfileAvatarPatch$RequestBody(avatarFile: avatarFile ?? this.avatarFile);
   }
 
-  ApiV1AdminProfileAvatarPatch$RequestBody copyWithWrapped({
-    Wrapped<String>? avatarFile,
-  }) {
+  ApiV1AdminProfileAvatarPatch$RequestBody copyWithWrapped({Wrapped<String>? avatarFile}) {
     return ApiV1AdminProfileAvatarPatch$RequestBody(
       avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );
@@ -2979,50 +2598,38 @@ extension $ApiV1AdminProfileAvatarPatch$RequestBodyExtension
 class ApiV1PublicProfileAvatarPatch$RequestBody {
   const ApiV1PublicProfileAvatarPatch$RequestBody({required this.avatarFile});
 
-  factory ApiV1PublicProfileAvatarPatch$RequestBody.fromJson(
-    Map<String, dynamic> json,
-  ) => _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(json);
+  factory ApiV1PublicProfileAvatarPatch$RequestBody.fromJson(Map<String, dynamic> json) =>
+      _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(json);
 
-  static const toJsonFactory =
-      _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson;
-  Map<String, dynamic> toJson() =>
-      _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(this);
+  static const toJsonFactory = _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson;
+  Map<String, dynamic> toJson() => _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(this);
 
   @JsonKey(name: 'avatarFile')
   final String avatarFile;
-  static const fromJsonFactory =
-      _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson;
+  static const fromJsonFactory = _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApiV1PublicProfileAvatarPatch$RequestBody &&
             (identical(other.avatarFile, avatarFile) ||
-                const DeepCollectionEquality().equals(
-                  other.avatarFile,
-                  avatarFile,
-                )));
+                const DeepCollectionEquality().equals(other.avatarFile, avatarFile)));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+  int get hashCode => const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
 }
 
 extension $ApiV1PublicProfileAvatarPatch$RequestBodyExtension
     on ApiV1PublicProfileAvatarPatch$RequestBody {
   ApiV1PublicProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
-    return ApiV1PublicProfileAvatarPatch$RequestBody(
-      avatarFile: avatarFile ?? this.avatarFile,
-    );
+    return ApiV1PublicProfileAvatarPatch$RequestBody(avatarFile: avatarFile ?? this.avatarFile);
   }
 
-  ApiV1PublicProfileAvatarPatch$RequestBody copyWithWrapped({
-    Wrapped<String>? avatarFile,
-  }) {
+  ApiV1PublicProfileAvatarPatch$RequestBody copyWithWrapped({Wrapped<String>? avatarFile}) {
     return ApiV1PublicProfileAvatarPatch$RequestBody(
       avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );

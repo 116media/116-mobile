@@ -43,10 +43,8 @@ class CountryList extends StatelessWidget {
           return ListView.separated(
             shrinkWrap: true,
             itemCount: filteredCountries.length,
-            separatorBuilder: (context, index) => Divider(
-              height: context.sizing.s16,
-              color: dividerColor.withValues(alpha: 0.5),
-            ),
+            separatorBuilder: (context, index) =>
+                Divider(height: context.sizing.s16, color: dividerColor.withValues(alpha: 0.5)),
             itemBuilder: (context, index) {
               final country = filteredCountries[index];
               final countryName = provider.getCountryName(country, languageCode);

@@ -125,10 +125,7 @@ This endpoint performs the following operations:
 
   ///Sign out the authenticated admin user
   Future<chopper.Response<AdminSignOutResponse>> AdminSignOut() {
-    generatedMapping.putIfAbsent(
-      AdminSignOutResponse,
-      () => AdminSignOutResponse.fromJsonFactory,
-    );
+    generatedMapping.putIfAbsent(AdminSignOutResponse, () => AdminSignOutResponse.fromJsonFactory);
 
     return _AdminSignOut();
   }
@@ -363,13 +360,8 @@ This endpoint enables admins to request a new verification code when:
   });
 
   ///Authenticate admin and return JWT token with admin claims
-  Future<chopper.Response<AdminLoginResponse>> AdminLogin({
-    required AdminLoginRequest? body,
-  }) {
-    generatedMapping.putIfAbsent(
-      AdminLoginResponse,
-      () => AdminLoginResponse.fromJsonFactory,
-    );
+  Future<chopper.Response<AdminLoginResponse>> AdminLogin({required AdminLoginRequest? body}) {
+    generatedMapping.putIfAbsent(AdminLoginResponse, () => AdminLoginResponse.fromJsonFactory);
 
     return _AdminLogin(body: body);
   }
@@ -380,8 +372,7 @@ This endpoint enables admins to request a new verification code when:
     @Body() required AdminLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates an admin user using email and password credentials.
+      description: '''Authenticates an admin user using email and password credentials.
 The returned JWT token includes admin-specific claims for accessing administrative endpoints.
 
 This endpoint performs enhanced authentication by:
@@ -667,8 +658,7 @@ This endpoint performs the following operations:
 5. Maps complete user data to response DTO
 
 6. Returns comprehensive admin user profile information''',
-      summary:
-          'Retrieve authenticated admin user\'s complete profile information',
+      summary: 'Retrieve authenticated admin user\'s complete profile information',
       operationId: 'AdminGetOwnProfile',
       consumes: [],
       produces: [],
@@ -679,8 +669,9 @@ This endpoint performs the following operations:
   });
 
   ///Update authenticated admin user's own profile information
-  Future<chopper.Response<AdminUpdateOwnProfileResponse>>
-  AdminUpdateOwnProfile({required AdminUpdateOwnProfileRequest? body}) {
+  Future<chopper.Response<AdminUpdateOwnProfileResponse>> AdminUpdateOwnProfile({
+    required AdminUpdateOwnProfileRequest? body,
+  }) {
     generatedMapping.putIfAbsent(
       AdminUpdateOwnProfileResponse,
       () => AdminUpdateOwnProfileResponse.fromJsonFactory,
@@ -691,13 +682,11 @@ This endpoint performs the following operations:
 
   ///Update authenticated admin user's own profile information
   @PATCH(path: '/api/v1/admin/profile', optionalBody: true)
-  Future<chopper.Response<AdminUpdateOwnProfileResponse>>
-  _AdminUpdateOwnProfile({
+  Future<chopper.Response<AdminUpdateOwnProfileResponse>> _AdminUpdateOwnProfile({
     @Body() required AdminUpdateOwnProfileRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the profile information for the currently authenticated admin user.
+      description: '''Updates the profile information for the currently authenticated admin user.
 
 This endpoint requires admin user authentication - only logged-in admin users can update their own profile,
 providing secure profile management for authenticated admin users
@@ -805,8 +794,7 @@ This endpoint performs the following operations:
     @PartFile() required MultipartFile avatarFile,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the authenticated admin user\'s avatar by uploading an image file.
+      description: '''Updates the authenticated admin user\'s avatar by uploading an image file.
 
 This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
 The system will automatically delete any previous avatar when a new one is uploaded.
@@ -962,8 +950,7 @@ This endpoint performs the following operations:
     @Body() required PublicSocialLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates a user through external social providers (Google or Facebook).
+      description: '''Authenticates a user through external social providers (Google or Facebook).
 
 Social users are automatically verified and granted visitor role permissions.
 Avatar images from social providers are downloaded and stored locally.
@@ -1017,10 +1004,7 @@ This endpoint performs the following operations:
   Future<chopper.Response<PublicSignUpResponse>> PublicSignUp({
     required PublicSignUpRequest? body,
   }) {
-    generatedMapping.putIfAbsent(
-      PublicSignUpResponse,
-      () => PublicSignUpResponse.fromJsonFactory,
-    );
+    generatedMapping.putIfAbsent(PublicSignUpResponse, () => PublicSignUpResponse.fromJsonFactory);
 
     return _PublicSignUp(body: body);
   }
@@ -1031,8 +1015,7 @@ This endpoint performs the following operations:
     @Body() required PublicSignUpRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Registers a new public user by creating an account with the provided details.
+      description: '''Registers a new public user by creating an account with the provided details.
 
 The created user account will initially have the Visitor role and related permissions,
 granting basic public access until further elevated by admins.
@@ -1090,8 +1073,7 @@ This endpoint performs the following operations:
   Future<chopper.Response<PublicSignOutResponse>> _PublicSignOut({
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Signs out the currently authenticated user by updating their login status.
+      description: '''Signs out the currently authenticated user by updating their login status.
 After successful sign-out, the client should discard the JWT token.
 
 This endpoint performs secure sign-out by:
@@ -1309,13 +1291,8 @@ This endpoint enables users to request a new verification code when:
   });
 
   ///Authenticate public user and return JWT token with user claims
-  Future<chopper.Response<PublicLoginResponse>> PublicLogin({
-    required PublicLoginRequest? body,
-  }) {
-    generatedMapping.putIfAbsent(
-      PublicLoginResponse,
-      () => PublicLoginResponse.fromJsonFactory,
-    );
+  Future<chopper.Response<PublicLoginResponse>> PublicLogin({required PublicLoginRequest? body}) {
+    generatedMapping.putIfAbsent(PublicLoginResponse, () => PublicLoginResponse.fromJsonFactory);
 
     return _PublicLogin(body: body);
   }
@@ -1326,8 +1303,7 @@ This endpoint enables users to request a new verification code when:
     @Body() required PublicLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates a public user using email/userName and password credentials.
+      description: '''Authenticates a public user using email/userName and password credentials.
 The returned JWT token includes claims for accessing public user\'s endpoints.
 
 This endpoint performs enhanced authentication by:
@@ -1626,8 +1602,9 @@ This endpoint performs the following operations:
   });
 
   ///Update authenticated user's own profile information
-  Future<chopper.Response<PublicUpdateOwnProfileResponse>>
-  PublicUpdateOwnProfile({required PublicUpdateOwnProfileRequest? body}) {
+  Future<chopper.Response<PublicUpdateOwnProfileResponse>> PublicUpdateOwnProfile({
+    required PublicUpdateOwnProfileRequest? body,
+  }) {
     generatedMapping.putIfAbsent(
       PublicUpdateOwnProfileResponse,
       () => PublicUpdateOwnProfileResponse.fromJsonFactory,
@@ -1638,13 +1615,11 @@ This endpoint performs the following operations:
 
   ///Update authenticated user's own profile information
   @PATCH(path: '/api/v1/public/profile', optionalBody: true)
-  Future<chopper.Response<PublicUpdateOwnProfileResponse>>
-  _PublicUpdateOwnProfile({
+  Future<chopper.Response<PublicUpdateOwnProfileResponse>> _PublicUpdateOwnProfile({
     @Body() required PublicUpdateOwnProfileRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the profile information for the currently authenticated user.
+      description: '''Updates the profile information for the currently authenticated user.
 
 This endpoint requires user authentication - only logged-in users can update their own profile,
 providing secure profile management for authenticated users
@@ -1750,8 +1725,7 @@ This endpoint performs the following operations:
     @PartFile() required MultipartFile avatarFile,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the authenticated user\'s avatar by uploading an image file.
+      description: '''Updates the authenticated user\'s avatar by uploading an image file.
 
 This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
 The system will automatically delete any previous avatar when a new one is uploaded.
@@ -1876,9 +1850,7 @@ class $JsonSerializableConverter extends chopper.JsonConverter {
 
     if (ResultType == DateTime) {
       return response.copyWith(
-        body:
-            DateTime.parse((response.body as String).replaceAll('"', ''))
-                as ResultType,
+        body: DateTime.parse((response.body as String).replaceAll('"', '')) as ResultType,
       );
     }
 

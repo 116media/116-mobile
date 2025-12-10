@@ -21,19 +21,13 @@ class FadeAnimation extends StatefulWidget {
   final Widget child;
   final bool reverse;
 
-  const FadeAnimation({
-    super.key,
-    this.delay = 0.25,
-    required this.child,
-    this.reverse = false,
-  });
+  const FadeAnimation({super.key, this.delay = 0.25, required this.child, this.reverse = false});
 
   @override
   State<FadeAnimation> createState() => _FadeAnimationState();
 }
 
-class _FadeAnimationState extends State<FadeAnimation>
-    with SingleTickerProviderStateMixin {
+class _FadeAnimationState extends State<FadeAnimation> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _translateAnimation;
@@ -45,10 +39,7 @@ class _FadeAnimationState extends State<FadeAnimation>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
 
     final curve = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
 

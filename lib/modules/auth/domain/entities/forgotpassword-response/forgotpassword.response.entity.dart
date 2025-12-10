@@ -8,8 +8,6 @@ part 'forgotpassword.response.entity.freezed.dart';
 /// reset OTP was successfully sent to the user's email.
 @freezed
 abstract class ForgotPasswordResponseEntity with _$ForgotPasswordResponseEntity {
-  const factory ForgotPasswordResponseEntity({
-    required String email,
-    required bool isSuccess,
-  }) = _ForgotPasswordResponseEntity;
+  const factory ForgotPasswordResponseEntity({required String email, required bool isSuccess}) =
+      _ForgotPasswordResponseEntity;
 }

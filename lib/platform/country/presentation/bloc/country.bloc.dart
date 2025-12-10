@@ -17,10 +17,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
   final WatchCountryUseCase _watchCountryUseCase;
   StreamSubscription? _countrySubscription;
 
-  CountryBloc(
-    this._getCountryUseCase,
-    this._watchCountryUseCase,
-  ) : super(const CountryInitial()) {
+  CountryBloc(this._getCountryUseCase, this._watchCountryUseCase) : super(const CountryInitial()) {
     on<CountryLoadStarted>(_onLoadStarted);
     on<CountryStateChanged>(_onStateChanged);
   }
@@ -51,10 +48,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
   ///
   /// Emits [CountrySuccess] with the updated country data.
   /// This event is triggered internally when country data changes.
-  Future<void> _onStateChanged(
-    CountryStateChanged event,
-    Emitter<CountryState> emit,
-  ) async {
+  Future<void> _onStateChanged(CountryStateChanged event, Emitter<CountryState> emit) async {
     emit(CountrySuccess(event.country));
   }
 
