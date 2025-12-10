@@ -8,7 +8,7 @@ import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUt
 import '../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
     show ButtonSize;
 import '../../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
-import '../dialogs/updateavatar.dialog.widget.dart' show UpdateAvatarDialog;
+import '../dialogs/update-avatar/updateavatar.dialog.widget.dart' show UpdateAvatarDialog;
 import '../dialogs/updateprofile.dialog.widget.dart' show UpdateProfileDialog;
 
 /// Profile card widget for authenticated users in the settings screen.
