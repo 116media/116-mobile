@@ -1,4 +1,7 @@
-import '../../../../api/client/api_116.swagger.dart' show PublicUpdateOwnProfileResponse;
+import 'dart:io' show File;
+
+import '../../../../api/client/api_116.swagger.dart'
+    show PublicUpdateOwnProfileResponse, PublicUpdateAvatarResponse;
 import '../../presentation/models/profile.model.dart' show ProfileModel;
 
 /// Port interface for remote settings data source.
@@ -22,4 +25,19 @@ abstract class ISettingsRemoteDataSource {
   /// - [ServerException] if the server returns an error response
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   Future<PublicUpdateOwnProfileResponse> updateProfile(ProfileModel profile);
+
+  /// Updates the authenticated user's avatar.
+  ///
+  /// Calls the PublicUpdateAvatar API endpoint with multipart file upload.
+  /// Requires valid JWT token for authentication.
+  ///
+  /// **Parameters:**
+  /// - [avatarFile]: The image file to upload as avatar
+  ///
+  /// **Returns:** [PublicUpdateAvatarResponse] containing updated user data on success.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicUpdateAvatarResponse> updateAvatar(File avatarFile);
 }

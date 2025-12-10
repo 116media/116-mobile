@@ -21,4 +21,3 @@ class UpdateProfileUseCase implements IUseCase<ProfileModel, ProfileResponseEnti
     return await _settingsRepository.updateProfile(profile);
   }
 }
-

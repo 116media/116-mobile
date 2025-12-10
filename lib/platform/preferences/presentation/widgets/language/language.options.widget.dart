@@ -35,8 +35,8 @@ class LanguageOption extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(context.sizing.s8),
         color: isSelected ? selectedColor : backgroundColor,
+        borderRadius: BorderRadius.circular(context.sizing.s8),
         border: Border.all(
           width: isSelected ? context.sizing.s2_5 : context.sizing.s1,
           color: isSelected ? context.primaryColor : selectedColor,

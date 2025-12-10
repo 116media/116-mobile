@@ -23,6 +23,7 @@
     "fpdart",
     "Français",
     "googlesignin",
+    "googleusercontent",
     "gradlew",
     "iconify",
     "inputfields",
@@ -48,6 +49,7 @@
     "sconsign",
     "searchbar",
     "sidemenu",
+    "signup",
     "simctl",
     "socialauth",
     "swiftpm",
@@ -59,6 +61,7 @@
     "thememode",
     "themetoggle",
     "UDID",
+    "updateavatar",
     "updateprofile",
     "usecase",
     "usecases",
@@ -69,12 +72,10 @@
     "xcrun",
     "xcuserdata"
   ],
-  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**"],
+  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**", "/ios/**", "/android/**"],
   "dart.lineLength": 100,
   "[dart]": {
-    "editor.rulers": [
-    100
-    ],
+    "editor.rulers": [100],
     "editor.formatOnSave": true
   },
   "color-highlight.useARGB": true

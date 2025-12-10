@@ -642,51 +642,6 @@ extension $AdminSignOutResponseExtension on AdminSignOutResponse {
 }
 
 @JsonSerializable(explicitToJson: true)
-class AdminUpdateAvatarRequest {
-  const AdminUpdateAvatarRequest({required this.avatarUrl});
-
-  factory AdminUpdateAvatarRequest.fromJson(Map<String, dynamic> json) =>
-      _$AdminUpdateAvatarRequestFromJson(json);
-
-  static const toJsonFactory = _$AdminUpdateAvatarRequestToJson;
-  Map<String, dynamic> toJson() => _$AdminUpdateAvatarRequestToJson(this);
-
-  @JsonKey(name: 'avatarUrl')
-  final String avatarUrl;
-  static const fromJsonFactory = _$AdminUpdateAvatarRequestFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is AdminUpdateAvatarRequest &&
-            (identical(other.avatarUrl, avatarUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.avatarUrl,
-                  avatarUrl,
-                )));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(avatarUrl) ^ runtimeType.hashCode;
-}
-
-extension $AdminUpdateAvatarRequestExtension on AdminUpdateAvatarRequest {
-  AdminUpdateAvatarRequest copyWith({String? avatarUrl}) {
-    return AdminUpdateAvatarRequest(avatarUrl: avatarUrl ?? this.avatarUrl);
-  }
-
-  AdminUpdateAvatarRequest copyWithWrapped({Wrapped<String>? avatarUrl}) {
-    return AdminUpdateAvatarRequest(
-      avatarUrl: (avatarUrl != null ? avatarUrl.value : this.avatarUrl),
-    );
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
 class AdminUpdateAvatarResponse {
   const AdminUpdateAvatarResponse({required this.user});
 
@@ -2269,51 +2224,6 @@ extension $PublicSocialLoginResponseExtension on PublicSocialLoginResponse {
 }
 
 @JsonSerializable(explicitToJson: true)
-class PublicUpdateAvatarRequest {
-  const PublicUpdateAvatarRequest({required this.avatarUrl});
-
-  factory PublicUpdateAvatarRequest.fromJson(Map<String, dynamic> json) =>
-      _$PublicUpdateAvatarRequestFromJson(json);
-
-  static const toJsonFactory = _$PublicUpdateAvatarRequestToJson;
-  Map<String, dynamic> toJson() => _$PublicUpdateAvatarRequestToJson(this);
-
-  @JsonKey(name: 'avatarUrl')
-  final String avatarUrl;
-  static const fromJsonFactory = _$PublicUpdateAvatarRequestFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is PublicUpdateAvatarRequest &&
-            (identical(other.avatarUrl, avatarUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.avatarUrl,
-                  avatarUrl,
-                )));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(avatarUrl) ^ runtimeType.hashCode;
-}
-
-extension $PublicUpdateAvatarRequestExtension on PublicUpdateAvatarRequest {
-  PublicUpdateAvatarRequest copyWith({String? avatarUrl}) {
-    return PublicUpdateAvatarRequest(avatarUrl: avatarUrl ?? this.avatarUrl);
-  }
-
-  PublicUpdateAvatarRequest copyWithWrapped({Wrapped<String>? avatarUrl}) {
-    return PublicUpdateAvatarRequest(
-      avatarUrl: (avatarUrl != null ? avatarUrl.value : this.avatarUrl),
-    );
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
 class PublicUpdateAvatarResponse {
   const PublicUpdateAvatarResponse({required this.user});
 
@@ -3008,6 +2918,113 @@ extension $UserResponseDtoExtension on UserResponseDto {
           : this.fullPhoneNumber),
       createdAt: (createdAt != null ? createdAt.value : this.createdAt),
       updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ApiV1AdminProfileAvatarPatch$RequestBody {
+  const ApiV1AdminProfileAvatarPatch$RequestBody({required this.avatarFile});
+
+  factory ApiV1AdminProfileAvatarPatch$RequestBody.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(json);
+
+  static const toJsonFactory = _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson;
+  Map<String, dynamic> toJson() =>
+      _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(this);
+
+  @JsonKey(name: 'avatarFile')
+  final String avatarFile;
+  static const fromJsonFactory =
+      _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ApiV1AdminProfileAvatarPatch$RequestBody &&
+            (identical(other.avatarFile, avatarFile) ||
+                const DeepCollectionEquality().equals(
+                  other.avatarFile,
+                  avatarFile,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+}
+
+extension $ApiV1AdminProfileAvatarPatch$RequestBodyExtension
+    on ApiV1AdminProfileAvatarPatch$RequestBody {
+  ApiV1AdminProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
+    return ApiV1AdminProfileAvatarPatch$RequestBody(
+      avatarFile: avatarFile ?? this.avatarFile,
+    );
+  }
+
+  ApiV1AdminProfileAvatarPatch$RequestBody copyWithWrapped({
+    Wrapped<String>? avatarFile,
+  }) {
+    return ApiV1AdminProfileAvatarPatch$RequestBody(
+      avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ApiV1PublicProfileAvatarPatch$RequestBody {
+  const ApiV1PublicProfileAvatarPatch$RequestBody({required this.avatarFile});
+
+  factory ApiV1PublicProfileAvatarPatch$RequestBody.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(json);
+
+  static const toJsonFactory =
+      _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson;
+  Map<String, dynamic> toJson() =>
+      _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(this);
+
+  @JsonKey(name: 'avatarFile')
+  final String avatarFile;
+  static const fromJsonFactory =
+      _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ApiV1PublicProfileAvatarPatch$RequestBody &&
+            (identical(other.avatarFile, avatarFile) ||
+                const DeepCollectionEquality().equals(
+                  other.avatarFile,
+                  avatarFile,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+}
+
+extension $ApiV1PublicProfileAvatarPatch$RequestBodyExtension
+    on ApiV1PublicProfileAvatarPatch$RequestBody {
+  ApiV1PublicProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
+    return ApiV1PublicProfileAvatarPatch$RequestBody(
+      avatarFile: avatarFile ?? this.avatarFile,
+    );
+  }
+
+  ApiV1PublicProfileAvatarPatch$RequestBody copyWithWrapped({
+    Wrapped<String>? avatarFile,
+  }) {
+    return ApiV1PublicProfileAvatarPatch$RequestBody(
+      avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );
   }
 }

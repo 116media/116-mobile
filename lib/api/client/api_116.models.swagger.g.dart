@@ -129,14 +129,6 @@ Map<String, dynamic> _$AdminSignOutResponseToJson(
   AdminSignOutResponse instance,
 ) => <String, dynamic>{'isSuccess': instance.isSuccess};
 
-AdminUpdateAvatarRequest _$AdminUpdateAvatarRequestFromJson(
-  Map<String, dynamic> json,
-) => AdminUpdateAvatarRequest(avatarUrl: json['avatarUrl'] as String);
-
-Map<String, dynamic> _$AdminUpdateAvatarRequestToJson(
-  AdminUpdateAvatarRequest instance,
-) => <String, dynamic>{'avatarUrl': instance.avatarUrl};
-
 AdminUpdateAvatarResponse _$AdminUpdateAvatarResponseFromJson(
   Map<String, dynamic> json,
 ) => AdminUpdateAvatarResponse(
@@ -444,14 +436,6 @@ Map<String, dynamic> _$PublicSocialLoginResponseToJson(
   PublicSocialLoginResponse instance,
 ) => <String, dynamic>{'user': instance.user.toJson(), 'token': instance.token};
 
-PublicUpdateAvatarRequest _$PublicUpdateAvatarRequestFromJson(
-  Map<String, dynamic> json,
-) => PublicUpdateAvatarRequest(avatarUrl: json['avatarUrl'] as String);
-
-Map<String, dynamic> _$PublicUpdateAvatarRequestToJson(
-  PublicUpdateAvatarRequest instance,
-) => <String, dynamic>{'avatarUrl': instance.avatarUrl};
-
 PublicUpdateAvatarResponse _$PublicUpdateAvatarResponseFromJson(
   Map<String, dynamic> json,
 ) => PublicUpdateAvatarResponse(
@@ -593,3 +577,24 @@ Map<String, dynamic> _$UserResponseDtoToJson(UserResponseDto instance) =>
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
+
+ApiV1AdminProfileAvatarPatch$RequestBody
+_$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(Map<String, dynamic> json) =>
+    ApiV1AdminProfileAvatarPatch$RequestBody(
+      avatarFile: json['avatarFile'] as String,
+    );
+
+Map<String, dynamic> _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(
+  ApiV1AdminProfileAvatarPatch$RequestBody instance,
+) => <String, dynamic>{'avatarFile': instance.avatarFile};
+
+ApiV1PublicProfileAvatarPatch$RequestBody
+_$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(
+  Map<String, dynamic> json,
+) => ApiV1PublicProfileAvatarPatch$RequestBody(
+  avatarFile: json['avatarFile'] as String,
+);
+
+Map<String, dynamic> _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(
+  ApiV1PublicProfileAvatarPatch$RequestBody instance,
+) => <String, dynamic>{'avatarFile': instance.avatarFile};

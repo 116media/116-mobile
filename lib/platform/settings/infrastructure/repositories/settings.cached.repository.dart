@@ -1,3 +1,5 @@
+import 'dart:io' show File;
+
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
 import '../../../../modules/auth/application/data-sources/auth.local.datasource.port.dart'
@@ -31,6 +33,22 @@ class SettingsCachedRepository implements ISettingsRepository {
     return result.fold((failure) => Left(failure), (profileResponse) async {
       try {
         // Update cached user data with the updated profile information
+        await _localDataSource.setUser(UserModel.fromEntity(profileResponse.user));
+        return Right(profileResponse);
+      } on CacheException catch (exception) {
+        return Left(ProblemMapper.toFailure(exception));
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, ProfileResponseEntity>> updateAvatar(File avatarFile) async {
+    final result = await _remoteRepository.updateAvatar(avatarFile);
+
+    // Only persist if successful
+    return result.fold((failure) => Left(failure), (profileResponse) async {
+      try {
+        // Update cached user data with the updated avatar
         await _localDataSource.setUser(UserModel.fromEntity(profileResponse.user));
         return Right(profileResponse);
       } on CacheException catch (exception) {

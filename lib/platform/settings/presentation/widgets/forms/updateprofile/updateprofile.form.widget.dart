@@ -171,7 +171,6 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             Gap(context.sizing.s12),
 
             FadeAnimation(
-              delay: 0.65,
               child: SolidButton(
                 isFull: true,
                 text: "Save Changes",

@@ -25,12 +25,12 @@ class ProfileModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        email,
-        userName,
-        countryName,
-        countryFlagUrl,
-        countryIsoCode,
-        countryDialCode,
-        partialPhoneNumber,
-      ];
+    email,
+    userName,
+    countryName,
+    countryFlagUrl,
+    countryIsoCode,
+    countryDialCode,
+    partialPhoneNumber,
+  ];
 }

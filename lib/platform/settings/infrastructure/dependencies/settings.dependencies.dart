@@ -6,7 +6,9 @@ import '../../../../modules/auth/application/data-sources/auth.local.datasource.
 import '../../application/data-sources/settings.remote.datasource.port.dart'
     show ISettingsRemoteDataSource;
 import '../../application/repositories/settings.repository.port.dart' show ISettingsRepository;
+import '../../application/usecases/updateavatar.usecase.dart' show UpdateAvatarUseCase;
 import '../../application/usecases/updateprofile.usecase.dart' show UpdateProfileUseCase;
+import '../../presentation/bloc/updateavatar/updateavatar.bloc.dart' show UpdateAvatarBloc;
 import '../../presentation/bloc/updateprofile/updateprofile.bloc.dart' show UpdateProfileBloc;
 import '../data-sources/settings.remote.datasource.dart' show SettingsRemoteDataSourceImpl;
 import '../repositories/settings.cached.repository.dart' show SettingsCachedRepository;
@@ -15,9 +17,7 @@ import '../repositories/settings.remote.repository.dart' show SettingsRemoteRepo
 /// Registers all settings module dependencies.
 Future<void> registerSettingsDependencies(GetIt sl) async {
   // Data sources
-  sl.registerSingleton<ISettingsRemoteDataSource>(
-    SettingsRemoteDataSourceImpl(sl<Api116>()),
-  );
+  sl.registerSingleton<ISettingsRemoteDataSource>(SettingsRemoteDataSourceImpl(sl<Api116>()));
 
   // Repository (decorator pattern: cached wraps remote)
   sl.registerSingleton<SettingsRemoteRepository>(
@@ -28,13 +28,10 @@ Future<void> registerSettingsDependencies(GetIt sl) async {
   );
 
   // Use cases
-  sl.registerFactory<UpdateProfileUseCase>(
-    () => UpdateProfileUseCase(sl<ISettingsRepository>()),
-  );
+  sl.registerFactory<UpdateProfileUseCase>(() => UpdateProfileUseCase(sl<ISettingsRepository>()));
+  sl.registerFactory<UpdateAvatarUseCase>(() => UpdateAvatarUseCase(sl<ISettingsRepository>()));
 
   // BLoCs
-  sl.registerFactory<UpdateProfileBloc>(
-    () => UpdateProfileBloc(sl<UpdateProfileUseCase>()),
-  );
+  sl.registerFactory<UpdateProfileBloc>(() => UpdateProfileBloc(sl<UpdateProfileUseCase>()));
+  sl.registerFactory<UpdateAvatarBloc>(() => UpdateAvatarBloc(sl<UpdateAvatarUseCase>()));
 }
-

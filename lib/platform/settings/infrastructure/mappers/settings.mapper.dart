@@ -1,4 +1,5 @@
-import '../../../../api/client/api_116.swagger.dart' show PublicUpdateOwnProfileResponse;
+import '../../../../api/client/api_116.swagger.dart'
+    show PublicUpdateOwnProfileResponse, PublicUpdateAvatarResponse;
 import '../../../../modules/auth/infrastructure/mappers/auth.mapper.dart' show AuthMapper;
 import '../../domain/entities/profile-response/profile.response.entity.dart'
     show ProfileResponseEntity;
@@ -12,6 +13,11 @@ class SettingsMapper {
 
   /// Maps PublicUpdateOwnProfileResponse to ProfileResponseEntity domain entity.
   static ProfileResponseEntity profileResponseFromDto(PublicUpdateOwnProfileResponse response) {
+    return ProfileResponseEntity(user: AuthMapper.userFromDto(response.user));
+  }
+
+  /// Maps PublicUpdateAvatarResponse to ProfileResponseEntity domain entity.
+  static ProfileResponseEntity avatarResponseFromDto(PublicUpdateAvatarResponse response) {
     return ProfileResponseEntity(user: AuthMapper.userFromDto(response.user));
   }
 }

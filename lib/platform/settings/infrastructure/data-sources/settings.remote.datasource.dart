@@ -1,7 +1,15 @@
+import 'dart:io' show File;
+import 'package:path/path.dart' as path;
+
+import 'package:http/http.dart' show MultipartFile;
 import 'package:chopper/chopper.dart' show Response;
 
 import '../../../../api/client/api_116.swagger.dart'
-    show Api116, PublicUpdateOwnProfileRequest, PublicUpdateOwnProfileResponse;
+    show
+        Api116,
+        PublicUpdateOwnProfileRequest,
+        PublicUpdateOwnProfileResponse,
+        PublicUpdateAvatarResponse;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.dart'
@@ -35,6 +43,27 @@ class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
           countryDialCode: model.countryDialCode,
           partialPhoneNumber: model.partialPhoneNumber,
         ),
+      );
+
+      if (response.isSuccessful) {
+        return response.body!;
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  @override
+  Future<PublicUpdateAvatarResponse> updateAvatar(File avatarFile) async {
+    try {
+      final filename = path.basename(avatarFile.path);
+
+      final response = await _apiClient.PublicUpdateAvatar(
+        avatarFile: await MultipartFile.fromPath("avatarFile", avatarFile.path, filename: filename),
       );
 
       if (response.isSuccessful) {
