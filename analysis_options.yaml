@@ -17,3 +17,7 @@ analyzer:
 
 linter:
   rules:
+
+# Formatter configuration
+formatter:
+  page_width: 100

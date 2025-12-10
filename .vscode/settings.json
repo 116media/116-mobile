@@ -75,8 +75,14 @@
   "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**", "/ios/**", "/android/**"],
   "dart.lineLength": 100,
   "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
     "editor.rulers": [100],
-    "editor.formatOnSave": true
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
   },
   "color-highlight.useARGB": true
 }
