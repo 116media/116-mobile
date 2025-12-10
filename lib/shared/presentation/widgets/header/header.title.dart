@@ -20,7 +20,7 @@ class HeaderTitle extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: context.sizing.s24,
-            color: context.isDarkMode ? ColorsUtil.white : ColorsUtil.black,
+            color: context.isDarkMode ? ColorsUtil.neutral200 : ColorsUtil.neutral700,
           ),
         ),
         Gap(context.sizing.s4),
