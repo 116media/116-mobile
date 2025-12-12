@@ -72,7 +72,14 @@
     "xcrun",
     "xcuserdata"
   ],
-  "cSpell.ignorePaths": ["**/**.g.dart", "**/**.freezed.dart", "/lib/api/**", "/ios/**", "/android/**"],
+  "cSpell.ignorePaths": [
+    "**/**.g.dart",
+    "**/**.freezed.dart",
+    "/lib/api/**",
+    "/ios/**",
+    "/android/**",
+    "/lib/**/**.json"
+  ],
   "dart.lineLength": 100,
   "[dart]": {
     "editor.formatOnSave": true,
