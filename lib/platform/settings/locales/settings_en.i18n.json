@@ -1,0 +1,42 @@
+{
+  "title": "Settings",
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone Number",
+    "avatar": "Profile Picture",
+    "changeAvatar": "Change Avatar",
+    "saveChanges": "Save Changes"
+  },
+  "account": {
+    "title": "Account",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "signOut": "Sign Out"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "contactUs": "Contact Us"
+  },
+  "followUs": {
+    "title": "Follow Us",
+    "subtitle": "Stay connected on social media"
+  },
+  "support": {
+    "title": "Support",
+    "helpCenter": "Help Center",
+    "reportProblem": "Report a Problem",
+    "feedback": "Send Feedback"
+  }
+}
