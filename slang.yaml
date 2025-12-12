@@ -1,0 +1,41 @@
+# Slang Configuration for 116 Mobile App
+# This configuration organizes translations following clean architecture principles
+# Translation files are organized in module-specific directories
+
+base_locale: en
+fallback_strategy: base_locale
+input_directory: lib
+input_file_pattern: .i18n.json
+output_directory: lib/i18n
+output_file_name: strings.g.dart
+namespaces: true
+translate_var: t
+enum_name: AppLocale
+class_name: Translations
+translation_class_visibility: public
+key_case: camel
+param_case: camel
+string_interpolation: braces
+flat_map: true
+lazy: true
+locale_handling: true
+flutter_integration: true
+timestamp: true
+statistics: true
+
+# Pluralization
+pluralization:
+  auto: cardinal
+  default_parameter: count
+
+# Formatting
+format:
+  enabled: true
+  width: 120
+
+# Auto documentation
+autodoc:
+  enabled: true
+  locales:
+    - en
+    - fr
