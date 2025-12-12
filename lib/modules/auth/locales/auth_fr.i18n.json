@@ -1,0 +1,75 @@
+{
+  "signIn": {
+    "title": "Connexion",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié?",
+    "submitButton": "Se connecter",
+    "noAccount": "Vous n'avez pas de compte?",
+    "signUpLink": "S'inscrire",
+    "orContinueWith": "Ou Continuer Avec"
+  },
+  "signUp": {
+    "title": "Inscription",
+    "emailLabel": "E-mail",
+    "usernameLabel": "Nom d'utilisateur",
+    "passwordLabel": "Mot de passe",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "submitButton": "S'inscrire",
+    "haveAccount": "Vous avez déjà un compte?",
+    "signInLink": "Se connecter"
+  },
+  "termsAndConditions": {
+    "prefix": "En continuant, vous reconnaissez que vous comprenez et acceptez les ",
+    "termsLink": "Conditions Générales",
+    "and": " et la ",
+    "privacyLink": "Politique de Confidentialité"
+  },
+  "forgotPassword": {
+    "title": "Mot De Passe Oublié",
+    "subtitle": "Entrez l'e-mail associé à votre compte. Nous vous enverrons un code de vérification pour réinitialiser votre mot de passe.",
+    "emailLabel": "E-mail",
+    "submitButton": "Envoyer Le Code",
+    "backToSignIn": "Retour à la connexion",
+    "success": "Code de vérification envoyé avec succès! Veuillez vérifier votre e-mail."
+  },
+  "resetPassword": {
+    "title": "Réinitialiser Mot De Passe",
+    "subtitle": "Entrez votre nouveau mot de passe ci-dessous pour réinitialiser le mot de passe de votre compte.",
+    "passwordLabel": "Nouveau mot de passe",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "submitButton": "Réinitialiser Mot De Passe",
+    "success": "Mot de passe réinitialisé avec succès! Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+  },
+  "verifyOtp": {
+    "title": "Vérifiez Votre E-mail",
+    "subtitle": "Veuillez entrer le code de vérification à 6 chiffres que nous avons envoyé à ",
+    "yourEmail": "votre e-mail",
+    "codeLabel": "Code de vérification",
+    "submitButton": "Vérifier",
+    "success": "Compte vérifié avec succès! Veuillez entrer votre nouveau mot de passe.",
+    "completed": "La vérification de votre compte est terminée! Vous êtes prêt à continuer."
+  },
+  "resendOtp": {
+    "countdown": " dans {seconds} secondes",
+    "resendCode": "Vous n'avez pas reçu le code?",
+    "resendButton": "Renvoyer",
+    "success": "Nouveau code de vérification envoyé avec succès! Veuillez vérifier votre e-mail."
+  },
+  "cacheError": {
+    "setUser": "Échec lors de la sauvegarde des données utilisateur: {error}",
+    "getUser": "Échec lors de la récupération des données utilisateur: {error}",
+    "setToken": "Échec lors de la sauvegarde du token: {error}",
+    "getToken": "Échec lors de la récupération du token: {error}",
+    "clearToken": "Échec lors de la suppression du token: {error}",
+    "watchUser": "Échec lors de la surveillance de l'utilisateur: {error}"
+  },
+  "facebookError": {
+    "signInCancelled": "La connexion Facebook a été annulée par l'utilisateur.",
+    "unexpected": "Erreur inattendue de connexion Facebook: {error}"
+  },
+  "googleError": {
+    "unexpected": "Erreur inattendue de connexion Google: {error}",
+    "initFailed": "Échec de l'initialisation de connexion Google: {error}"
+  }
+}
