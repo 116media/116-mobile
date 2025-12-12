@@ -1,0 +1,67 @@
+{
+  "common": {
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "ok": "OK",
+    "done": "Terminé",
+    "close": "Fermer",
+    "retry": "Réessayer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "warning": "Alerte",
+    "info": "Info",
+    "search": "Rechercher"
+  },
+  "validation": {
+    "required": "{fieldName} obligatoire",
+    "invalidFormat": "{fieldName} a un format invalide",
+    "tooShort": "{fieldName} doit contenir au moins {minLength} caractères",
+    "tooLong": "{fieldName} ne doit pas dépasser {maxLength} caractères",
+    "lengthBetween": "{fieldName} doit contenir entre {minLength} et {maxLength} caractères",
+    "passwordsDoNotMatch": "Les mots de passe sont différents",
+    "numericOnly": "{fieldName} doit uniquement contenir des chiffres",
+    "passwordRegex": "{fieldName} doit contenir 1 majuscule, 1 minuscule et 1 chiffre",
+    "invalidPhone": "{fieldName} est invalide pour le pays sélectionné",
+    "invalidMobilePhone": "{fieldName} doit être un numéro mobile valide pour le pays sélectionné"
+  },
+  "errors": {
+    "unknown": "Une erreur s'est produite. Veuillez réessayer.",
+    "network": "Pas de connexion Internet. Veuillez vérifier votre réseau.",
+    "timeout": "La demande a expiré. Veuillez réessayer.",
+    "serverError": "Erreur du serveur. Veuillez réessayer plus tard.",
+    "unauthorized": "Accès non autorisé. Veuillez vous reconnecter.",
+    "notFound": "La ressource demandée est introuvable.",
+    "forbidden": "Vous n'avez pas la permission d'accéder à cette ressource."
+  },
+  "buttons": {
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "signOut": "Se déconnecter",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "continueAsGuest": "Continuer Sans S'inscrire"
+  },
+  "empty": {
+    "noData": "Aucune donnée disponible",
+    "noResults": "Aucun résultat trouvé",
+    "noContent": "Aucun contenu à afficher"
+  },
+  "country": {
+    "title": "Sélectionner le pays",
+    "subtitle": "Choisissez votre pays pour obtenir le bon indicatif régional."
+  },
+  "navigation": {
+    "home": "Accueil",
+    "discover": "Découvrir",
+    "shows": "Émissions",
+    "favorite": "Favoris"
+  }
+}
