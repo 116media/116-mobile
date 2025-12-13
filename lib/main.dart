@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, BlocProvider, MultiBlocProvider;
+
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, MultiBlocProvider;
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart' show FlutterNativeSplash;
 import 'package:go_router/go_router.dart' show GoRouter;
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 
+import 'i18n/strings.g.dart' show AppLocale, AppLocaleUtils, LocaleSettings, TranslationProvider;
 import 'platform/connectivity/presentation/bloc/connectivity.bloc.dart' show ConnectivityBloc;
 import 'platform/connectivity/presentation/bloc/connectivity.event.dart'
     show ConnectivityWatchStarted;
@@ -32,6 +35,7 @@ import 'shared/presentation/themes/app.theme.dart' show AppTheme;
 /// - Hive local database (for auth persistence)
 /// - Dependency injection (GetIt)
 /// - [ThemeProvider] for theme management
+/// - Slang translations with device locale
 ///
 /// Preserves the native splash screen until the animated splash is ready to display.
 void main() async {
@@ -47,11 +51,19 @@ void main() async {
   // Initialize dependency injection
   await ServiceLocator.initialize();
 
+  // Initialize translations - use device locale by default
+  LocaleSettings.useDeviceLocale();
+
   // Initialize country data from IP on app start
   final initCountryUseCase = sl<InitializeCountryUseCase>();
   await initCountryUseCase.execute(null);
 
-  runApp(ChangeNotifierProvider(create: (_) => ThemeProvider(), child: const App()));
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: TranslationProvider(child: const App()),
+    ),
+  );
 }
 
 /// The root widget of the application.
@@ -109,28 +121,43 @@ class _AppState extends State<App> {
         BlocProvider.value(value: _sessionBloc),
         BlocProvider.value(value: _preferencesBloc),
       ],
-      child: BlocListener<PreferencesBloc, PreferencesState>(
-        listener: (context, state) {
-          // Sync preferences with ThemeProvider when preferences change
+      child: BlocBuilder<PreferencesBloc, PreferencesState>(
+        builder: (context, state) {
+          // Update locale and theme when preferences change
           if (state is PreferencesSuccess) {
-            final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-            themeProvider.setThemeMode(state.preferences.themeMode);
-          }
-        },
-        child: Consumer<ThemeProvider>(
-          builder: (context, themeProvider, child) {
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: themeProvider.themeMode,
-              routerConfig: _router,
-              builder: (context, child) {
-                return ConnectivityBanner(child: child ?? const SizedBox.shrink());
-              },
+            // Schedule theme update after build completes
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+              themeProvider.setThemeMode(state.preferences.themeMode);
+            });
+
+            // Update app locale when language preference changes
+            final localeString = state.preferences.languageCode;
+            final appLocale = AppLocale.values.firstWhere(
+              (l) => l.languageCode == localeString,
+              orElse: () => AppLocale.en,
             );
-          },
-        ),
+            LocaleSettings.setLocale(appLocale, listenToDeviceLocale: false);
+          }
+
+          return Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return MaterialApp.router(
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                debugShowCheckedModeBanner: false,
+                themeMode: themeProvider.themeMode,
+                supportedLocales: AppLocaleUtils.supportedLocales,
+                locale: TranslationProvider.of(context).flutterLocale,
+                localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                routerConfig: _router,
+                builder: (context, child) {
+                  return ConnectivityBanner(child: child ?? const SizedBox.shrink());
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }
