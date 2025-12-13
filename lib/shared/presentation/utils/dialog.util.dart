@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 import 'package:panara_dialogs/panara_dialogs.dart' show PanaraCustomDialog;
 
+import '../../../i18n/strings.g.dart';
 import '../themes/extensions/build.context.extension.dart';
 import '../widgets/buttons/enums/button.size.enum.dart' show ButtonSize;
 import '../widgets/buttons/solid.button.dart' show SolidButton;
@@ -62,23 +63,24 @@ class DialogUtil {
   /// **Parameters:**
   /// - [context]: The build context
   /// - [message]: The error message to display
-  /// - [title]: Optional custom title (defaults to "Error")
-  /// - [buttonText]: Optional custom button text (defaults to "Okay")
+  /// - [title]: Optional custom title (defaults to translated "Error")
+  /// - [buttonText]: Optional custom button text (defaults to translated "OK")
   /// - [onDismiss]: Optional callback when dialog is dismissed
   static void error(
     BuildContext context, {
     required String message,
-    String title = "Error",
-    String buttonText = "Okay",
+    String? title,
+    String? buttonText,
     VoidCallback? onDismiss,
   }) {
+    final t = context.t;
     _showDialog(
       context,
       icon: Icons.error_outline,
       iconColor: ColorsUtil.error,
-      title: title,
+      title: title ?? t.shared.common.error,
       message: message,
-      buttonText: buttonText,
+      buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.error,
       onDismiss: onDismiss,
     );
@@ -89,23 +91,24 @@ class DialogUtil {
   /// **Parameters:**
   /// - [context]: The build context
   /// - [message]: The success message to display
-  /// - [title]: Optional custom title (defaults to "Success")
-  /// - [buttonText]: Optional custom button text (defaults to "Okay")
+  /// - [title]: Optional custom title (defaults to translated "Success")
+  /// - [buttonText]: Optional custom button text (defaults to translated "OK")
   /// - [onDismiss]: Optional callback when dialog is dismissed
   static void success(
     BuildContext context, {
     required String message,
-    String title = "Success",
-    String buttonText = "Okay",
+    String? title,
+    String? buttonText,
     VoidCallback? onDismiss,
   }) {
+    final t = context.t;
     _showDialog(
       context,
       icon: Icons.check_circle_outline,
       iconColor: ColorsUtil.success,
-      title: title,
+      title: title ?? t.shared.common.success,
       message: message,
-      buttonText: buttonText,
+      buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.success,
       onDismiss: onDismiss,
     );
@@ -116,23 +119,24 @@ class DialogUtil {
   /// **Parameters:**
   /// - [context]: The build context
   /// - [message]: The warning message to display
-  /// - [title]: Optional custom title (defaults to "Warning")
-  /// - [buttonText]: Optional custom button text (defaults to "Okay")
+  /// - [title]: Optional custom title (defaults to translated "Warning")
+  /// - [buttonText]: Optional custom button text (defaults to translated "OK")
   /// - [onDismiss]: Optional callback when dialog is dismissed
   static void warning(
     BuildContext context, {
     required String message,
-    String title = "Warning",
-    String buttonText = "Okay",
+    String? title,
+    String? buttonText,
     VoidCallback? onDismiss,
   }) {
+    final t = context.t;
     _showDialog(
       context,
       icon: Icons.warning_amber_outlined,
       iconColor: ColorsUtil.warning,
-      title: title,
+      title: title ?? t.shared.common.warning,
       message: message,
-      buttonText: buttonText,
+      buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.warning,
       onDismiss: onDismiss,
     );
@@ -143,24 +147,25 @@ class DialogUtil {
   /// **Parameters:**
   /// - [context]: The build context
   /// - [message]: The info message to display
-  /// - [title]: Optional custom title (defaults to "Info")
-  /// - [buttonText]: Optional custom button text (defaults to "Okay")
+  /// - [title]: Optional custom title (defaults to translated "Info")
+  /// - [buttonText]: Optional custom button text (defaults to translated "OK")
   /// - [onDismiss]: Optional callback when dialog is dismissed
   static void info(
     BuildContext context, {
     required String message,
-    String title = "Info",
-    String buttonText = "Okay",
+    String? title,
+    String? buttonText,
     VoidCallback? onDismiss,
   }) {
+    final t = context.t;
     _showDialog(
       context,
+      message: message,
       icon: Icons.info_outline,
       iconColor: ColorsUtil.primary,
-      title: title,
-      message: message,
-      buttonText: buttonText,
       buttonColor: ColorsUtil.primary,
+      title: title ?? t.shared.common.info,
+      buttonText: buttonText ?? t.shared.common.ok,
       onDismiss: onDismiss,
     );
   }
@@ -172,9 +177,9 @@ class DialogUtil {
   /// **Parameters:**
   /// - [context]: The build context
   /// - [message]: The confirmation message to display
-  /// - [title]: Optional custom title (defaults to "Confirm")
-  /// - [confirmText]: Text for confirm button (defaults to "Confirm")
-  /// - [cancelText]: Text for cancel button (defaults to "Cancel")
+  /// - [title]: Optional custom title (defaults to translated "Confirm")
+  /// - [confirmText]: Text for confirm button (defaults to translated "Confirm")
+  /// - [cancelText]: Text for cancel button (defaults to translated "Cancel")
   /// - [icon]: Optional icon to display
   /// - [iconColor]: Color for the icon (defaults to primary color)
   /// - [confirmColor]: Color for confirm button (defaults to primary color)
@@ -184,9 +189,9 @@ class DialogUtil {
   static void confirm(
     BuildContext context, {
     required String message,
-    String title = "Confirm",
-    String confirmText = "Confirm",
-    String cancelText = "Cancel",
+    String? title,
+    String? confirmText,
+    String? cancelText,
     IconData? icon,
     Color? iconColor,
     Color? confirmColor,
@@ -194,6 +199,7 @@ class DialogUtil {
     required VoidCallback onConfirm,
     VoidCallback? onCancel,
   }) {
+    final t = context.t;
     PanaraCustomDialog.showAnimatedFromBottom(
       context,
       children: [
@@ -202,8 +208,8 @@ class DialogUtil {
           Gap(context.sizing.s12),
         ],
         Text(
-          title,
           textAlign: TextAlign.center,
+          title ?? t.shared.common.confirm,
           style: TextStyle(fontSize: context.sizing.s24, fontWeight: FontWeight.bold),
         ),
         Gap(context.sizing.s10),
@@ -217,9 +223,9 @@ class DialogUtil {
           children: [
             Expanded(
               child: OutlineButton(
-                text: cancelText,
                 color: cancelColor,
                 size: ButtonSize.sm,
+                text: cancelText ?? t.shared.common.cancel,
                 onPressed: () {
                   Navigator.of(context).pop();
                   onCancel?.call();
@@ -229,8 +235,8 @@ class DialogUtil {
             Gap(context.sizing.s10),
             Expanded(
               child: SolidButton(
-                text: confirmText,
                 size: ButtonSize.sm,
+                text: confirmText ?? t.shared.common.confirm,
                 background: confirmColor ?? ColorsUtil.primary,
                 onPressed: () {
                   Navigator.of(context).pop();
