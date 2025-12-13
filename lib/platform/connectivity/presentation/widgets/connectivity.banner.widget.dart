@@ -1,13 +1,14 @@
 import 'dart:async' show Timer;
 
-import 'package:cent16/shared/presentation/themes/extensions/build.context.extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener;
 
+import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../bloc/connectivity.bloc.dart' show ConnectivityBloc;
 import '../bloc/connectivity.state.dart'
     show ConnectivityState, ConnectivityDisconnected, ConnectivityRestored, ConnectivityConnected;
+import '../../../../i18n/strings.g.dart' show t;
 
 /// Widget that displays a banner when connectivity status changes.
 ///
@@ -43,10 +44,10 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
         dividerColor: Colors.transparent,
         backgroundColor: ColorsUtil.error,
         minActionBarHeight: context.sizing.s24,
-        content: const Text(
-          'No internet connection',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        content: Text(
+          t.connectivity.noInternet,
           textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         actions: const [SizedBox.shrink()],
       ),
@@ -64,10 +65,10 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
         dividerColor: Colors.transparent,
         backgroundColor: ColorsUtil.success,
         minActionBarHeight: context.sizing.s24,
-        content: const Text(
-          'Connection restored',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        content: Text(
           textAlign: TextAlign.center,
+          t.connectivity.internetRestored,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         actions: const [SizedBox.shrink()],
       ),
