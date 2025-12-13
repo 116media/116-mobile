@@ -9,14 +9,12 @@ import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show 
 import '../../../../shared/presentation/widgets/buttons/outline.button.dart' show OutlineButton;
 import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 
+import '../../../../../i18n/strings.g.dart' show t;
+
 /// Widget that displays action buttons for onboarding screens.
 ///
 /// **Note:** This widget uses Cupertino-style buttons exclusively for
 /// consistent iOS-style appearance across all platforms.
-///
-/// Shows either:
-/// - "Get Started" button on the last page
-/// - "Skip" and "Next" buttons on other pages
 class OnboardingActions extends StatelessWidget {
   final OnboardingItems onboardingItems;
   final Color textColor;
@@ -58,13 +56,13 @@ class OnboardingActions extends StatelessWidget {
                   SolidButton(
                     isFull: true,
                     size: ButtonSize.sm,
-                    text: "Sign In / Sign Up",
                     onPressed: onGetStarted,
+                    text: t.onboarding.signInOrSignUp,
                   ),
                   OutlineButton(
                     size: ButtonSize.sm,
-                    text: "Continue as guest",
                     onPressed: onContinueAsGuest,
+                    text: t.shared.buttons.continueAsGuest,
                   ),
                 ],
               ),
@@ -77,7 +75,7 @@ class OnboardingActions extends StatelessWidget {
                 padding: padding,
                 onPressed: onSkip,
                 child: Text(
-                  'Skip',
+                  t.onboarding.skip,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: textColor.withValues(alpha: context.sizing.s0_5),
                     fontWeight: FontWeight.w500,
