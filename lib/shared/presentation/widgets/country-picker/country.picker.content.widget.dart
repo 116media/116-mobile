@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 
+import '../../../../i18n/strings.g.dart' show t;
+import '../../../domain/enums/language.enum.dart' show Language;
 import '../../../presentation/themes/extensions/build.context.extension.dart';
 import '../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
     show PreferencesBloc;
@@ -60,7 +62,7 @@ class _CountryPickerContentState extends State<CountryPickerContent> {
     final preferencesState = context.read<PreferencesBloc>().state;
     final languageCode = preferencesState is PreferencesSuccess
         ? preferencesState.preferences.languageCode
-        : 'en';
+        : Language.french.code;
     context.read<CountryPickerProvider>().searchCountries(_searchController.text, languageCode);
   }
 
@@ -77,7 +79,7 @@ class _CountryPickerContentState extends State<CountryPickerContent> {
     final preferencesState = context.read<PreferencesBloc>().state;
     final languageCode = preferencesState is PreferencesSuccess
         ? preferencesState.preferences.languageCode
-        : 'en';
+        : Language.french.code;
 
     final dividerColor = context.isDarkMode ? ColorsUtil.slate700 : ColorsUtil.slate200;
 
@@ -100,9 +102,9 @@ class _CountryPickerContentState extends State<CountryPickerContent> {
 
             Padding(
               padding: EdgeInsets.symmetric(vertical: context.sizing.s12),
-              child: const HeaderTitle(
-                title: 'Select Country',
-                subtitle: 'Choose your country to get the correct dial code.',
+              child: HeaderTitle(
+                title: t.shared.country.title,
+                subtitle: t.shared.country.subtitle,
               ),
             ),
 
@@ -124,7 +126,7 @@ class _CountryPickerContentState extends State<CountryPickerContent> {
               ),
               child: InputField(
                 isFilled: true,
-                label: 'Search',
+                label: t.shared.common.search,
                 controller: _searchController,
                 suffix: Icon(Icons.search, size: context.sizing.s20, fontWeight: FontWeight.w600),
               ),
