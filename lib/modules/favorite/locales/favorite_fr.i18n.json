@@ -1,0 +1,11 @@
+{
+  "title": "Favoris",
+  "all": "Tous les favoris",
+  "artists": "Artistes favoris",
+  "songs": "Chansons favorites",
+  "shows": "Émissions favorites",
+  "empty": {
+    "title": "Pas encore de favoris",
+    "description": "Commencez à ajouter du contenu à vos favoris"
+  }
+}
