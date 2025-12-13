@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/presentation/constants/shared.constants.dart' show kAppName;
 import '../entities/onboarding-item/onboarding.item.entity.dart' show OnboardingItemEntity;
 
@@ -14,38 +15,29 @@ class OnboardingItems extends Equatable {
 
   /// Factory constructor providing the default onboarding items.
   factory OnboardingItems.defaults() {
-    return const OnboardingItems._([
+    return OnboardingItems._([
       OnboardingItemEntity(
         image: "assets/onboarding/podcast.webp",
-        title: "Welcome to $kAppName",
-        description: '''
-Discover stories, cultures, and artists shaping the sound of a new generation,
-from the streets to the global stage.
-''',
+        title: t.onboarding.pages[0].title(app: kAppName),
+        description: t.onboarding.pages[0].description,
       ),
+
       OnboardingItemEntity(
         image: "assets/onboarding/articles.webp",
-        title: "News Beyond Music",
-        description: '''
-Stay informed with news, magazines, and deep dives into the people, trends
-that celebrate creativity.
-''',
+        title: t.onboarding.pages[1].title,
+        description: t.onboarding.pages[1].description,
       ),
+
       OnboardingItemEntity(
         image: "assets/onboarding/videos.webp",
-        title: "Exclusive Shows & Media",
-        description: '''
-Experience the urban culture through interviews, documentaries,
-podcasts, raw studio sessions, etc.
-''',
+        title: t.onboarding.pages[2].title,
+        description: t.onboarding.pages[2].description,
       ),
+
       OnboardingItemEntity(
         image: "assets/onboarding/community.webp",
-        title: "Be Part of the Culture",
-        description: '''
-Like, comment, and share your favorite artists. Discover new talents
-and stay connected with the music pulse.
-''',
+        title: t.onboarding.pages[3].title,
+        description: t.onboarding.pages[3].description,
       ),
     ]);
   }
