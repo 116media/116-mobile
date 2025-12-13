@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:gap/gap.dart' show Gap;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../platform/preferences/domain/value-objects/languages.dart' show Languages;
 import '../../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
     show PreferencesBloc;
@@ -66,9 +67,8 @@ class LanguagePickerContent extends StatelessWidget {
         children: [
           const BottomSheetPullBar(),
           HeaderTitle(
-            title: 'Select Language',
-            subtitle:
-                'Choose your preferred language from the list to personalize your experience.',
+            title: t.preferences.language.title,
+            subtitle: t.preferences.language.subtitle,
           ),
           Flexible(
             child: ListView.separated(
