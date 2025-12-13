@@ -37,12 +37,13 @@ class AppRouter {
       redirect: (BuildContext context, GoRouterState state) {
         final sessionState = sessionBloc.state;
 
-        // Wait for session to load
-        if (sessionState is! SessionSuccess) {
-          if (state.matchedLocation != kSplashRoutePath) {
-            return kSplashRoutePath;
-          }
+        if (state.matchedLocation == kSplashRoutePath) {
           return null;
+        }
+
+        // Wait for session to load (for other routes)
+        if (sessionState is! SessionSuccess) {
+          return kSplashRoutePath;
         }
 
         final session = sessionState.sessionState;
