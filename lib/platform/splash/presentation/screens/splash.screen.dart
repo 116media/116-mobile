@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -77,6 +78,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         curve: const Interval(kFadeStartInterval, kFadeEndInterval, curve: Curves.easeIn),
       ),
     );
+
+    // Navigate after animation completes
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed && mounted) {
+        context.go("/");
+      }
+    });
 
     // Wait for native splash to be removed (2.5s) before starting animation
     Future.delayed(const Duration(milliseconds: kAnimationDuration), () {
