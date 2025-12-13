@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
 import '/shared/presentation/themes/extensions/build.context.extension.dart';
-import 'package:flutter/material.dart';
+import '../../../../i18n/strings.g.dart' show t;
 
 class AppVersion extends StatefulWidget {
   const AppVersion({super.key});
@@ -23,7 +24,7 @@ class _AppVersionState extends State<AppVersion> {
     final packageInfo = await PackageInfo.fromPlatform();
     if (mounted) {
       setState(() {
-        _version = 'Version ${packageInfo.version}';
+        _version = 'Version: ${packageInfo.version}';
       });
     }
   }
@@ -34,7 +35,7 @@ class _AppVersionState extends State<AppVersion> {
       padding: EdgeInsets.only(bottom: context.sizing.s32),
       child: Center(
         child: Text(
-          _version.isEmpty ? 'Loading...' : _version,
+          _version.isEmpty ? t.shared.common.loading : _version,
           style: context.textTheme.bodySmall?.copyWith(
             color: Theme.of(
               context,
