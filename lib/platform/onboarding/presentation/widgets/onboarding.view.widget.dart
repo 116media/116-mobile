@@ -9,17 +9,17 @@ import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 /// Uses [PageView] to show horizontally scrollable pages, each containing
 /// a title and description with staggered fade-in animations
 class OnboardingView extends StatelessWidget {
-  final OnboardingItems onboardingItems;
   final Color textColor;
   final PageController controller;
+  final OnboardingItems onboardingItems;
   final ValueChanged<int> onPageChanged;
 
   const OnboardingView({
     super.key,
-    required this.onboardingItems,
     required this.textColor,
     required this.controller,
     required this.onPageChanged,
+    required this.onboardingItems,
   });
 
   @override
