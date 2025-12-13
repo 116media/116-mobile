@@ -1,0 +1,11 @@
+{
+  "title": "Home",
+  "welcome": "Welcome to 116",
+  "feed": "Feed",
+  "trending": "Trending",
+  "latest": "Latest",
+  "empty": {
+    "title": "No Content Yet",
+    "description": "Check back later for new content"
+  }
+}
