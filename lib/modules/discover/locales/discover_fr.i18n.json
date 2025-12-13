@@ -1,0 +1,12 @@
+{
+  "title": "Découvrir",
+  "search": "Rechercher",
+  "searchPlaceholder": "Rechercher des artistes, des chansons ou du contenu...",
+  "categories": "Catégories",
+  "artists": "Artistes",
+  "trending": "Tendances actuelles",
+  "empty": {
+    "title": "Aucun résultat",
+    "description": "Essayez de rechercher autre chose"
+  }
+}
