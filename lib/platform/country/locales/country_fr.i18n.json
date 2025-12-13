@@ -1,0 +1,8 @@
+{
+  "cacheError": {
+    "setCountry": "Échec lors de la sauvegarde des données du pays: {error}",
+    "getCountry": "Échec lors de la récupération des données du pays: {error}",
+    "clearCountry": "Échec lors de la suppression des données du pays: {error}",
+    "watchCountry": "Échec lors de la surveillance des données du pays: {error}"
+  }
+}
