@@ -2,41 +2,56 @@
   "title": "Paramètres",
   "profile": {
     "title": "Profil",
-    "editProfile": "Modifier le profil",
+    "editProfile": "Modifier le Profil",
     "username": "Nom d'utilisateur",
     "email": "E-mail",
-    "phone": "Numéro de téléphone",
-    "avatar": "Photo de profil",
-    "changeAvatar": "Changer la photo",
-    "saveChanges": "Enregistrer les modifications"
+    "telephone": "Téléphone",
+    "updateSuccess": "Profil mis à jour avec succès!",
+    "updateSubtitle": "Mettez à jour les détails du profil, en particulier votre nom d'utilisateur et votre numéro de téléphone.",
+    "guestMode": "Mode Invité",
+    "guestMessage": "Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu."
+  },
+  "avatar": {
+    "title": "Modifier l'Avatar",
+    "subtitle": "Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.",
+    "cropTitle": "Recadrer l'Avatar",
+    "camera": "Caméra",
+    "gallery": "Galerie",
+    "selectError": "Échec de la sélection de l'image: {error}"
   },
   "account": {
     "title": "Compte",
+    "password": "Mot de passe",
+    "passwordSubtitle": "Changer votre mot de passe",
+    "privacySecurity": "Confidentialité et Sécurité",
     "changePassword": "Changer le mot de passe",
-    "deleteAccount": "Supprimer le compte",
-    "signOut": "Se déconnecter"
+    "deleteTitle": "Supprimer le compte",
+    "deleteMessage": "Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée."
   },
   "preferences": {
     "title": "Préférences",
     "language": "Langue",
-    "theme": "Thème",
-    "notifications": "Notifications"
-  },
-  "about": {
-    "title": "À propos",
-    "version": "Version",
-    "termsOfService": "Conditions d'utilisation",
-    "privacyPolicy": "Politique de confidentialité",
-    "contactUs": "Nous contacter"
-  },
-  "followUs": {
-    "title": "Suivez-nous",
-    "subtitle": "Restez connecté sur les réseaux sociaux"
+    "darkMode": "Mode Sombre",
+    "darkModeOn": "Activé",
+    "darkModeOff": "Désactivé",
+    "notifications": "Notifications",
+    "notificationsSubtitle": "Recevoir les notifications push"
   },
   "support": {
     "title": "Support",
-    "helpCenter": "Centre d'aide",
-    "reportProblem": "Signaler un problème",
-    "feedback": "Envoyer des commentaires"
+    "faq": "FAQ",
+    "contactUs": "Nous contacter",
+    "contactSubtitle": "Demandes commerciales et support",
+    "terms": "Conditions Générales",
+    "copyright": "Conformité aux droits d'auteur"
+  },
+  "followUs": {
+    "title": "Suivez-nous"
+  },
+  "logout": {
+    "title": "Se déconnecter",
+    "message": "Êtes-vous sûr de vouloir vous déconnecter?",
+    "button": "Se déconnecter",
+    "confirm": "Se déconnecter"
   }
 }
