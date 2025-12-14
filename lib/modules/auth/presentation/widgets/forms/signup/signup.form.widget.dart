@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart' show GoRouterHelper;
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, SelectContext;
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
     show OnboardingUtil;
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
@@ -136,7 +137,7 @@ class _SignUpFormState extends State<SignUpForm> {
           children: [
             Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
 
-            const AuthFormTitle(text: "Sign Up to Continue"),
+            AuthFormTitle(text: t.auth.signUp.title),
 
             Wrap(
               spacing: context.sizing.s12,
@@ -145,25 +146,25 @@ class _SignUpFormState extends State<SignUpForm> {
               children: [
                 InputField(
                   isFilled: true,
-                  label: "Email",
                   isDisabled: isLoading,
                   controller: _emailController,
-                  validator: SignUpValidator.email("Email"),
+                  label: t.auth.signUp.emailLabel,
+                  validator: SignUpValidator.email(t.auth.signUp.emailLabel),
                 ),
                 InputField(
                   isFilled: true,
-                  label: "Username",
                   isDisabled: isLoading,
                   controller: _usernameController,
-                  validator: SignUpValidator.userName("Username"),
+                  label: t.auth.signUp.usernameLabel,
+                  validator: SignUpValidator.userName(t.auth.signUp.usernameLabel),
                 ),
                 InputField(
                   isFilled: true,
                   isPassword: true,
-                  label: "Password",
                   isDisabled: isLoading,
                   controller: _passwordController,
-                  validator: SignUpValidator.password("Password"),
+                  label: t.auth.signUp.passwordLabel,
+                  validator: SignUpValidator.password(t.auth.signUp.passwordLabel),
                 ),
               ],
             ),
@@ -174,15 +175,15 @@ class _SignUpFormState extends State<SignUpForm> {
               delay: 0.65,
               child: SolidButton(
                 isFull: true,
-                text: "Sign Up",
                 size: ButtonSize.sm,
                 isLoading: isLoading,
                 isDisabled: isLoading,
                 onPressed: _handleSignUp,
+                text: t.auth.signUp.submitButton,
               ),
             ),
 
-            const DividerWithLabel(label: 'OR'),
+            DividerWithLabel(label: t.auth.signIn.orContinueWith),
 
             Row(
               spacing: context.sizing.s12,
@@ -208,8 +209,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
             OutlineButton(
               size: ButtonSize.sm,
-              text: "Continue as guest",
               onPressed: _handleContinueAsGuest,
+              text: t.shared.buttons.continueAsGuest,
             ),
 
             AuthRedirectButton(
