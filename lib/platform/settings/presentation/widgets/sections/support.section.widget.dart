@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
-import '../../../../../i18n/strings.g.dart' show t;
+import '../../../../../i18n/strings.g.dart' show Translations;
 import '../../../infrastructure/constants/support.links.constants.dart' show SupportLinks;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../items/settings.tile.widget.dart' show SettingsTile;
@@ -22,6 +22,8 @@ class SupportSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
