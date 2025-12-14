@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, ReadContext;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../platform/preferences/domain/value-objects/languages.dart' show Languages;
 import '../../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
     show PreferencesBloc;
@@ -67,28 +68,30 @@ class PreferencesSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SettingsSectionHeader(title: 'Preferences'),
+            SettingsSectionHeader(title: t.settings.preferences.title),
             Column(
               children: [
                 SettingsToggle(
                   icon: Icons.dark_mode_outlined,
-                  title: 'Dark Mode',
-                  subtitle: isDarkMode ? 'On' : 'Off',
+                  title: t.settings.preferences.darkMode,
+                  subtitle: isDarkMode
+                      ? t.settings.preferences.darkModeOn
+                      : t.settings.preferences.darkModeOff,
                   value: isDarkMode,
                   iconBackgroundColor: ColorsUtil.yellow500,
                   onChanged: (value) => _handleThemeChange(context, value),
                 ),
                 SettingsTile(
                   icon: Icons.language_outlined,
-                  title: 'Language',
+                  title: t.settings.preferences.language,
                   subtitle: languageName,
                   iconBackgroundColor: ColorsUtil.blue500,
                   onTap: () => _showLanguagePicker(context, preferences.languageCode),
                 ),
                 SettingsToggle(
                   icon: Icons.notifications_outlined,
-                  title: 'Notifications',
-                  subtitle: 'Receive push notifications',
+                  title: t.settings.preferences.notifications,
+                  subtitle: t.settings.preferences.notificationsSubtitle,
                   value: true, // TODO: Connect to actual notification settings
                   iconBackgroundColor: ColorsUtil.purple500,
                   onChanged: (value) {
