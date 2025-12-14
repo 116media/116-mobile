@@ -111,10 +111,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 vertical: context.sizing.s12,
               ),
               child: OnboardingContent(
-                onboardingItems: _onboardingItems,
-                currentIndex: currentIndex,
                 percentage: percentage,
                 controller: _controller!,
+                currentIndex: currentIndex,
+                onboardingItems: _onboardingItems,
                 onPageChanged: (int index) {
                   setState(() {
                     currentIndex = index;

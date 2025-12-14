@@ -1,0 +1,49 @@
+#!/bin/bash
+# Pre-commit hook for Flutter project
+# Runs flutter analyze and dart format checks before allowing commit
+
+echo -e "🔍 Running pre-commit checks..."
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Get the root directory of the git repository
+ROOT_DIR=$(git rev-parse --show-toplevel)
+
+# 1. Run static analysis
+bash "$ROOT_DIR/scripts/shell/analyse.sh"
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# 2. Check code formatting
+bash "$ROOT_DIR/scripts/shell/format.sh"
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# 3. Check for common issues
+echo ""
+echo -e "${YELLOW}🔎 Checking for common issues...${NC}"
+
+# Check for debug print statements in lib folder (excluding commented lines)
+if git diff --cached --name-only | grep -E '^lib/.*\.dart$' | xargs grep -n 'print(' 2>/dev/null | grep -vE ':\s*(//|///|\*)' ; then
+    echo ""
+    echo -e "${YELLOW}🚨 Warning: Found print() statements in staged files${NC}"
+    echo ""
+    echo -e "${YELLOW}💡 Consider using proper logging instead${NC}"
+fi
+
+# Check for TODO comments
+if git diff --cached --name-only | grep -E '\.dart$' | xargs grep -n 'TODO:' 2>/dev/null; then
+    echo ""
+    echo -e "${YELLOW}🚨 Warning: Found TODO comments in staged files${NC}"
+fi
+
+echo ""
+echo -e "${GREEN}✅ Common issues check completed${NC}"
+echo ""
+echo -e "${GREEN}✨ All pre-commit checks passed!${NC}"
+exit 0

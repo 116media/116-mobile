@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart' show GoRouterHelper;
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, SelectContext;
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
     show OnboardingUtil;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
@@ -139,7 +140,7 @@ class _SignInFormState extends State<SignInForm> {
           children: [
             Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
 
-            const AuthFormTitle(text: "Sign In to Continue"),
+            AuthFormTitle(text: t.auth.signIn.title),
 
             Wrap(
               spacing: context.sizing.s12,
@@ -149,22 +150,22 @@ class _SignInFormState extends State<SignInForm> {
                 InputField(
                   isFilled: true,
                   isDisabled: isLoading,
-                  label: "Email or username",
+                  label: t.auth.signIn.emailLabel,
                   controller: _credentialsController,
-                  validator: SignInValidator.credentials("Email or username"),
+                  validator: SignInValidator.credentials(t.auth.signIn.emailLabel),
                 ),
                 InputField(
                   isFilled: true,
                   isPassword: true,
-                  label: "Password",
                   isDisabled: isLoading,
                   controller: _passwordController,
-                  validator: SignInValidator.password("Password"),
+                  label: t.auth.signIn.passwordLabel,
+                  validator: SignInValidator.password(t.auth.signIn.passwordLabel),
                 ),
                 AuthRedirectButton(
                   isCentered: false,
-                  actionType: AuthRedirectAction.forgotPassword,
                   onPressed: _showForgotPasswordDialog,
+                  actionType: AuthRedirectAction.forgotPassword,
                 ),
               ],
             ),
@@ -175,15 +176,15 @@ class _SignInFormState extends State<SignInForm> {
               delay: 0.65,
               child: SolidButton(
                 isFull: true,
-                text: "Sign In",
                 size: ButtonSize.sm,
                 isLoading: isLoading,
                 isDisabled: isLoading,
                 onPressed: _handleSignIn,
+                text: t.auth.signIn.submitButton,
               ),
             ),
 
-            const DividerWithLabel(label: 'OR'),
+            DividerWithLabel(label: t.auth.signIn.orContinueWith),
 
             Row(
               spacing: context.sizing.s12,
@@ -211,8 +212,8 @@ class _SignInFormState extends State<SignInForm> {
 
             OutlineButton(
               size: ButtonSize.sm,
-              text: "Continue as guest",
               onPressed: _handleContinueAsGuest,
+              text: t.shared.buttons.continueAsGuest,
             ),
 
             AuthRedirectButton(

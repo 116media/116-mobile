@@ -2,6 +2,7 @@ import 'dart:async' show Stream, StreamController;
 
 import 'package:hive_ce/hive.dart';
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
     show ReadFailedCacheException;
 import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
@@ -29,8 +30,8 @@ class SessionLocalDataSource implements ISessionLocalDataSource {
       return _sessionBox.get(kSessionStateKey) as SessionStateModel?;
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to retrieve session state: $e',
         instance: 'SessionLocalDataSource.getSessionState',
+        detail: t.session.cacheError.getSession(error: e.toString()),
       );
     }
   }
@@ -42,8 +43,8 @@ class SessionLocalDataSource implements ISessionLocalDataSource {
       _sessionController.add(state);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to save session state: $e',
-        instance: 'SessionLocalDataSource.saveSessionState',
+        instance: 'SessionLocalDataSource.setSessionState',
+        detail: t.session.cacheError.setSession(error: e.toString()),
       );
     }
   }
@@ -55,8 +56,8 @@ class SessionLocalDataSource implements ISessionLocalDataSource {
       _sessionController.add(SessionStateModel.initial());
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to clear session state: $e',
         instance: 'SessionLocalDataSource.clearSessionState',
+        detail: t.session.cacheError.clearSession(error: e.toString()),
       );
     }
   }

@@ -1,0 +1,75 @@
+{
+  "signIn": {
+    "title": "Sign In",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot Password?",
+    "submitButton": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign Up",
+    "orContinueWith": "Or Continue With"
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "emailLabel": "Email",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "submitButton": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign In"
+  },
+  "termsAndConditions": {
+    "prefix": "By continuing, you acknowledge that you understand and agree to the ",
+    "termsLink": "Terms & Conditions",
+    "and": " and ",
+    "privacyLink": "Privacy Policy"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter the email associated with your account. We'll send you a verification code to reset your password.",
+    "emailLabel": "Email",
+    "submitButton": "Send Code",
+    "backToSignIn": "Back to Sign In",
+    "success": "Verification code sent successfully! Please check your email."
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "subtitle": "Enter your new password below to reset your account password.",
+    "passwordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "submitButton": "Reset Password",
+    "success": "Password reset successfully! You can now sign in with your new password."
+  },
+  "verifyOtp": {
+    "title": "Verify Your Email",
+    "subtitle": "Please enter the 6-digit verification code we've sent to ",
+    "yourEmail": "your email",
+    "codeLabel": "Verification code",
+    "submitButton": "Verify",
+    "success": "Account verified successfully! Please enter your new password.",
+    "completed": "Your account verification completed! You're all set to continue."
+  },
+  "resendOtp": {
+    "countdown": " in {seconds} seconds",
+    "resendCode": "Didn't receive the code?",
+    "resendButton": "Resend",
+    "success": "New verification code sent successfully! Please check your email."
+  },
+  "cacheError": {
+    "setUser": "Failed to save user data: {error}",
+    "getUser": "Failed to retrieve user data: {error}",
+    "setToken": "Failed to save token: {error}",
+    "getToken": "Failed to retrieve token: {error}",
+    "clearToken": "Failed to clear token: {error}",
+    "watchUser": "Failed to watch user: {error}"
+  },
+  "facebookError": {
+    "signInCancelled": "Facebook sign-in cancelled by the user.",
+    "unexpected": "Unexpected Facebook sign-in error: {error}"
+  },
+  "googleError": {
+    "unexpected": "Unexpected Google sign-in error: {error}",
+    "initFailed": "Failed to initialize Google Sign-In: {error}"
+  }
+}

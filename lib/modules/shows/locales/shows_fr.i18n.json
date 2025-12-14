@@ -1,0 +1,10 @@
+{
+  "title": "Émissions",
+  "allShows": "Toutes les émissions",
+  "episodes": "Épisodes",
+  "watchNow": "Regarder maintenant",
+  "empty": {
+    "title": "Aucune émission disponible",
+    "description": "Revenez plus tard pour de nouvelles émissions"
+  }
+}

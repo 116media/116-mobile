@@ -18,10 +18,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final WatchSessionStateUseCase _watchSessionStateUseCase;
   StreamSubscription? _sessionSubscription;
 
-  SessionBloc(
-    this._getSessionStateUseCase,
-    this._watchSessionStateUseCase,
-  ) : super(const SessionInitial()) {
+  SessionBloc(this._getSessionStateUseCase, this._watchSessionStateUseCase)
+    : super(const SessionInitial()) {
     on<SessionLoadStarted>(_onLoadStarted);
     on<SessionStateChanged>(_onStateChanged);
   }
@@ -31,29 +29,21 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   /// Loads the current session state and subscribes to session changes.
   /// Emits [SessionLoading] while loading, then [SessionSuccess] or
   /// [SessionFailure] based on the result.
-  Future<void> _onLoadStarted(
-    SessionLoadStarted event,
-    Emitter<SessionState> emit,
-  ) async {
+  Future<void> _onLoadStarted(SessionLoadStarted event, Emitter<SessionState> emit) async {
     emit(const SessionLoading());
 
     // Load current session state
     final result = await _getSessionStateUseCase.execute(null);
 
-    result.fold(
-      (failure) => emit(SessionFailure(failure)),
-      (sessionState) {
-        emit(SessionSuccess(sessionState));
+    result.fold((failure) => emit(SessionFailure(failure)), (sessionState) {
+      emit(SessionSuccess(sessionState));
 
-        // Subscribe to session changes
-        _sessionSubscription?.cancel();
-        _sessionSubscription = _watchSessionStateUseCase.execute().listen(
-          (updatedState) {
-            add(SessionStateChanged(updatedState));
-          },
-        );
-      },
-    );
+      // Subscribe to session changes
+      _sessionSubscription?.cancel();
+      _sessionSubscription = _watchSessionStateUseCase.execute().listen((updatedState) {
+        add(SessionStateChanged(updatedState));
+      });
+    });
   }
 
   /// Handles the [SessionStateChanged] event.
@@ -61,10 +51,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   /// Emits [SessionSuccess] with the updated session state.
   /// This event is triggered internally when the session state
   /// changes (e.g., after completing onboarding or logging in).
-  Future<void> _onStateChanged(
-    SessionStateChanged event,
-    Emitter<SessionState> emit,
-  ) async {
+  Future<void> _onStateChanged(SessionStateChanged event, Emitter<SessionState> emit) async {
     emit(SessionSuccess(event.sessionState));
   }
 

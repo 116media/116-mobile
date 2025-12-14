@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../i18n/strings.g.dart' show Translations;
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
@@ -13,10 +14,6 @@ import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
 ///
 /// **Note:** This widget uses Cupertino-style buttons exclusively for
 /// consistent iOS-style appearance across all platforms.
-///
-/// Shows either:
-/// - "Get Started" button on the last page
-/// - "Skip" and "Next" buttons on other pages
 class OnboardingActions extends StatelessWidget {
   final OnboardingItems onboardingItems;
   final Color textColor;
@@ -42,6 +39,8 @@ class OnboardingActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     final EdgeInsets padding = EdgeInsets.symmetric(
       vertical: context.sizing.s12,
       horizontal: context.sizing.s0_5,
@@ -58,13 +57,13 @@ class OnboardingActions extends StatelessWidget {
                   SolidButton(
                     isFull: true,
                     size: ButtonSize.sm,
-                    text: "Sign In / Sign Up",
                     onPressed: onGetStarted,
+                    text: t.onboarding.signInOrSignUp,
                   ),
                   OutlineButton(
                     size: ButtonSize.sm,
-                    text: "Continue as guest",
                     onPressed: onContinueAsGuest,
+                    text: t.shared.buttons.continueAsGuest,
                   ),
                 ],
               ),
@@ -77,7 +76,7 @@ class OnboardingActions extends StatelessWidget {
                 padding: padding,
                 onPressed: onSkip,
                 child: Text(
-                  'Skip',
+                  t.onboarding.skip,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: textColor.withValues(alpha: context.sizing.s0_5),
                     fontWeight: FontWeight.w500,

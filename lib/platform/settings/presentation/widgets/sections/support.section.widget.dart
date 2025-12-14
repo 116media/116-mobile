@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
+import '../../../../../i18n/strings.g.dart' show Translations;
 import '../../../infrastructure/constants/support.links.constants.dart' show SupportLinks;
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../items/settings.tile.widget.dart' show SettingsTile;
@@ -21,34 +22,36 @@ class SupportSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SettingsSectionHeader(title: 'Support'),
+        SettingsSectionHeader(title: t.settings.support.title),
         Column(
           children: [
             SettingsTile(
               icon: Icons.help_outline,
-              title: 'FAQ',
+              title: t.settings.support.faq,
               iconBackgroundColor: ColorsUtil.green500,
               onTap: () => launchUrl(Uri.parse(SupportLinks.faq)),
             ),
             SettingsTile(
               icon: Icons.mail_outline,
-              title: 'Contact Us',
-              subtitle: 'Business inquiries & support',
+              title: t.settings.support.contactUs,
+              subtitle: t.settings.support.contactSubtitle,
               iconBackgroundColor: ColorsUtil.orange500,
               onTap: () => launchUrl(Uri.parse(SupportLinks.contactEmail)),
             ),
             SettingsTile(
               icon: Icons.description_outlined,
-              title: 'Terms & Conditions',
+              title: t.settings.support.terms,
               iconBackgroundColor: ColorsUtil.blue500,
               onTap: () => launchUrl(Uri.parse(SupportLinks.termsAndConditions)),
             ),
             SettingsTile(
               icon: Icons.copyright_outlined,
-              title: 'Copyright Compliance',
+              title: t.settings.support.copyright,
               iconBackgroundColor: ColorsUtil.purple500,
               onTap: () => launchUrl(Uri.parse(SupportLinks.copyrightCompliance)),
             ),

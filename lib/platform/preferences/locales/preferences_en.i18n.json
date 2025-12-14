@@ -1,0 +1,19 @@
+{
+  "title": "Set Your Preferences",
+  "subtitle": "Choose your preferred theme and language settings.",
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "english": "English",
+    "french": "French",
+    "title": "Select Language",
+    "subtitle": "Choose your preferred language"
+  },
+  "cacheError": {
+    "getPreferences": "Failed to retrieve preferences: {error}",
+    "setPreferences": "Failed to save preferences: {error}",
+    "clearPreferences": "Failed to clear preferences: {error}"
+  }
+}

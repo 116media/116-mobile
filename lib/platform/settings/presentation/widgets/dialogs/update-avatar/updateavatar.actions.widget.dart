@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/animations/fade.animation.dart';
 import '../../../../../../shared/presentation/utils/colors.util.dart';
@@ -32,7 +33,7 @@ class ActionButtons extends StatelessWidget {
         FadeAnimation(
           child: SolidButton(
             isFull: true,
-            text: 'Camera',
+            text: t.settings.avatar.camera,
             size: ButtonSize.sm,
             onPressed: onCamera,
             isDisabled: isUploading,
@@ -43,7 +44,7 @@ class ActionButtons extends StatelessWidget {
           reverse: true,
           child: SolidButton(
             isFull: true,
-            text: 'Gallery',
+            text: t.settings.avatar.gallery,
             size: ButtonSize.sm,
             onPressed: onGallery,
             isDisabled: isUploading,
@@ -51,7 +52,7 @@ class ActionButtons extends StatelessWidget {
         ),
         Gap(context.sizing.s12),
         OutlineButton(
-          text: 'Cancel',
+          text: t.shared.common.cancel,
           size: ButtonSize.sm,
           isDisabled: isUploading,
           color: ColorsUtil.error,

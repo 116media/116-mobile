@@ -1,0 +1,57 @@
+{
+  "title": "Paramètres",
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Modifier Profil",
+    "username": "Nom d'utilisateur",
+    "email": "E-mail",
+    "telephone": "Téléphone",
+    "updateSuccess": "Profil mis à jour avec succès!",
+    "updateSubtitle": "Mettez à jour les détails du profil, en particulier votre nom d'utilisateur et votre numéro de téléphone.",
+    "guestMode": "Mode Invité",
+    "guestMessage": "Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu."
+  },
+  "avatar": {
+    "title": "Modifier l'Avatar",
+    "subtitle": "Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.",
+    "cropTitle": "Recadrer l'Avatar",
+    "camera": "Caméra",
+    "gallery": "Galerie",
+    "selectError": "Échec de la sélection de l'image: {error}"
+  },
+  "account": {
+    "title": "Compte",
+    "password": "Mot de passe",
+    "passwordSubtitle": "Changer votre mot de passe",
+    "privacySecurity": "Confidentialité et sécurité",
+    "changePassword": "Changer le mot de passe",
+    "deleteTitle": "Supprimer le compte",
+    "deleteMessage": "Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée."
+  },
+  "preferences": {
+    "title": "Préférences",
+    "language": "Langue",
+    "darkMode": "Mode sombre",
+    "darkModeOn": "Activé",
+    "darkModeOff": "Désactivé",
+    "notifications": "Notifications",
+    "notificationsSubtitle": "Recevoir les notifications push"
+  },
+  "support": {
+    "title": "Support",
+    "faq": "FAQ",
+    "contactUs": "Contactez-nous",
+    "contactSubtitle": "Demandes commerciales et support",
+    "terms": "Conditions générales",
+    "copyright": "Conformité aux droits d'auteur"
+  },
+  "followUs": {
+    "title": "Suivez-nous"
+  },
+  "logout": {
+    "title": "Se Déconnecter",
+    "message": "Êtes-vous sûr de vouloir vous déconnecter?",
+    "button": "Se Déconnecter",
+    "confirm": "Se Déconnecter"
+  }
+}

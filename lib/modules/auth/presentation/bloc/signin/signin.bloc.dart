@@ -27,15 +27,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     final result = await _signInUseCase.execute(event.credentials);
 
-    await result.fold(
-      (failure) async => emit(SignInFailure(failure)),
-      (response) async {
-        // Update session auth status based on verification state
-        final authStatus = response.user.isVerified ? AuthStatus.authenticated : AuthStatus.unverified;
-        await _updateAuthStatusUseCase.execute((status: authStatus, userId: response.user.id));
+    await result.fold((failure) async => emit(SignInFailure(failure)), (response) async {
+      // Update session auth status based on verification state
+      final authStatus = response.user.isVerified
+          ? AuthStatus.authenticated
+          : AuthStatus.unverified;
+      await _updateAuthStatusUseCase.execute((status: authStatus, userId: response.user.id));
 
-        emit(SignInSuccess(response));
-      },
-    );
+      emit(SignInSuccess(response));
+    });
   }
 }

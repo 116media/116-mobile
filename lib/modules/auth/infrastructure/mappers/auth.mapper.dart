@@ -97,7 +97,9 @@ class AuthMapper {
   }
 
   /// Maps PublicSocialLoginResponse to AuthResponseEntity domain entity.
-  static AuthResponseEntity authResponseFromPublicSocialLoginDto(PublicSocialLoginResponse response) {
+  static AuthResponseEntity authResponseFromPublicSocialLoginDto(
+    PublicSocialLoginResponse response,
+  ) {
     return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
   }
 

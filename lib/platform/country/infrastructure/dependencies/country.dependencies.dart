@@ -27,34 +27,22 @@ Future<void> registerCountryDependencies(GetIt sl) async {
   sl.registerSingleton<ICountryLocalDataSource>(
     CountryLocalDataSource(sl<Box<dynamic>>(instanceName: kCountryBox)),
   );
-  sl.registerSingleton<CountryRemoteDataSource>(
-    CountryRemoteDataSource(sl<IpCountryLookup>()),
-  );
+  sl.registerSingleton<CountryRemoteDataSource>(CountryRemoteDataSource(sl<IpCountryLookup>()));
 
   // Repository
   sl.registerSingleton<ICountryRepository>(
-    CountryRepository(
-      sl<CountryRemoteDataSource>(),
-      sl<ICountryLocalDataSource>(),
-    ),
+    CountryRepository(sl<CountryRemoteDataSource>(), sl<ICountryLocalDataSource>()),
   );
 
   // Use cases
   sl.registerFactory<InitializeCountryUseCase>(
     () => InitializeCountryUseCase(sl<ICountryRepository>()),
   );
-  sl.registerFactory<GetCountryUseCase>(
-    () => GetCountryUseCase(sl<ICountryRepository>()),
-  );
-  sl.registerFactory<WatchCountryUseCase>(
-    () => WatchCountryUseCase(sl<ICountryRepository>()),
-  );
+  sl.registerFactory<GetCountryUseCase>(() => GetCountryUseCase(sl<ICountryRepository>()));
+  sl.registerFactory<WatchCountryUseCase>(() => WatchCountryUseCase(sl<ICountryRepository>()));
 
   // BLoC
   sl.registerFactory<CountryBloc>(
-    () => CountryBloc(
-      sl<GetCountryUseCase>(),
-      sl<WatchCountryUseCase>(),
-    ),
+    () => CountryBloc(sl<GetCountryUseCase>(), sl<WatchCountryUseCase>()),
   );
 }

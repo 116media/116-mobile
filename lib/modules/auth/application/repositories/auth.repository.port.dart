@@ -57,14 +57,16 @@ abstract class IAuthRepository {
   /// Returns [Right] with [ForgotPasswordResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, ForgotPasswordResponseEntity>> forgotPassword(
-      ForgotPasswordCredentialsModel credentials);
+    ForgotPasswordCredentialsModel credentials,
+  );
 
   /// Resets user password using OTP code and new password from [ResetPasswordCredentialsModel].
   ///
   /// Returns [Right] with [ResetPasswordResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, ResetPasswordResponseEntity>> resetPassword(
-      ResetPasswordCredentialsModel credentials);
+    ResetPasswordCredentialsModel credentials,
+  );
 
   /// Authenticates user with Google using OAuth.
   ///

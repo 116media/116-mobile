@@ -1,0 +1,8 @@
+{
+  "cacheError": {
+    "setCountry": "Failed to save country data: {error}",
+    "getCountry": "Failed to retrieve country data: {error}",
+    "clearCountry": "Failed to clear country data: {error}",
+    "watchCountry": "Failed to watch country data: {error}"
+  }
+}

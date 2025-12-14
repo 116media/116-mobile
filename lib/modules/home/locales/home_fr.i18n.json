@@ -1,0 +1,11 @@
+{
+  "title": "Accueil",
+  "welcome": "Bienvenue sur 116",
+  "feed": "Fil d'actualité",
+  "trending": "Tendances",
+  "latest": "Derniers",
+  "empty": {
+    "title": "Pas encore de contenu",
+    "description": "Revenez plus tard pour du nouveau contenu"
+  }
+}

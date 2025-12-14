@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 
+import '../../../../../i18n/strings.g.dart' show Translations;
 import '../../../../../modules/auth/infrastructure/models/hive/user/user.model.dart' show UserModel;
 import '../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
@@ -37,6 +38,8 @@ class AuthenticatedProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     final email = user?.email ?? '';
     final userName = user?.userName ?? 'User';
     final avatarUrl = user?.avatar?.storageUrl;
@@ -106,7 +109,7 @@ class AuthenticatedProfileCard extends StatelessWidget {
             child: SolidButton(
               isFull: true,
               size: ButtonSize.sm,
-              text: "Edit Profile",
+              text: t.settings.profile.editProfile,
               isLoading: false,
               isDisabled: false,
               onPressed: () => _showEditProfileDialog(context),

@@ -1,0 +1,12 @@
+{
+  "title": "Discover",
+  "search": "Search",
+  "searchPlaceholder": "Search for artists, songs, or content...",
+  "categories": "Categories",
+  "artists": "Artists",
+  "trending": "Trending Now",
+  "empty": {
+    "title": "Nothing Found",
+    "description": "Try searching for something else"
+  }
+}

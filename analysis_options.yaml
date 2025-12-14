@@ -14,6 +14,11 @@ analyzer:
     implementation_imports: ignore
   exclude:
     - lib/api/** # Auto-generated API client code
+    - lib/i18n/** # Auto-generated localization code
 
 linter:
   rules:
+
+# Formatter configuration
+formatter:
+  page_width: 100

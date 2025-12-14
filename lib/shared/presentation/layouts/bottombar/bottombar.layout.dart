@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../themes/extensions/build.context.extension.dart';
 import '../../utils/colors.util.dart' show ColorsUtil;
 
@@ -47,28 +48,28 @@ class BottomBarLayout extends StatelessWidget {
   List<BottomNavigationBarItem> _defaultItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        label: 'Home',
+        label: t.shared.navigation.home,
         icon: Padding(
           padding: EdgeInsets.only(top: context.sizing.s8),
           child: const Icon(Icons.home),
         ),
       ),
       BottomNavigationBarItem(
-        label: 'Discover',
+        label: t.shared.navigation.discover,
         icon: Padding(
           padding: EdgeInsets.only(top: context.sizing.s8),
           child: const Icon(Icons.lightbulb),
         ),
       ),
       BottomNavigationBarItem(
-        label: 'Shows',
+        label: t.shared.navigation.shows,
         icon: Padding(
           padding: EdgeInsets.only(top: context.sizing.s8),
           child: const Icon(Icons.tv),
         ),
       ),
       BottomNavigationBarItem(
-        label: 'Favorite',
+        label: t.shared.navigation.favorite,
         icon: Padding(
           padding: EdgeInsets.only(top: context.sizing.s8),
           child: const Icon(Icons.favorite),

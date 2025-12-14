@@ -27,7 +27,7 @@ Future<void> showAuthDialog(
   await showGeneralDialog<Widget>(
     context: context,
     barrierDismissible: barrierDismissible,
-    barrierLabel: barrierDismissible ? 'Dismiss' : null,
+    barrierLabel: barrierDismissible ? 'X' : null,
     transitionDuration: const Duration(milliseconds: 350),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       Tween<Offset> tween = Tween(begin: const Offset(0, 1), end: Offset.zero);

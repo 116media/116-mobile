@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../enums/social.platform.enum.dart' show SocialPlatform;
 import '../items/followus.button.widget.dart' show FollowUsButton;
 import 'settings.section.header.widget.dart' show SettingsSectionHeader;
@@ -18,7 +19,7 @@ class FollowUsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SettingsSectionHeader(title: 'Follow Us'),
+        SettingsSectionHeader(title: t.settings.followUs.title),
         Column(
           children: [
             Row(

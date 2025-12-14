@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../shared/domain/enums/language.enum.dart' show Language;
 import '../../enums/thememode.enum.dart' show AppThemeMode;
 
 part 'user.preferences.entity.freezed.dart';
@@ -15,8 +16,11 @@ abstract class UserPreferencesEntity with _$UserPreferencesEntity {
     required AppThemeMode themeMode,
   }) = _UserPreferencesEntity;
 
-  /// Creates default preferences (English, System theme).
+  /// Creates default preferences (French, System theme).
   factory UserPreferencesEntity.defaults() {
-    return const UserPreferencesEntity(languageCode: 'en', themeMode: AppThemeMode.system);
+    return UserPreferencesEntity(
+      themeMode: AppThemeMode.system,
+      languageCode: Language.french.code,
+    );
   }
 }

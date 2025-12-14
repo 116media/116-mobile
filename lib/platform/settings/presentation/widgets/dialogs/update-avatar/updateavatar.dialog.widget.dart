@@ -12,6 +12,7 @@ import 'package:image_cropper/image_cropper.dart'
         ImageCropper;
 import 'package:image_picker/image_picker.dart' show ImageSource, ImagePicker;
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../modules/auth/infrastructure/models/hive/user/user.model.dart'
     show UserModel;
@@ -99,13 +100,13 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
     } catch (e) {
       _setPicking(false);
       if (mounted) {
-        DialogUtil.error(context, message: "Failed to select image: $e");
+        DialogUtil.error(context, message: t.settings.avatar.selectError(error: e.toString()));
       }
     }
   }
 
   AndroidUiSettings get _androidCropUi => AndroidUiSettings(
-    toolbarTitle: 'Crop Avatar',
+    toolbarTitle: t.settings.avatar.cropTitle,
     toolbarColor: ColorsUtil.primary,
     toolbarWidgetColor: Colors.white,
     cropStyle: CropStyle.circle,
@@ -115,7 +116,7 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
   );
 
   IOSUiSettings get _iosCropUi => IOSUiSettings(
-    title: 'Crop Avatar',
+    title: t.settings.avatar.cropTitle,
     cropStyle: CropStyle.circle,
     aspectRatioLockEnabled: true,
     resetAspectRatioEnabled: false,
@@ -130,7 +131,7 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (root.mounted) {
-          DialogUtil.success(root, message: "Avatar updated successfully!");
+          DialogUtil.success(root, message: t.settings.profile.updateSuccess);
         }
       });
     } else if (state is UpdateAvatarFailure) {
@@ -161,11 +162,7 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const BottomSheetPullBar(),
-                  const HeaderTitle(
-                    title: "Edit Avatar",
-                    subtitle:
-                        "Select an image from your camera or gallery to set as your new avatar.",
-                  ),
+                  HeaderTitle(title: t.settings.avatar.title, subtitle: t.settings.avatar.subtitle),
                   if (previewFile != null) AvatarPreview(file: previewFile!),
 
                   ActionButtons(

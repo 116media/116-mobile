@@ -1,0 +1,19 @@
+{
+  "title": "Réglez Vos Préférences",
+  "subtitle": "Choisissez votre thème et vos paramètres de langue préférés.",
+  "theme": {
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "language": {
+    "english": "Anglais",
+    "french": "Français",
+    "title": "Sélectionner Langue",
+    "subtitle": "Choisissez votre langue préférée"
+  },
+  "cacheError": {
+    "getPreferences": "Échec de la récupération des préférences: {error}",
+    "setPreferences": "Échec de la sauvegarde des préférences: {error}",
+    "clearPreferences": "Échec de la suppression des préférences: {error}"
+  }
+}

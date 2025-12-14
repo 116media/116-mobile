@@ -1,3 +1,4 @@
+import '../../../../../shared/domain/enums/language.enum.dart' show Language;
 import '../../../domain/entities/user-preferences/user.preferences.entity.dart'
     show UserPreferencesEntity;
 import '../../../domain/enums/thememode.enum.dart' show AppThemeMode;
@@ -32,6 +33,9 @@ class UserPreferencesModel {
 
   /// Creates default preferences model.
   factory UserPreferencesModel.defaults() {
-    return UserPreferencesModel(languageCode: 'en', themeMode: AppThemeMode.system.name);
+    return UserPreferencesModel(
+      languageCode: Language.french.code,
+      themeMode: AppThemeMode.system.name,
+    );
   }
 }

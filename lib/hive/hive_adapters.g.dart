@@ -41,9 +41,7 @@ class RoleModelAdapter extends TypeAdapter<RoleModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RoleModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is RoleModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class FileModelAdapter extends TypeAdapter<FileModel> {
@@ -93,9 +91,7 @@ class FileModelAdapter extends TypeAdapter<FileModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FileModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is FileModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class PermissionModelAdapter extends TypeAdapter<PermissionModel> {
@@ -136,9 +132,7 @@ class PermissionModelAdapter extends TypeAdapter<PermissionModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PermissionModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is PermissionModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class UserModelAdapter extends TypeAdapter<UserModel> {
@@ -224,9 +218,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is UserModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 class UserPreferencesModelAdapter extends TypeAdapter<UserPreferencesModel> {
@@ -239,10 +231,7 @@ class UserPreferencesModelAdapter extends TypeAdapter<UserPreferencesModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserPreferencesModel(
-      languageCode: fields[0] as String,
-      themeMode: fields[1] as String,
-    );
+    return UserPreferencesModel(languageCode: fields[0] as String, themeMode: fields[1] as String);
   }
 
   @override
@@ -347,7 +336,5 @@ class CountryModelAdapter extends TypeAdapter<CountryModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CountryModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is CountryModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

@@ -2,6 +2,7 @@ import 'dart:async' show StreamController;
 
 import 'package:hive_ce/hive.dart' show Box;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
     show ReadFailedCacheException;
 import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
@@ -29,8 +30,8 @@ class PreferencesLocalDataSource implements IPreferencesLocalDataSource {
       return _preferencesBox.get(kPreferencesKey) as UserPreferencesModel?;
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to retrieve preferences: $e',
         instance: 'PreferencesLocalDataSource.getPreferences',
+        detail: t.preferences.cacheError.getPreferences(error: e.toString()),
       );
     }
   }
@@ -42,8 +43,8 @@ class PreferencesLocalDataSource implements IPreferencesLocalDataSource {
       _preferencesController.add(preferences);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to save preferences: $e',
-        instance: 'PreferencesLocalDataSource.savePreferences',
+        instance: 'PreferencesLocalDataSource.setPreferences',
+        detail: t.preferences.cacheError.setPreferences(error: e.toString()),
       );
     }
   }
@@ -55,8 +56,8 @@ class PreferencesLocalDataSource implements IPreferencesLocalDataSource {
       _preferencesController.add(UserPreferencesModel.defaults());
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to clear preferences: $e',
         instance: 'PreferencesLocalDataSource.clearPreferences',
+        detail: t.preferences.cacheError.clearPreferences(error: e.toString()),
       );
     }
   }

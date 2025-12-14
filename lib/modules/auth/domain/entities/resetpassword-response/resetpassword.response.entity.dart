@@ -8,5 +8,6 @@ part 'resetpassword.response.entity.freezed.dart';
 /// was successfully reset using the provided OTP code.
 @freezed
 abstract class ResetPasswordResponseEntity with _$ResetPasswordResponseEntity {
-  const factory ResetPasswordResponseEntity({required bool isSuccess}) = _ResetPasswordResponseEntity;
+  const factory ResetPasswordResponseEntity({required bool isSuccess}) =
+      _ResetPasswordResponseEntity;
 }

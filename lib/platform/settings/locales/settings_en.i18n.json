@@ -1,0 +1,57 @@
+{
+  "title": "Settings",
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "username": "Username",
+    "email": "Email",
+    "telephone": "Telephone",
+    "updateSuccess": "Profile updated successfully!",
+    "updateSubtitle": "Update profile details, especially your username and telephone number.",
+    "guestMode": "Guest Mode",
+    "guestMessage": "Sign in to get closer to the artists, the stories, and the heartbeat of the game."
+  },
+  "avatar": {
+    "title": "Edit Avatar",
+    "subtitle": "Select an image from your camera or gallery to set as your new avatar.",
+    "cropTitle": "Crop Avatar",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "selectError": "Failed to select image: {error}"
+  },
+  "account": {
+    "title": "Account",
+    "password": "Password",
+    "passwordSubtitle": "Change your password",
+    "privacySecurity": "Privacy & security",
+    "changePassword": "Change password",
+    "deleteTitle": "Delete account",
+    "deleteMessage": "Are you sure you want to delete your account? This action cannot be undone."
+  },
+  "preferences": {
+    "title": "Preferences",
+    "language": "Language",
+    "darkMode": "Dark mode",
+    "darkModeOn": "On",
+    "darkModeOff": "Off",
+    "notifications": "Notifications",
+    "notificationsSubtitle": "Receive push notifications"
+  },
+  "support": {
+    "title": "Support",
+    "faq": "FAQ",
+    "contactUs": "Contact us",
+    "contactSubtitle": "Business inquiries & support",
+    "terms": "Terms & conditions",
+    "copyright": "Copyright compliance"
+  },
+  "followUs": {
+    "title": "Follow us"
+  },
+  "logout": {
+    "title": "Log Out",
+    "message": "Are you sure you want to log out?",
+    "button": "Log Out",
+    "confirm": "Log Out"
+  }
+}

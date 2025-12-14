@@ -14,11 +14,7 @@ class SelectedCountry extends StatelessWidget {
   final String languageCode;
   final Function(CountryPickerProvider, WorldCountry) onSelectCountry;
 
-  const SelectedCountry({
-    super.key,
-    required this.languageCode,
-    required this.onSelectCountry,
-  });
+  const SelectedCountry({super.key, required this.languageCode, required this.onSelectCountry});
 
   @override
   Widget build(BuildContext context) {

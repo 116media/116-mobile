@@ -18,9 +18,6 @@ extension StringExtension on String {
   /// print('hello world'.toTitleCase()); // Output: Hello World
   /// ```
   String toTitleCase() {
-    return replaceAll(
-      RegExp(' +'),
-      ' ',
-    ).split(' ').map((str) => str.toCapitalized()).join(' ');
+    return replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
   }
 }

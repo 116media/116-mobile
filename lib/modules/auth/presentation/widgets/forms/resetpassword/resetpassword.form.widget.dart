@@ -21,6 +21,7 @@ import '../../dialog/signin.dialog.widget.dart' show SignInDialog;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
 import '../../shared/redirect/auth.redirect.button.dart'
     show AuthRedirectButton, AuthRedirectAction;
+import '../../../../../../i18n/strings.g.dart' show t;
 
 /// Reset password form.
 ///
@@ -92,11 +93,11 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   isDarkTheme: context.isDarkMode,
                 ),
 
-                const AuthFormTitle(text: "Reset Password"),
+                AuthFormTitle(text: t.auth.resetPassword.title),
 
                 Text(
-                  "Enter your new password below to reset your account password.",
                   textAlign: TextAlign.center,
+                  t.auth.resetPassword.subtitle,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: textColor.withValues(alpha: 0.7),
                   ),
@@ -105,20 +106,20 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 InputField(
                   isFilled: true,
                   isPassword: true,
-                  label: "New Password",
                   isDisabled: isLoading,
                   controller: _newPasswordController,
-                  validator: ResetPasswordValidator.newPassword("New Password"),
+                  label: t.auth.resetPassword.passwordLabel,
+                  validator: ResetPasswordValidator.newPassword(t.auth.resetPassword.passwordLabel),
                 ),
 
                 InputField(
                   isFilled: true,
                   isPassword: true,
-                  label: "Confirm Password",
                   isDisabled: isLoading,
                   controller: _confirmPasswordController,
+                  label: t.auth.resetPassword.confirmPasswordLabel,
                   validator: (value) => ResetPasswordValidator.confirmPassword(
-                    "Confirm Password",
+                    t.auth.resetPassword.confirmPasswordLabel,
                     _newPasswordController.text,
                   )(value),
                 ),
@@ -127,11 +128,11 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   delay: 0.65,
                   child: SolidButton(
                     isFull: true,
-                    text: "Reset Password",
                     size: ButtonSize.sm,
                     isLoading: isLoading,
                     isDisabled: isLoading,
                     onPressed: _handleSubmit,
+                    text: t.auth.resetPassword.submitButton,
                   ),
                 ),
 

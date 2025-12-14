@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../themes/extensions/build.context.extension.dart';
 import '../../utils/colors.util.dart' show ColorsUtil;
 
@@ -41,7 +42,7 @@ class SearchBarLayout extends StatelessWidget implements PreferredSizeWidget {
             decoration: InputDecoration(
               filled: true,
               isDense: true,
-              hintText: 'Search...',
+              hintText: "${t.shared.common.search}...",
               hintStyle: TextStyle(color: hintColor, fontWeight: FontWeight.w500),
               prefixIcon: Icon(
                 Icons.search,

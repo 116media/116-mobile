@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:world_countries/world_countries.dart' show WorldCountry;
 
+import '../../../../i18n/strings.g.dart' show t;
+import '../../../../shared/domain/enums/language.enum.dart' show Language;
 import '../entities/language/language.entity.dart' show LanguageEntity;
 
 /// Value Object representing the collection of supported languages.
@@ -15,16 +17,16 @@ class Languages extends Equatable {
   factory Languages.defaults() {
     return Languages._([
       LanguageEntity(
-        code: 'en',
-        nativeName: 'English',
-        englishName: 'English',
+        code: Language.english.code,
         country: WorldCountry.gbr(),
+        englishName: Language.english.name,
+        nativeName: t.preferences.language.english,
       ),
       LanguageEntity(
-        code: 'fr',
-        englishName: 'French',
-        nativeName: 'Français',
+        code: Language.french.code,
         country: WorldCountry.fra(),
+        englishName: Language.french.name,
+        nativeName: t.preferences.language.french,
       ),
     ]);
   }

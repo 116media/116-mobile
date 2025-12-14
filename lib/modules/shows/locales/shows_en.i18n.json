@@ -1,0 +1,10 @@
+{
+  "title": "Shows",
+  "allShows": "All Shows",
+  "episodes": "Episodes",
+  "watchNow": "Watch Now",
+  "empty": {
+    "title": "No Shows Available",
+    "description": "Check back later for new shows"
+  }
+}

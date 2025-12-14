@@ -1,4 +1,5 @@
 import 'package:http_status/http_status.dart' show HttpStatusCode;
+import '../../../../i18n/strings.g.dart' show t;
 import 'server.failure.dart' show ServerFailure;
 
 /// Failure for unknown or unexpected errors.
@@ -6,10 +7,10 @@ import 'server.failure.dart' show ServerFailure;
 /// Represents errors that don't match any specific error type or
 /// when error details cannot be properly parsed from the response.
 class UnknownFailure extends ServerFailure {
-  const UnknownFailure({super.instance, super.traceId, super.timestamp})
+  UnknownFailure({super.instance, super.traceId, super.timestamp})
     : super(
         title: "UnknownException",
-        detail: "Something went wrong. Please try again later.",
+        detail: t.shared.errors.unknown,
         status: HttpStatusCode.internalServerError,
       );
 }

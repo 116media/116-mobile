@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:world_countries/world_countries.dart' show IddExtension, WorldCountry;
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../../shared/presentation/widgets/inputfields/inputfield.widget.dart'
     show InputField;
@@ -37,20 +38,20 @@ class EditableFormFields extends StatelessWidget {
       children: [
         InputField(
           isFilled: true,
-          label: 'Username',
+          label: t.settings.profile.username,
           isDisabled: isDisabled,
           controller: userNameController,
-          validator: UpdateProfileValidator.userName('Username'),
+          validator: UpdateProfileValidator.userName(t.settings.profile.username),
         ),
         PhoneInputField(
           isFilled: true,
-          label: 'Telephone',
+          label: t.settings.profile.telephone,
           isDisabled: isDisabled,
           controller: phoneController,
           initialCountry: selectedCountry,
           onCountryChanged: onCountryChanged,
           validator: UpdateProfileValidator.phoneNumber(
-            'Telephone',
+            t.settings.profile.telephone,
             selectedCountry?.idd.phoneCode(),
           ),
         ),

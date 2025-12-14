@@ -1,0 +1,22 @@
+{
+  "skip": "Skip",
+  "signInOrSignUp": "Sign In / Sign Up",
+  "pages": [
+    {
+      "title": "Welcome To {app}",
+      "description": "Discover stories, cultures, and artists shaping the sound of a new generation, from the streets to the global stage."
+    },
+    {
+      "title": "News Beyond Music",
+      "description": "Stay informed with news, magazines, and deep dives into the people, trends that celebrate creativity."
+    },
+    {
+      "title": "Exclusive Shows & Media",
+      "description": "Experience the urban culture through interviews, documentaries, podcasts, raw studio sessions, etc."
+    },
+    {
+      "title": "Be Part Of The Culture",
+      "description": "Like, comment, and share your favorite artists. Discover new talents and stay connected with the music pulse."
+    }
+  ]
+}

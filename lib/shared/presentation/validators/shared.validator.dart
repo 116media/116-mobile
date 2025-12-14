@@ -1,5 +1,7 @@
 import 'package:phone_numbers_parser/phone_numbers_parser.dart' show PhoneNumber, PhoneNumberType;
 
+import '../../../i18n/strings.g.dart' show t;
+
 /// Min/max length configuration for validation.
 class MinMaxLength {
   final int? min;
@@ -34,7 +36,7 @@ class Validator {
   static String? Function(String?) required(String fieldName) {
     return (String? value) {
       if (value == null || value.trim().isEmpty) {
-        return '$fieldName is required';
+        return t.shared.validation.required(fieldName: fieldName);
       }
       return null;
     };
@@ -49,7 +51,7 @@ class Validator {
   static String? Function(String?) min(String fieldName, int minLength) {
     return (String? value) {
       if (value != null && value.length < minLength) {
-        return '$fieldName must be at least $minLength characters';
+        return t.shared.validation.tooShort(fieldName: fieldName, minLength: minLength);
       }
       return null;
     };
@@ -64,7 +66,7 @@ class Validator {
   static String? Function(String?) max(String fieldName, int maxLength) {
     return (String? value) {
       if (value != null && value.length > maxLength) {
-        return '$fieldName cannot exceed $maxLength characters';
+        return t.shared.validation.tooLong(fieldName: fieldName, maxLength: maxLength);
       }
       return null;
     };
@@ -84,7 +86,11 @@ class Validator {
       final isTooShort = length.min != null && value.length < length.min!;
 
       if (isTooShort || isTooLong) {
-        return '$fieldName must be between ${length.min} and ${length.max} characters';
+        return t.shared.validation.lengthBetween(
+          fieldName: fieldName,
+          maxLength: length.max,
+          minLength: length.min!,
+        );
       }
       return null;
     };
@@ -101,7 +107,7 @@ class Validator {
       if (value != null && value.isNotEmpty) {
         final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
         if (!emailRegex.hasMatch(value)) {
-          return '$fieldName has an invalid format';
+          return t.shared.validation.invalidFormat(fieldName: fieldName);
         }
       }
       return null;
@@ -119,7 +125,7 @@ class Validator {
       if (value != null && value.isNotEmpty) {
         final numericRegex = RegExp(r'^[0-9]+$');
         if (!numericRegex.hasMatch(value)) {
-          return '$fieldName must contain only numbers';
+          return t.shared.validation.numericOnly(fieldName: fieldName);
         }
       }
       return null;
@@ -147,7 +153,7 @@ class Validator {
       if (value != null && value.isNotEmpty) {
         final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\s\S]+$');
         if (!passwordRegex.hasMatch(value)) {
-          return '$fieldName must contain 1 uppercase, 1 lowercase, and 1 digit';
+          return t.shared.validation.passwordRegex(fieldName: fieldName);
         }
       }
       return null;
@@ -168,7 +174,7 @@ class Validator {
   static String? Function(String?) confirmPassword(String fieldName, String? passwordValue) {
     return (String? value) {
       if (value != null && value.isNotEmpty && value != passwordValue) {
-        return 'Passwords do not match';
+        return t.shared.validation.passwordsDoNotMatch;
       }
       return null;
     };
@@ -202,7 +208,7 @@ class Validator {
 
       final nsn = value!.replaceAll(RegExp(r'[^0-9]'), '');
       if (nsn.isEmpty) {
-        return '$fieldName must only contain numbers';
+        return t.shared.validation.numericOnly(fieldName: fieldName);
       }
 
       // Build full international number
@@ -212,17 +218,17 @@ class Validator {
       try {
         phone = PhoneNumber.parse(full);
       } catch (_) {
-        return '$fieldName is invalid for the selected country';
+        return t.shared.validation.invalidPhone(fieldName: fieldName);
       }
 
       // Structural + range validation
       if (!phone.isValid()) {
-        return '$fieldName is invalid for the selected country';
+        return t.shared.validation.invalidPhone(fieldName: fieldName);
       }
 
       // Requires a mobile number not FAX/landline
       if (!phone.isValid(type: PhoneNumberType.mobile)) {
-        return '$fieldName must be a valid mobile number the selected country';
+        return t.shared.validation.invalidMobilePhone(fieldName: fieldName);
       }
 
       return null;

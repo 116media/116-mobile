@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider, ReadContext;
 import 'package:go_router/go_router.dart' show GoRouterHelper;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../shared/presentation/providers/theme.provider.dart';
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
@@ -101,10 +102,7 @@ class _PreferenceScreenContent extends StatelessWidget {
                           isDarkTheme: isDarkMode,
                           height: context.sizing.s96,
                         ),
-                        const HeaderTitle(
-                          title: 'Set Your Preferences',
-                          subtitle: 'Choose your preferred theme and language settings.',
-                        ),
+                        HeaderTitle(title: t.preferences.title, subtitle: t.preferences.subtitle),
                       ],
                     ),
                   ),
@@ -133,8 +131,8 @@ class _PreferenceScreenContent extends StatelessWidget {
                   // Continue Button
                   SolidButton(
                     isFull: true,
-                    text: "Continue",
                     size: ButtonSize.sm,
+                    text: t.shared.common.kContinue,
                     onPressed: () => _handleSavePreference(context),
                   ),
                 ],

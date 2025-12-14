@@ -1,5 +1,6 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exception.dart'
     show ReadFailedCacheException;
 import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
@@ -25,8 +26,8 @@ class CountryLocalDataSource implements ICountryLocalDataSource {
       return _countryBox.get(kCountryKey) as CountryModel?;
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to retrieve country data: $e',
         instance: 'CountryLocalDataSource.getCountry',
+        detail: t.country.cacheError.getCountry(error: e.toString()),
       );
     }
   }
@@ -37,8 +38,8 @@ class CountryLocalDataSource implements ICountryLocalDataSource {
       await _countryBox.put(kCountryKey, country);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to save country data: $e',
         instance: 'CountryLocalDataSource.setCountry',
+        detail: t.country.cacheError.setCountry(error: e.toString()),
       );
     }
   }
@@ -49,8 +50,8 @@ class CountryLocalDataSource implements ICountryLocalDataSource {
       await _countryBox.delete(kCountryKey);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to clear country data: $e',
         instance: 'CountryLocalDataSource.clearCountry',
+        detail: t.country.cacheError.clearCountry(error: e.toString()),
       );
     }
   }
@@ -65,8 +66,8 @@ class CountryLocalDataSource implements ICountryLocalDataSource {
       }
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to watch country data: $e',
         instance: 'CountryLocalDataSource.watchCountry',
+        detail: t.country.cacheError.watchCountry(error: e.toString()),
       );
     }
   }

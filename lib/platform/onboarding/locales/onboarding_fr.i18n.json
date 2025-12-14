@@ -1,0 +1,22 @@
+{
+  "skip": "Sauter",
+  "signInOrSignUp": "Connexion / Inscription",
+  "pages": [
+    {
+      "title": "Bienvenue Sur {app}",
+      "description": "Découvrez des histoires, cultures et artistes qui façonnent le son d’une nouvelle génération, de la rue à la scène mondiale."
+    },
+    {
+      "title": "Au-delà De La Musique",
+      "description": "Restez informé avec des actualités, magazines et analyses approfondies sur les personnes et tendances qui célèbrent la créativité."
+    },
+    {
+      "title": "Émissions Et Médias Exclusifs",
+      "description": "Vivez la culture urbaine à travers des interviews, documentaires, podcasts, sessions studio brutes, etc."
+    },
+    {
+      "title": "Faites Partie De La Culture",
+      "description": "Likez, commentez et partagez vos artistes préférés. Découvrez de nouveaux talents et restez connecté au rythme de la musique."
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider;
 import 'package:go_router/go_router.dart' show GoRouter;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
     show PreferencesBloc;
@@ -36,10 +37,10 @@ class SettingsScreen extends StatelessWidget {
   void _showLogoutDialog(BuildContext context) {
     DialogUtil.confirm(
       context,
-      title: 'Log Out',
-      message: 'Are you sure you want to log out?',
-      confirmText: 'Log Out',
-      cancelText: 'Cancel',
+      title: t.settings.logout.title,
+      message: t.settings.logout.message,
+      confirmText: t.settings.logout.confirm,
+      cancelText: t.shared.common.cancel,
       icon: Icons.warning_amber_rounded,
       iconColor: ColorsUtil.error,
       cancelColor: ColorsUtil.error,
@@ -57,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<PreferencesBloc>()..add(const PreferencesLoadStarted()),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Settings'), centerTitle: true),
+        appBar: AppBar(title: Text(t.settings.title), centerTitle: true),
         body: BlocBuilder<PreferencesBloc, PreferencesState>(
           builder: (context, prefsState) {
             if (prefsState is! PreferencesSuccess) {

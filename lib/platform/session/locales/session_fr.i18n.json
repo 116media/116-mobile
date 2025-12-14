@@ -1,0 +1,7 @@
+{
+  "cacheError": {
+    "setSession": "Échec lors de la sauvegarde de la session : {error}",
+    "getSession": "Échec lors de la récupération de la session : {error}",
+    "clearSession": "Échec lors de la suppression de la session : {error}"
+  }
+}

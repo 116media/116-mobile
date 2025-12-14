@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../platform/session/presentation/bloc/session.bloc.dart' show SessionBloc;
 import '../../../../../platform/session/presentation/bloc/session.state.dart'
@@ -26,10 +27,10 @@ class AccountSection extends StatelessWidget {
   void _showDeleteAccountDialog(BuildContext context) {
     DialogUtil.confirm(
       context,
-      title: 'Delete Account',
-      message: 'Are you sure you want to delete your account? This action cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      title: t.settings.account.deleteTitle,
+      message: t.settings.account.deleteMessage,
+      confirmText: t.shared.common.delete,
+      cancelText: t.shared.common.cancel,
       icon: Icons.warning_amber_rounded,
       iconColor: ColorsUtil.error,
       cancelColor: ColorsUtil.error,
@@ -53,20 +54,20 @@ class AccountSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SettingsSectionHeader(title: 'Account'),
+            SettingsSectionHeader(title: t.settings.account.title),
             Column(
               children: [
                 SettingsTile(
-                  title: 'Password',
+                  title: t.settings.account.password,
                   icon: Icons.lock_outline,
-                  subtitle: 'Change your password',
+                  subtitle: t.settings.account.passwordSubtitle,
                   iconBackgroundColor: ColorsUtil.blue500,
                   onTap: () {
                     // TODO: Navigate to change password
                   },
                 ),
                 SettingsTile(
-                  title: 'Privacy & Security',
+                  title: t.settings.account.privacySecurity,
                   icon: Icons.shield_outlined,
                   iconBackgroundColor: ColorsUtil.purple500,
                   onTap: () {
@@ -74,7 +75,7 @@ class AccountSection extends StatelessWidget {
                   },
                 ),
                 SettingsTile(
-                  title: 'Delete Account',
+                  title: t.settings.account.deleteTitle,
                   icon: Icons.delete_outline,
                   textColor: ColorsUtil.error,
                   iconBackgroundColor: ColorsUtil.error,
