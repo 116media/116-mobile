@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext, SelectContext;
 import 'package:gap/gap.dart' show Gap;
 import 'package:world_countries/world_countries.dart' show IddExtension, WorldCountry;
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../modules/auth/infrastructure/models/hive/user/user.model.dart'
     show UserModel;
 import '../../../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
@@ -140,16 +141,16 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const HeaderTitle(
-              title: 'Edit Profile',
-              subtitle: 'Update profile details, especially your username and telephone number.',
+            HeaderTitle(
+              title: t.settings.profile.editProfile,
+              subtitle: t.settings.profile.updateSubtitle,
             ),
 
             Gap(context.sizing.s12),
 
             InputField(
               isFilled: true,
-              label: 'Email',
+              label: t.settings.profile.email,
               isDisabled: true,
               controller: _emailController,
             ),
@@ -173,7 +174,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             FadeAnimation(
               child: SolidButton(
                 isFull: true,
-                text: "Save Changes",
+                text: t.shared.common.save,
                 size: ButtonSize.sm,
                 isLoading: isLoading,
                 isDisabled: isLoading || !_hasFormChanged,
@@ -182,7 +183,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             ),
 
             OutlineButton(
-              text: "Cancel",
+              text: t.shared.common.cancel,
               size: ButtonSize.sm,
               isDisabled: isLoading,
               color: ColorsUtil.error,
