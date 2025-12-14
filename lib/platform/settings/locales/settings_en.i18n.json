@@ -35,7 +35,7 @@
     "darkModeOn": "On",
     "darkModeOff": "Off",
     "notifications": "Notifications",
-    "notificationsSubtitle": "Receive push notifications"
+    "notificationsSubtitle": "Allow push notifications"
   },
   "support": {
     "title": "Support",
@@ -52,6 +52,6 @@
     "title": "Log Out",
     "message": "Are you sure you want to log out?",
     "button": "Log Out",
-    "confirm": "Log Out"
+    "confirm": "Confirm"
   }
 }

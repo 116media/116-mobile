@@ -1098,7 +1098,7 @@ class TranslationsSettingsAccountEn {
 
   /// en: 'Delete account'
   ///
-  /// fr: 'Supprimer le compte'
+  /// fr: 'Supprimer compte'
   String get deleteTitle => 'Delete account';
 
   /// en: 'Are you sure you want to delete your account? This action cannot be undone.'
@@ -1146,10 +1146,10 @@ class TranslationsSettingsPreferencesEn {
   /// fr: 'Notifications'
   String get notifications => 'Notifications';
 
-  /// en: 'Receive push notifications'
+  /// en: 'Allow push notifications'
   ///
-  /// fr: 'Recevoir les notifications push'
-  String get notificationsSubtitle => 'Receive push notifications';
+  /// fr: 'Activer les notifications push'
+  String get notificationsSubtitle => 'Allow push notifications';
 }
 
 // Path: settings.support
@@ -1177,7 +1177,7 @@ class TranslationsSettingsSupportEn {
 
   /// en: 'Business inquiries & support'
   ///
-  /// fr: 'Demandes commerciales et support'
+  /// fr: 'Service commerciales et support'
   String get contactSubtitle => 'Business inquiries & support';
 
   /// en: 'Terms & conditions'
@@ -1215,7 +1215,7 @@ class TranslationsSettingsLogoutEn {
 
   /// en: 'Log Out'
   ///
-  /// fr: 'Se Déconnecter'
+  /// fr: 'Déconnexion'
   String get title => 'Log Out';
 
   /// en: 'Are you sure you want to log out?'
@@ -1228,10 +1228,10 @@ class TranslationsSettingsLogoutEn {
   /// fr: 'Se Déconnecter'
   String get button => 'Log Out';
 
-  /// en: 'Log Out'
+  /// en: 'Confirm'
   ///
-  /// fr: 'Se Déconnecter'
-  String get confirm => 'Log Out';
+  /// fr: 'Confirmer'
+  String get confirm => 'Confirm';
 }
 
 // Path: shared.common
@@ -1755,7 +1755,7 @@ extension on Translations {
       'settings.preferences.darkModeOn' => 'On',
       'settings.preferences.darkModeOff' => 'Off',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.preferences.notificationsSubtitle' => 'Receive push notifications',
+      'settings.preferences.notificationsSubtitle' => 'Allow push notifications',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
       'settings.support.contactUs' => 'Contact us',
@@ -1766,7 +1766,7 @@ extension on Translations {
       'settings.logout.title' => 'Log Out',
       'settings.logout.message' => 'Are you sure you want to log out?',
       'settings.logout.button' => 'Log Out',
-      'settings.logout.confirm' => 'Log Out',
+      'settings.logout.confirm' => 'Confirm',
       'shared.common.kContinue' => 'Continue',
       'shared.common.cancel' => 'Cancel',
       'shared.common.save' => 'Save',

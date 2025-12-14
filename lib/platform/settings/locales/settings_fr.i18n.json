@@ -25,7 +25,7 @@
     "passwordSubtitle": "Changer votre mot de passe",
     "privacySecurity": "Confidentialité et sécurité",
     "changePassword": "Changer le mot de passe",
-    "deleteTitle": "Supprimer le compte",
+    "deleteTitle": "Supprimer compte",
     "deleteMessage": "Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée."
   },
   "preferences": {
@@ -35,13 +35,13 @@
     "darkModeOn": "Activé",
     "darkModeOff": "Désactivé",
     "notifications": "Notifications",
-    "notificationsSubtitle": "Recevoir les notifications push"
+    "notificationsSubtitle": "Activer les notifications push"
   },
   "support": {
     "title": "Support",
     "faq": "FAQ",
     "contactUs": "Contactez-nous",
-    "contactSubtitle": "Demandes commerciales et support",
+    "contactSubtitle": "Service commerciales et support",
     "terms": "Conditions générales",
     "copyright": "Conformité aux droits d'auteur"
   },
@@ -49,9 +49,9 @@
     "title": "Suivez-nous"
   },
   "logout": {
-    "title": "Se Déconnecter",
+    "title": "Déconnexion",
     "message": "Êtes-vous sûr de vouloir vous déconnecter?",
     "button": "Se Déconnecter",
-    "confirm": "Se Déconnecter"
+    "confirm": "Confirmer"
   }
 }

@@ -795,7 +795,7 @@ class TranslationsSettingsAccountFr extends TranslationsSettingsAccountEn {
   @override
   String get changePassword => 'Changer le mot de passe';
   @override
-  String get deleteTitle => 'Supprimer le compte';
+  String get deleteTitle => 'Supprimer compte';
   @override
   String get deleteMessage =>
       'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.';
@@ -823,7 +823,7 @@ class TranslationsSettingsPreferencesFr extends TranslationsSettingsPreferencesE
   @override
   String get notifications => 'Notifications';
   @override
-  String get notificationsSubtitle => 'Recevoir les notifications push';
+  String get notificationsSubtitle => 'Activer les notifications push';
 }
 
 // Path: settings.support
@@ -840,7 +840,7 @@ class TranslationsSettingsSupportFr extends TranslationsSettingsSupportEn {
   @override
   String get contactUs => 'Contactez-nous';
   @override
-  String get contactSubtitle => 'Demandes commerciales et support';
+  String get contactSubtitle => 'Service commerciales et support';
   @override
   String get terms => 'Conditions générales';
   @override
@@ -866,13 +866,13 @@ class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
 
   // Translations
   @override
-  String get title => 'Se Déconnecter';
+  String get title => 'Déconnexion';
   @override
   String get message => 'Êtes-vous sûr de vouloir vous déconnecter?';
   @override
   String get button => 'Se Déconnecter';
   @override
-  String get confirm => 'Se Déconnecter';
+  String get confirm => 'Confirmer';
 }
 
 // Path: shared.common
@@ -1236,7 +1236,7 @@ extension on TranslationsFr {
       'settings.account.passwordSubtitle' => 'Changer votre mot de passe',
       'settings.account.privacySecurity' => 'Confidentialité et sécurité',
       'settings.account.changePassword' => 'Changer le mot de passe',
-      'settings.account.deleteTitle' => 'Supprimer le compte',
+      'settings.account.deleteTitle' => 'Supprimer compte',
       'settings.account.deleteMessage' =>
         'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.',
       'settings.preferences.title' => 'Préférences',
@@ -1245,18 +1245,18 @@ extension on TranslationsFr {
       'settings.preferences.darkModeOn' => 'Activé',
       'settings.preferences.darkModeOff' => 'Désactivé',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.preferences.notificationsSubtitle' => 'Recevoir les notifications push',
+      'settings.preferences.notificationsSubtitle' => 'Activer les notifications push',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
       'settings.support.contactUs' => 'Contactez-nous',
-      'settings.support.contactSubtitle' => 'Demandes commerciales et support',
+      'settings.support.contactSubtitle' => 'Service commerciales et support',
       'settings.support.terms' => 'Conditions générales',
       'settings.support.copyright' => 'Conformité aux droits d\'auteur',
       'settings.followUs.title' => 'Suivez-nous',
-      'settings.logout.title' => 'Se Déconnecter',
+      'settings.logout.title' => 'Déconnexion',
       'settings.logout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
       'settings.logout.button' => 'Se Déconnecter',
-      'settings.logout.confirm' => 'Se Déconnecter',
+      'settings.logout.confirm' => 'Confirmer',
       'shared.common.kContinue' => 'Continuer',
       'shared.common.cancel' => 'Annuler',
       'shared.common.save' => 'Enregistrer',
