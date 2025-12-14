@@ -312,14 +312,15 @@ class TranslationsSettingsEn {
   String get title => 'Settings';
 
   late final TranslationsSettingsProfileEn profile = TranslationsSettingsProfileEn.internal(_root);
+  late final TranslationsSettingsAvatarEn avatar = TranslationsSettingsAvatarEn.internal(_root);
   late final TranslationsSettingsAccountEn account = TranslationsSettingsAccountEn.internal(_root);
   late final TranslationsSettingsPreferencesEn preferences =
       TranslationsSettingsPreferencesEn.internal(_root);
-  late final TranslationsSettingsAboutEn about = TranslationsSettingsAboutEn.internal(_root);
+  late final TranslationsSettingsSupportEn support = TranslationsSettingsSupportEn.internal(_root);
   late final TranslationsSettingsFollowUsEn followUs = TranslationsSettingsFollowUsEn.internal(
     _root,
   );
-  late final TranslationsSettingsSupportEn support = TranslationsSettingsSupportEn.internal(_root);
+  late final TranslationsSettingsLogoutEn logout = TranslationsSettingsLogoutEn.internal(_root);
 }
 
 // Path: shared
@@ -982,7 +983,7 @@ class TranslationsSettingsProfileEn {
 
   /// en: 'Edit Profile'
   ///
-  /// fr: 'Modifier le profil'
+  /// fr: 'Modifier le Profil'
   String get editProfile => 'Edit Profile';
 
   /// en: 'Username'
@@ -995,25 +996,71 @@ class TranslationsSettingsProfileEn {
   /// fr: 'E-mail'
   String get email => 'Email';
 
-  /// en: 'Phone Number'
+  /// en: 'Telephone'
   ///
-  /// fr: 'Numéro de téléphone'
-  String get phone => 'Phone Number';
+  /// fr: 'Téléphone'
+  String get telephone => 'Telephone';
 
-  /// en: 'Profile Picture'
+  /// en: 'Profile updated successfully!'
   ///
-  /// fr: 'Photo de profil'
-  String get avatar => 'Profile Picture';
+  /// fr: 'Profil mis à jour avec succès!'
+  String get updateSuccess => 'Profile updated successfully!';
 
-  /// en: 'Change Avatar'
+  /// en: 'Update profile details, especially your username and telephone number.'
   ///
-  /// fr: 'Changer la photo'
-  String get changeAvatar => 'Change Avatar';
+  /// fr: 'Mettez à jour les détails du profil, en particulier votre nom d'utilisateur et votre numéro de téléphone.'
+  String get updateSubtitle =>
+      'Update profile details, especially your username and telephone number.';
 
-  /// en: 'Save Changes'
+  /// en: 'Guest Mode'
   ///
-  /// fr: 'Enregistrer les modifications'
-  String get saveChanges => 'Save Changes';
+  /// fr: 'Mode Invité'
+  String get guestMode => 'Guest Mode';
+
+  /// en: 'Sign in to get closer to the artists, the stories, and the heartbeat of the game.'
+  ///
+  /// fr: 'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.'
+  String get guestMessage =>
+      'Sign in to get closer to the artists, the stories, and the heartbeat of the game.';
+}
+
+// Path: settings.avatar
+class TranslationsSettingsAvatarEn {
+  TranslationsSettingsAvatarEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// en: 'Edit Avatar'
+  ///
+  /// fr: 'Modifier l'Avatar'
+  String get title => 'Edit Avatar';
+
+  /// en: 'Select an image from your camera or gallery to set as your new avatar.'
+  ///
+  /// fr: 'Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.'
+  String get subtitle => 'Select an image from your camera or gallery to set as your new avatar.';
+
+  /// en: 'Crop Avatar'
+  ///
+  /// fr: 'Recadrer l'Avatar'
+  String get cropTitle => 'Crop Avatar';
+
+  /// en: 'Camera'
+  ///
+  /// fr: 'Caméra'
+  String get camera => 'Camera';
+
+  /// en: 'Gallery'
+  ///
+  /// fr: 'Galerie'
+  String get gallery => 'Gallery';
+
+  /// en: 'Failed to select image: {error}'
+  ///
+  /// fr: 'Échec de la sélection de l'image: {error}'
+  String selectError({required Object error}) => 'Failed to select image: ${error}';
 }
 
 // Path: settings.account
@@ -1029,6 +1076,21 @@ class TranslationsSettingsAccountEn {
   /// fr: 'Compte'
   String get title => 'Account';
 
+  /// en: 'Password'
+  ///
+  /// fr: 'Mot de passe'
+  String get password => 'Password';
+
+  /// en: 'Change your password'
+  ///
+  /// fr: 'Changer votre mot de passe'
+  String get passwordSubtitle => 'Change your password';
+
+  /// en: 'Privacy & Security'
+  ///
+  /// fr: 'Confidentialité et Sécurité'
+  String get privacySecurity => 'Privacy & Security';
+
   /// en: 'Change Password'
   ///
   /// fr: 'Changer le mot de passe'
@@ -1037,12 +1099,13 @@ class TranslationsSettingsAccountEn {
   /// en: 'Delete Account'
   ///
   /// fr: 'Supprimer le compte'
-  String get deleteAccount => 'Delete Account';
+  String get deleteTitle => 'Delete Account';
 
-  /// en: 'Sign Out'
+  /// en: 'Are you sure you want to delete your account? This action cannot be undone.'
   ///
-  /// fr: 'Se déconnecter'
-  String get signOut => 'Sign Out';
+  /// fr: 'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.'
+  String get deleteMessage =>
+      'Are you sure you want to delete your account? This action cannot be undone.';
 }
 
 // Path: settings.preferences
@@ -1063,68 +1126,30 @@ class TranslationsSettingsPreferencesEn {
   /// fr: 'Langue'
   String get language => 'Language';
 
-  /// en: 'Theme'
+  /// en: 'Dark Mode'
   ///
-  /// fr: 'Thème'
-  String get theme => 'Theme';
+  /// fr: 'Mode Sombre'
+  String get darkMode => 'Dark Mode';
+
+  /// en: 'On'
+  ///
+  /// fr: 'Activé'
+  String get darkModeOn => 'On';
+
+  /// en: 'Off'
+  ///
+  /// fr: 'Désactivé'
+  String get darkModeOff => 'Off';
 
   /// en: 'Notifications'
   ///
   /// fr: 'Notifications'
   String get notifications => 'Notifications';
-}
 
-// Path: settings.about
-class TranslationsSettingsAboutEn {
-  TranslationsSettingsAboutEn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'About'
+  /// en: 'Receive push notifications'
   ///
-  /// fr: 'À propos'
-  String get title => 'About';
-
-  /// en: 'Version'
-  ///
-  /// fr: 'Version'
-  String get version => 'Version';
-
-  /// en: 'Terms of Service'
-  ///
-  /// fr: 'Conditions d'utilisation'
-  String get termsOfService => 'Terms of Service';
-
-  /// en: 'Privacy Policy'
-  ///
-  /// fr: 'Politique de confidentialité'
-  String get privacyPolicy => 'Privacy Policy';
-
-  /// en: 'Contact Us'
-  ///
-  /// fr: 'Nous contacter'
-  String get contactUs => 'Contact Us';
-}
-
-// Path: settings.followUs
-class TranslationsSettingsFollowUsEn {
-  TranslationsSettingsFollowUsEn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Follow Us'
-  ///
-  /// fr: 'Suivez-nous'
-  String get title => 'Follow Us';
-
-  /// en: 'Stay connected on social media'
-  ///
-  /// fr: 'Restez connecté sur les réseaux sociaux'
-  String get subtitle => 'Stay connected on social media';
+  /// fr: 'Recevoir les notifications push'
+  String get notificationsSubtitle => 'Receive push notifications';
 }
 
 // Path: settings.support
@@ -1140,20 +1165,73 @@ class TranslationsSettingsSupportEn {
   /// fr: 'Support'
   String get title => 'Support';
 
-  /// en: 'Help Center'
+  /// en: 'FAQ'
   ///
-  /// fr: 'Centre d'aide'
-  String get helpCenter => 'Help Center';
+  /// fr: 'FAQ'
+  String get faq => 'FAQ';
 
-  /// en: 'Report a Problem'
+  /// en: 'Contact Us'
   ///
-  /// fr: 'Signaler un problème'
-  String get reportProblem => 'Report a Problem';
+  /// fr: 'Nous contacter'
+  String get contactUs => 'Contact Us';
 
-  /// en: 'Send Feedback'
+  /// en: 'Business inquiries & support'
   ///
-  /// fr: 'Envoyer des commentaires'
-  String get feedback => 'Send Feedback';
+  /// fr: 'Demandes commerciales et support'
+  String get contactSubtitle => 'Business inquiries & support';
+
+  /// en: 'Terms & Conditions'
+  ///
+  /// fr: 'Conditions Générales'
+  String get terms => 'Terms & Conditions';
+
+  /// en: 'Copyright Compliance'
+  ///
+  /// fr: 'Conformité aux droits d'auteur'
+  String get copyright => 'Copyright Compliance';
+}
+
+// Path: settings.followUs
+class TranslationsSettingsFollowUsEn {
+  TranslationsSettingsFollowUsEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// en: 'Follow Us'
+  ///
+  /// fr: 'Suivez-nous'
+  String get title => 'Follow Us';
+}
+
+// Path: settings.logout
+class TranslationsSettingsLogoutEn {
+  TranslationsSettingsLogoutEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// en: 'Log Out'
+  ///
+  /// fr: 'Se déconnecter'
+  String get title => 'Log Out';
+
+  /// en: 'Are you sure you want to log out?'
+  ///
+  /// fr: 'Êtes-vous sûr de vouloir vous déconnecter?'
+  String get message => 'Are you sure you want to log out?';
+
+  /// en: 'Log Out'
+  ///
+  /// fr: 'Se déconnecter'
+  String get button => 'Log Out';
+
+  /// en: 'Log Out'
+  ///
+  /// fr: 'Se déconnecter'
+  String get confirm => 'Log Out';
 }
 
 // Path: shared.common
@@ -1648,29 +1726,47 @@ extension on Translations {
       'settings.profile.editProfile' => 'Edit Profile',
       'settings.profile.username' => 'Username',
       'settings.profile.email' => 'Email',
-      'settings.profile.phone' => 'Phone Number',
-      'settings.profile.avatar' => 'Profile Picture',
-      'settings.profile.changeAvatar' => 'Change Avatar',
-      'settings.profile.saveChanges' => 'Save Changes',
+      'settings.profile.telephone' => 'Telephone',
+      'settings.profile.updateSuccess' => 'Profile updated successfully!',
+      'settings.profile.updateSubtitle' =>
+        'Update profile details, especially your username and telephone number.',
+      'settings.profile.guestMode' => 'Guest Mode',
+      'settings.profile.guestMessage' =>
+        'Sign in to get closer to the artists, the stories, and the heartbeat of the game.',
+      'settings.avatar.title' => 'Edit Avatar',
+      'settings.avatar.subtitle' =>
+        'Select an image from your camera or gallery to set as your new avatar.',
+      'settings.avatar.cropTitle' => 'Crop Avatar',
+      'settings.avatar.camera' => 'Camera',
+      'settings.avatar.gallery' => 'Gallery',
+      'settings.avatar.selectError' =>
+        ({required Object error}) => 'Failed to select image: ${error}',
       'settings.account.title' => 'Account',
+      'settings.account.password' => 'Password',
+      'settings.account.passwordSubtitle' => 'Change your password',
+      'settings.account.privacySecurity' => 'Privacy & Security',
       'settings.account.changePassword' => 'Change Password',
-      'settings.account.deleteAccount' => 'Delete Account',
-      'settings.account.signOut' => 'Sign Out',
+      'settings.account.deleteTitle' => 'Delete Account',
+      'settings.account.deleteMessage' =>
+        'Are you sure you want to delete your account? This action cannot be undone.',
       'settings.preferences.title' => 'Preferences',
       'settings.preferences.language' => 'Language',
-      'settings.preferences.theme' => 'Theme',
+      'settings.preferences.darkMode' => 'Dark Mode',
+      'settings.preferences.darkModeOn' => 'On',
+      'settings.preferences.darkModeOff' => 'Off',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.about.title' => 'About',
-      'settings.about.version' => 'Version',
-      'settings.about.termsOfService' => 'Terms of Service',
-      'settings.about.privacyPolicy' => 'Privacy Policy',
-      'settings.about.contactUs' => 'Contact Us',
-      'settings.followUs.title' => 'Follow Us',
-      'settings.followUs.subtitle' => 'Stay connected on social media',
+      'settings.preferences.notificationsSubtitle' => 'Receive push notifications',
       'settings.support.title' => 'Support',
-      'settings.support.helpCenter' => 'Help Center',
-      'settings.support.reportProblem' => 'Report a Problem',
-      'settings.support.feedback' => 'Send Feedback',
+      'settings.support.faq' => 'FAQ',
+      'settings.support.contactUs' => 'Contact Us',
+      'settings.support.contactSubtitle' => 'Business inquiries & support',
+      'settings.support.terms' => 'Terms & Conditions',
+      'settings.support.copyright' => 'Copyright Compliance',
+      'settings.followUs.title' => 'Follow Us',
+      'settings.logout.title' => 'Log Out',
+      'settings.logout.message' => 'Are you sure you want to log out?',
+      'settings.logout.button' => 'Log Out',
+      'settings.logout.confirm' => 'Log Out',
       'shared.common.kContinue' => 'Continue',
       'shared.common.cancel' => 'Cancel',
       'shared.common.save' => 'Save',

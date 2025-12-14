@@ -267,17 +267,19 @@ class TranslationsSettingsFr extends TranslationsSettingsEn {
   @override
   late final TranslationsSettingsProfileFr profile = TranslationsSettingsProfileFr._(_root);
   @override
+  late final TranslationsSettingsAvatarFr avatar = TranslationsSettingsAvatarFr._(_root);
+  @override
   late final TranslationsSettingsAccountFr account = TranslationsSettingsAccountFr._(_root);
   @override
   late final TranslationsSettingsPreferencesFr preferences = TranslationsSettingsPreferencesFr._(
     _root,
   );
   @override
-  late final TranslationsSettingsAboutFr about = TranslationsSettingsAboutFr._(_root);
+  late final TranslationsSettingsSupportFr support = TranslationsSettingsSupportFr._(_root);
   @override
   late final TranslationsSettingsFollowUsFr followUs = TranslationsSettingsFollowUsFr._(_root);
   @override
-  late final TranslationsSettingsSupportFr support = TranslationsSettingsSupportFr._(_root);
+  late final TranslationsSettingsLogoutFr logout = TranslationsSettingsLogoutFr._(_root);
 }
 
 // Path: shared
@@ -734,19 +736,45 @@ class TranslationsSettingsProfileFr extends TranslationsSettingsProfileEn {
   @override
   String get title => 'Profil';
   @override
-  String get editProfile => 'Modifier le profil';
+  String get editProfile => 'Modifier le Profil';
   @override
   String get username => 'Nom d\'utilisateur';
   @override
   String get email => 'E-mail';
   @override
-  String get phone => 'Numéro de téléphone';
+  String get telephone => 'Téléphone';
   @override
-  String get avatar => 'Photo de profil';
+  String get updateSuccess => 'Profil mis à jour avec succès!';
   @override
-  String get changeAvatar => 'Changer la photo';
+  String get updateSubtitle =>
+      'Mettez à jour les détails du profil, en particulier votre nom d\'utilisateur et votre numéro de téléphone.';
   @override
-  String get saveChanges => 'Enregistrer les modifications';
+  String get guestMode => 'Mode Invité';
+  @override
+  String get guestMessage =>
+      'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.';
+}
+
+// Path: settings.avatar
+class TranslationsSettingsAvatarFr extends TranslationsSettingsAvatarEn {
+  TranslationsSettingsAvatarFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+  final TranslationsFr _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => 'Modifier l\'Avatar';
+  @override
+  String get subtitle =>
+      'Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.';
+  @override
+  String get cropTitle => 'Recadrer l\'Avatar';
+  @override
+  String get camera => 'Caméra';
+  @override
+  String get gallery => 'Galerie';
+  @override
+  String selectError({required Object error}) => 'Échec de la sélection de l\'image: ${error}';
 }
 
 // Path: settings.account
@@ -759,11 +787,18 @@ class TranslationsSettingsAccountFr extends TranslationsSettingsAccountEn {
   @override
   String get title => 'Compte';
   @override
+  String get password => 'Mot de passe';
+  @override
+  String get passwordSubtitle => 'Changer votre mot de passe';
+  @override
+  String get privacySecurity => 'Confidentialité et Sécurité';
+  @override
   String get changePassword => 'Changer le mot de passe';
   @override
-  String get deleteAccount => 'Supprimer le compte';
+  String get deleteTitle => 'Supprimer le compte';
   @override
-  String get signOut => 'Se déconnecter';
+  String get deleteMessage =>
+      'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.';
 }
 
 // Path: settings.preferences
@@ -780,41 +815,15 @@ class TranslationsSettingsPreferencesFr extends TranslationsSettingsPreferencesE
   @override
   String get language => 'Langue';
   @override
-  String get theme => 'Thème';
+  String get darkMode => 'Mode Sombre';
+  @override
+  String get darkModeOn => 'Activé';
+  @override
+  String get darkModeOff => 'Désactivé';
   @override
   String get notifications => 'Notifications';
-}
-
-// Path: settings.about
-class TranslationsSettingsAboutFr extends TranslationsSettingsAboutEn {
-  TranslationsSettingsAboutFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-  final TranslationsFr _root; // ignore: unused_field
-
-  // Translations
   @override
-  String get title => 'À propos';
-  @override
-  String get version => 'Version';
-  @override
-  String get termsOfService => 'Conditions d\'utilisation';
-  @override
-  String get privacyPolicy => 'Politique de confidentialité';
-  @override
-  String get contactUs => 'Nous contacter';
-}
-
-// Path: settings.followUs
-class TranslationsSettingsFollowUsFr extends TranslationsSettingsFollowUsEn {
-  TranslationsSettingsFollowUsFr._(TranslationsFr root) : this._root = root, super.internal(root);
-
-  final TranslationsFr _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get title => 'Suivez-nous';
-  @override
-  String get subtitle => 'Restez connecté sur les réseaux sociaux';
+  String get notificationsSubtitle => 'Recevoir les notifications push';
 }
 
 // Path: settings.support
@@ -827,11 +836,43 @@ class TranslationsSettingsSupportFr extends TranslationsSettingsSupportEn {
   @override
   String get title => 'Support';
   @override
-  String get helpCenter => 'Centre d\'aide';
+  String get faq => 'FAQ';
   @override
-  String get reportProblem => 'Signaler un problème';
+  String get contactUs => 'Nous contacter';
   @override
-  String get feedback => 'Envoyer des commentaires';
+  String get contactSubtitle => 'Demandes commerciales et support';
+  @override
+  String get terms => 'Conditions Générales';
+  @override
+  String get copyright => 'Conformité aux droits d\'auteur';
+}
+
+// Path: settings.followUs
+class TranslationsSettingsFollowUsFr extends TranslationsSettingsFollowUsEn {
+  TranslationsSettingsFollowUsFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+  final TranslationsFr _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => 'Suivez-nous';
+}
+
+// Path: settings.logout
+class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
+  TranslationsSettingsLogoutFr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+  final TranslationsFr _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => 'Se déconnecter';
+  @override
+  String get message => 'Êtes-vous sûr de vouloir vous déconnecter?';
+  @override
+  String get button => 'Se déconnecter';
+  @override
+  String get confirm => 'Se déconnecter';
 }
 
 // Path: shared.common
@@ -1172,32 +1213,50 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec lors de la suppression de la session : ${error}',
       'settings.title' => 'Paramètres',
       'settings.profile.title' => 'Profil',
-      'settings.profile.editProfile' => 'Modifier le profil',
+      'settings.profile.editProfile' => 'Modifier le Profil',
       'settings.profile.username' => 'Nom d\'utilisateur',
       'settings.profile.email' => 'E-mail',
-      'settings.profile.phone' => 'Numéro de téléphone',
-      'settings.profile.avatar' => 'Photo de profil',
-      'settings.profile.changeAvatar' => 'Changer la photo',
-      'settings.profile.saveChanges' => 'Enregistrer les modifications',
+      'settings.profile.telephone' => 'Téléphone',
+      'settings.profile.updateSuccess' => 'Profil mis à jour avec succès!',
+      'settings.profile.updateSubtitle' =>
+        'Mettez à jour les détails du profil, en particulier votre nom d\'utilisateur et votre numéro de téléphone.',
+      'settings.profile.guestMode' => 'Mode Invité',
+      'settings.profile.guestMessage' =>
+        'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.',
+      'settings.avatar.title' => 'Modifier l\'Avatar',
+      'settings.avatar.subtitle' =>
+        'Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.',
+      'settings.avatar.cropTitle' => 'Recadrer l\'Avatar',
+      'settings.avatar.camera' => 'Caméra',
+      'settings.avatar.gallery' => 'Galerie',
+      'settings.avatar.selectError' =>
+        ({required Object error}) => 'Échec de la sélection de l\'image: ${error}',
       'settings.account.title' => 'Compte',
+      'settings.account.password' => 'Mot de passe',
+      'settings.account.passwordSubtitle' => 'Changer votre mot de passe',
+      'settings.account.privacySecurity' => 'Confidentialité et Sécurité',
       'settings.account.changePassword' => 'Changer le mot de passe',
-      'settings.account.deleteAccount' => 'Supprimer le compte',
-      'settings.account.signOut' => 'Se déconnecter',
+      'settings.account.deleteTitle' => 'Supprimer le compte',
+      'settings.account.deleteMessage' =>
+        'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.',
       'settings.preferences.title' => 'Préférences',
       'settings.preferences.language' => 'Langue',
-      'settings.preferences.theme' => 'Thème',
+      'settings.preferences.darkMode' => 'Mode Sombre',
+      'settings.preferences.darkModeOn' => 'Activé',
+      'settings.preferences.darkModeOff' => 'Désactivé',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.about.title' => 'À propos',
-      'settings.about.version' => 'Version',
-      'settings.about.termsOfService' => 'Conditions d\'utilisation',
-      'settings.about.privacyPolicy' => 'Politique de confidentialité',
-      'settings.about.contactUs' => 'Nous contacter',
-      'settings.followUs.title' => 'Suivez-nous',
-      'settings.followUs.subtitle' => 'Restez connecté sur les réseaux sociaux',
+      'settings.preferences.notificationsSubtitle' => 'Recevoir les notifications push',
       'settings.support.title' => 'Support',
-      'settings.support.helpCenter' => 'Centre d\'aide',
-      'settings.support.reportProblem' => 'Signaler un problème',
-      'settings.support.feedback' => 'Envoyer des commentaires',
+      'settings.support.faq' => 'FAQ',
+      'settings.support.contactUs' => 'Nous contacter',
+      'settings.support.contactSubtitle' => 'Demandes commerciales et support',
+      'settings.support.terms' => 'Conditions Générales',
+      'settings.support.copyright' => 'Conformité aux droits d\'auteur',
+      'settings.followUs.title' => 'Suivez-nous',
+      'settings.logout.title' => 'Se déconnecter',
+      'settings.logout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
+      'settings.logout.button' => 'Se déconnecter',
+      'settings.logout.confirm' => 'Se déconnecter',
       'shared.common.kContinue' => 'Continuer',
       'shared.common.cancel' => 'Annuler',
       'shared.common.save' => 'Enregistrer',
