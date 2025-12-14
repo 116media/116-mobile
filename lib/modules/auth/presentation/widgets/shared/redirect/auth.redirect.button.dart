@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 
 /// Enum representing different types of authentication redirect actions.
@@ -25,9 +26,9 @@ class AuthRedirectButton extends StatelessWidget {
   final bool isLeft;
   final bool isCentered;
   final bool isDisabled;
+  final String? suffixText;
   final VoidCallback onPressed;
   final AuthRedirectAction actionType;
-  final String? suffixText;
 
   /// Creates an authentication redirect button.
   ///
@@ -39,29 +40,32 @@ class AuthRedirectButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.actionType,
-    this.isCentered = true,
-    this.isLeft = false,
-    this.isDisabled = false,
     this.suffixText,
+    this.isLeft = false,
+    this.isCentered = true,
+    this.isDisabled = false,
   });
 
   /// Returns the main text and optional link text based on the action type.
-  ({String mainText, String? linkText}) _getTextContent() {
+  ({String mainText, String? linkText}) _getTextContent(BuildContext context) {
     return switch (actionType) {
       AuthRedirectAction.haveAccount => (
-        mainText: "Already have an account? ",
-        linkText: "Sign In",
+        mainText: "${t.auth.signUp.haveAccount} ",
+        linkText: t.auth.signUp.signInLink,
       ),
       AuthRedirectAction.dontHaveAccount => (
-        mainText: "Don't have an account? ",
-        linkText: "Sign Up",
+        mainText: "${t.auth.signIn.noAccount} ",
+        linkText: t.auth.signIn.signUpLink,
       ),
       AuthRedirectAction.haveReceiveCode => (
-        mainText: "Haven't received any code? ",
-        linkText: "Resend",
+        mainText: "${t.auth.resendOtp.resendCode} ",
+        linkText: t.auth.resendOtp.resendButton,
       ),
-      AuthRedirectAction.backToSignin => (mainText: "Want to go back? ", linkText: "Sign In"),
-      AuthRedirectAction.forgotPassword => (mainText: "Forgot your password?", linkText: null),
+      AuthRedirectAction.backToSignin => (
+        mainText: "${t.auth.forgotPassword.backToSignIn} ",
+        linkText: t.auth.signIn.signUpLink,
+      ),
+      AuthRedirectAction.forgotPassword => (mainText: t.auth.signIn.forgotPassword, linkText: null),
     };
   }
 
@@ -73,7 +77,7 @@ class AuthRedirectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textContent = _getTextContent();
+    final textContent = _getTextContent(context);
 
     final mainText = textContent.mainText;
     final linkText = textContent.linkText;
@@ -84,8 +88,8 @@ class AuthRedirectButton extends StatelessWidget {
       child: Opacity(
         opacity: isDisabled ? 0.3 : 1.0,
         child: Row(
-          mainAxisAlignment: _getMainAxisAlignment(),
           mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: _getMainAxisAlignment(),
           children: [
             Text(
               mainText,
