@@ -51,6 +51,11 @@ class ServiceLocator {
     sl.registerSingleton<Box>(preferencesBox, instanceName: kPreferencesBox);
     sl.registerSingleton<IPreferencesLocalDataSource>(
       PreferencesLocalDataSource(sl<Box>(instanceName: kPreferencesBox)),
+      dispose: (datasource) {
+        if (datasource is PreferencesLocalDataSource) {
+          datasource.dispose();
+        }
+      },
     );
 
     // Create Chopper client with AuthInterceptor and LanguageInterceptor
