@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 
+import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../shared/presentation/widgets/logo/logo.widget.dart' show Logo, LogoType;
@@ -82,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // Navigate after animation completes
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
-        context.go("/");
+        context.go(kHomeRoutePath);
       }
     });
 
