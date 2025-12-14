@@ -22,6 +22,8 @@ import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
 import '../../shared/redirect/auth.redirect.button.dart'
     show AuthRedirectButton, AuthRedirectAction;
 
+import '../../../../../../i18n/strings.g.dart' show t;
+
 /// Forgot password email form (Step 1).
 ///
 /// Allows users to enter their email address to receive a password reset OTP.
@@ -87,11 +89,11 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                   isDarkTheme: context.isDarkMode,
                 ),
 
-                const AuthFormTitle(text: "Forgot Password"),
+                AuthFormTitle(text: t.auth.forgotPassword.title),
 
                 Text(
-                  "Enter the email associated with your account. We'll send you a verification code to reset your password.",
                   textAlign: TextAlign.center,
+                  t.auth.forgotPassword.subtitle,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: textColor.withValues(alpha: 0.7),
                   ),
@@ -99,21 +101,21 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
                 InputField(
                   isFilled: true,
-                  label: "Email",
                   isDisabled: isLoading,
                   controller: _emailController,
-                  validator: ForgotPasswordValidator.email("Email"),
+                  label: t.auth.forgotPassword.emailLabel,
+                  validator: ForgotPasswordValidator.email(t.auth.forgotPassword.emailLabel),
                 ),
 
                 FadeAnimation(
                   delay: 0.65,
                   child: SolidButton(
                     isFull: true,
-                    text: "Send Code",
                     size: ButtonSize.sm,
                     isLoading: isLoading,
                     isDisabled: isLoading,
                     onPressed: _handleSubmit,
+                    text: t.auth.forgotPassword.submitButton,
                   ),
                 ),
 
