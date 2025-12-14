@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart' show GetIt;
-import 'package:hive_ce/hive.dart' show Box, Hive;
+import 'package:hive_ce/hive.dart' show Box;
 
 import '../../application/data-sources/preferences.local.datasource.port.dart'
     show IPreferencesLocalDataSource;
@@ -16,10 +16,6 @@ import '../repositories/preferences.repository.dart' show PreferencesRepository;
 
 /// Registers all preferences module dependencies.
 Future<void> registerPreferencesDependencies(GetIt sl) async {
-  // Hive box
-  final preferencesBox = await Hive.openBox<dynamic>(kPreferencesBox);
-  sl.registerSingleton<Box<dynamic>>(preferencesBox, instanceName: kPreferencesBox);
-
   // Data source
   sl.registerSingleton<IPreferencesLocalDataSource>(
     PreferencesLocalDataSource(sl<Box<dynamic>>(instanceName: kPreferencesBox)),
