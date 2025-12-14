@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../i18n/strings.g.dart' show Translations;
 import '../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../shared/presentation/animations/fade.animation.dart' show FadeAnimation;
 import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
@@ -8,8 +9,6 @@ import '../../../../shared/presentation/widgets/buttons/enums/button.size.enum.d
 import '../../../../shared/presentation/widgets/buttons/solid.button.dart' show SolidButton;
 import '../../../../shared/presentation/widgets/buttons/outline.button.dart' show OutlineButton;
 import '../../domain/value-objects/onboarding.items.dart' show OnboardingItems;
-
-import '../../../../../i18n/strings.g.dart' show t;
 
 /// Widget that displays action buttons for onboarding screens.
 ///
@@ -40,6 +39,8 @@ class OnboardingActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     final EdgeInsets padding = EdgeInsets.symmetric(
       vertical: context.sizing.s12,
       horizontal: context.sizing.s0_5,
