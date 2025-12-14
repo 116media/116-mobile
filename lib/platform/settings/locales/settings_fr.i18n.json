@@ -2,7 +2,7 @@
   "title": "Paramètres",
   "profile": {
     "title": "Profil",
-    "editProfile": "Modifier le Profil",
+    "editProfile": "Modifier Profil",
     "username": "Nom d'utilisateur",
     "email": "E-mail",
     "telephone": "Téléphone",
@@ -23,7 +23,7 @@
     "title": "Compte",
     "password": "Mot de passe",
     "passwordSubtitle": "Changer votre mot de passe",
-    "privacySecurity": "Confidentialité et Sécurité",
+    "privacySecurity": "Confidentialité et sécurité",
     "changePassword": "Changer le mot de passe",
     "deleteTitle": "Supprimer le compte",
     "deleteMessage": "Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée."
@@ -31,7 +31,7 @@
   "preferences": {
     "title": "Préférences",
     "language": "Langue",
-    "darkMode": "Mode Sombre",
+    "darkMode": "Mode sombre",
     "darkModeOn": "Activé",
     "darkModeOff": "Désactivé",
     "notifications": "Notifications",
@@ -40,18 +40,18 @@
   "support": {
     "title": "Support",
     "faq": "FAQ",
-    "contactUs": "Nous contacter",
+    "contactUs": "Contactez-nous",
     "contactSubtitle": "Demandes commerciales et support",
-    "terms": "Conditions Générales",
+    "terms": "Conditions générales",
     "copyright": "Conformité aux droits d'auteur"
   },
   "followUs": {
     "title": "Suivez-nous"
   },
   "logout": {
-    "title": "Se déconnecter",
+    "title": "Se Déconnecter",
     "message": "Êtes-vous sûr de vouloir vous déconnecter?",
-    "button": "Se déconnecter",
-    "confirm": "Se déconnecter"
+    "button": "Se Déconnecter",
+    "confirm": "Se Déconnecter"
   }
 }

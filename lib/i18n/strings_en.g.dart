@@ -983,7 +983,7 @@ class TranslationsSettingsProfileEn {
 
   /// en: 'Edit Profile'
   ///
-  /// fr: 'Modifier le Profil'
+  /// fr: 'Modifier Profil'
   String get editProfile => 'Edit Profile';
 
   /// en: 'Username'
@@ -1086,20 +1086,20 @@ class TranslationsSettingsAccountEn {
   /// fr: 'Changer votre mot de passe'
   String get passwordSubtitle => 'Change your password';
 
-  /// en: 'Privacy & Security'
+  /// en: 'Privacy & security'
   ///
-  /// fr: 'Confidentialité et Sécurité'
-  String get privacySecurity => 'Privacy & Security';
+  /// fr: 'Confidentialité et sécurité'
+  String get privacySecurity => 'Privacy & security';
 
-  /// en: 'Change Password'
+  /// en: 'Change password'
   ///
   /// fr: 'Changer le mot de passe'
-  String get changePassword => 'Change Password';
+  String get changePassword => 'Change password';
 
-  /// en: 'Delete Account'
+  /// en: 'Delete account'
   ///
   /// fr: 'Supprimer le compte'
-  String get deleteTitle => 'Delete Account';
+  String get deleteTitle => 'Delete account';
 
   /// en: 'Are you sure you want to delete your account? This action cannot be undone.'
   ///
@@ -1126,10 +1126,10 @@ class TranslationsSettingsPreferencesEn {
   /// fr: 'Langue'
   String get language => 'Language';
 
-  /// en: 'Dark Mode'
+  /// en: 'Dark mode'
   ///
-  /// fr: 'Mode Sombre'
-  String get darkMode => 'Dark Mode';
+  /// fr: 'Mode sombre'
+  String get darkMode => 'Dark mode';
 
   /// en: 'On'
   ///
@@ -1170,25 +1170,25 @@ class TranslationsSettingsSupportEn {
   /// fr: 'FAQ'
   String get faq => 'FAQ';
 
-  /// en: 'Contact Us'
+  /// en: 'Contact us'
   ///
-  /// fr: 'Nous contacter'
-  String get contactUs => 'Contact Us';
+  /// fr: 'Contactez-nous'
+  String get contactUs => 'Contact us';
 
   /// en: 'Business inquiries & support'
   ///
   /// fr: 'Demandes commerciales et support'
   String get contactSubtitle => 'Business inquiries & support';
 
-  /// en: 'Terms & Conditions'
+  /// en: 'Terms & conditions'
   ///
-  /// fr: 'Conditions Générales'
-  String get terms => 'Terms & Conditions';
+  /// fr: 'Conditions générales'
+  String get terms => 'Terms & conditions';
 
-  /// en: 'Copyright Compliance'
+  /// en: 'Copyright compliance'
   ///
   /// fr: 'Conformité aux droits d'auteur'
-  String get copyright => 'Copyright Compliance';
+  String get copyright => 'Copyright compliance';
 }
 
 // Path: settings.followUs
@@ -1199,10 +1199,10 @@ class TranslationsSettingsFollowUsEn {
 
   // Translations
 
-  /// en: 'Follow Us'
+  /// en: 'Follow us'
   ///
   /// fr: 'Suivez-nous'
-  String get title => 'Follow Us';
+  String get title => 'Follow us';
 }
 
 // Path: settings.logout
@@ -1215,7 +1215,7 @@ class TranslationsSettingsLogoutEn {
 
   /// en: 'Log Out'
   ///
-  /// fr: 'Se déconnecter'
+  /// fr: 'Se Déconnecter'
   String get title => 'Log Out';
 
   /// en: 'Are you sure you want to log out?'
@@ -1225,12 +1225,12 @@ class TranslationsSettingsLogoutEn {
 
   /// en: 'Log Out'
   ///
-  /// fr: 'Se déconnecter'
+  /// fr: 'Se Déconnecter'
   String get button => 'Log Out';
 
   /// en: 'Log Out'
   ///
-  /// fr: 'Se déconnecter'
+  /// fr: 'Se Déconnecter'
   String get confirm => 'Log Out';
 }
 
@@ -1744,25 +1744,25 @@ extension on Translations {
       'settings.account.title' => 'Account',
       'settings.account.password' => 'Password',
       'settings.account.passwordSubtitle' => 'Change your password',
-      'settings.account.privacySecurity' => 'Privacy & Security',
-      'settings.account.changePassword' => 'Change Password',
-      'settings.account.deleteTitle' => 'Delete Account',
+      'settings.account.privacySecurity' => 'Privacy & security',
+      'settings.account.changePassword' => 'Change password',
+      'settings.account.deleteTitle' => 'Delete account',
       'settings.account.deleteMessage' =>
         'Are you sure you want to delete your account? This action cannot be undone.',
       'settings.preferences.title' => 'Preferences',
       'settings.preferences.language' => 'Language',
-      'settings.preferences.darkMode' => 'Dark Mode',
+      'settings.preferences.darkMode' => 'Dark mode',
       'settings.preferences.darkModeOn' => 'On',
       'settings.preferences.darkModeOff' => 'Off',
       'settings.preferences.notifications' => 'Notifications',
       'settings.preferences.notificationsSubtitle' => 'Receive push notifications',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
-      'settings.support.contactUs' => 'Contact Us',
+      'settings.support.contactUs' => 'Contact us',
       'settings.support.contactSubtitle' => 'Business inquiries & support',
-      'settings.support.terms' => 'Terms & Conditions',
-      'settings.support.copyright' => 'Copyright Compliance',
-      'settings.followUs.title' => 'Follow Us',
+      'settings.support.terms' => 'Terms & conditions',
+      'settings.support.copyright' => 'Copyright compliance',
+      'settings.followUs.title' => 'Follow us',
       'settings.logout.title' => 'Log Out',
       'settings.logout.message' => 'Are you sure you want to log out?',
       'settings.logout.button' => 'Log Out',

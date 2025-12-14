@@ -736,7 +736,7 @@ class TranslationsSettingsProfileFr extends TranslationsSettingsProfileEn {
   @override
   String get title => 'Profil';
   @override
-  String get editProfile => 'Modifier le Profil';
+  String get editProfile => 'Modifier Profil';
   @override
   String get username => 'Nom d\'utilisateur';
   @override
@@ -791,7 +791,7 @@ class TranslationsSettingsAccountFr extends TranslationsSettingsAccountEn {
   @override
   String get passwordSubtitle => 'Changer votre mot de passe';
   @override
-  String get privacySecurity => 'Confidentialité et Sécurité';
+  String get privacySecurity => 'Confidentialité et sécurité';
   @override
   String get changePassword => 'Changer le mot de passe';
   @override
@@ -815,7 +815,7 @@ class TranslationsSettingsPreferencesFr extends TranslationsSettingsPreferencesE
   @override
   String get language => 'Langue';
   @override
-  String get darkMode => 'Mode Sombre';
+  String get darkMode => 'Mode sombre';
   @override
   String get darkModeOn => 'Activé';
   @override
@@ -838,11 +838,11 @@ class TranslationsSettingsSupportFr extends TranslationsSettingsSupportEn {
   @override
   String get faq => 'FAQ';
   @override
-  String get contactUs => 'Nous contacter';
+  String get contactUs => 'Contactez-nous';
   @override
   String get contactSubtitle => 'Demandes commerciales et support';
   @override
-  String get terms => 'Conditions Générales';
+  String get terms => 'Conditions générales';
   @override
   String get copyright => 'Conformité aux droits d\'auteur';
 }
@@ -866,13 +866,13 @@ class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
 
   // Translations
   @override
-  String get title => 'Se déconnecter';
+  String get title => 'Se Déconnecter';
   @override
   String get message => 'Êtes-vous sûr de vouloir vous déconnecter?';
   @override
-  String get button => 'Se déconnecter';
+  String get button => 'Se Déconnecter';
   @override
-  String get confirm => 'Se déconnecter';
+  String get confirm => 'Se Déconnecter';
 }
 
 // Path: shared.common
@@ -1213,7 +1213,7 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec lors de la suppression de la session : ${error}',
       'settings.title' => 'Paramètres',
       'settings.profile.title' => 'Profil',
-      'settings.profile.editProfile' => 'Modifier le Profil',
+      'settings.profile.editProfile' => 'Modifier Profil',
       'settings.profile.username' => 'Nom d\'utilisateur',
       'settings.profile.email' => 'E-mail',
       'settings.profile.telephone' => 'Téléphone',
@@ -1234,29 +1234,29 @@ extension on TranslationsFr {
       'settings.account.title' => 'Compte',
       'settings.account.password' => 'Mot de passe',
       'settings.account.passwordSubtitle' => 'Changer votre mot de passe',
-      'settings.account.privacySecurity' => 'Confidentialité et Sécurité',
+      'settings.account.privacySecurity' => 'Confidentialité et sécurité',
       'settings.account.changePassword' => 'Changer le mot de passe',
       'settings.account.deleteTitle' => 'Supprimer le compte',
       'settings.account.deleteMessage' =>
         'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.',
       'settings.preferences.title' => 'Préférences',
       'settings.preferences.language' => 'Langue',
-      'settings.preferences.darkMode' => 'Mode Sombre',
+      'settings.preferences.darkMode' => 'Mode sombre',
       'settings.preferences.darkModeOn' => 'Activé',
       'settings.preferences.darkModeOff' => 'Désactivé',
       'settings.preferences.notifications' => 'Notifications',
       'settings.preferences.notificationsSubtitle' => 'Recevoir les notifications push',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
-      'settings.support.contactUs' => 'Nous contacter',
+      'settings.support.contactUs' => 'Contactez-nous',
       'settings.support.contactSubtitle' => 'Demandes commerciales et support',
-      'settings.support.terms' => 'Conditions Générales',
+      'settings.support.terms' => 'Conditions générales',
       'settings.support.copyright' => 'Conformité aux droits d\'auteur',
       'settings.followUs.title' => 'Suivez-nous',
-      'settings.logout.title' => 'Se déconnecter',
+      'settings.logout.title' => 'Se Déconnecter',
       'settings.logout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
-      'settings.logout.button' => 'Se déconnecter',
-      'settings.logout.confirm' => 'Se déconnecter',
+      'settings.logout.button' => 'Se Déconnecter',
+      'settings.logout.confirm' => 'Se Déconnecter',
       'shared.common.kContinue' => 'Continuer',
       'shared.common.cancel' => 'Annuler',
       'shared.common.save' => 'Enregistrer',

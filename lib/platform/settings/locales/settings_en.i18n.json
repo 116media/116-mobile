@@ -23,15 +23,15 @@
     "title": "Account",
     "password": "Password",
     "passwordSubtitle": "Change your password",
-    "privacySecurity": "Privacy & Security",
-    "changePassword": "Change Password",
-    "deleteTitle": "Delete Account",
+    "privacySecurity": "Privacy & security",
+    "changePassword": "Change password",
+    "deleteTitle": "Delete account",
     "deleteMessage": "Are you sure you want to delete your account? This action cannot be undone."
   },
   "preferences": {
     "title": "Preferences",
     "language": "Language",
-    "darkMode": "Dark Mode",
+    "darkMode": "Dark mode",
     "darkModeOn": "On",
     "darkModeOff": "Off",
     "notifications": "Notifications",
@@ -40,13 +40,13 @@
   "support": {
     "title": "Support",
     "faq": "FAQ",
-    "contactUs": "Contact Us",
+    "contactUs": "Contact us",
     "contactSubtitle": "Business inquiries & support",
-    "terms": "Terms & Conditions",
-    "copyright": "Copyright Compliance"
+    "terms": "Terms & conditions",
+    "copyright": "Copyright compliance"
   },
   "followUs": {
-    "title": "Follow Us"
+    "title": "Follow us"
   },
   "logout": {
     "title": "Log Out",
