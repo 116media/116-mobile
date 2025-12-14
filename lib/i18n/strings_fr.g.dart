@@ -238,6 +238,10 @@ class TranslationsPreferencesFr extends TranslationsPreferencesEn {
   late final TranslationsPreferencesLanguageFr language = TranslationsPreferencesLanguageFr._(
     _root,
   );
+  @override
+  late final TranslationsPreferencesCacheErrorFr cacheError = TranslationsPreferencesCacheErrorFr._(
+    _root,
+  );
 }
 
 // Path: session
@@ -680,6 +684,26 @@ class TranslationsPreferencesLanguageFr extends TranslationsPreferencesLanguageE
   String get title => 'Sélectionner Langue';
   @override
   String get subtitle => 'Choisissez votre langue préférée';
+}
+
+// Path: preferences.cacheError
+class TranslationsPreferencesCacheErrorFr extends TranslationsPreferencesCacheErrorEn {
+  TranslationsPreferencesCacheErrorFr._(TranslationsFr root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsFr _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String getPreferences({required Object error}) =>
+      'Échec de la récupération des préférences: ${error}';
+  @override
+  String setPreferences({required Object error}) =>
+      'Échec de la sauvegarde des préférences: ${error}';
+  @override
+  String clearPreferences({required Object error}) =>
+      'Échec de la suppression des préférences: ${error}';
 }
 
 // Path: session.cacheError
@@ -1134,6 +1158,12 @@ extension on TranslationsFr {
       'preferences.language.french' => 'Français',
       'preferences.language.title' => 'Sélectionner Langue',
       'preferences.language.subtitle' => 'Choisissez votre langue préférée',
+      'preferences.cacheError.getPreferences' =>
+        ({required Object error}) => 'Échec de la récupération des préférences: ${error}',
+      'preferences.cacheError.setPreferences' =>
+        ({required Object error}) => 'Échec de la sauvegarde des préférences: ${error}',
+      'preferences.cacheError.clearPreferences' =>
+        ({required Object error}) => 'Échec de la suppression des préférences: ${error}',
       'session.cacheError.setSession' =>
         ({required Object error}) => 'Échec lors de la sauvegarde de la session : ${error}',
       'session.cacheError.getSession' =>

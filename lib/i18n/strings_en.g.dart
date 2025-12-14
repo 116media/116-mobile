@@ -282,6 +282,8 @@ class TranslationsPreferencesEn {
   late final TranslationsPreferencesThemeEn theme = TranslationsPreferencesThemeEn.internal(_root);
   late final TranslationsPreferencesLanguageEn language =
       TranslationsPreferencesLanguageEn.internal(_root);
+  late final TranslationsPreferencesCacheErrorEn cacheError =
+      TranslationsPreferencesCacheErrorEn.internal(_root);
 }
 
 // Path: session
@@ -915,6 +917,30 @@ class TranslationsPreferencesLanguageEn {
   ///
   /// fr: 'Choisissez votre langue préférée'
   String get subtitle => 'Choose your preferred language';
+}
+
+// Path: preferences.cacheError
+class TranslationsPreferencesCacheErrorEn {
+  TranslationsPreferencesCacheErrorEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// en: 'Failed to retrieve preferences: {error}'
+  ///
+  /// fr: 'Échec de la récupération des préférences: {error}'
+  String getPreferences({required Object error}) => 'Failed to retrieve preferences: ${error}';
+
+  /// en: 'Failed to save preferences: {error}'
+  ///
+  /// fr: 'Échec de la sauvegarde des préférences: {error}'
+  String setPreferences({required Object error}) => 'Failed to save preferences: ${error}';
+
+  /// en: 'Failed to clear preferences: {error}'
+  ///
+  /// fr: 'Échec de la suppression des préférences: {error}'
+  String clearPreferences({required Object error}) => 'Failed to clear preferences: ${error}';
 }
 
 // Path: session.cacheError
@@ -1605,6 +1631,12 @@ extension on Translations {
       'preferences.language.french' => 'French',
       'preferences.language.title' => 'Select Language',
       'preferences.language.subtitle' => 'Choose your preferred language',
+      'preferences.cacheError.getPreferences' =>
+        ({required Object error}) => 'Failed to retrieve preferences: ${error}',
+      'preferences.cacheError.setPreferences' =>
+        ({required Object error}) => 'Failed to save preferences: ${error}',
+      'preferences.cacheError.clearPreferences' =>
+        ({required Object error}) => 'Failed to clear preferences: ${error}',
       'session.cacheError.setSession' =>
         ({required Object error}) => 'Failed to save session state: ${error}',
       'session.cacheError.getSession' =>
