@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../modules/auth/presentation/utils/dialog.utils.dart' show showAuthDialog;
 import '../../../../../modules/auth/presentation/widgets/dialog/signin.dialog.widget.dart'
     show SignInDialog;
@@ -53,12 +54,12 @@ class _GuestProfileCardState extends State<GuestProfileCard> {
           ),
           Gap(context.sizing.s12),
           Text(
-            'Guest Mode',
+            t.settings.profile.guestMode,
             style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
           ),
           Gap(context.sizing.s12),
           Text(
-            'Sign in to get closer to the artists, the stories, and the heartbeat of the game.',
+            t.settings.profile.guestMessage,
             textAlign: TextAlign.center,
             style: context.textTheme.bodyMedium?.copyWith(color: ColorsUtil.gray500),
           ),
@@ -68,7 +69,7 @@ class _GuestProfileCardState extends State<GuestProfileCard> {
             child: SolidButton(
               isFull: true,
               size: ButtonSize.sm,
-              text: "Sign In",
+              text: t.shared.buttons.signIn,
               isLoading: false,
               isDisabled: false,
               onPressed: _showSignInDialog,
