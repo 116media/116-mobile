@@ -17,9 +17,9 @@ enum SocialPlatform {
   instagram(color: ColorsUtil.instagram, url: SocialLinks.instagram, icon: Ri.instagram_fill),
   twitter(color: ColorsUtil.twitter, url: SocialLinks.twitter, icon: Mdi.twitter);
 
-  final Color color;
   final String url;
   final String icon;
+  final Color color;
 
   const SocialPlatform({required this.color, required this.url, required this.icon});
 }

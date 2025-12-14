@@ -32,9 +32,9 @@ class ThemeOptions extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: context.sizing.s14,
-              fontWeight: FontWeight.w500,
               color: textColor,
+              fontWeight: FontWeight.w500,
+              fontSize: context.sizing.s14,
             ),
           ),
           Gap(context.sizing.s8),
