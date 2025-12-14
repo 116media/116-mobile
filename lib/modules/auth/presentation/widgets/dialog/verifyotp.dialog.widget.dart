@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart'
     show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
 import 'package:go_router/go_router.dart' show GoRouterHelper;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../platform/onboarding/presentation/utils/onboarding.util.dart'
     show OnboardingUtil;
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
@@ -58,10 +59,7 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (rootContext.mounted) {
-          DialogUtil.success(
-            rootContext,
-            message: "Your account verification completed! You're all set to continue.",
-          );
+          DialogUtil.success(rootContext, message: t.auth.verifyOtp.completed);
         }
       });
     } else if (state is VerifyOtpFailure) {
@@ -72,10 +70,7 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
 
   void _resendOtpStateListener(ResendOtpState state) {
     if (state is ResendOtpSuccess) {
-      DialogUtil.success(
-        context,
-        message: 'New verification code sent successfully! Please check your email.',
-      );
+      DialogUtil.success(context, message: t.auth.resendOtp.success);
     } else if (state is ResendOtpFailure) {
       DialogUtil.error(context, message: state.failure.detail);
     }
