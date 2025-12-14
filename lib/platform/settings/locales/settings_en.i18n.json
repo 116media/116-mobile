@@ -5,38 +5,53 @@
     "editProfile": "Edit Profile",
     "username": "Username",
     "email": "Email",
-    "phone": "Phone Number",
-    "avatar": "Profile Picture",
-    "changeAvatar": "Change Avatar",
-    "saveChanges": "Save Changes"
+    "telephone": "Telephone",
+    "updateSuccess": "Profile updated successfully!",
+    "updateSubtitle": "Update profile details, especially your username and telephone number.",
+    "guestMode": "Guest Mode",
+    "guestMessage": "Sign in to get closer to the artists, the stories, and the heartbeat of the game."
+  },
+  "avatar": {
+    "title": "Edit Avatar",
+    "subtitle": "Select an image from your camera or gallery to set as your new avatar.",
+    "cropTitle": "Crop Avatar",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "selectError": "Failed to select image: {error}"
   },
   "account": {
     "title": "Account",
+    "password": "Password",
+    "passwordSubtitle": "Change your password",
+    "privacySecurity": "Privacy & Security",
     "changePassword": "Change Password",
-    "deleteAccount": "Delete Account",
-    "signOut": "Sign Out"
+    "deleteTitle": "Delete Account",
+    "deleteMessage": "Are you sure you want to delete your account? This action cannot be undone."
   },
   "preferences": {
     "title": "Preferences",
     "language": "Language",
-    "theme": "Theme",
-    "notifications": "Notifications"
-  },
-  "about": {
-    "title": "About",
-    "version": "Version",
-    "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy",
-    "contactUs": "Contact Us"
-  },
-  "followUs": {
-    "title": "Follow Us",
-    "subtitle": "Stay connected on social media"
+    "darkMode": "Dark Mode",
+    "darkModeOn": "On",
+    "darkModeOff": "Off",
+    "notifications": "Notifications",
+    "notificationsSubtitle": "Receive push notifications"
   },
   "support": {
     "title": "Support",
-    "helpCenter": "Help Center",
-    "reportProblem": "Report a Problem",
-    "feedback": "Send Feedback"
+    "faq": "FAQ",
+    "contactUs": "Contact Us",
+    "contactSubtitle": "Business inquiries & support",
+    "terms": "Terms & Conditions",
+    "copyright": "Copyright Compliance"
+  },
+  "followUs": {
+    "title": "Follow Us"
+  },
+  "logout": {
+    "title": "Log Out",
+    "message": "Are you sure you want to log out?",
+    "button": "Log Out",
+    "confirm": "Log Out"
   }
 }
