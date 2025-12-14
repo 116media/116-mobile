@@ -99,7 +99,10 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s12)),
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(context.sizing.s24),
+              padding: EdgeInsets.symmetric(
+                vertical: context.sizing.s12,
+                horizontal: context.sizing.s24,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

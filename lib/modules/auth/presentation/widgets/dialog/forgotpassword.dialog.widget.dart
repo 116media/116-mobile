@@ -175,7 +175,12 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
             child: SingleChildScrollView(
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(context.sizing.s24),
+                padding: EdgeInsets.only(
+                  top: context.sizing.s12,
+                  left: context.sizing.s24,
+                  right: context.sizing.s24,
+                  bottom: context.sizing.s24,
+                ),
                 decoration: BoxDecoration(
                   color: backgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(context.sizing.s12)),

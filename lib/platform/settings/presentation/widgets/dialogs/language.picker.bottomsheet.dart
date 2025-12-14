@@ -60,9 +60,14 @@ class LanguagePickerContent extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(maxHeight: maxHeight),
-      padding: EdgeInsets.symmetric(horizontal: context.sizing.s16, vertical: context.sizing.s24),
+      padding: EdgeInsets.only(
+        top: context.sizing.s12,
+        left: context.sizing.s16,
+        right: context.sizing.s16,
+        bottom: context.sizing.s24,
+      ),
       child: Column(
-        spacing: context.sizing.s48,
+        spacing: context.sizing.s32,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
