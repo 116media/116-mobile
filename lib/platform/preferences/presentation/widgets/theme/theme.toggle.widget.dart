@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../i18n/strings.g.dart' show t;
+import '../../../../../i18n/strings.g.dart' show Translations;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../domain/enums/thememode.enum.dart' show AppThemeMode;
@@ -20,6 +20,8 @@ class SlidingThemeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     final currentTheme = isDarkMode ? AppThemeMode.dark : AppThemeMode.light;
     final backgroundColor = isDarkMode ? ColorsUtil.slate400 : ColorsUtil.slate200;
 
