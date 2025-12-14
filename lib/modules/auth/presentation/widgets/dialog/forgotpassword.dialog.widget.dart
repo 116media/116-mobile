@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'
     show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../shared/infrastructure/service.locator.dart' show sl;
 import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
@@ -78,7 +79,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   void _forgotPasswordStateListener(ForgotPasswordState state) {
     if (state is ForgotPasswordSuccess) {
       _moveToStep(ForgotPasswordStep.verifyOtp);
-      _showSuccessMessage('Verification code sent successfully! Please check your email.');
+      _showSuccessMessage(t.auth.forgotPassword.success);
     } else if (state is ForgotPasswordFailure) {
       _showErrorMessage(state.failure.detail);
     }
@@ -87,7 +88,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   void _verifyOtpStateListener(VerifyOtpState state) {
     if (state is VerifyOtpSuccess) {
       _moveToStep(ForgotPasswordStep.resetPassword);
-      _showSuccessMessage('Account verified successfully! Please enter your new password.');
+      _showSuccessMessage(t.auth.verifyOtp.success);
     } else if (state is VerifyOtpFailure) {
       _clearOtpField();
       _showErrorMessage(state.failure.detail);
@@ -96,7 +97,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
 
   void _resendOtpStateListener(ResendOtpState state) {
     if (state is ResendOtpSuccess) {
-      _showSuccessMessage('New verification code sent successfully! Please check your email.');
+      _showSuccessMessage(t.auth.resendOtp.success);
     } else if (state is ResendOtpFailure) {
       _showErrorMessage(state.failure.detail);
     }
@@ -111,7 +112,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
         if (rootContext.mounted) {
           DialogUtil.success(
             rootContext,
-            message: "Password reset successfully! You can now sign in with your new password.",
+            message: t.auth.resetPassword.success,
             onDismiss: () async {
               if (rootContext.mounted) {
                 await showAuthDialog(rootContext, const SignInDialog());
