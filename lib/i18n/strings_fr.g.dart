@@ -1028,7 +1028,7 @@ class TranslationsSharedCountryFr extends TranslationsSharedCountryEn {
 
   // Translations
   @override
-  String get title => 'Sélectionner le pays';
+  String get title => 'Sélectionner Pays';
   @override
   String get subtitle => 'Choisissez votre pays pour obtenir le bon indicatif régional.';
 }
@@ -1315,7 +1315,7 @@ extension on TranslationsFr {
       'shared.empty.noData' => 'Aucune donnée disponible',
       'shared.empty.noResults' => 'Aucun résultat trouvé',
       'shared.empty.noContent' => 'Aucun contenu à afficher',
-      'shared.country.title' => 'Sélectionner le pays',
+      'shared.country.title' => 'Sélectionner Pays',
       'shared.country.subtitle' => 'Choisissez votre pays pour obtenir le bon indicatif régional.',
       'shared.navigation.home' => 'Accueil',
       'shared.navigation.discover' => 'Découvrir',

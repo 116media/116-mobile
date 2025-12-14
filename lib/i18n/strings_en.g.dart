@@ -1523,7 +1523,7 @@ class TranslationsSharedCountryEn {
 
   /// en: 'Select Country'
   ///
-  /// fr: 'Sélectionner le pays'
+  /// fr: 'Sélectionner Pays'
   String get title => 'Select Country';
 
   /// en: 'Choose your country to get the correct dial code.'
