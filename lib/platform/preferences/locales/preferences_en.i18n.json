@@ -10,5 +10,10 @@
     "french": "French",
     "title": "Select Language",
     "subtitle": "Choose your preferred language"
+  },
+  "cacheError": {
+    "getPreferences": "Failed to retrieve preferences: {error}",
+    "setPreferences": "Failed to save preferences: {error}",
+    "clearPreferences": "Failed to clear preferences: {error}"
   }
 }
