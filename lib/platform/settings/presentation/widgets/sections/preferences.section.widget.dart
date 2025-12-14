@@ -50,7 +50,7 @@ class PreferencesSection extends StatelessWidget {
       (l) => l.code == code,
       orElse: () => languages.all.first,
     );
-    return language.englishName;
+    return language.nativeName;
   }
 
   @override
