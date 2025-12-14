@@ -7,6 +7,7 @@ import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exc
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
 import '../constants/hive.constants.dart' show kTokenKey, kUserKey;
 import '../models/hive/user/user.model.dart' show UserModel;
+import '../../../../i18n/strings.g.dart' show t;
 
 /// Local data source implementation for authentication operations using Hive.
 ///
@@ -24,8 +25,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       await _authBox.put(kUserKey, user);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to save user data: $e',
         instance: 'AuthLocalDataSource.setUser',
+        detail: t.auth.cacheError.setUser(error: e.toString()),
       );
     }
   }
@@ -36,8 +37,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       return _authBox.get(kUserKey) as UserModel?;
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to retrieve user data: $e',
         instance: 'AuthLocalDataSource.getUser',
+        detail: t.auth.cacheError.getUser(error: e.toString()),
       );
     }
   }
@@ -48,8 +49,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       await _authBox.put(kTokenKey, token);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to save token: $e',
         instance: 'AuthLocalDataSource.setToken',
+        detail: t.auth.cacheError.setToken(error: e.toString()),
       );
     }
   }
@@ -60,8 +61,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       return _authBox.get(kTokenKey) as String?;
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to retrieve token: $e',
         instance: 'AuthLocalDataSource.getToken',
+        detail: t.auth.cacheError.getToken(error: e.toString()),
       );
     }
   }
@@ -72,8 +73,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       await _authBox.delete(kTokenKey);
     } catch (e) {
       throw WriteFailedCacheException(
-        detail: 'Failed to clear token: $e',
         instance: 'AuthLocalDataSource.clearToken',
+        detail: t.auth.cacheError.clearToken(error: e.toString()),
       );
     }
   }
@@ -88,8 +89,8 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       }
     } catch (e) {
       throw ReadFailedCacheException(
-        detail: 'Failed to watch user: $e',
         instance: 'AuthLocalDataSource.watchUser',
+        detail: t.auth.cacheError.watchUser(error: e.toString()),
       );
     }
   }
