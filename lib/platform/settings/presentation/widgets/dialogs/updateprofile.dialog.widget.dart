@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart'
     show BlocListener, BlocProvider, MultiBlocListener, MultiBlocProvider;
 import 'package:world_countries/world_countries.dart' show WorldCountry;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../modules/auth/infrastructure/models/hive/user/user.model.dart' show UserModel;
 import '../../../../country/presentation/bloc/country.bloc.dart' show CountryBloc;
 import '../../../../country/presentation/bloc/country.event.dart' show CountryLoadStarted;
@@ -52,7 +53,7 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (rootContext.mounted) {
-          DialogUtil.success(rootContext, message: 'Profile updated successfully!');
+          DialogUtil.success(rootContext, message: t.settings.profile.updateSuccess);
         }
       });
     } else if (state is UpdateProfileFailure) {
