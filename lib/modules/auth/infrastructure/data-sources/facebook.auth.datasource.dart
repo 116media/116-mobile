@@ -1,6 +1,7 @@
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart'
     show FacebookAuth, LoginResult, LoginStatus;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/infrastructure/exceptions/remote/socialauth.exception.dart'
     show SocialAuthException;
 import '../../application/data-sources/facebook.auth.datasource.port.dart'
@@ -25,7 +26,7 @@ class FacebookAuthDataSource implements IFacebookAuthDataSource {
 
       /// Check login status: success, cancelled, or error
       if (result.status != LoginStatus.success) {
-        throw SocialAuthException('Facebook sign-in cancelled by the user');
+        throw SocialAuthException(t.auth.facebookError.signInCancelled);
       }
 
       final userData = await _facebookAuth.getUserData();
@@ -38,7 +39,7 @@ class FacebookAuthDataSource implements IFacebookAuthDataSource {
     } on SocialAuthException {
       rethrow;
     } catch (e) {
-      throw SocialAuthException("Unexpected Facebook Sign-In error: $e");
+      throw SocialAuthException(t.auth.facebookError.unexpected(error: e.toString()));
     }
   }
 }

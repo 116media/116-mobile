@@ -1,6 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart'
     show GoogleSignIn, GoogleSignInAccount, GoogleSignInAuthentication, GoogleSignInException;
 
+import '../../../../i18n/strings.g.dart' show t;
 import '../../../../shared/application/configs/env.config.dart' show EnvConfig;
 import '../../../../shared/infrastructure/exceptions/remote/socialauth.exception.dart'
     show SocialAuthException;
@@ -38,11 +39,11 @@ class GoogleAuthDataSource implements IGoogleAuthDataSource {
         idToken: auth.idToken,
       );
     } on GoogleSignInException catch (e) {
-      throw SocialAuthException("Google sign-in: ${e.description}");
+      throw SocialAuthException("Google Auth: ${e.description}");
     } on SocialAuthException {
       rethrow;
     } catch (e) {
-      throw SocialAuthException("Unexpected Google Sign-In error: $e");
+      throw SocialAuthException(t.auth.googleError.unexpected(error: e.toString()));
     }
   }
 
@@ -58,7 +59,7 @@ class GoogleAuthDataSource implements IGoogleAuthDataSource {
       await _googleSignIn.initialize(serverClientId: EnvConfig.googleServerClientId);
       _isGoogleSignInInitialized = true;
     } catch (e) {
-      throw SocialAuthException("Failed to initialize Google Sign-In: $e");
+      throw SocialAuthException(t.auth.googleError.initFailed(error: e.toString()));
     }
   }
 }
