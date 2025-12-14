@@ -28,6 +28,7 @@ import '../../../validators/verifyotp.validator.dart' show VerifyOtpValidator;
 import '../../shared/formtitle/auth.form.title.widget.dart' show AuthFormTitle;
 import '../../shared/redirect/auth.redirect.button.dart'
     show AuthRedirectButton, AuthRedirectAction;
+import '../../../../../../i18n/strings.g.dart' show t;
 
 class VerifyOtpForm extends StatefulWidget {
   final String? email;
@@ -129,7 +130,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
         children: [
           Logo(type: LogoType.icon, width: context.sizing.s64, isDarkTheme: context.isDarkMode),
 
-          const AuthFormTitle(text: "Verify Your Email"),
+          AuthFormTitle(text: t.auth.verifyOtp.title),
 
           RichText(
             textAlign: TextAlign.center,
@@ -138,9 +139,9 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
                 color: textColor.withValues(alpha: 0.7),
               ),
               children: [
-                const TextSpan(text: "Please enter the 6-digit verification code we've sent to "),
+                TextSpan(text: t.auth.verifyOtp.subtitle),
                 TextSpan(
-                  text: widget.email ?? 'your email',
+                  text: widget.email ?? t.auth.verifyOtp.yourEmail,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ],
@@ -154,7 +155,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             isFilled: true,
             isDisabled: isLoading,
             controller: _otpController,
-            validator: VerifyOtpValidator.otp('OTP Code'),
+            validator: VerifyOtpValidator.otp(t.auth.verifyOtp.codeLabel),
           ),
 
           // Resend OTP button
@@ -162,7 +163,7 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             onPressed: _handleResendOtp,
             isDisabled: isLoading || _countdown > 0,
             actionType: AuthRedirectAction.haveReceiveCode,
-            suffixText: _countdown > 0 ? ' in $_countdown seconds' : null,
+            suffixText: _countdown > 0 ? t.auth.resendOtp.countdown(seconds: _countdown) : null,
           ),
 
           // Verify button
@@ -170,17 +171,17 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             delay: 0.65,
             child: SolidButton(
               isFull: true,
-              text: "Verify",
               size: ButtonSize.sm,
               isLoading: isLoading,
               onPressed: _handleVerifyOtp,
+              text: t.auth.verifyOtp.submitButton,
               isDisabled: isLoading || _otpController.text.length != kOtpLength,
             ),
           ),
 
           OutlineButton(
-            text: 'Cancel',
             size: ButtonSize.sm,
+            text: t.shared.common.cancel,
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
