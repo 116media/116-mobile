@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
 
+import '../../../../../i18n/strings.g.dart' show t;
 import '../../../../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/widgets/buttons/enums/button.size.enum.dart'
@@ -33,10 +34,10 @@ class LogoutSection extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: context.sizing.s24),
           child: OutlineButton(
-            text: 'Log Out',
             onPressed: onLogout,
             size: ButtonSize.sm,
             color: ColorsUtil.error,
+            text: t.settings.logout.button,
           ),
         );
       },
