@@ -1,7 +1,9 @@
 import 'dart:io' show File;
 
 import '../../../../api/client/api_116.swagger.dart'
-    show PublicUpdateOwnProfileResponse, PublicUpdateAvatarResponse;
+    show PublicUpdateAvatarResponse, PublicUpdateOwnProfileResponse, PublicChangePasswordResponse;
+import '../../presentation/models/changepassword.credentials.model.dart'
+    show ChangePasswordCredentialsModel;
 import '../../presentation/models/profile.model.dart' show ProfileModel;
 
 /// Port interface for remote settings data source.
@@ -40,4 +42,20 @@ abstract class ISettingsRemoteDataSource {
   /// - [ServerException] if the server returns an error response
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   Future<PublicUpdateAvatarResponse> updateAvatar(File avatarFile);
+
+  /// Changes the authenticated user's password.
+  ///
+  /// Calls the PublicChangePassword API endpoint
+  /// with the current password and updates to new password.
+  /// Requires valid JWT token for authentication.
+  ///
+  /// **Parameters:**
+  /// - [credentials]: Contains old password and new password
+  ///
+  /// **Returns:** [PublicChangePasswordResponse] containing success status.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response (incorrect current password, etc.)
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicChangePasswordResponse> changePassword(ChangePasswordCredentialsModel credentials);
 }
