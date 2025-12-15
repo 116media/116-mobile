@@ -16,6 +16,8 @@ import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
     show ResetPasswordResponseEntity;
+import '../../domain/entities/signout-response/signout.response.entity.dart'
+    show SignOutResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
@@ -143,6 +145,17 @@ class AuthRemoteRepository implements IAuthRepository {
       final response = await _remoteDataSource.signInWithFacebook(profile);
       final authEntity = AuthMapper.authResponseFromPublicSocialLoginDto(response);
       return Right(authEntity);
+    } on ServerException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SignOutResponseEntity>> signOut() async {
+    try {
+      final response = await _remoteDataSource.signOut();
+      final signoutEntity = AuthMapper.signoutResponseFromDto(response);
+      return Right(signoutEntity);
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
