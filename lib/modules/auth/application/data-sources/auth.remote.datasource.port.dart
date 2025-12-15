@@ -6,7 +6,8 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicResendOtpResponse,
         PublicResetPasswordResponse,
         PublicSignUpResponse,
-        PublicVerifyOtpResponse;
+        PublicVerifyOtpResponse,
+        PublicSignOutResponse;
 import '../../domain/entities/social-profile/social.profile.entity.dart' show SocialProfileEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
     show ForgotPasswordCredentialsModel;
@@ -114,4 +115,15 @@ abstract class IAuthRemoteDataSource {
   /// - [ServerException] if the server returns an error response
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   Future<PublicSocialLoginResponse> signInWithFacebook(SocialProfileEntity profile);
+
+  /// Signs out the current user.
+  ///
+  /// Calls the PublicSignOut API endpoint to invalidate the user's session.
+  ///
+  /// **Returns:** [PublicSignOutResponse] with success status.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  Future<PublicSignOutResponse> signOut();
 }
