@@ -29,7 +29,10 @@
     "numericOnly": "{fieldName} doit uniquement contenir des chiffres",
     "passwordRegex": "{fieldName} doit contenir 1 majuscule, 1 minuscule et 1 chiffre",
     "invalidPhone": "{fieldName} est invalide pour le pays sélectionné",
-    "invalidMobilePhone": "{fieldName} doit être un numéro mobile valide pour le pays sélectionné"
+    "invalidMobilePhone": "{fieldName} doit être un numéro mobile valide pour le pays sélectionné",
+    "newPassword": "Nouveau mot de passe",
+    "currentPassword": "Ancien mot de passe",
+    "confirmNewPassword": "Confirmer nouveau mot de passe"
   },
   "errors": {
     "unknown": "Une erreur s'est produite. Veuillez réessayer.",
@@ -55,7 +58,7 @@
     "noContent": "Aucun contenu à afficher"
   },
   "country": {
-    "title": "Sélectionner le pays",
+    "title": "Sélectionner Pays",
     "subtitle": "Choisissez votre pays pour obtenir le bon indicatif régional."
   },
   "navigation": {

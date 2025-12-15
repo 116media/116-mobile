@@ -150,8 +150,8 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
 
             InputField(
               isFilled: true,
-              label: t.settings.profile.email,
               isDisabled: true,
+              label: t.settings.profile.email,
               controller: _emailController,
             ),
 

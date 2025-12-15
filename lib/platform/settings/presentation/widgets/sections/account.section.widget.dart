@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder;
 
 import '../../../../../i18n/strings.g.dart' show t;
-import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../platform/session/presentation/bloc/session.bloc.dart' show SessionBloc;
 import '../../../../../platform/session/presentation/bloc/session.state.dart'
     show SessionState, SessionSuccess;
+import '../../../../../shared/presentation/themes/extensions/build.context.extension.dart';
 import '../../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
+import '../dialogs/changepassword.dialog.widget.dart' show ChangePasswordDialog;
 import '../items/settings.tile.widget.dart' show SettingsTile;
 import 'settings.section.header.widget.dart' show SettingsSectionHeader;
 
@@ -23,6 +24,10 @@ import 'settings.section.header.widget.dart' show SettingsSectionHeader;
 /// proceeding with the destructive action.
 class AccountSection extends StatelessWidget {
   const AccountSection({super.key});
+
+  void _showChangePasswordDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => const ChangePasswordDialog());
+  }
 
   void _showDeleteAccountDialog(BuildContext context) {
     DialogUtil.confirm(
@@ -58,26 +63,24 @@ class AccountSection extends StatelessWidget {
             Column(
               children: [
                 SettingsTile(
-                  title: t.settings.account.password,
                   icon: Icons.lock_outline,
-                  subtitle: t.settings.account.passwordSubtitle,
+                  title: t.settings.account.password,
                   iconBackgroundColor: ColorsUtil.blue500,
-                  onTap: () {
-                    // TODO: Navigate to change password
-                  },
+                  subtitle: t.settings.account.changePassword,
+                  onTap: () => _showChangePasswordDialog(context),
                 ),
                 SettingsTile(
-                  title: t.settings.account.privacySecurity,
                   icon: Icons.shield_outlined,
+                  title: t.settings.account.privacySecurity,
                   iconBackgroundColor: ColorsUtil.purple500,
                   onTap: () {
                     // TODO: Navigate to privacy settings
                   },
                 ),
                 SettingsTile(
-                  title: t.settings.account.deleteTitle,
                   icon: Icons.delete_outline,
                   textColor: ColorsUtil.error,
+                  title: t.settings.account.deleteTitle,
                   iconBackgroundColor: ColorsUtil.error,
                   trailing: Icon(
                     size: context.sizing.s18,

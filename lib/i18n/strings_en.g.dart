@@ -1081,24 +1081,34 @@ class TranslationsSettingsAccountEn {
   /// fr: 'Mot de passe'
   String get password => 'Password';
 
-  /// en: 'Change your password'
+  /// en: 'Change Password'
   ///
-  /// fr: 'Changer votre mot de passe'
-  String get passwordSubtitle => 'Change your password';
+  /// fr: 'Changer Mot De Passe'
+  String get passwordTitle => 'Change Password';
+
+  /// en: 'Enter your new password below to change your account password.'
+  ///
+  /// fr: 'Entrez votre nouveau mot de passe ci-dessous pour le mettre à jour.'
+  String get passwordSubtitle => 'Enter your new password below to change your account password.';
+
+  /// en: 'Password changed successfully!'
+  ///
+  /// fr: 'Mot de passe changé avec succès!'
+  String get passwordChangeSuccess => 'Password changed successfully!';
 
   /// en: 'Privacy & security'
   ///
   /// fr: 'Confidentialité et sécurité'
   String get privacySecurity => 'Privacy & security';
 
-  /// en: 'Change password'
+  /// en: 'Change your password'
   ///
-  /// fr: 'Changer le mot de passe'
-  String get changePassword => 'Change password';
+  /// fr: 'Changer votre mot de passe'
+  String get changePassword => 'Change your password';
 
   /// en: 'Delete account'
   ///
-  /// fr: 'Supprimer le compte'
+  /// fr: 'Supprimer compte'
   String get deleteTitle => 'Delete account';
 
   /// en: 'Are you sure you want to delete your account? This action cannot be undone.'
@@ -1146,10 +1156,10 @@ class TranslationsSettingsPreferencesEn {
   /// fr: 'Notifications'
   String get notifications => 'Notifications';
 
-  /// en: 'Receive push notifications'
+  /// en: 'Allow push notifications'
   ///
-  /// fr: 'Recevoir les notifications push'
-  String get notificationsSubtitle => 'Receive push notifications';
+  /// fr: 'Activer les notifications push'
+  String get notificationsSubtitle => 'Allow push notifications';
 }
 
 // Path: settings.support
@@ -1177,7 +1187,7 @@ class TranslationsSettingsSupportEn {
 
   /// en: 'Business inquiries & support'
   ///
-  /// fr: 'Demandes commerciales et support'
+  /// fr: 'Service commerciales et support'
   String get contactSubtitle => 'Business inquiries & support';
 
   /// en: 'Terms & conditions'
@@ -1215,7 +1225,7 @@ class TranslationsSettingsLogoutEn {
 
   /// en: 'Log Out'
   ///
-  /// fr: 'Se Déconnecter'
+  /// fr: 'Déconnexion'
   String get title => 'Log Out';
 
   /// en: 'Are you sure you want to log out?'
@@ -1228,10 +1238,10 @@ class TranslationsSettingsLogoutEn {
   /// fr: 'Se Déconnecter'
   String get button => 'Log Out';
 
-  /// en: 'Log Out'
+  /// en: 'Confirm'
   ///
-  /// fr: 'Se Déconnecter'
-  String get confirm => 'Log Out';
+  /// fr: 'Confirmer'
+  String get confirm => 'Confirm';
 }
 
 // Path: shared.common
@@ -1399,6 +1409,21 @@ class TranslationsSharedValidationEn {
   /// fr: '{fieldName} doit être un numéro mobile valide pour le pays sélectionné'
   String invalidMobilePhone({required Object fieldName}) =>
       '${fieldName} must be a valid mobile number the selected country';
+
+  /// en: 'New password'
+  ///
+  /// fr: 'Nouveau mot de passe'
+  String get newPassword => 'New password';
+
+  /// en: 'Current password'
+  ///
+  /// fr: 'Ancien mot de passe'
+  String get currentPassword => 'Current password';
+
+  /// en: 'Confirm new password'
+  ///
+  /// fr: 'Confirmer nouveau mot de passe'
+  String get confirmNewPassword => 'Confirm new password';
 }
 
 // Path: shared.errors
@@ -1523,7 +1548,7 @@ class TranslationsSharedCountryEn {
 
   /// en: 'Select Country'
   ///
-  /// fr: 'Sélectionner le pays'
+  /// fr: 'Sélectionner Pays'
   String get title => 'Select Country';
 
   /// en: 'Choose your country to get the correct dial code.'
@@ -1743,9 +1768,12 @@ extension on Translations {
         ({required Object error}) => 'Failed to select image: ${error}',
       'settings.account.title' => 'Account',
       'settings.account.password' => 'Password',
-      'settings.account.passwordSubtitle' => 'Change your password',
+      'settings.account.passwordTitle' => 'Change Password',
+      'settings.account.passwordSubtitle' =>
+        'Enter your new password below to change your account password.',
+      'settings.account.passwordChangeSuccess' => 'Password changed successfully!',
       'settings.account.privacySecurity' => 'Privacy & security',
-      'settings.account.changePassword' => 'Change password',
+      'settings.account.changePassword' => 'Change your password',
       'settings.account.deleteTitle' => 'Delete account',
       'settings.account.deleteMessage' =>
         'Are you sure you want to delete your account? This action cannot be undone.',
@@ -1755,7 +1783,7 @@ extension on Translations {
       'settings.preferences.darkModeOn' => 'On',
       'settings.preferences.darkModeOff' => 'Off',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.preferences.notificationsSubtitle' => 'Receive push notifications',
+      'settings.preferences.notificationsSubtitle' => 'Allow push notifications',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
       'settings.support.contactUs' => 'Contact us',
@@ -1766,7 +1794,7 @@ extension on Translations {
       'settings.logout.title' => 'Log Out',
       'settings.logout.message' => 'Are you sure you want to log out?',
       'settings.logout.button' => 'Log Out',
-      'settings.logout.confirm' => 'Log Out',
+      'settings.logout.confirm' => 'Confirm',
       'shared.common.kContinue' => 'Continue',
       'shared.common.cancel' => 'Cancel',
       'shared.common.save' => 'Save',
@@ -1808,6 +1836,9 @@ extension on Translations {
       'shared.validation.invalidMobilePhone' =>
         ({required Object fieldName}) =>
             '${fieldName} must be a valid mobile number the selected country',
+      'shared.validation.newPassword' => 'New password',
+      'shared.validation.currentPassword' => 'Current password',
+      'shared.validation.confirmNewPassword' => 'Confirm new password',
       'shared.errors.unknown' => 'Something went wrong. Please try again later.',
       'shared.errors.network' => 'No internet connection. Please check your network.',
       'shared.errors.timeout' => 'Request timed out. Please try again.',

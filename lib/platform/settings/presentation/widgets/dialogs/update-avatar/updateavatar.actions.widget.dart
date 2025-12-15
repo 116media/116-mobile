@@ -27,38 +27,41 @@ class ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: context.sizing.s12,
-      children: [
-        FadeAnimation(
-          child: SolidButton(
-            isFull: true,
-            text: t.settings.avatar.camera,
-            size: ButtonSize.sm,
-            onPressed: onCamera,
-            isDisabled: isUploading,
+    return Padding(
+      padding: EdgeInsets.only(bottom: context.sizing.s24),
+      child: Column(
+        spacing: context.sizing.s12,
+        children: [
+          FadeAnimation(
+            child: SolidButton(
+              isFull: true,
+              text: t.settings.avatar.camera,
+              size: ButtonSize.sm,
+              onPressed: onCamera,
+              isDisabled: isUploading,
+            ),
           ),
-        ),
-        FadeAnimation(
-          delay: 0.65,
-          reverse: true,
-          child: SolidButton(
-            isFull: true,
-            text: t.settings.avatar.gallery,
-            size: ButtonSize.sm,
-            onPressed: onGallery,
-            isDisabled: isUploading,
+          FadeAnimation(
+            delay: 0.65,
+            reverse: true,
+            child: SolidButton(
+              isFull: true,
+              text: t.settings.avatar.gallery,
+              size: ButtonSize.sm,
+              onPressed: onGallery,
+              isDisabled: isUploading,
+            ),
           ),
-        ),
-        Gap(context.sizing.s12),
-        OutlineButton(
-          text: t.shared.common.cancel,
-          size: ButtonSize.sm,
-          isDisabled: isUploading,
-          color: ColorsUtil.error,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
+          Gap(context.sizing.s12),
+          OutlineButton(
+            text: t.shared.common.cancel,
+            size: ButtonSize.sm,
+            isDisabled: isUploading,
+            color: ColorsUtil.error,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -789,13 +789,18 @@ class TranslationsSettingsAccountFr extends TranslationsSettingsAccountEn {
   @override
   String get password => 'Mot de passe';
   @override
-  String get passwordSubtitle => 'Changer votre mot de passe';
+  String get passwordTitle => 'Changer Mot De Passe';
+  @override
+  String get passwordSubtitle =>
+      'Entrez votre nouveau mot de passe ci-dessous pour le mettre à jour.';
+  @override
+  String get passwordChangeSuccess => 'Mot de passe changé avec succès!';
   @override
   String get privacySecurity => 'Confidentialité et sécurité';
   @override
-  String get changePassword => 'Changer le mot de passe';
+  String get changePassword => 'Changer votre mot de passe';
   @override
-  String get deleteTitle => 'Supprimer le compte';
+  String get deleteTitle => 'Supprimer compte';
   @override
   String get deleteMessage =>
       'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.';
@@ -823,7 +828,7 @@ class TranslationsSettingsPreferencesFr extends TranslationsSettingsPreferencesE
   @override
   String get notifications => 'Notifications';
   @override
-  String get notificationsSubtitle => 'Recevoir les notifications push';
+  String get notificationsSubtitle => 'Activer les notifications push';
 }
 
 // Path: settings.support
@@ -840,7 +845,7 @@ class TranslationsSettingsSupportFr extends TranslationsSettingsSupportEn {
   @override
   String get contactUs => 'Contactez-nous';
   @override
-  String get contactSubtitle => 'Demandes commerciales et support';
+  String get contactSubtitle => 'Service commerciales et support';
   @override
   String get terms => 'Conditions générales';
   @override
@@ -866,13 +871,13 @@ class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
 
   // Translations
   @override
-  String get title => 'Se Déconnecter';
+  String get title => 'Déconnexion';
   @override
   String get message => 'Êtes-vous sûr de vouloir vous déconnecter?';
   @override
   String get button => 'Se Déconnecter';
   @override
-  String get confirm => 'Se Déconnecter';
+  String get confirm => 'Confirmer';
 }
 
 // Path: shared.common
@@ -957,6 +962,12 @@ class TranslationsSharedValidationFr extends TranslationsSharedValidationEn {
   @override
   String invalidMobilePhone({required Object fieldName}) =>
       '${fieldName} doit être un numéro mobile valide pour le pays sélectionné';
+  @override
+  String get newPassword => 'Nouveau mot de passe';
+  @override
+  String get currentPassword => 'Ancien mot de passe';
+  @override
+  String get confirmNewPassword => 'Confirmer nouveau mot de passe';
 }
 
 // Path: shared.errors
@@ -1028,7 +1039,7 @@ class TranslationsSharedCountryFr extends TranslationsSharedCountryEn {
 
   // Translations
   @override
-  String get title => 'Sélectionner le pays';
+  String get title => 'Sélectionner Pays';
   @override
   String get subtitle => 'Choisissez votre pays pour obtenir le bon indicatif régional.';
 }
@@ -1233,10 +1244,13 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec de la sélection de l\'image: ${error}',
       'settings.account.title' => 'Compte',
       'settings.account.password' => 'Mot de passe',
-      'settings.account.passwordSubtitle' => 'Changer votre mot de passe',
+      'settings.account.passwordTitle' => 'Changer Mot De Passe',
+      'settings.account.passwordSubtitle' =>
+        'Entrez votre nouveau mot de passe ci-dessous pour le mettre à jour.',
+      'settings.account.passwordChangeSuccess' => 'Mot de passe changé avec succès!',
       'settings.account.privacySecurity' => 'Confidentialité et sécurité',
-      'settings.account.changePassword' => 'Changer le mot de passe',
-      'settings.account.deleteTitle' => 'Supprimer le compte',
+      'settings.account.changePassword' => 'Changer votre mot de passe',
+      'settings.account.deleteTitle' => 'Supprimer compte',
       'settings.account.deleteMessage' =>
         'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.',
       'settings.preferences.title' => 'Préférences',
@@ -1245,18 +1259,18 @@ extension on TranslationsFr {
       'settings.preferences.darkModeOn' => 'Activé',
       'settings.preferences.darkModeOff' => 'Désactivé',
       'settings.preferences.notifications' => 'Notifications',
-      'settings.preferences.notificationsSubtitle' => 'Recevoir les notifications push',
+      'settings.preferences.notificationsSubtitle' => 'Activer les notifications push',
       'settings.support.title' => 'Support',
       'settings.support.faq' => 'FAQ',
       'settings.support.contactUs' => 'Contactez-nous',
-      'settings.support.contactSubtitle' => 'Demandes commerciales et support',
+      'settings.support.contactSubtitle' => 'Service commerciales et support',
       'settings.support.terms' => 'Conditions générales',
       'settings.support.copyright' => 'Conformité aux droits d\'auteur',
       'settings.followUs.title' => 'Suivez-nous',
-      'settings.logout.title' => 'Se Déconnecter',
+      'settings.logout.title' => 'Déconnexion',
       'settings.logout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
       'settings.logout.button' => 'Se Déconnecter',
-      'settings.logout.confirm' => 'Se Déconnecter',
+      'settings.logout.confirm' => 'Confirmer',
       'shared.common.kContinue' => 'Continuer',
       'shared.common.cancel' => 'Annuler',
       'shared.common.save' => 'Enregistrer',
@@ -1298,6 +1312,9 @@ extension on TranslationsFr {
       'shared.validation.invalidMobilePhone' =>
         ({required Object fieldName}) =>
             '${fieldName} doit être un numéro mobile valide pour le pays sélectionné',
+      'shared.validation.newPassword' => 'Nouveau mot de passe',
+      'shared.validation.currentPassword' => 'Ancien mot de passe',
+      'shared.validation.confirmNewPassword' => 'Confirmer nouveau mot de passe',
       'shared.errors.unknown' => 'Une erreur s\'est produite. Veuillez réessayer.',
       'shared.errors.network' => 'Pas de connexion Internet. Veuillez vérifier votre réseau.',
       'shared.errors.timeout' => 'La demande a expiré. Veuillez réessayer.',
@@ -1315,7 +1332,7 @@ extension on TranslationsFr {
       'shared.empty.noData' => 'Aucune donnée disponible',
       'shared.empty.noResults' => 'Aucun résultat trouvé',
       'shared.empty.noContent' => 'Aucun contenu à afficher',
-      'shared.country.title' => 'Sélectionner le pays',
+      'shared.country.title' => 'Sélectionner Pays',
       'shared.country.subtitle' => 'Choisissez votre pays pour obtenir le bon indicatif régional.',
       'shared.navigation.home' => 'Accueil',
       'shared.navigation.discover' => 'Découvrir',

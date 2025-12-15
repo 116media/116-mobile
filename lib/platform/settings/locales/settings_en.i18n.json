@@ -22,9 +22,11 @@
   "account": {
     "title": "Account",
     "password": "Password",
-    "passwordSubtitle": "Change your password",
+    "passwordTitle": "Change Password",
+    "passwordSubtitle": "Enter your new password below to change your account password.",
+    "passwordChangeSuccess": "Password changed successfully!",
     "privacySecurity": "Privacy & security",
-    "changePassword": "Change password",
+    "changePassword": "Change your password",
     "deleteTitle": "Delete account",
     "deleteMessage": "Are you sure you want to delete your account? This action cannot be undone."
   },
@@ -35,7 +37,7 @@
     "darkModeOn": "On",
     "darkModeOff": "Off",
     "notifications": "Notifications",
-    "notificationsSubtitle": "Receive push notifications"
+    "notificationsSubtitle": "Allow push notifications"
   },
   "support": {
     "title": "Support",
@@ -52,6 +54,6 @@
     "title": "Log Out",
     "message": "Are you sure you want to log out?",
     "button": "Log Out",
-    "confirm": "Log Out"
+    "confirm": "Confirm"
   }
 }

@@ -13,8 +13,9 @@ analyzer:
   errors:
     implementation_imports: ignore
   exclude:
-    - lib/api/** # Auto-generated API client code
+    - lib/api/**  # Auto-generated API client code
     - lib/i18n/** # Auto-generated localization code
+    - scripts/**  # Utility scripts
 
 linter:
   rules:

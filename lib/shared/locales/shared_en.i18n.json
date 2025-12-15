@@ -29,7 +29,10 @@
     "numericOnly": "{fieldName} must contain only numbers",
     "passwordRegex": "{fieldName} must contain 1 uppercase, 1 lowercase, and 1 digit",
     "invalidPhone": "{fieldName} is invalid for the selected country",
-    "invalidMobilePhone": "{fieldName} must be a valid mobile number the selected country"
+    "invalidMobilePhone": "{fieldName} must be a valid mobile number the selected country",
+    "newPassword": "New password",
+    "currentPassword": "Current password",
+    "confirmNewPassword": "Confirm new password"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again later.",

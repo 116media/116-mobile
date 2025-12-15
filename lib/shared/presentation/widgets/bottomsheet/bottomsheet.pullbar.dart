@@ -17,7 +17,7 @@ class BottomSheetPullBar extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: context.sizing.s32,
+        width: context.sizing.s80,
         height: context.sizing.s4,
         decoration: BoxDecoration(
           color: color,

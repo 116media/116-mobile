@@ -10,8 +10,12 @@ import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/repositories/settings.repository.port.dart' show ISettingsRepository;
+import '../../domain/entities/changepassword-response/changepassword.response.entity.dart'
+    show ChangePasswordResponseEntity;
 import '../../domain/entities/profile-response/profile.response.entity.dart'
     show ProfileResponseEntity;
+import '../../presentation/models/changepassword.credentials.model.dart'
+    show ChangePasswordCredentialsModel;
 import '../../presentation/models/profile.model.dart' show ProfileModel;
 
 /// Cached settings repository (decorator pattern).
@@ -55,5 +59,14 @@ class SettingsCachedRepository implements ISettingsRepository {
         return Left(ProblemMapper.toFailure(exception));
       }
     });
+  }
+
+  @override
+  Future<Either<Failure, ChangePasswordResponseEntity>> changePassword(
+    ChangePasswordCredentialsModel credentials,
+  ) async {
+    // No caching needed - changePassword is a transient operation that changes password.
+    // The success/failure result doesn't need to be persisted.
+    return _remoteRepository.changePassword(credentials);
   }
 }

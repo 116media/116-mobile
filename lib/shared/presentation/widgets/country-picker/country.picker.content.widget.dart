@@ -88,7 +88,7 @@ class _CountryPickerContentState extends State<CountryPickerContent> {
       child: Container(
         constraints: BoxConstraints(maxHeight: maxHeight),
         padding: EdgeInsets.only(
-          top: context.sizing.s24,
+          top: context.sizing.s12,
           left: context.sizing.s16,
           right: context.sizing.s16,
           bottom: keyboardHeight > 0 ? 0 : context.sizing.s16,

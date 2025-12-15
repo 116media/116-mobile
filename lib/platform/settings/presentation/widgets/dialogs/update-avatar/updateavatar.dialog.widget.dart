@@ -156,9 +156,12 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
             insetPadding: EdgeInsets.symmetric(horizontal: context.sizing.s12),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.sizing.s16)),
             child: Padding(
-              padding: EdgeInsets.all(context.sizing.s24),
+              padding: EdgeInsets.symmetric(
+                vertical: context.sizing.s12,
+                horizontal: context.sizing.s24,
+              ),
               child: Column(
-                spacing: context.sizing.s24,
+                spacing: context.sizing.s32,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const BottomSheetPullBar(),
