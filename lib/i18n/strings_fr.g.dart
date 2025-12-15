@@ -789,11 +789,16 @@ class TranslationsSettingsAccountFr extends TranslationsSettingsAccountEn {
   @override
   String get password => 'Mot de passe';
   @override
-  String get passwordSubtitle => 'Changer votre mot de passe';
+  String get passwordTitle => 'Changer Mot De Passe';
+  @override
+  String get passwordSubtitle =>
+      'Entrez votre nouveau mot de passe ci-dessous pour le mettre à jour.';
+  @override
+  String get passwordChangeSuccess => 'Mot de passe changé avec succès!';
   @override
   String get privacySecurity => 'Confidentialité et sécurité';
   @override
-  String get changePassword => 'Changer le mot de passe';
+  String get changePassword => 'Changer votre mot de passe';
   @override
   String get deleteTitle => 'Supprimer compte';
   @override
@@ -957,6 +962,12 @@ class TranslationsSharedValidationFr extends TranslationsSharedValidationEn {
   @override
   String invalidMobilePhone({required Object fieldName}) =>
       '${fieldName} doit être un numéro mobile valide pour le pays sélectionné';
+  @override
+  String get newPassword => 'Nouveau mot de passe';
+  @override
+  String get currentPassword => 'Ancien mot de passe';
+  @override
+  String get confirmNewPassword => 'Confirmer nouveau mot de passe';
 }
 
 // Path: shared.errors
@@ -1233,9 +1244,12 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec de la sélection de l\'image: ${error}',
       'settings.account.title' => 'Compte',
       'settings.account.password' => 'Mot de passe',
-      'settings.account.passwordSubtitle' => 'Changer votre mot de passe',
+      'settings.account.passwordTitle' => 'Changer Mot De Passe',
+      'settings.account.passwordSubtitle' =>
+        'Entrez votre nouveau mot de passe ci-dessous pour le mettre à jour.',
+      'settings.account.passwordChangeSuccess' => 'Mot de passe changé avec succès!',
       'settings.account.privacySecurity' => 'Confidentialité et sécurité',
-      'settings.account.changePassword' => 'Changer le mot de passe',
+      'settings.account.changePassword' => 'Changer votre mot de passe',
       'settings.account.deleteTitle' => 'Supprimer compte',
       'settings.account.deleteMessage' =>
         'Êtes-vous sûr de supprimer votre compte? Cette action ne peut pas être annulée.',
@@ -1298,6 +1312,9 @@ extension on TranslationsFr {
       'shared.validation.invalidMobilePhone' =>
         ({required Object fieldName}) =>
             '${fieldName} doit être un numéro mobile valide pour le pays sélectionné',
+      'shared.validation.newPassword' => 'Nouveau mot de passe',
+      'shared.validation.currentPassword' => 'Ancien mot de passe',
+      'shared.validation.confirmNewPassword' => 'Confirmer nouveau mot de passe',
       'shared.errors.unknown' => 'Une erreur s\'est produite. Veuillez réessayer.',
       'shared.errors.network' => 'Pas de connexion Internet. Veuillez vérifier votre réseau.',
       'shared.errors.timeout' => 'La demande a expiré. Veuillez réessayer.',
