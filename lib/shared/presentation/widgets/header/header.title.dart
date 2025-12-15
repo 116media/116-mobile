@@ -19,7 +19,7 @@ class HeaderTitle extends StatelessWidget {
           title,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: context.sizing.s24,
+            fontSize: context.sizing.s20,
             color: context.isDarkMode ? ColorsUtil.neutral200 : ColorsUtil.neutral700,
           ),
         ),
@@ -29,8 +29,8 @@ class HeaderTitle extends StatelessWidget {
           subtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: context.sizing.s14,
             fontWeight: FontWeight.w500,
+            fontSize: context.sizing.s14,
             color: ColorsUtil.neutral400,
           ),
         ),
