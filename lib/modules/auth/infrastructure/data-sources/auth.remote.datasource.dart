@@ -16,7 +16,8 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicSocialLoginRequest,
         PublicSocialLoginResponse,
         PublicVerifyOtpRequest,
-        PublicVerifyOtpResponse;
+        PublicVerifyOtpResponse,
+        PublicSignOutResponse;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 import '../../../../shared/infrastructure/exceptions/remote/unknown.exception.dart'
@@ -40,10 +41,10 @@ import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyO
 /// generated [Api116] client. Converts HTTP error responses to typed exceptions
 /// using [ProblemMapper]. Network errors (SocketException, timeouts, etc.) are
 /// caught and converted to [UnknownException].
-class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
+class AuthRemoteDataSource implements IAuthRemoteDataSource {
   final Api116 _apiClient;
 
-  const AuthRemoteDataSourceImpl(this._apiClient);
+  const AuthRemoteDataSource(this._apiClient);
 
   @override
   Future<PublicLoginResponse> signIn(SignInCredentialsModel model) async {
@@ -209,6 +210,31 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
 
       if (response.isSuccessful) {
         return PublicSocialLoginResponse(user: response.body!.user, token: response.body!.token);
+      } else {
+        throw ProblemMapper.toException(response as Response);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw UnknownException();
+    }
+  }
+
+  /// Signs out the current user by calling the PublicSignOut API endpoint.
+  ///
+  /// Makes a request to the backend to invalidate the user's session.
+  /// On successful response, returns [PublicSignOutResponse] with success status.
+  ///
+  /// **Throws:**
+  /// - [ServerException] if the server returns an error response (e.g., invalid token)
+  /// - [UnknownException] if network is unreachable or other unexpected errors occur
+  @override
+  Future<PublicSignOutResponse> signOut() async {
+    try {
+      final response = await _apiClient.PublicSignOut();
+
+      if (response.isSuccessful) {
+        return response.body!;
       } else {
         throw ProblemMapper.toException(response as Response);
       }
