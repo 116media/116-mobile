@@ -80,6 +80,18 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
   }
 
   @override
+  Future<void> clearUser() async {
+    try {
+      await _authBox.delete(kUserKey);
+    } catch (e) {
+      throw WriteFailedCacheException(
+        instance: 'AuthLocalDataSource.clearUser',
+        detail: t.auth.cacheError.clearUser(error: e.toString()),
+      );
+    }
+  }
+
+  @override
   Stream<UserModel?> watchUser() async* {
     try {
       yield _authBox.get(kUserKey) as UserModel?;
