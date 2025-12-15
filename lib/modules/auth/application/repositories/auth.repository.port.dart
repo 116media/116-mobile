@@ -8,6 +8,8 @@ import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
     show ResetPasswordResponseEntity;
+import '../../domain/entities/signout-response/signout.response.entity.dart'
+    show SignOutResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
@@ -85,4 +87,13 @@ abstract class IAuthRepository {
   /// Returns [Right] with [AuthResponseEntity] on success,
   /// or [Left] with [Failure] on error.
   Future<Either<Failure, AuthResponseEntity>> signInWithFacebook();
+
+  /// Signs out the current user by clearing local session data.
+  ///
+  /// Removes authentication token and user profile data from local storage.
+  /// This operation only affects local data and does not invalidate server-side sessions.
+  ///
+  /// Returns [Right] with [SignOutResponseEntity] on success,
+  /// or [Left] with [Failure] if clearing local data fails.
+  Future<Either<Failure, SignOutResponseEntity>> signOut();
 }
