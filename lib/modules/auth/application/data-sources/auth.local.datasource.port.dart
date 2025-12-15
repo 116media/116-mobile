@@ -57,4 +57,12 @@ abstract class IAuthLocalDataSource {
   /// **Throws:**
   /// - [CacheException] if deleting from local storage fails
   Future<void> clearToken();
+
+  /// Removes the user information from local storage.
+  ///
+  /// Used during sign out to clear the cached user profile data.
+  ///
+  /// **Throws:**
+  /// - [CacheException] if deleting from local storage fails
+  Future<void> clearUser();
 }
