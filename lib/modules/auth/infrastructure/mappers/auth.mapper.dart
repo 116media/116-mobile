@@ -10,7 +10,8 @@ import '../../../../api/client/api_116.models.swagger.dart'
         PublicSocialLoginResponse,
         PublicVerifyOtpResponse,
         RoleDto,
-        UserResponseDto;
+        UserResponseDto,
+        PublicSignOutResponse;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../domain/entities/file/file.entity.dart' show FileEntity;
 import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
@@ -21,6 +22,8 @@ import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
 import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
     show ResetPasswordResponseEntity;
 import '../../domain/entities/role/role.entity.dart' show RoleEntity;
+import '../../domain/entities/signout-response/signout.response.entity.dart'
+    show SignOutResponseEntity;
 import '../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
@@ -125,5 +128,10 @@ class AuthMapper {
     PublicResetPasswordResponse response,
   ) {
     return ResetPasswordResponseEntity(isSuccess: response.isSuccess);
+  }
+
+  /// Maps PublicSignOutResponse to SignOutResponseEntity domain entity.
+  static SignOutResponseEntity signoutResponseFromDto(PublicSignOutResponse response) {
+    return SignOutResponseEntity(isSuccess: response.isSuccess);
   }
 }
