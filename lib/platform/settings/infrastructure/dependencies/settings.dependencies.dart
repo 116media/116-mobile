@@ -6,8 +6,10 @@ import '../../../../modules/auth/application/data-sources/auth.local.datasource.
 import '../../application/data-sources/settings.remote.datasource.port.dart'
     show ISettingsRemoteDataSource;
 import '../../application/repositories/settings.repository.port.dart' show ISettingsRepository;
+import '../../application/usecases/changepassword.usecase.dart' show ChangePasswordUseCase;
 import '../../application/usecases/updateavatar.usecase.dart' show UpdateAvatarUseCase;
 import '../../application/usecases/updateprofile.usecase.dart' show UpdateProfileUseCase;
+import '../../presentation/bloc/changepassword/changepassword.bloc.dart' show ChangePasswordBloc;
 import '../../presentation/bloc/updateavatar/updateavatar.bloc.dart' show UpdateAvatarBloc;
 import '../../presentation/bloc/updateprofile/updateprofile.bloc.dart' show UpdateProfileBloc;
 import '../data-sources/settings.remote.datasource.dart' show SettingsRemoteDataSourceImpl;
@@ -30,8 +32,10 @@ Future<void> registerSettingsDependencies(GetIt sl) async {
   // Use cases
   sl.registerFactory<UpdateProfileUseCase>(() => UpdateProfileUseCase(sl<ISettingsRepository>()));
   sl.registerFactory<UpdateAvatarUseCase>(() => UpdateAvatarUseCase(sl<ISettingsRepository>()));
+  sl.registerFactory<ChangePasswordUseCase>(() => ChangePasswordUseCase(sl<ISettingsRepository>()));
 
   // BLoCs
   sl.registerFactory<UpdateProfileBloc>(() => UpdateProfileBloc(sl<UpdateProfileUseCase>()));
   sl.registerFactory<UpdateAvatarBloc>(() => UpdateAvatarBloc(sl<UpdateAvatarUseCase>()));
+  sl.registerFactory<ChangePasswordBloc>(() => ChangePasswordBloc(sl<ChangePasswordUseCase>()));
 }
