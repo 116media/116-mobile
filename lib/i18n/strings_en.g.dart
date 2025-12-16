@@ -320,7 +320,7 @@ class TranslationsSettingsEn {
   late final TranslationsSettingsFollowUsEn followUs = TranslationsSettingsFollowUsEn.internal(
     _root,
   );
-  late final TranslationsSettingsLogoutEn logout = TranslationsSettingsLogoutEn.internal(_root);
+  late final TranslationsSettingsSignoutEn signout = TranslationsSettingsSignoutEn.internal(_root);
 }
 
 // Path: shared
@@ -686,6 +686,11 @@ class TranslationsAuthCacheErrorEn {
   /// fr: 'Échec lors de la suppression du token: {error}'
   String clearToken({required Object error}) => 'Failed to clear token: ${error}';
 
+  /// en: 'Failed to clear user data: {error}'
+  ///
+  /// fr: 'Échec lors de la suppression des données utilisateur: {error}'
+  String clearUser({required Object error}) => 'Failed to clear user data: ${error}';
+
   /// en: 'Failed to watch user: {error}'
   ///
   /// fr: 'Échec lors de la surveillance de l'utilisateur: {error}'
@@ -1019,7 +1024,7 @@ class TranslationsSettingsProfileEn {
 
   /// en: 'Sign in to get closer to the artists, the stories, and the heartbeat of the game.'
   ///
-  /// fr: 'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.'
+  /// fr: 'Connectez-vous pour vous rapprocher des artistes, des histoires et le rythme du game.'
   String get guestMessage =>
       'Sign in to get closer to the artists, the stories, and the heartbeat of the game.';
 }
@@ -1215,9 +1220,9 @@ class TranslationsSettingsFollowUsEn {
   String get title => 'Follow us';
 }
 
-// Path: settings.logout
-class TranslationsSettingsLogoutEn {
-  TranslationsSettingsLogoutEn.internal(this._root);
+// Path: settings.signout
+class TranslationsSettingsSignoutEn {
+  TranslationsSettingsSignoutEn.internal(this._root);
 
   final Translations _root; // ignore: unused_field
 
@@ -1242,6 +1247,11 @@ class TranslationsSettingsLogoutEn {
   ///
   /// fr: 'Confirmer'
   String get confirm => 'Confirm';
+
+  /// en: 'You have been logged out successfully!'
+  ///
+  /// fr: 'Vous avez été déconnecté avec succès!'
+  String get success => 'You have been logged out successfully!';
 }
 
 // Path: shared.common
@@ -1672,6 +1682,8 @@ extension on Translations {
         ({required Object error}) => 'Failed to retrieve token: ${error}',
       'auth.cacheError.clearToken' =>
         ({required Object error}) => 'Failed to clear token: ${error}',
+      'auth.cacheError.clearUser' =>
+        ({required Object error}) => 'Failed to clear user data: ${error}',
       'auth.cacheError.watchUser' => ({required Object error}) => 'Failed to watch user: ${error}',
       'auth.facebookError.signInCancelled' => 'Facebook sign-in cancelled by the user.',
       'auth.facebookError.unexpected' =>
@@ -1791,10 +1803,11 @@ extension on Translations {
       'settings.support.terms' => 'Terms & conditions',
       'settings.support.copyright' => 'Copyright compliance',
       'settings.followUs.title' => 'Follow us',
-      'settings.logout.title' => 'Log Out',
-      'settings.logout.message' => 'Are you sure you want to log out?',
-      'settings.logout.button' => 'Log Out',
-      'settings.logout.confirm' => 'Confirm',
+      'settings.signout.title' => 'Log Out',
+      'settings.signout.message' => 'Are you sure you want to log out?',
+      'settings.signout.button' => 'Log Out',
+      'settings.signout.confirm' => 'Confirm',
+      'settings.signout.success' => 'You have been logged out successfully!',
       'shared.common.kContinue' => 'Continue',
       'shared.common.cancel' => 'Cancel',
       'shared.common.save' => 'Save',

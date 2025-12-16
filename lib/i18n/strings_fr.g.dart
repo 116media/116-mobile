@@ -279,7 +279,7 @@ class TranslationsSettingsFr extends TranslationsSettingsEn {
   @override
   late final TranslationsSettingsFollowUsFr followUs = TranslationsSettingsFollowUsFr._(_root);
   @override
-  late final TranslationsSettingsLogoutFr logout = TranslationsSettingsLogoutFr._(_root);
+  late final TranslationsSettingsSignoutFr signout = TranslationsSettingsSignoutFr._(_root);
 }
 
 // Path: shared
@@ -500,6 +500,9 @@ class TranslationsAuthCacheErrorFr extends TranslationsAuthCacheErrorEn {
   String getToken({required Object error}) => 'Échec lors de la récupération du token: ${error}';
   @override
   String clearToken({required Object error}) => 'Échec lors de la suppression du token: ${error}';
+  @override
+  String clearUser({required Object error}) =>
+      'Échec lors de la suppression des données utilisateur: ${error}';
   @override
   String watchUser({required Object error}) =>
       'Échec lors de la surveillance de l\'utilisateur: ${error}';
@@ -752,7 +755,7 @@ class TranslationsSettingsProfileFr extends TranslationsSettingsProfileEn {
   String get guestMode => 'Mode Invité';
   @override
   String get guestMessage =>
-      'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.';
+      'Connectez-vous pour vous rapprocher des artistes, des histoires et le rythme du game.';
 }
 
 // Path: settings.avatar
@@ -863,9 +866,9 @@ class TranslationsSettingsFollowUsFr extends TranslationsSettingsFollowUsEn {
   String get title => 'Suivez-nous';
 }
 
-// Path: settings.logout
-class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
-  TranslationsSettingsLogoutFr._(TranslationsFr root) : this._root = root, super.internal(root);
+// Path: settings.signout
+class TranslationsSettingsSignoutFr extends TranslationsSettingsSignoutEn {
+  TranslationsSettingsSignoutFr._(TranslationsFr root) : this._root = root, super.internal(root);
 
   final TranslationsFr _root; // ignore: unused_field
 
@@ -878,6 +881,8 @@ class TranslationsSettingsLogoutFr extends TranslationsSettingsLogoutEn {
   String get button => 'Se Déconnecter';
   @override
   String get confirm => 'Confirmer';
+  @override
+  String get success => 'Vous avez été déconnecté avec succès!';
 }
 
 // Path: shared.common
@@ -1146,6 +1151,9 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec lors de la récupération du token: ${error}',
       'auth.cacheError.clearToken' =>
         ({required Object error}) => 'Échec lors de la suppression du token: ${error}',
+      'auth.cacheError.clearUser' =>
+        ({required Object error}) =>
+            'Échec lors de la suppression des données utilisateur: ${error}',
       'auth.cacheError.watchUser' =>
         ({required Object error}) => 'Échec lors de la surveillance de l\'utilisateur: ${error}',
       'auth.facebookError.signInCancelled' =>
@@ -1233,7 +1241,7 @@ extension on TranslationsFr {
         'Mettez à jour les détails du profil, en particulier votre nom d\'utilisateur et votre numéro de téléphone.',
       'settings.profile.guestMode' => 'Mode Invité',
       'settings.profile.guestMessage' =>
-        'Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu.',
+        'Connectez-vous pour vous rapprocher des artistes, des histoires et le rythme du game.',
       'settings.avatar.title' => 'Modifier l\'Avatar',
       'settings.avatar.subtitle' =>
         'Sélectionnez une image depuis votre caméra ou votre galerie pour définir votre nouvel avatar.',
@@ -1267,10 +1275,11 @@ extension on TranslationsFr {
       'settings.support.terms' => 'Conditions générales',
       'settings.support.copyright' => 'Conformité aux droits d\'auteur',
       'settings.followUs.title' => 'Suivez-nous',
-      'settings.logout.title' => 'Déconnexion',
-      'settings.logout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
-      'settings.logout.button' => 'Se Déconnecter',
-      'settings.logout.confirm' => 'Confirmer',
+      'settings.signout.title' => 'Déconnexion',
+      'settings.signout.message' => 'Êtes-vous sûr de vouloir vous déconnecter?',
+      'settings.signout.button' => 'Se Déconnecter',
+      'settings.signout.confirm' => 'Confirmer',
+      'settings.signout.success' => 'Vous avez été déconnecté avec succès!',
       'shared.common.kContinue' => 'Continuer',
       'shared.common.cancel' => 'Annuler',
       'shared.common.save' => 'Enregistrer',
