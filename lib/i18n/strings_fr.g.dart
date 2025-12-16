@@ -501,11 +501,11 @@ class TranslationsAuthCacheErrorFr extends TranslationsAuthCacheErrorEn {
   @override
   String clearToken({required Object error}) => 'Échec lors de la suppression du token: ${error}';
   @override
-  String clearUser({required Object error}) =>
-      'Échec lors de la suppression des données utilisateur: ${error}';
-  @override
   String watchUser({required Object error}) =>
       'Échec lors de la surveillance de l\'utilisateur: ${error}';
+  @override
+  String clearUser({required Object error}) =>
+      'Échec lors de la suppression des données utilisateur: ${error}';
 }
 
 // Path: auth.facebookError
@@ -1151,11 +1151,11 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec lors de la récupération du token: ${error}',
       'auth.cacheError.clearToken' =>
         ({required Object error}) => 'Échec lors de la suppression du token: ${error}',
+      'auth.cacheError.watchUser' =>
+        ({required Object error}) => 'Échec lors de la surveillance de l\'utilisateur: ${error}',
       'auth.cacheError.clearUser' =>
         ({required Object error}) =>
             'Échec lors de la suppression des données utilisateur: ${error}',
-      'auth.cacheError.watchUser' =>
-        ({required Object error}) => 'Échec lors de la surveillance de l\'utilisateur: ${error}',
       'auth.facebookError.signInCancelled' =>
         'La connexion Facebook a été annulée par l\'utilisateur.',
       'auth.facebookError.unexpected' =>

@@ -686,15 +686,15 @@ class TranslationsAuthCacheErrorEn {
   /// fr: 'Échec lors de la suppression du token: {error}'
   String clearToken({required Object error}) => 'Failed to clear token: ${error}';
 
-  /// en: 'Failed to clear user data: {error}'
-  ///
-  /// fr: 'Échec lors de la suppression des données utilisateur: {error}'
-  String clearUser({required Object error}) => 'Failed to clear user data: ${error}';
-
   /// en: 'Failed to watch user: {error}'
   ///
   /// fr: 'Échec lors de la surveillance de l'utilisateur: {error}'
   String watchUser({required Object error}) => 'Failed to watch user: ${error}';
+
+  /// en: 'Failed to clear user data: {error}'
+  ///
+  /// fr: 'Échec lors de la suppression des données utilisateur: {error}'
+  String clearUser({required Object error}) => 'Failed to clear user data: ${error}';
 }
 
 // Path: auth.facebookError
@@ -1682,9 +1682,9 @@ extension on Translations {
         ({required Object error}) => 'Failed to retrieve token: ${error}',
       'auth.cacheError.clearToken' =>
         ({required Object error}) => 'Failed to clear token: ${error}',
+      'auth.cacheError.watchUser' => ({required Object error}) => 'Failed to watch user: ${error}',
       'auth.cacheError.clearUser' =>
         ({required Object error}) => 'Failed to clear user data: ${error}',
-      'auth.cacheError.watchUser' => ({required Object error}) => 'Failed to watch user: ${error}',
       'auth.facebookError.signInCancelled' => 'Facebook sign-in cancelled by the user.',
       'auth.facebookError.unexpected' =>
         ({required Object error}) => 'Unexpected Facebook sign-in error: ${error}',

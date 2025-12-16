@@ -20,7 +20,7 @@ import '../../../../shared/presentation/utils/colors.util.dart' show ColorsUtil;
 import '../../../../shared/presentation/utils/dialog.util.dart' show DialogUtil;
 import '../../../../shared/presentation/widgets/app-version/appversion.widget.dart' show AppVersion;
 import '../widgets/sections/account.section.widget.dart' show AccountSection;
-import '../widgets/sections/logout.section.widget.dart' show LogoutSection;
+import '../widgets/sections/signout.section.widget.dart' show SignOutSection;
 import '../widgets/sections/preferences.section.widget.dart' show PreferencesSection;
 import '../widgets/sections/profile.section.widget.dart' show ProfileSection;
 import '../widgets/sections/followus.section.widget.dart' show FollowUsSection;
@@ -34,7 +34,7 @@ import '../widgets/sections/support.section.widget.dart' show SupportSection;
 /// - Account & security settings
 /// - Support links
 /// - Social media links
-/// - Logout functionality
+/// - Sign-out functionality
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -44,7 +44,7 @@ class SettingsScreen extends StatelessWidget {
 
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (rootContext.mounted) {
-          DialogUtil.success(rootContext, message: t.settings.logout.success);
+          DialogUtil.success(rootContext, message: t.settings.signout.success);
         }
       });
     } else if (state is SignOutFailure) {
@@ -52,12 +52,12 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showSignOutDialog(BuildContext context) {
     DialogUtil.confirm(
       context,
-      title: t.settings.logout.title,
-      message: t.settings.logout.message,
-      confirmText: t.settings.logout.confirm,
+      title: t.settings.signout.title,
+      message: t.settings.signout.message,
+      confirmText: t.settings.signout.confirm,
       cancelText: t.shared.common.cancel,
       icon: Icons.warning_amber_rounded,
       iconColor: ColorsUtil.error,
@@ -98,7 +98,7 @@ class SettingsScreen extends StatelessWidget {
                         const PreferencesSection(),
                         const SupportSection(),
                         const FollowUsSection(),
-                        LogoutSection(onLogout: () => _showLogoutDialog(context)),
+                        SignOutSection(onSignOut: () => _showSignOutDialog(context)),
                         AppVersion(),
                       ],
                     ),

@@ -62,7 +62,8 @@
     "setToken": "Failed to save token: {error}",
     "getToken": "Failed to retrieve token: {error}",
     "clearToken": "Failed to clear token: {error}",
-    "watchUser": "Failed to watch user: {error}"
+    "watchUser": "Failed to watch user: {error}",
+    "clearUser": "Failed to clear user data: {error}"
   },
   "facebookError": {
     "signInCancelled": "Facebook sign-in cancelled by the user.",

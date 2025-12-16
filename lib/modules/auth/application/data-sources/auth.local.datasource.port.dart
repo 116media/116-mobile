@@ -52,7 +52,7 @@ abstract class IAuthLocalDataSource {
 
   /// Removes the authentication token from local storage.
   ///
-  /// Used during logout or token invalidation to clear the user's session.
+  /// Used during signout or token invalidation to clear the user's session.
   ///
   /// **Throws:**
   /// - [CacheException] if deleting from local storage fails
