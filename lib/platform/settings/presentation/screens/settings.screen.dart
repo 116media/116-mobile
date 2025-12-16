@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocBuilder, BlocProvider;
-import 'package:go_router/go_router.dart' show GoRouter;
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocBuilder, BlocListener, BlocProvider, ReadContext;
 
 import '../../../../i18n/strings.g.dart' show t;
-import '../../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
+import '../../../../modules/auth/presentation/bloc/signout/signout.bloc.dart' show SignOutBloc;
+import '../../../../modules/auth/presentation/bloc/signout/signout.event.dart'
+    show SignOutSubmitted;
+import '../../../../modules/auth/presentation/bloc/signout/signout.state.dart'
+    show SignOutState, SignOutSuccess, SignOutFailure;
 import '../../../../platform/preferences/presentation/bloc/preferences.bloc.dart'
     show PreferencesBloc;
 import '../../../../platform/preferences/presentation/bloc/preferences.event.dart'
@@ -34,6 +38,20 @@ import '../widgets/sections/support.section.widget.dart' show SupportSection;
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
+  void _signOutStateListener(BuildContext ctx, SignOutState state) {
+    if (state is SignOutSuccess) {
+      final rootContext = Navigator.of(ctx, rootNavigator: true).context;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (rootContext.mounted) {
+          DialogUtil.success(rootContext, message: t.settings.logout.success);
+        }
+      });
+    } else if (state is SignOutFailure) {
+      DialogUtil.error(ctx, message: state.failure.detail);
+    }
+  }
+
   void _showLogoutDialog(BuildContext context) {
     DialogUtil.confirm(
       context,
@@ -46,9 +64,8 @@ class SettingsScreen extends StatelessWidget {
       cancelColor: ColorsUtil.error,
       confirmColor: ColorsUtil.error,
       onConfirm: () {
-        // TODO: Implement logout logic
         Navigator.of(context).pop();
-        GoRouter.of(context).go(kHomeRoutePath);
+        context.read<SignOutBloc>().add(const SignOutSubmitted());
       },
     );
   }
@@ -57,33 +74,39 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<PreferencesBloc>()..add(const PreferencesLoadStarted()),
-      child: Scaffold(
-        appBar: AppBar(title: Text(t.settings.title), centerTitle: true),
-        body: BlocBuilder<PreferencesBloc, PreferencesState>(
-          builder: (context, prefsState) {
-            if (prefsState is! PreferencesSuccess) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      child: BlocProvider(
+        create: (context) => sl<SignOutBloc>(),
+        child: BlocListener<SignOutBloc, SignOutState>(
+          listener: _signOutStateListener,
+          child: Scaffold(
+            appBar: AppBar(title: Text(t.settings.title), centerTitle: true),
+            body: BlocBuilder<PreferencesBloc, PreferencesState>(
+              builder: (context, prefsState) {
+                if (prefsState is! PreferencesSuccess) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-            return SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: context.sizing.s16),
-                child: Column(
-                  spacing: context.sizing.s24,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const ProfileSection(),
-                    const AccountSection(),
-                    const PreferencesSection(),
-                    const SupportSection(),
-                    const FollowUsSection(),
-                    LogoutSection(onLogout: () => _showLogoutDialog(context)),
-                    AppVersion(),
-                  ],
-                ),
-              ),
-            );
-          },
+                return SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: context.sizing.s16),
+                    child: Column(
+                      spacing: context.sizing.s24,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const ProfileSection(),
+                        const AccountSection(),
+                        const PreferencesSection(),
+                        const SupportSection(),
+                        const FollowUsSection(),
+                        LogoutSection(onLogout: () => _showLogoutDialog(context)),
+                        AppVersion(),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
