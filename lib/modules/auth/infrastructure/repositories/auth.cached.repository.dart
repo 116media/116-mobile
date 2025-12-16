@@ -13,6 +13,8 @@ import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
     show ResetPasswordResponseEntity;
+import '../../domain/entities/signout-response/signout.response.entity.dart'
+    show SignOutResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
@@ -145,6 +147,22 @@ class AuthCachedRepository implements IAuthRepository {
       try {
         await _localDataSource.setToken(authEntity.token);
         await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
+        return Right(authEntity);
+      } on CacheException catch (exception) {
+        return Left(ProblemMapper.toFailure(exception));
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, SignOutResponseEntity>> signOut() async {
+    final result = await _remoteRepository.signOut();
+
+    // Only clear cache if successful
+    return result.fold((failure) => Left(failure), (authEntity) async {
+      try {
+        await _localDataSource.clearUser();
+        await _localDataSource.clearToken();
         return Right(authEntity);
       } on CacheException catch (exception) {
         return Left(ProblemMapper.toFailure(exception));

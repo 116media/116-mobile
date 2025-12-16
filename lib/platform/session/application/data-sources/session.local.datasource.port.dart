@@ -17,7 +17,7 @@ abstract class ISessionLocalDataSource {
 
   /// Removes all session data from local storage.
   ///
-  /// Used during logout or session reset.
+  /// Used during signout or session reset.
   Future<void> clearSessionState();
 
   /// Returns a stream that emits session state changes.

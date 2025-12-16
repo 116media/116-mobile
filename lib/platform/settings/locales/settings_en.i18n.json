@@ -50,10 +50,11 @@
   "followUs": {
     "title": "Follow us"
   },
-  "logout": {
+  "signout": {
     "title": "Log Out",
     "message": "Are you sure you want to log out?",
     "button": "Log Out",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "success": "You have been logged out successfully!"
   }
 }

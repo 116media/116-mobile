@@ -74,17 +74,17 @@ class SessionRepository implements ISessionRepository {
     String? userId,
   ) async {
     try {
-      // Get current state
       final current = await _localDataSource.getSessionState() ?? SessionStateModel.initial();
       final currentEntity = current.toEntity();
 
-      // Update auth status, only update userId if provided
-      final updatedEntity = userId != null
-          ? currentEntity.copyWith(authStatus: status, userId: userId)
-          : currentEntity.copyWith(authStatus: status);
+      final updatedEntity = switch ((status, userId)) {
+        (AuthStatus.guest, _) => currentEntity.copyWith(authStatus: status, userId: null),
+        (_, String userId) => currentEntity.copyWith(authStatus: status, userId: userId),
+        (_, null) => currentEntity.copyWith(authStatus: status),
+      };
+
       final updatedModel = SessionStateModel.fromEntity(updatedEntity);
 
-      // Save and return
       await _localDataSource.setSessionState(updatedModel);
       return Right(updatedEntity);
     } on CacheException catch (exception) {

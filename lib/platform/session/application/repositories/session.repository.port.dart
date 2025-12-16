@@ -33,7 +33,7 @@ abstract class ISessionRepository {
   /// or [Left] with [Failure] if update fails.
   Future<Either<Failure, SessionStateEntity>> updateAuthStatus(AuthStatus status, String? userId);
 
-  /// Clears all session data (logout).
+  /// Clears all session data (signout).
   ///
   /// Returns [Right] with reset [SessionStateEntity] on success,
   /// or [Left] with [Failure] if clear operation fails.

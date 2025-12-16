@@ -9,7 +9,7 @@
     "updateSuccess": "Profil mis à jour avec succès!",
     "updateSubtitle": "Mettez à jour les détails du profil, en particulier votre nom d'utilisateur et votre numéro de téléphone.",
     "guestMode": "Mode Invité",
-    "guestMessage": "Connectez-vous pour vous rapprocher des artistes, des histoires et du rythme du jeu."
+    "guestMessage": "Connectez-vous pour vous rapprocher des artistes, des histoires et le rythme du game."
   },
   "avatar": {
     "title": "Modifier l'Avatar",
@@ -50,10 +50,11 @@
   "followUs": {
     "title": "Suivez-nous"
   },
-  "logout": {
+  "signout": {
     "title": "Déconnexion",
     "message": "Êtes-vous sûr de vouloir vous déconnecter?",
     "button": "Se Déconnecter",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "success": "Vous avez été déconnecté avec succès!"
   }
 }

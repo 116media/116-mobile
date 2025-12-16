@@ -1642,7 +1642,7 @@ This endpoint performs the following operations:
 
 **Updateable Information:**
 
-- Email address (triggers re-verification and logout)
+- Email address (triggers re-verification and signout)
 - Username (must be unique across the system)
 - Phone number with country information
 - Country details (name, flag, ISO code, dial code)
@@ -1692,7 +1692,7 @@ This endpoint performs the following operations:
 
 **Important Notes:**
 
-- Email updates reset verification status and force logout
+- Email updates reset verification status and force signout
 - Phone number updates include country information
 - Only provided fields are updated (partial updates supported)
 - All validations are performed before any updates.''',

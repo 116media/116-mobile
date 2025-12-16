@@ -5,10 +5,10 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../repositories/session.repository.port.dart' show ISessionRepository;
 
-/// Use case for clearing session data (logout).
+/// Use case for clearing session data (signout).
 ///
 /// Resets the session to initial state, removing authentication and
-/// setting status to guest. Used during logout flow.
+/// setting status to guest. Used during signout flow.
 class ClearSessionUseCase implements IUseCase<void, SessionStateEntity> {
   final ISessionRepository _repository;
 

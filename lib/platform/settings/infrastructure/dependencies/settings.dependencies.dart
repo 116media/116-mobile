@@ -12,14 +12,14 @@ import '../../application/usecases/updateprofile.usecase.dart' show UpdateProfil
 import '../../presentation/bloc/changepassword/changepassword.bloc.dart' show ChangePasswordBloc;
 import '../../presentation/bloc/updateavatar/updateavatar.bloc.dart' show UpdateAvatarBloc;
 import '../../presentation/bloc/updateprofile/updateprofile.bloc.dart' show UpdateProfileBloc;
-import '../data-sources/settings.remote.datasource.dart' show SettingsRemoteDataSourceImpl;
+import '../data-sources/settings.remote.datasource.dart' show SettingsRemoteDataSource;
 import '../repositories/settings.cached.repository.dart' show SettingsCachedRepository;
 import '../repositories/settings.remote.repository.dart' show SettingsRemoteRepository;
 
 /// Registers all settings module dependencies.
 Future<void> registerSettingsDependencies(GetIt sl) async {
   // Data sources
-  sl.registerSingleton<ISettingsRemoteDataSource>(SettingsRemoteDataSourceImpl(sl<Api116>()));
+  sl.registerSingleton<ISettingsRemoteDataSource>(SettingsRemoteDataSource(sl<Api116>()));
 
   // Repository (decorator pattern: cached wraps remote)
   sl.registerSingleton<SettingsRemoteRepository>(

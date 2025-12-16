@@ -17,6 +17,7 @@ import '../../application/usecases/googlesignin.usecase.dart' show GoogleSignInU
 import '../../application/usecases/resendotp.usecase.dart' show ResendOtpUseCase;
 import '../../application/usecases/resetpassword.usecase.dart' show ResetPasswordUseCase;
 import '../../application/usecases/signin.usecase.dart' show SignInUseCase;
+import '../../application/usecases/signout.usecase.dart' show SignOutUseCase;
 import '../../application/usecases/signup.usecase.dart' show SignUpUseCase;
 import '../../application/usecases/verifyotp.usecase.dart' show VerifyOtpUseCase;
 import '../../presentation/bloc/facebooksignin/facebooksignin.bloc.dart' show FacebookSignInBloc;
@@ -25,9 +26,10 @@ import '../../presentation/bloc/googlesignin/googlesignin.bloc.dart' show Google
 import '../../presentation/bloc/resendotp/resendotp.bloc.dart' show ResendOtpBloc;
 import '../../presentation/bloc/resetpassword/resetpassword.bloc.dart' show ResetPasswordBloc;
 import '../../presentation/bloc/signin/signin.bloc.dart' show SignInBloc;
+import '../../presentation/bloc/signout/signout.bloc.dart' show SignOutBloc;
 import '../../presentation/bloc/signup/signup.bloc.dart' show SignUpBloc;
 import '../../presentation/bloc/verifyotp/verifyotp.bloc.dart' show VerifyOtpBloc;
-import '../data-sources/auth.remote.datasource.dart' show AuthRemoteDataSourceImpl;
+import '../data-sources/auth.remote.datasource.dart' show AuthRemoteDataSource;
 import '../data-sources/facebook.auth.datasource.dart' show FacebookAuthDataSource;
 import '../data-sources/google.auth.datasource.dart' show GoogleAuthDataSource;
 import '../repositories/auth.cached.repository.dart' show AuthCachedRepository;
@@ -39,7 +41,7 @@ import '../repositories/auth.remote.repository.dart' show AuthRemoteRepository;
 /// before Chopper client initialization (needed for AuthInterceptor).
 Future<void> registerAuthDependencies(GetIt sl) async {
   // Data sources (auth local datasource already registered in ServiceLocator)
-  sl.registerSingleton<IAuthRemoteDataSource>(AuthRemoteDataSourceImpl(sl<Api116>()));
+  sl.registerSingleton<IAuthRemoteDataSource>(AuthRemoteDataSource(sl<Api116>()));
   sl.registerSingleton<IGoogleAuthDataSource>(GoogleAuthDataSource(GoogleSignIn.instance));
   sl.registerSingleton<IFacebookAuthDataSource>(FacebookAuthDataSource(FacebookAuth.instance));
 
@@ -64,6 +66,7 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerFactory<ResetPasswordUseCase>(() => ResetPasswordUseCase(sl<IAuthRepository>()));
   sl.registerFactory<GoogleSignInUseCase>(() => GoogleSignInUseCase(sl<IAuthRepository>()));
   sl.registerFactory<FacebookSignInUseCase>(() => FacebookSignInUseCase(sl<IAuthRepository>()));
+  sl.registerFactory<SignOutUseCase>(() => SignOutUseCase(sl<IAuthRepository>()));
 
   // BLoCs
   sl.registerFactory<SignInBloc>(
@@ -83,5 +86,8 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   );
   sl.registerFactory<FacebookSignInBloc>(
     () => FacebookSignInBloc(sl<FacebookSignInUseCase>(), sl<UpdateAuthStatusUseCase>()),
+  );
+  sl.registerFactory<SignOutBloc>(
+    () => SignOutBloc(sl<SignOutUseCase>(), sl<UpdateAuthStatusUseCase>()),
   );
 }

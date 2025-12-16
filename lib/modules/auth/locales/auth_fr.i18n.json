@@ -62,7 +62,8 @@
     "setToken": "Échec lors de la sauvegarde du token: {error}",
     "getToken": "Échec lors de la récupération du token: {error}",
     "clearToken": "Échec lors de la suppression du token: {error}",
-    "watchUser": "Échec lors de la surveillance de l'utilisateur: {error}"
+    "watchUser": "Échec lors de la surveillance de l'utilisateur: {error}",
+    "clearUser": "Échec lors de la suppression des données utilisateur: {error}"
   },
   "facebookError": {
     "signInCancelled": "La connexion Facebook a été annulée par l'utilisateur.",
