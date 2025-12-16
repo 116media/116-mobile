@@ -29,10 +29,10 @@ import '../../presentation/models/profile.model.dart' show ProfileModel;
 /// generated [Api116] client. Converts HTTP error responses to typed exceptions
 /// using [ProblemMapper]. Network errors (SocketException, timeouts, etc.) are
 /// caught and converted to [UnknownException].
-class SettingsRemoteDataSourceImpl implements ISettingsRemoteDataSource {
+class SettingsRemoteDataSource implements ISettingsRemoteDataSource {
   final Api116 _apiClient;
 
-  const SettingsRemoteDataSourceImpl(this._apiClient);
+  const SettingsRemoteDataSource(this._apiClient);
 
   @override
   Future<PublicUpdateOwnProfileResponse> updateProfile(ProfileModel model) async {
