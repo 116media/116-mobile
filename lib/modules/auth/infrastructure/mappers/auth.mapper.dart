@@ -75,8 +75,6 @@ class AuthMapper {
       authProvider: dto.authProvider,
       isVerified: dto.isVerified,
       isActive: dto.isActive,
-      isLoggedIn: dto.isLoggedIn,
-      lastLoginAt: dto.lastLoginAt?.toIso8601String(),
       avatar: dto.avatar != null ? fileFromDto(dto.avatar!) : null,
       countryName: dto.countryName,
       countryIsoCode: dto.countryIsoCode,
