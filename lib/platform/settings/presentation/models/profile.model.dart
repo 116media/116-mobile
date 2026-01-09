@@ -8,7 +8,6 @@ class ProfileModel extends Equatable {
   final String? email;
   final String? userName;
   final String? countryName;
-  final String? countryFlagUrl;
   final String? countryIsoCode;
   final String? countryDialCode;
   final String? partialPhoneNumber;
@@ -17,7 +16,6 @@ class ProfileModel extends Equatable {
     this.email,
     this.userName,
     this.countryName,
-    this.countryFlagUrl,
     this.countryIsoCode,
     this.countryDialCode,
     this.partialPhoneNumber,
@@ -28,7 +26,6 @@ class ProfileModel extends Equatable {
     email,
     userName,
     countryName,
-    countryFlagUrl,
     countryIsoCode,
     countryDialCode,
     partialPhoneNumber,

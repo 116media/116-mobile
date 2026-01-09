@@ -19,7 +19,6 @@ class UserModel {
   final String? lastLoginAt;
   final FileModel? avatar;
   final String? countryName;
-  final String? countryFlagUrl;
   final String? countryIsoCode;
   final String? countryDialCode;
   final String? partialPhoneNumber;
@@ -40,7 +39,6 @@ class UserModel {
     this.lastLoginAt,
     this.avatar,
     this.countryName,
-    this.countryFlagUrl,
     this.countryIsoCode,
     this.countryDialCode,
     this.partialPhoneNumber,
@@ -64,7 +62,6 @@ class UserModel {
       lastLoginAt: lastLoginAt,
       avatar: avatar?.toEntity(),
       countryName: countryName,
-      countryFlagUrl: countryFlagUrl,
       countryIsoCode: countryIsoCode,
       countryDialCode: countryDialCode,
       partialPhoneNumber: partialPhoneNumber,
@@ -89,7 +86,6 @@ class UserModel {
       lastLoginAt: entity.lastLoginAt,
       avatar: entity.avatar != null ? FileModel.fromEntity(entity.avatar!) : null,
       countryName: entity.countryName,
-      countryFlagUrl: entity.countryFlagUrl,
       countryIsoCode: entity.countryIsoCode,
       countryDialCode: entity.countryDialCode,
       partialPhoneNumber: entity.partialPhoneNumber,

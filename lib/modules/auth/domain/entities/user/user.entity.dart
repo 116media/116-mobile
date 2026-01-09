@@ -27,7 +27,6 @@ abstract class UserEntity with _$UserEntity {
     String? lastLoginAt,
     FileEntity? avatar,
     String? countryName,
-    String? countryFlagUrl,
     String? countryIsoCode,
     String? countryDialCode,
     String? partialPhoneNumber,

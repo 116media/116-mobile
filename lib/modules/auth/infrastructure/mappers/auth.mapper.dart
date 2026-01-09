@@ -79,7 +79,6 @@ class AuthMapper {
       lastLoginAt: dto.lastLoginAt?.toIso8601String(),
       avatar: dto.avatar != null ? fileFromDto(dto.avatar!) : null,
       countryName: dto.countryName,
-      countryFlagUrl: dto.countryFlagUrl,
       countryIsoCode: dto.countryIsoCode,
       countryDialCode: dto.countryDialCode,
       partialPhoneNumber: dto.partialPhoneNumber,
