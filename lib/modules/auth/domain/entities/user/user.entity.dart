@@ -23,8 +23,6 @@ abstract class UserEntity with _$UserEntity {
     required String authProvider,
     required bool isVerified,
     required bool isActive,
-    required bool isLoggedIn,
-    String? lastLoginAt,
     FileEntity? avatar,
     String? countryName,
     String? countryIsoCode,

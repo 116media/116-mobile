@@ -15,8 +15,6 @@ class UserModel {
   final String authProvider;
   final bool isVerified;
   final bool isActive;
-  final bool isLoggedIn;
-  final String? lastLoginAt;
   final FileModel? avatar;
   final String? countryName;
   final String? countryIsoCode;
@@ -35,8 +33,6 @@ class UserModel {
     required this.authProvider,
     required this.isVerified,
     required this.isActive,
-    required this.isLoggedIn,
-    this.lastLoginAt,
     this.avatar,
     this.countryName,
     this.countryIsoCode,
@@ -58,8 +54,6 @@ class UserModel {
       authProvider: authProvider,
       isVerified: isVerified,
       isActive: isActive,
-      isLoggedIn: isLoggedIn,
-      lastLoginAt: lastLoginAt,
       avatar: avatar?.toEntity(),
       countryName: countryName,
       countryIsoCode: countryIsoCode,
@@ -82,8 +76,6 @@ class UserModel {
       authProvider: entity.authProvider,
       isVerified: entity.isVerified,
       isActive: entity.isActive,
-      isLoggedIn: entity.isLoggedIn,
-      lastLoginAt: entity.lastLoginAt,
       avatar: entity.avatar != null ? FileModel.fromEntity(entity.avatar!) : null,
       countryName: entity.countryName,
       countryIsoCode: entity.countryIsoCode,
