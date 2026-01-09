@@ -8,7 +8,7 @@
     "/api/v1/admin/auth/verify-otp": {
       "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Verify OTP code for admin account activation",
         "description": "    Verifies the OTP (One-Time Password) code sent to the admin user's email for various purposes.\n    The admin user must verify their account within the OTP expiration window to gain full access.\n    \n\n    **Supported OTP Purposes:**\n\n    - **Email Verification**: During admin account registration\n\n    - **Account Recovery**: For account recovery processes\n\n    \n\n    This endpoint performs the following operations: \n\n    - Validates the OTP code format (6-digit numeric)\n\n    - Checks if the admin user exists and is not already verified\n\n    - Validates the OTP against the database (not expired, not used, under attempt limit)\n\n    - Marks the admin user account as verified upon successful validation\n\n    - Invalidates all remaining OTPs for the admin user\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to admin users with unverified accounts\n\n    \n\n    **Security Features:**\n\n    - OTP expiration (60 minutes)\n\n    - Maximum 3 verification attempts per OTP\n\n    - Single-use OTP codes\n\n    - Automatic cleanup of expired/used OTPs\n\n    - Admin role verification\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with verification success status\n\n    - Returns 400 Bad Request for invalid OTP code format\n\n    - Returns 401 Unauthorized for expired OTP\n\n    - Returns 403 Forbidden for maximum attempts reached\n\n    - Returns 404 Not Found for no valid OTP found\n\n    - Returns 409 Conflict if account is already verified\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid OTP code format or value\n\n    - AuthenticationException (401): OTP has expired\n\n    - AuthorizationException (403): Maximum verification attempts reached\n\n    - NotFoundException (404): No valid OTP found for the admin user.",
@@ -83,18 +83,90 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/auth/sign-out-all": {
+      "post": {
+        "tags": [
+          "admin::identity"
+        ],
+        "summary": "Sign out the authenticated admin user from all devices",
+        "description": "    Signs out the currently authenticated admin user from all devices by invalidating all active sessions.\n    After successful sign-out, all refresh tokens will be revoked and the admin must re-authenticate on all devices.\n    \n\n    This endpoint is commonly used:\n\n    - After password changes (security best practice)\n\n    - When admin suspects account compromise\n\n    - When enabling two-factor authentication\n\n    - As a \"Sign Out Everywhere\" feature\\n\n    \\n\n    **Authentication Requirements:**\\n\n    - Valid JWT Bearer token with admin privileges\\n\n    - Account must be active (not suspended)\\n\n    \\n\n    **Security Features:**\\n\n    - Invalidates all active sessions across all devices\\n\n    - Uses soft delete for session tracking and analytics\\n\n    - Prevents token reuse after sign-out\\n\n    - Idempotent operation (safe to call multiple times)\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with success status\\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\\n\n    - Returns 403 Forbidden for non-admin users or inactive accounts\\n\n    \\n\n    **Process Flow:**\\n\n    1. Extracts admin user ID from JWT token\\n\n    2. Validates account is active and has admin privileges\\n\n    3. Soft deletes all active sessions for the admin user\\n\n    4. Returns success response.",
+        "operationId": "AdminSignOutFromAllDevices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSignOutFromAllDevicesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/v1/admin/auth/sign-out": {
-      "delete": {
+      "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Sign out the authenticated admin user",
         "description": "    Signs out the currently authenticated admin user by updating their login status.\n    After successful sign-out, the client should discard the JWT token.\n    \n\n    This endpoint performs secure sign-out by:\n\n    - Validating JWT token authentication\n\n    - Verifying account is active (not suspended/banned)\n\n    - Ensuring user has admin or super admin role\n\n    - Updating user login status in the database\n\n    - Allowing unverified accounts to sign out\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token\n\n    - Account must be active (not suspended)\n\n    - User must have Admin or SuperAdmin role\n\n    - Verification status is not required for sign-out\n\n    \n\n    **Security Features:**\n\n    - Only active admin accounts can perform sign-out\n\n    - Prevents unnecessary database updates if already logged out\n\n    - Always returns success for consistent UX\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts or insufficient permissions\n\n    \n\n    **Process Flow:**\n\n    1. Extracts admin user ID from JWT token\n\n    2. Validates account is active\n\n    3. Verifies admin/super admin role authorization\n\n    4. Updates login status if currently logged in\n\n    5. Returns success response.",
         "operationId": "AdminSignOut",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSignOutRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -125,6 +197,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -132,7 +214,7 @@
     "/api/v1/admin/auth/reset-password": {
       "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Reset admin user password using OTP verification",
         "description": "    Resets an admin user's password after validating the OTP code sent during the forgot password process.\n    After successful password reset, the admin user can login with their new password.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates the OTP code format and authenticity\n\n    - Checks if the admin user exists and is active\n\n    - Validates the OTP against the database (not expired, not used, under attempt limit)\n\n    - Hashes the new password using secure algorithms\n\n    - Updates the admin user's password in the database\n\n    - Invalidates all remaining password reset OTPs for the user\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to admin users with valid OTP codes\n\n    - Admin user account must be active\n\n    \n\n    **Security Features:**\n\n    - OTP expiration (60 minutes)\n\n    - Maximum 3 verification attempts per OTP\n\n    - Single-use OTP codes\n\n    - Secure password hashing (PBKDF2 with SHA-256)\n\n    - Automatic cleanup of expired/used OTPs\n\n    - Password validation enforced by validator\n\n    \n\n    **Request Requirements:**\n\n    - Valid email address format\n\n    - Valid OTP code (6-digit numeric)\n\n    - New password meeting security requirements\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 400 Bad Request for invalid input or inactive account\n\n    - Returns 401 Unauthorized for expired OTP\n\n    - Returns 403 Forbidden for max attempts reached\n\n    - Returns 404 Not Found for no valid OTP found or user not found\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid input format, inactive account, or invalid OTP\n\n    - AuthenticationException (401): OTP has expired\n\n    - AuthorizationException (403): Maximum verification attempts reached\n\n    - NotFoundException (404): No valid OTP found or user not found\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format and password requirements\n\n    2. Finds admin user by email address\n\n    3. Validates account is active\n\n    4. Validates OTP code for password reset purpose\n\n    5. Hashes new password securely\n\n    6. Updates admin user's password\n\n    7. Marks OTP as used and invalidates remaining OTPs\n\n    8. Returns success response.",
@@ -188,6 +270,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -204,7 +296,7 @@
     "/api/v1/admin/auth/resend-otp": {
       "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Resend OTP verification code for admin users",
         "description": "    Resends a new OTP verification code for admin users by invalidating existing OTPs and generating a fresh one.\n    This endpoint enables admins to request a new verification code when:\n    \n\n    - The original OTP wasn't received\n\n    - The previous OTP has expired\n\n    - There were issues with email delivery\n\n    - Maximum attempts were reached on the previous OTP\n\n    \n\n    **Request Requirements:**\n\n    - Valid admin email address format\n\n    - Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)\n\n    - User must have admin privileges\n\n    - Account must be active\n\n    \n\n    **Security Features:**\n\n    - Admin role verification\n\n    - Account active status validation\n\n    - Automatic invalidation of existing OTPs for the specified purpose\n\n    - New OTP generation with fresh expiration time\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status when OTP is resent\n\n    - Returns 400 Bad Request for invalid email format or purpose\n\n    - Returns 404 Not Found when admin user doesn't exist\n\n    - Returns 403 Forbidden when user lacks admin privileges\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format and OTP purpose\n\n    2. Verifies admin user exists and has admin role\n\n    3. Checks account is active and verified\n\n    4. Invalidates all existing OTPs for the specified purpose\n\n    5. Generates new OTP with fresh expiration\n\n    6. Returns success response\n\n    \n\n    **Supported OTP Purposes:**\n\n    - EmailVerification: For email address verification\n\n    - PasswordReset: For password reset requests\n\n    - TwoFactorAuthentication: For 2FA setup/verification\n\n    - AccountRecovery: For account recovery processes",
@@ -259,6 +351,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -266,7 +368,7 @@
     "/api/v1/admin/auth/login": {
       "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Authenticate admin and return JWT token with admin claims",
         "description": "    Authenticates an admin user using email and password credentials.\n    The returned JWT token includes admin-specific claims for accessing administrative endpoints.\n    \n\n    This endpoint performs enhanced authentication by:\n\n    - Validating email and password\n\n    - Verifying the account is active and verified\n\n    - Checking for admin role privileges (Admin or SuperAdmin)\n\n    - Generating JWT token with appropriate admin claims\n\n    - Recording the login activity\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid email and password combination\n\n    - Account must be active and verified\n\n    - User must have Admin or SuperAdmin role assigned\n\n    \n\n    **Security Features:**\n\n    - Password verification using secure hashing (bcrypt)\n\n    - Role-based access validation\n\n    - Login activity tracking\n\n    - Enhanced JWT claims for admin operations\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with user info and JWT token on successful authentication\n\n    - Returns 400 Bad Request for invalid email format or incorrect password\n\n    - Returns 401 Unauthorized when user lacks admin privileges (Admin/SuperAdmin role required)\n\n    - Returns 403 Forbidden when user account is inactive or disabled\n\n    - Returns 404 Not Found when no user exists with the provided email\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Missing admin role - user authenticated but lacks Admin/SuperAdmin privileges\n\n    - AuthorizationException (403): Account inactive - user exists but account is disabled/suspended\n\n    - BadRequestException (400): Invalid password - email exists but password is incorrect\n\n    - NotFoundException (404): User not found - no account exists with the provided email.",
@@ -322,6 +424,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found"
           }
@@ -331,7 +443,7 @@
     "/api/v1/admin/auth/forgot-password": {
       "post": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Initiate password reset process for existing admin users",
         "description": "    Initiates the password reset process by generating an OTP for the specified admin email address.\n\n    The generated OTP can be used with the verify-otp endpoint to proceed with password reset.\n    This endpoint follows security best practices by:\n    \n\n    - Always returning success to prevent user enumeration attacks\n\n    - Only generating OTP for valid and active admin accounts\n\n    - Silently handling cases where email doesn't exist or account is inactive\n\n    \n\n    **Request Requirements:**\n\n    - Valid email address format\n\n    - Email must belong to an existing and active admin account\n\n    \n\n    **Security Features:**\n\n    - User enumeration protection (consistent response regardless of email existence)\n\n    - Account status validation (active admin accounts only)\n\n    - OTP generation with expiration time\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status (always true for security) and the email address\n\n    - Returns 400 Bad Request for invalid email format\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format\n\n    2. Checks if admin user exists and is active\n\n    3. Generates OTP for password reset\n\n    4. Returns success response (regardless of actual outcome).",
@@ -366,6 +478,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -373,7 +495,7 @@
     "/api/v1/admin/auth/change-password": {
       "patch": {
         "tags": [
-          "admin::authentication"
+          "admin::identity"
         ],
         "summary": "Change admin user password with current password verification",
         "description": "    Changes an admin user's password after verifying their current password for security.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies admin user account is active\n\n    - Validates the current password against stored hash\n\n    - Ensures new password is different from current password\n\n    - Hashes the new password using secure algorithms\n\n    - Updates the admin user's password in the database\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Only admin role users can change their password\n\n    \n\n    **Security Features:**\n\n    - Current password verification for authorization\n\n    - Prevention of reusing the same password\n\n    - Secure password hashing (PBKDF2 with SHA-256)\n\n    - Strong password validation enforced by validator\n\n    - Account status validation before password change\n\n    \n\n    **Request Requirements:**\n\n    - Valid old password for verification\n\n    - New password meeting security requirements\n\n    - User must be authenticated with valid JWT token\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 400 Bad Request for invalid old password or same password\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts or insufficient permissions\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for new password same as old\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid old password or inactive account\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not active or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): New password same as current password\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Validates old password and new password requirements\n\n    3. Finds admin user by ID and validates account status\n\n    4. Verifies current password matches provided old password\n\n    5. Ensures new password is different from current password\n\n    6. Hashes new password securely\n\n    7. Updates admin user's password in database\n\n    8. Returns success response.",
@@ -439,6 +561,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Conflict",
             "content": {
@@ -452,10 +584,409 @@
         }
       }
     },
-    "/api/v1/admin/profile": {
+    "/api/v1/admin/sessions/metrics": {
       "get": {
         "tags": [
-          "admin::profile"
+          "admin::sessions"
+        ],
+        "summary": "Get session metrics and statistics",
+        "description": "    Retrieves comprehensive session metrics including platform distribution and user activity.\n    This is an admin-only operation for monitoring system usage and platform analytics.\n    \n\n    **Metrics Provided:**\n\n    - Client Platform Counts: Sessions grouped by client platform (iOS app, Android app, Web browser, PWA)\n\n    - Device Type Counts: Sessions grouped by device type (Mobile, Desktop, Tablet)\n\n    - Total Active Sessions: Count of all currently active sessions\n\n    - Total Active Users: Count of unique users with at least one active session\n\n    \n\n    **Use Cases:**\n\n    - Monitor platform adoption (mobile app vs web app usage)\n\n    - Track device type distribution for responsive design priorities\n\n    - Measure concurrent user activity\n\n    - Generate dashboards showing real-time system usage\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with metrics data\n\n    - Returns 401 Unauthorized if access token is invalid\n\n    - Returns 403 Forbidden if not admin",
+        "operationId": "AdminGetSessionMetrics",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetSessionMetricsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/sessions": {
+      "get": {
+        "tags": [
+          "admin::sessions"
+        ],
+        "summary": "Retrieve all sessions with pagination and filtering",
+        "description": "    Retrieves a paginated list of all user sessions with optional filtering capabilities.\n    This is an admin-only operation for monitoring and managing user sessions.\n    \n\n    **Query Parameters:**\n\n    - pageIndex: Zero-based page index (default: 0)\n\n    - pageSize: Number of items per page (default: 10, max: 100)\n\n    - status: Filter by status (\"active\" or \"expired\")\\n\n    - userId: Filter by user ID (GUID)\\n\n    - ipAddress: Filter by IP address (partial match)\\n\n    - deviceName: Filter by device name (partial match)\\n\n    - fromDate: Filter sessions created after this date\\n\n    - toDate: Filter sessions created before this date\\n\n    \\n\n    **Response Includes:**\\n\n    - Paginated list of sessions\\n\n    - Total count of matching sessions\\n\n    - Current page index and size\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with paginated sessions\\n\n    - Returns 400 Bad Request for invalid parameters\\n\n    - Returns 401 Unauthorized if access token is invalid\\n\n    - Returns 403 Forbidden if not admin",
+        "operationId": "AdminGetAllSessions",
+        "parameters": [
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ipAddress",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetAllSessionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/sessions/export": {
+      "get": {
+        "tags": [
+          "admin::sessions"
+        ],
+        "summary": "Export session data with optional filtering",
+        "description": "    Exports session data with optional filtering by status and date range.\n    This is an admin-only operation for extracting session data for reporting and analysis.\n    \n\n    **Filter Parameters:**\n\n    - Status: Filter by session status (\"active\" or \"expired\").\\n\n    - FromDate: Include only sessions created after this date.\\n\n    - ToDate: Include only sessions created before this date.\\n\n    \\n\n    **Exported Fields:**\\n\n    - Session ID, User ID\\n\n    - IP Address, Device Name, User Agent, Client Platform\\n\n    - Created At, Expires At, Is Active, Deleted At\\n\n    \\n\n    **Use Cases:**\\n\n    - Generate session activity reports\\n\n    - Export data for compliance and auditing\\n\n    - Analyze session patterns and user behavior\\n\n    - Create backups of session data\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with session export data\\n\n    - Returns 400 Bad Request if filter parameters are invalid\\n\n    - Returns 401 Unauthorized if access token is invalid\\n\n    - Returns 403 Forbidden if not admin",
+        "operationId": "AdminExportSessionData",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/sessions/force-logout/{id}": {
+      "post": {
+        "tags": [
+          "admin::sessions"
+        ],
+        "summary": "Force logout a user from all devices",
+        "description": "    Forces a user to log out from all their active sessions across all devices.\n    This is an admin-only operation used for security purposes or account management.\n    \n\n    This endpoint performs force logout by:\n\n    - Validating the target user ID from the route parameter\n\n    - Soft deleting all sessions associated with that user\n\n    - Invalidating all tokens for those sessions\n\n    \n\n    **Authentication Requirements:**\n\n    - Admin must be authenticated with a valid access token\n\n    - Requires admin role and appropriate permissions\n\n    \n\n    **Use Cases:**\n\n    - Security response to compromised accounts\n\n    - Account suspension or termination\n\n    - Policy enforcement (e.g., forced password reset)\n\n    - Emergency access revocation\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success flag on successful logout\n\n    - Returns 400 Bad Request if user ID is invalid\n\n    - Returns 401 Unauthorized if access token is invalid or expired\n\n    - Returns 403 Forbidden if admin lacks required permissions\n\n    \n\n    **Important Notes:**\n\n    - This operation affects all user sessions, not just one device\n\n    - Sessions are soft deleted for audit trail purposes\n\n    - User will need to log in again on all devices",
+        "operationId": "AdminForceLogoutUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminForceLogoutUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/sessions/cleanup": {
+      "post": {
+        "tags": [
+          "admin::sessions"
+        ],
+        "summary": "Cleanup all expired sessions",
+        "description": "    Performs a cleanup operation to soft delete all expired sessions from the database.\n    This is an admin-only maintenance operation used for database hygiene.\n    \n\n    This endpoint performs cleanup by:\n\n    - Identifying all sessions that have expired (past their ExpiresAt timestamp)\n\n    - Soft deleting those expired sessions to maintain audit trail\n\n    - Returning the count of sessions that were cleaned up\n\n    \n\n    **Authentication Requirements:**\n\n    - Admin must be authenticated with a valid access token\n\n    - Requires admin role and appropriate permissions\n\n    \n\n    **Use Cases:**\n\n    - Regular maintenance to keep session data clean\n\n    - Database optimization and cleanup\n\n    - Scheduled cleanup operations (can be triggered manually or via cron)\n\n    - Removing stale session data that won't be used again\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with deleted count on successful cleanup\n\n    - Returns 401 Unauthorized if access token is invalid or expired\n\n    - Returns 403 Forbidden if admin lacks required permissions\n\n    \n\n    **Important Notes:**\n\n    - Sessions are soft deleted, not permanently removed\n\n    - This operation only affects expired sessions, not active ones\n\n    - The operation is safe to run multiple times\n\n    - Consider running this periodically as part of maintenance tasks\n",
+        "operationId": "AdminCleanupExpiredSessions",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCleanupExpiredSessionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/user/profile": {
+      "get": {
+        "tags": [
+          "admin::user"
         ],
         "summary": "Retrieve authenticated admin user's complete profile information",
         "description": "    Retrieves the complete profile information for the currently authenticated admin user.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies admin user account is active\n\n    - Retrieves complete admin user information including roles and permissions\n\n    - Fetches admin user avatar file information if available\n\n    - Returns comprehensive admin user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - User must have Admin or SuperAdmin role\n\n    \n\n    **Returned Information:**\n\n    - Basic user details (ID, email, username, verification status)\n\n    - User roles and associated permissions\n\n    - Avatar file information (if available)\n\n    - Account status and activity information\n\n    - Authentication provider information (local/social)\n\n    \n\n    **Security Features:**\n\n    - Admin user can only access their own profile information\n\n    - Account status validation before profile retrieval\n\n    - Comprehensive permission and role information for authorization\n\n    - Avatar file security through proper file service integration\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with complete admin user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for insufficient permissions or inactive accounts\n\n    - Returns 404 Not Found for user not found\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Insufficient permissions or account inactive\n\n    - NotFoundException (404): User not found\n\n    \n\n    **Use Cases:**\n\n    - Display admin user profile information in admin applications\n\n    - Determine admin user permissions for UI/UX customization\n\n    - Validate admin user account status\n\n    - Access avatar and display admin user information\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds admin user by ID and validates account status\n\n    3. Retrieves admin user roles and permissions\n\n    4. Fetches avatar file information if available\n\n    5. Maps complete user data to response DTO\n\n    6. Returns comprehensive admin user profile information",
@@ -500,15 +1031,25 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
       "patch": {
         "tags": [
-          "admin::profile"
+          "admin::user"
         ],
         "summary": "Update authenticated admin user's own profile information",
-        "description": "    Updates the profile information for the currently authenticated admin user.\n\n    This endpoint requires admin user authentication - only logged-in admin users can update their own profile,\n    providing secure profile management for authenticated admin users\n    while maintaining data integrity and security requirements.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies admin user account is active\n\n    - Validates uniqueness for username and phone number if being updated\n\n    - Updates admin user profile information selectively\n\n    - Returns updated admin user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Only logged-in admin users can update their profile\n\n    - Admin or SuperAdmin role required\n\n    \n\n    **Updateable Information:**\n\n    - Username (must be unique across the system)\n\n    - Phone number with country information\n\n    - Country details (name, flag, ISO code, dial code)\n\n    \n\n    **Restrictions:**\n\n    - Email updates are not allowed for admin users (security restriction)\n\n    \n\n    **Security Features:**\n\n    - Admin user can only update their own profile information\n\n    - Account status validation before updates\n\n    - Uniqueness validation for username and phone\n\n    - Email updates prohibited for admin users\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated admin user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts or insufficient permissions\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for duplicate username/phone\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not active or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): Username or phone already exists\n\n    \n\n    **Use Cases:**\n\n    - Update admin profile information in administration panels\n\n    - Change username for admin branding\n\n    - Update contact information and location details\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds admin user by ID and validates account status\n\n    3. Validates uniqueness for updated fields\n\n    4. Updates admin user profile information selectively\n\n    5. Saves changes to database\n\n    6. Returns updated admin user profile data\n\n    \n\n    **Important Notes:**\n\n    - Email updates are restricted for admin users\n\n    - Phone number updates include country information\n\n    - Only provided fields are updated (partial updates supported)\n\n    - All validations are performed before any updates.",
+        "description": "    Updates the profile information for the currently authenticated admin user.\n\n    This endpoint requires admin user authentication - only logged-in admin users can update their own profile,\n    providing secure profile management for authenticated admin users\n    while maintaining data integrity and security requirements.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies admin user account is active\n\n    - Validates uniqueness for username and phone number if being updated\n\n    - Updates admin user profile information selectively\n\n    - Returns updated admin user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Only logged-in admin users can update their profile\n\n    - Admin or SuperAdmin role required\n\n    \n\n    **Updateable Information:**\n\n    - Username (must be unique across the system)\n\n    - Phone number with country information\n\n    - Country details (name, ISO code, dial code)\n\n    \n\n    **Restrictions:**\n\n    - Email updates are not allowed for admin users (security restriction)\n\n    \n\n    **Security Features:**\n\n    - Admin user can only update their own profile information\n\n    - Account status validation before updates\n\n    - Uniqueness validation for username and phone\n\n    - Email updates prohibited for admin users\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated admin user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts or insufficient permissions\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for duplicate username/phone\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not active or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): Username or phone already exists\n\n    \n\n    **Use Cases:**\n\n    - Update admin profile information in administration panels\n\n    - Change username for admin branding\n\n    - Update contact information and location details\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds admin user by ID and validates account status\n\n    3. Validates uniqueness for updated fields\n\n    4. Updates admin user profile information selectively\n\n    5. Saves changes to database\n\n    6. Returns updated admin user profile data\n\n    \n\n    **Important Notes:**\n\n    - Email updates are restricted for admin users\n\n    - Phone number updates include country information\n\n    - Only provided fields are updated (partial updates supported)\n\n    - All validations are performed before any updates.",
         "operationId": "AdminUpdateOwnProfile",
         "requestBody": {
           "content": {
@@ -580,14 +1121,24 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/v1/admin/profile/avatar": {
+    "/api/v1/admin/user/avatar": {
       "patch": {
         "tags": [
-          "admin::profile"
+          "admin::user"
         ],
         "summary": "Update admin user avatar via file upload",
         "description": "    Updates the authenticated admin user's avatar by uploading an image file.\n\n    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.\n    The system will automatically delete any previous avatar when a new one is uploaded.\n    \n\n    Admin users only need to have active accounts (no verification requirement).\n    \n\n    **Authentication Requirements:**\n\n    - Admin user must be logged in (JWT token required)\n\n    - Must have Admin or SuperAdmin role\n\n    - Account must be active\n\n    \n\n    **Request Requirements:**\n\n    - Content-Type: multipart/form-data\n\n    - Form field name: \"avatarFile\"\\n\n    - Allowed file types: JPEG, PNG, GIF, WebP\\n\n    - Maximum file size: 1MB\\n\n    - File must be a valid image\\n\n    \\n\n    **Avatar Management:**\\n\n    - Previous avatar is automatically deleted from cloud storage\\n\n    - Images are stored in Cloudinary with automatic optimization\\n\n    - Secure HTTPS URLs are generated for accessing avatars\\n\n    - Smart quality optimization and format conversion\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with updated admin user information including new avatar\\n\n    - Returns 400 Bad Request for invalid file type, size, or missing file\\n\n    - Returns 401 Unauthorized for unauthenticated requests\\n\n    - Returns 403 Forbidden for non-admin users or inactive accounts\\n\n    - Returns 404 Not Found when admin user doesn't exist\\n\n    \\n\n    **Security Features:**\\n\n    - Only authenticated admin users can update their own avatar\\n\n    - Role-based authorization (Admin/SuperAdmin required)\\n\n    - Account activity verification (active accounts only)\\n\n    - File type and size validation\\n\n    - Automatic cleanup of old avatar files from cloud storage\\n\n    - Secure signed uploads to Cloudinary\\n\n    \\n\n    **Process Flow:**\\n\n    1. Validates admin authentication and account status\\n\n    2. Validates the uploaded file (type, size, format)\\n\n    3. Uploads the new avatar to Cloudinary cloud storage\\n\n    4. Deletes the previous avatar from cloud storage (if exists)\\n\n    5. Updates admin user record with new avatar reference\\n\n    6. Returns updated admin user information with avatar details\\n\n    \\n\n    **Example cURL Request:**\\n\n    ```\n    curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \\\n      -H \"Authorization: Bearer ADMIN_JWT_TOKEN\" \\\n      -F \"avatarFile=@/path/to/image.jpg\"\n    ```",
@@ -665,6 +1216,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -672,7 +1233,7 @@
     "/api/v1/public/auth/verify-otp": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Verify OTP code for account activation",
         "description": "    Verifies the OTP (One-Time Password) code sent to the user's email for various purposes.\n    The user must verify their account within the OTP expiration window to gain full access.\n    \n\n    **Supported OTP Purposes:**\n\n    - **Email Verification**: During user account registration\n\n    - **Account Recovery**: For account recovery processes\n\n    \n\n    This endpoint performs the following operations:\n\n    - Validates the OTP code format (6-digit numeric)\n\n    - Checks if the user exists and is not already verified\n\n    - Validates the OTP against the database (not expired, not used, under attempt limit)\n\n    - Marks the user account as verified upon successful validation\n\n    - Invalidates all remaining OTPs for the user\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to users with unverified accounts\n\n    \n\n    **Security Features:**\n\n    - OTP expiration (60 minutes)\n\n    - Maximum 3 verification attempts per OTP\n\n    - Single-use OTP codes\n\n    - Automatic cleanup of expired/used OTPs\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with verification success status\n\n    - Returns 400 Bad Request for invalid OTP code format\n\n    - Returns 401 Unauthorized for expired OTP\n\n    - Returns 403 Forbidden for maximum attempts reached\n\n    - Returns 404 Not Found for no valid OTP found\n\n    - Returns 409 Conflict if account is already verified\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid OTP code format or value\n\n    - AuthenticationException (401): OTP has expired\n\n    - AuthorizationException (403): Maximum verification attempts reached\n\n    - NotFoundException (404): No valid OTP found for the user\n\n    - ConflictException (409): User account is already verified.",
@@ -747,6 +1308,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -754,7 +1325,7 @@
     "/api/v1/public/auth/social-login": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Authenticate user via social provider",
         "description": "    Authenticates a user through external social providers (Google or Facebook).\n\n    Social users are automatically verified and granted visitor role permissions.\n    Avatar images from social providers are downloaded and stored locally.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates social provider data (email, username, avatar URL, provider)\n\n    - Checks for existing local account conflicts\n\n    - Creates new user account or updates existing social user\n\n    - Downloads and stores avatar from social provider URL\n\n    - Assigns visitor role to new users\n\n    - Marks social users as verified and active\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to the public for social login\n\n    \n\n    **Supported Providers:**\n\n    - Google OAuth\n\n    - Facebook OAuth\n\n    \n\n    **Security Features:**\n\n    - Prevents social login if local account exists with same email\n\n    - Downloads external avatars to prevent hotlinking\n\n    - Automatically verifies social accounts (trusted providers)\n\n    - Updates user login status\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with user info and JWT token\n\n    - Returns 400 Bad Request for invalid provider or malformed data\n\n    - Returns 409 Conflict if local account exists with same email\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid provider or malformed social data\n\n    - ConflictException (409): Local account already exists with email.",
@@ -799,6 +1370,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -806,7 +1387,7 @@
     "/api/v1/public/auth/signup": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Register a new public user account",
         "description": "    Registers a new public user by creating an account with the provided details.\n\n    The created user account will initially have the Visitor role and related permissions,\n    granting basic public access until further elevated by admins.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates signup data (email, username, password, etc.)\n\n    - Ensures the email/username is unique\n\n    - Hashes the password using secure algorithms (bcrypt)\n\n    - Creates a new public user account in the system\n\n    - Triggers optional account verification (email/SMS)\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to the public for account creation\n\n    \n\n    **Security Features:**\n\n    - Password securely hashed before storage\n\n    - Uniqueness checks on email and username\n\n    - Optional verification workflow (e.g., email confirmation)\n\n    \n\n    **Response Codes:**\n\n    - Returns 201 Created with newly created user info (excluding sensitive data)\n\n    - Returns 400 Bad Request for invalid input or weak password\n\n    - Returns 409 Conflict if email/username already exists\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid signup data (missing/invalid fields, weak password)\n\n    - ConflictException (409): Email or username already in use.",
@@ -851,18 +1432,90 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/auth/sign-out-all": {
+      "post": {
+        "tags": [
+          "public::identity"
+        ],
+        "summary": "Sign out the authenticated user from all devices",
+        "description": "    Signs out the currently authenticated user from all devices by invalidating all active sessions.\n    After successful sign-out, all refresh tokens will be revoked and the user must re-authenticate on all devices.\n    \n\n    This endpoint is commonly used:\n\n    - After password changes (security best practice)\n\n    - When user suspects account compromise\n\n    - When enabling two-factor authentication\n\n    - As a \"Sign Out Everywhere\" feature\\n\n    \\n\n    **Authentication Requirements:**\\n\n    - Valid JWT Bearer token\\n\n    - Account must be active (not suspended)\\n\n    - Verification status is not required for sign-out\\n\n    \\n\n    **Security Features:**\\n\n    - Invalidates all active sessions across all devices\\n\n    - Uses soft delete for session tracking and analytics\\n\n    - Prevents token reuse after sign-out\\n\n    - Idempotent operation (safe to call multiple times)\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with success status\\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\\n\n    - Returns 403 Forbidden for inactive accounts\\n\n    \\n\n    **Process Flow:**\\n\n    1. Extracts user ID from JWT token\\n\n    2. Validates account is active\\n\n    3. Soft deletes all active sessions for the user\\n\n    4. Returns success response.",
+        "operationId": "PublicSignOutFromAllDevices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSignOutFromAllDevicesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/v1/public/auth/sign-out": {
-      "delete": {
+      "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Sign out the authenticated user",
         "description": "    Signs out the currently authenticated user by updating their login status.\n    After successful sign-out, the client should discard the JWT token.\n    \n\n    This endpoint performs secure sign-out by:\n\n    - Validating JWT token authentication\n\n    - Verifying account is active (not suspended/banned)\n\n    - Updating user login status in the database\n\n    - Allowing unverified accounts to sign out\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token\n\n    - Account must be active (not suspended)\n\n    - Verification status is not required for sign-out\n\n    \n\n    **Security Features:**\n\n    - Only active accounts can perform sign-out\n\n    - Prevents unnecessary database updates if already logged out\n\n    - Always returns success for consistent UX\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts\n\n    \n\n    **Process Flow:**\n\n    1. Extracts user ID from JWT token\n\n    2. Validates account is active\n\n    3. Updates login status if currently logged in\n\n    4. Returns success response.",
         "operationId": "PublicSignOut",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicSignOutRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -893,6 +1546,98 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/auth/set-password": {
+      "post": {
+        "tags": [
+          "public::identity"
+        ],
+        "summary": "Set password for external auth users (Google/Facebook)",
+        "description": "    Allows users who authenticated via external providers (Google/Facebook) to set a password for local authentication.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies user account is active\n\n    - Checks that user has an email address configured\n\n    - Validates that user's current auth provider is Google or Facebook (not Local)\n\n    - Hashes the new password using secure algorithms\n\n    - Sets the password and changes auth provider to Local\n\n    - Updates the user in the database\n\n    \n\n    **Request Requirements:**\n\n    - Valid password meeting security requirements\n\n    - User must be authenticated with valid JWT token\n\n    - User must have authenticated via Google or Facebook originally\n\n    - User must have an email address configured\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 400 Bad Request for missing email, already set password, or invalid auth provider\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive accounts\n\n    - Returns 404 Not Found for user not found\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Missing email, password already set, or not external auth user\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not active\n\n    - NotFoundException (404): User not found\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Validates password requirements\n\n    3. Finds user by ID and validates account status\n\n    4. Checks that user has an email address\n\n    5. Validates user's current auth provider is Google or Facebook\n\n    6. Hashes new password securely\n\n    7. Sets password and changes auth provider to Local\n\n    8. Updates user in database\n\n    9. Returns success response.\n\n    \n\n    **Note:** After successfully setting a password, users can log in using their email and password,\n\n    in addition to continuing to use their external authentication provider.",
+        "operationId": "PublicSetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicSetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSetPasswordResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -900,7 +1645,7 @@
     "/api/v1/public/auth/reset-password": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Reset user password using OTP verification",
         "description": "    Resets a user's password after validating the OTP code sent during the forgot password process.\n    After successful password reset, the user can login with their new password.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates the OTP code format and authenticity\n\n    - Checks if the user exists and is active/verified\n\n    - Validates the OTP against the database (not expired, not used, under attempt limit)\n\n    - Hashes the new password using secure algorithms\n\n    - Updates the user's password in the database\n\n    - Invalidates all remaining password reset OTPs for the user\n\n    \n\n    **Authentication Requirements:**\n\n    - No authentication required; open to users with valid OTP codes\n\n    - User account must be active and verified\n\n    \n\n    **Security Features:**\n\n    - OTP expiration (60 minutes)\n\n    - Maximum 3 verification attempts per OTP\n\n    - Single-use OTP codes\n\n    - Secure password hashing (PBKDF2 with SHA-256)\n\n    - Automatic cleanup of expired/used OTPs\n\n    - Password validation enforced by validator\n\n    \n\n    **Request Requirements:**\n\n    - Valid email address format\n\n    - Valid OTP code (6-digit numeric)\n\n    - New password meeting security requirements\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 400 Bad Request for invalid input or inactive account\n\n    - Returns 401 Unauthorized for expired OTP\n\n    - Returns 403 Forbidden for max attempts reached or unverified account\n\n    - Returns 404 Not Found for no valid OTP found or user not found\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid input format, inactive account, or invalid OTP\n\n    - AuthenticationException (401): OTP has expired\n\n    - AuthorizationException (403): Maximum verification attempts reached or account not verified\n\n    - NotFoundException (404): No valid OTP found or user not found\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format and password requirements\n\n    2. Finds user by email address\n\n    3. Validates account is active and verified\n\n    4. Validates OTP code for password reset purpose\n\n    5. Hashes new password securely\n\n    6. Updates user's password\n\n    7. Marks OTP as used and invalidates remaining OTPs\n\n    8. Returns success response.",
@@ -956,6 +1701,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -972,7 +1727,7 @@
     "/api/v1/public/auth/resend-otp": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Resend OTP verification code for public users",
         "description": "    Resends a new OTP verification code for public users by invalidating existing OTPs and generating a fresh one.\n    \n\n    This endpoint enables users to request a new verification code when:\n\n    - The original OTP wasn't received\n\n    - The previous OTP has expired\n\n    - There were issues with email delivery\n\n    - Maximum attempts were reached on the previous OTP\n\n    \n\n    **Request Requirements:**\n\n    - Valid email address format\n\n    - Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)\n\n    - Account must be active\n\n    \n\n    **Security Features:**\n\n    - Account active status validation\n\n    - Automatic invalidation of existing OTPs for the specified purpose\n\n    - New OTP generation with fresh expiration time\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status when OTP is resent\n\n    - Returns 400 Bad Request for invalid email format or purpose\n\n    - Returns 404 Not Found when user doesn't exist\n\n    - Returns 403 Forbidden when user account is inactive\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format and OTP purpose\n\n    2. Verifies user exists\n\n    3. Checks account is active and verified\n\n    4. Invalidates all existing OTPs for the specified purpose\n\n    5. Generates new OTP with fresh expiration\n\n    6. Returns success response\n\n    \n\n    **Supported OTP Purposes:**\n\n    - EmailVerification: For email address verification\n\n    - PasswordReset: For password reset requests\n\n    - TwoFactorAuthentication: For 2FA setup/verification\n\n    - AccountRecovery: For account recovery processes",
@@ -1027,6 +1782,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1034,7 +1799,7 @@
     "/api/v1/public/auth/login": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Authenticate public user and return JWT token with user claims",
         "description": "    Authenticates a public user using email/userName and password credentials.\n    The returned JWT token includes claims for accessing public user's endpoints.\n    \n\n    This endpoint performs enhanced authentication by:\n\n    - Validating credentials and password\n\n    - Verifying the account is active and verified\n\n    - Generating JWT token with appropriate user claims\n\n    - Recording the login activity\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid email/userName and password combination\n\n    - Account must be active and verified\n\n    \n\n    **Security Features:**\n\n    - Password verification using secure hashing (bcrypt)\n\n    - Login activity tracking\n\n    - Basic JWT claims for public users operations\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with user info and JWT token on successful authentication\n\n    - Returns 400 Bad Request for invalid email/userName or incorrect password\n\n    - Returns 403 Forbidden when user account is inactive or disabled\n\n    - Returns 404 Not Found when no user exists with the provided email/userName\n\n    \n\n    **Error Handling:**\n\n    - AuthorizationException (403): Account inactive - user exists but account is disabled/suspended\n\n    - BadRequestException (400): Invalid password - email/userName exists but password is incorrect\n\n    - NotFoundException (404): User not found - no account exists with the provided email/userName.",
@@ -1090,6 +1855,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found"
           }
@@ -1099,7 +1874,7 @@
     "/api/v1/public/auth/forgot-password": {
       "post": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Initiate password reset process for existing users",
         "description": "    Initiates the password reset process by generating an OTP for the specified email address.\n    The generated OTP can be used with the verify-otp endpoint to proceed with password reset.\n    \n\n    This endpoint follows security best practices by:\n\n    - Always returning success to prevent user enumeration attacks\n\n    - Only generating OTP for valid, active, and verified accounts\n\n    - Silently handling cases where email doesn't exist or account is inactive\n\n    \n\n    **Request Requirements:**\n\n    - Valid email address format\n\n    - Email must belong to an existing, active, and verified account\n\n    \n\n    **Security Features:**\n\n    - User enumeration protection (consistent response regardless of email existence)\n\n    - Account status validation (active and verified)\n\n    - OTP generation with expiration time\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status (always true for security) and the email address\n\n    - Returns 400 Bad Request for invalid email format\n\n    \n\n    **Process Flow:**\n\n    1. Validates email format\n\n    2. Checks if user exists and is active/verified\n\n    3. Generates OTP for password reset\n\n    4. Returns success response (regardless of actual outcome).",
@@ -1134,6 +1909,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1141,7 +1926,7 @@
     "/api/v1/public/auth/change-password": {
       "patch": {
         "tags": [
-          "public::authentication"
+          "public::identity"
         ],
         "summary": "Change user password with current password verification",
         "description": "    Changes a user's password after verifying their current password for security.\n\n    After successful password change, the user continues using their existing session.\n    The new password will be required for future logins.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies user account is active and verified\n\n    - Validates the current password against stored hash\n\n    - Ensures new password is different from current password\n\n    - Hashes the new password using secure algorithms\n\n    - Updates the user's password in the database\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Account must be verified (email confirmed)\n\n    - Only visitor role users can change their password\n\n    \n\n    **Security Features:**\n\n    - Current password verification for authorization\n\n    - Prevention of reusing the same password\n\n    - Secure password hashing (PBKDF2 with SHA-256)\n\n    - Strong password validation enforced by validator\n\n    - Account status validation before password change\n\n    \n\n    **Request Requirements:**\n\n    - Valid old password for verification\n\n    - New password meeting security requirements\n\n    - User must be authenticated with valid JWT token\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success status\n\n    - Returns 400 Bad Request for invalid old password or same password\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive or unverified accounts\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for new password same as old\n\n    \n\n    **Error Handling:**\n\n    - BadRequestException (400): Invalid old password or inactive account\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not verified or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): New password same as current password\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Validates old password and new password requirements\n\n    3. Finds user by ID and validates account status\n\n    4. Verifies current password matches provided old password\n\n    5. Ensures new password is different from current password\n\n    6. Hashes new password securely\n\n    7. Updates user's password in database\n\n    8. Returns success response.",
@@ -1207,6 +1992,16 @@
               }
             }
           },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Conflict",
             "content": {
@@ -1220,10 +2015,297 @@
         }
       }
     },
-    "/api/v1/public/profile": {
+    "/api/v1/public/sessions": {
       "get": {
         "tags": [
-          "public::profile"
+          "public::sessions"
+        ],
+        "summary": "Retrieve all sessions for the authenticated user",
+        "description": "    Retrieves a list of all sessions (devices) for the currently authenticated user.\n    Supports filtering by session status (active/inactive).\n    \n\n    This endpoint provides session management by:\n\n    - Listing all user sessions across different devices\n\n    - Showing device information (IP address, device name, user agent)\n\n    - Indicating session status (active or expired)\n\n    - Displaying session creation and expiration times\n\n    \n\n    **Authentication Requirements:**\n\n    - User must be authenticated with a valid access token\n\n    - User can only view their own sessions\n\n    \n\n    **Query Parameters:**\n\n    - isActive (optional): Filter sessions by status\n\n      - true: Only active sessions\n\n      - false: Only expired/inactive sessions\n\n      - null/omitted: All sessions\n\n    \n\n    **Use Cases:**\n\n    - View all active login sessions\n\n    - Identify unrecognized devices\n\n    - Manage active sessions before revoking specific ones\n\n    - Security audit of login history\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with list of sessions\n\n    - Returns 401 Unauthorized if access token is invalid or expired\n\n    - Returns 403 Forbidden if user lacks required permissions\n\n    \n\n    **Session Information Includes:**\n\n    - Session ID for revoking specific sessions\n\n    - IP address of the device\n\n    - Device name and user agent string\n\n    - Creation timestamp\n\n    - Expiration timestamp\n\n    - Active status (computed from expiration time and deletion status)",
+        "operationId": "PublicGetOwnSessions",
+        "parameters": [
+          {
+            "name": "isActive",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicGetOwnSessionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/sessions/{id}": {
+      "get": {
+        "tags": [
+          "public::sessions"
+        ],
+        "summary": "Retrieve a specific session by ID",
+        "description": "    Retrieves detailed information about a specific session identified by its ID.\n    The session must belong to the authenticated user.\n    \n\n    This endpoint provides session details by:\n\n    - Validating the session ID from the route parameter\n\n    - Verifying the session belongs to the authenticated user\n\n    - Returning complete session metadata and status\n\n    \n\n    **Authentication Requirements:**\n\n    - User must be authenticated with a valid access token\n\n    - User can only view their own sessions\n\n    \n\n    **Use Cases:**\n\n    - View detailed information about a specific session\n\n    - Check session status before revoking\n\n    - Verify device information for security auditing\n\n    - Display session details in user dashboard\n\n    \n\n    **Security Features:**\n\n    - Session ownership verification prevents viewing other users' sessions\n\n    - Returns 404 (not 403) for unauthorized access to prevent session enumeration\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with session details on success\n\n    - Returns 400 Bad Request if session ID is invalid\n\n    - Returns 401 Unauthorized if access token is invalid or expired\n\n    - Returns 403 Forbidden if user lacks required permissions\n\n    - Returns 404 Not Found if session doesn't exist or doesn't belong to user\n\n    \n\n    **Session Information Includes:**\n\n    - Session ID\n\n    - IP address of the device\n\n    - Device name and user agent string\n\n    - Creation timestamp\n\n    - Expiration timestamp\n\n    - Active status (computed from expiration time and deletion status)\n\n    \n\n    **Error Handling:**\n\n    - NotFoundException (404): Session not found or doesn't belong to user",
+        "operationId": "PublicGetOwnSessionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicGetOwnSessionByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/sessions/revoke/{id}": {
+      "post": {
+        "tags": [
+          "public::sessions"
+        ],
+        "summary": "Revoke a specific session (log out from a device)",
+        "description": "    Revokes (logs out from) a specific session identified by its ID.\n    This allows users to remotely log out from other devices.\n    \n\n    This endpoint performs session revocation by:\n\n    - Validating the session ID from the route parameter\n\n    - Verifying the session belongs to the authenticated user\n\n    - Soft deleting the session (marking it as inactive)\n\n    - Invalidating all tokens associated with that session\n\n    \n\n    **Authentication Requirements:**\n\n    - User must be authenticated with a valid access token\n\n    - User can only revoke their own sessions\n\n    \n\n    **Use Cases:**\n\n    - Log out from a specific device remotely\n\n    - Remove unrecognized or suspicious sessions\n\n    - Clean up old sessions after viewing session list\n\n    - Security response to potential account compromise\n\n    \n\n    **Security Features:**\n\n    - Session ownership verification prevents revoking other users' sessions\n\n    - Soft delete ensures session history is maintained for audit purposes\n\n    - Immediate invalidation prevents further use of associated tokens\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with success flag on successful revocation\n\n    - Returns 400 Bad Request if session ID is invalid\n\n    - Returns 401 Unauthorized if access token is invalid or expired\n\n    - Returns 403 Forbidden if user lacks required permissions\n\n    - Returns 404 Not Found if session doesn't exist or doesn't belong to user\n\n    \n\n    **Error Handling:**\n\n    - NotFoundException (404): Session not found or doesn't belong to user\n\n    - Attempting to revoke another user's session returns 404 (not 403) to prevent session enumeration attacks",
+        "operationId": "PublicRevokeSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicRevokeSessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/sessions/refresh-token": {
+      "post": {
+        "tags": [
+          "public::sessions"
+        ],
+        "summary": "Refresh access token using a valid refresh token",
+        "description": "    Validates and rotates a refresh token to obtain a new access token.\n    Implements token rotation for enhanced security - the old refresh token is invalidated.\n    \n\n    This endpoint performs token refresh by:\n\n    - Validating the provided refresh token\n\n    - Verifying the session is still active and not expired\n\n    - Generating a new access token\n\n    - Rotating the refresh token (old token becomes invalid)\n\n    - Returning new authentication credentials\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid, non-expired refresh token\n\n    - Session must be active (not logged out or revoked)\n\n    \n\n    **Security Features:**\n\n    - Automatic token rotation prevents token reuse\n\n    - Refresh token hashing for secure storage\n\n    - Session validation ensures only active sessions can refresh\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with new tokens on successful refresh\n\n    - Returns 403 Forbidden for invalid or expired refresh tokens\n\n    \n\n    **Error Handling:**\n\n    - AuthorizationException (403): Invalid/expired refresh token or session revoked\n\n    - Token rotation ensures old refresh tokens cannot be reused after successful refresh.",
+        "operationId": "PublicRefreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicRefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicRefreshTokenResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/user/profile": {
+      "get": {
+        "tags": [
+          "public::user"
         ],
         "summary": "Retrieve authenticated user's complete profile information",
         "description": "    Retrieves the complete profile information for the currently authenticated user.\n\n    This endpoint provides all necessary user information for client applications\n    to display profile details and manage user-specific functionality.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies user account is active and verified\n\n    - Retrieves complete user information including roles and permissions\n\n    - Fetches user avatar file information if available\n\n    - Returns comprehensive user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Account must be verified (email confirmed)\n\n    - Only visitor role users can access their profile\n\n    \n\n    **Returned Information:**\n\n    - Basic user details (ID, email, username, verification status)\n\n    - User roles and associated permissions\n\n    - Avatar file information (if available)\n\n    - Account status and activity information\n\n    - Authentication provider information (local/social)\n\n    \n\n    **Security Features:**\n\n    - User can only access their own profile information\n\n    - Account status validation before profile retrieval\n\n    - Comprehensive permission and role information for authorization\n\n    - Avatar file security through proper file service integration\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with complete user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive or unverified accounts\n\n    - Returns 404 Not Found for user not found\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not verified or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    \n\n    **Use Cases:**\n\n    - Display user profile information in client applications\n\n    - Determine user permissions for UI/UX customization\n\n    - Validate user account status and verification\n\n    - Access avatar and display user information\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds user by ID and validates account status\n\n    3. Retrieves user roles and permissions\n\n    4. Fetches avatar file information if available\n\n    5. Maps complete user data to response DTO\n\n    6. Returns comprehensive user profile information.",
@@ -1268,15 +2350,25 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
       "patch": {
         "tags": [
-          "public::profile"
+          "public::user"
         ],
         "summary": "Update authenticated user's own profile information",
-        "description": "    Updates the profile information for the currently authenticated user.\n\n    This endpoint requires user authentication - only logged-in users can update their own profile,\n    providing secure profile management for authenticated users\n    while maintaining data integrity and security requirements.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies user account is active and verified\n\n    - Validates uniqueness for email, username, and phone number if being updated\n\n    - Updates user profile information selectively\n\n    - Returns updated user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Account must be verified (email confirmed)\n\n    - Only logged-in users can update their profile\n\n    \n\n    **Updateable Information:**\n\n    - Email address (triggers re-verification and signout)\n\n    - Username (must be unique across the system)\n\n    - Phone number with country information\n\n    - Country details (name, flag, ISO code, dial code)\n\n    \n\n    **Security Features:**\n\n    - User can only update their own profile information\n\n    - Account status validation before updates\n\n    - Uniqueness validation for email, username, and phone\n\n    - Email update triggers account re-verification\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive or unverified accounts\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for duplicate email/username/phone\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not verified or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): Email, username, or phone already exists\n\n    \n\n    **Use Cases:**\n\n    - Update user profile information in client applications\n\n    - Change email address (requires re-verification)\n\n    - Update contact information and location details\n\n    - Modify username for personal branding\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds user by ID and validates account status\n\n    3. Validates uniqueness for updated fields\n\n    4. Updates user profile information selectively\n\n    5. Saves changes to database\n\n    6. Returns updated user profile data\n\n    \n\n    **Important Notes:**\n\n    - Email updates reset verification status and force signout\n\n    - Phone number updates include country information\n\n    - Only provided fields are updated (partial updates supported)\n\n    - All validations are performed before any updates.",
+        "description": "    Updates the profile information for the currently authenticated user.\n\n    This endpoint requires user authentication - only logged-in users can update their own profile,\n    providing secure profile management for authenticated users\n    while maintaining data integrity and security requirements.\n    \n\n    This endpoint performs the following operations:\n\n    - Validates JWT token authentication and extracts user ID\n\n    - Verifies user account is active and verified\n\n    - Validates uniqueness for email, username, and phone number if being updated\n\n    - Updates user profile information selectively\n\n    - Returns updated user profile data\n\n    \n\n    **Authentication Requirements:**\n\n    - Valid JWT Bearer token required\n\n    - Account must be active (not suspended/banned)\n\n    - Account must be verified (email confirmed)\n\n    - Only logged-in users can update their profile\n\n    \n\n    **Updateable Information:**\n\n    - Email address (triggers re-verification and logout)\n\n    - Username (must be unique across the system)\n\n    - Phone number with country information\n\n    - Country details (name, ISO code, dial code)\n\n    \n\n    **Security Features:**\n\n    - User can only update their own profile information\n\n    - Account status validation before updates\n\n    - Uniqueness validation for email, username, and phone\n\n    - Email update triggers account re-verification\n\n    \n\n    **Response Codes:**\n\n    - Returns 200 OK with updated user profile data\n\n    - Returns 401 Unauthorized for invalid/missing JWT token\n\n    - Returns 403 Forbidden for inactive or unverified accounts\n\n    - Returns 404 Not Found for user not found\n\n    - Returns 409 Conflict for duplicate email/username/phone\n\n    \n\n    **Error Handling:**\n\n    - AuthenticationException (401): Invalid JWT token\n\n    - AuthorizationException (403): Account not verified or insufficient permissions\n\n    - NotFoundException (404): User not found\n\n    - ConflictException (409): Email, username, or phone already exists\n\n    \n\n    **Use Cases:**\n\n    - Update user profile information in client applications\n\n    - Change email address (requires re-verification)\n\n    - Update contact information and location details\n\n    - Modify username for personal branding\n\n    \n\n    **Process Flow:**\n\n    1. Validates JWT token and extracts user ID\n\n    2. Finds user by ID and validates account status\n\n    3. Validates uniqueness for updated fields\n\n    4. Updates user profile information selectively\n\n    5. Saves changes to database\n\n    6. Returns updated user profile data\n\n    \n\n    **Important Notes:**\n\n    - Email updates reset verification status and force logout\n\n    - Phone number updates include country information\n\n    - Only provided fields are updated (partial updates supported)\n\n    - All validations are performed before any updates.",
         "operationId": "PublicUpdateOwnProfile",
         "requestBody": {
           "content": {
@@ -1348,14 +2440,24 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/v1/public/profile/avatar": {
+    "/api/v1/public/user/avatar": {
       "patch": {
         "tags": [
-          "public::profile"
+          "public::user"
         ],
         "summary": "Update user avatar via file upload",
         "description": "    Updates the authenticated user's avatar by uploading an image file.\n\n    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.\n    The system will automatically delete any previous avatar when a new one is uploaded.\n    Only verified users can update their avatar to maintain profile quality and security.\n    \n\n    **Authentication Requirements:**\n\n    - User must be logged in (JWT token required)\n\n    - Account must be active and verified\n\n    \n\n    **Request Requirements:**\n\n    - Content-Type: multipart/form-data\n\n    - Form field name: \"avatarFile\"\\n\n    - Allowed file types: JPEG, PNG, GIF, WebP\\n\n    - Maximum file size: 1MB\\n\n    - File must be a valid image\\n\n    \\n\n    **Avatar Management:**\\n\n    - Previous avatar is automatically deleted from cloud storage\\n\n    - Images are stored in Cloudinary with automatic optimization\\n\n    - Secure HTTPS URLs are generated for accessing avatars\\n\n    - Smart quality optimization and format conversion\\n\n    \\n\n    **Response Codes:**\\n\n    - Returns 200 OK with updated user information including new avatar\\n\n    - Returns 400 Bad Request for invalid file type, size, or missing file\\n\n    - Returns 401 Unauthorized for unauthenticated requests\\n\n    - Returns 403 Forbidden for inactive or unverified accounts\\n\n    - Returns 404 Not Found when user doesn't exist\\n\n    \\n\n    **Security Features:**\\n\n    - Only the authenticated user can update their own avatar\\n\n    - Account verification required (verified accounts only)\\n\n    - File type and size validation\\n\n    - Automatic cleanup of old avatar files from cloud storage\\n\n    - Secure signed uploads to Cloudinary\\n\n    \\n\n    **Process Flow:**\\n\n    1. Validates user authentication and account status\\n\n    2. Validates the uploaded file (type, size, format)\\n\n    3. Uploads the new avatar to Cloudinary cloud storage\\n\n    4. Deletes the previous avatar from cloud storage (if exists)\\n\n    5. Updates user record with new avatar reference\\n\n    6. Returns updated user information with avatar details\\n\n    \\n\n    **Example cURL Request:**\\n\n    ```\n    curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \\\n      -H \"Authorization: Bearer YOUR_JWT_TOKEN\" \\\n      -F \"avatarFile=@/path/to/image.jpg\"\n    ```",
@@ -1433,6 +2535,16 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1457,6 +2569,31 @@
         "additionalProperties": false
       },
       "AdminChangePasswordResponse": {
+        "required": [
+          "isSuccess"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminCleanupExpiredSessionsResponse": {
+        "required": [
+          "deletedCount"
+        ],
+        "type": "object",
+        "properties": {
+          "deletedCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminForceLogoutUserResponse": {
         "required": [
           "isSuccess"
         ],
@@ -1496,6 +2633,18 @@
         },
         "additionalProperties": false
       },
+      "AdminGetAllSessionsResponse": {
+        "required": [
+          "sessions"
+        ],
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "$ref": "#/components/schemas/SessionDtoPaginatedResult"
+          }
+        },
+        "additionalProperties": false
+      },
       "AdminGetOwnProfileResponse": {
         "required": [
           "user"
@@ -1504,6 +2653,40 @@
         "properties": {
           "user": {
             "$ref": "#/components/schemas/UserResponseDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminGetSessionMetricsResponse": {
+        "required": [
+          "browsers",
+          "clients",
+          "devices",
+          "platforms",
+          "totalActiveSessions",
+          "totalActiveUsers"
+        ],
+        "type": "object",
+        "properties": {
+          "browsers": {
+            "$ref": "#/components/schemas/BrowserMetrics"
+          },
+          "devices": {
+            "$ref": "#/components/schemas/DeviceMetrics"
+          },
+          "platforms": {
+            "$ref": "#/components/schemas/PlatformMetrics"
+          },
+          "clients": {
+            "$ref": "#/components/schemas/ClientMetrics"
+          },
+          "totalActiveSessions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalActiveUsers": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1526,7 +2709,11 @@
       },
       "AdminLoginResponse": {
         "required": [
-          "token",
+          "accessToken",
+          "accessTokenExpiresAt",
+          "refreshToken",
+          "refreshTokenExpiresAt",
+          "tokenType",
           "user"
         ],
         "type": "object",
@@ -1534,7 +2721,21 @@
           "user": {
             "$ref": "#/components/schemas/UserResponseDto"
           },
-          "token": {
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
             "type": "string"
           }
         },
@@ -1600,6 +2801,30 @@
         },
         "additionalProperties": false
       },
+      "AdminSignOutFromAllDevicesResponse": {
+        "required": [
+          "isSuccess"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminSignOutRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "AdminSignOutResponse": {
         "required": [
           "isSuccess"
@@ -1632,10 +2857,6 @@
             "nullable": true
           },
           "countryName": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryFlagUrl": {
             "type": "string",
             "nullable": true
           },
@@ -1698,6 +2919,194 @@
         },
         "additionalProperties": false
       },
+      "BrowserMetrics": {
+        "required": [
+          "chrome",
+          "edge",
+          "firefox",
+          "googleSearchApp",
+          "internetExplorer",
+          "opera",
+          "safari",
+          "samsung",
+          "unknown"
+        ],
+        "type": "object",
+        "properties": {
+          "chrome": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firefox": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "safari": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "edge": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "opera": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "internetExplorer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "googleSearchApp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "samsung": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unknown": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClientMetrics": {
+        "required": [
+          "dashboard",
+          "mobileApp",
+          "unknown",
+          "webApp"
+        ],
+        "type": "object",
+        "properties": {
+          "mobileApp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "webApp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dashboard": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unknown": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceMetrics": {
+        "required": [
+          "car",
+          "console",
+          "desktop",
+          "ioT",
+          "mobile",
+          "tablet",
+          "tv",
+          "unknown",
+          "watch"
+        ],
+        "type": "object",
+        "properties": {
+          "desktop": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mobile": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tablet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "watch": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tv": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "console": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "car": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ioT": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unknown": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EnumBrowser": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EnumClient": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EnumDevice": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EnumPlatform": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "FileDto": {
         "required": [
           "fileName",
@@ -1736,6 +3145,45 @@
         },
         "additionalProperties": false
       },
+      "HttpValidationProblemDetails": {
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "additionalProperties": { }
+      },
       "PermissionDto": {
         "required": [
           "action",
@@ -1757,6 +3205,54 @@
           },
           "description": {
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlatformMetrics": {
+        "required": [
+          "android",
+          "chromeOs",
+          "ios",
+          "ipadOs",
+          "linux",
+          "mac",
+          "unknown",
+          "windows"
+        ],
+        "type": "object",
+        "properties": {
+          "windows": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mac": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ios": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ipadOs": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "linux": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "android": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chromeOs": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unknown": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1856,6 +3352,33 @@
         },
         "additionalProperties": false
       },
+      "PublicGetOwnSessionByIdResponse": {
+        "required": [
+          "session"
+        ],
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/SessionDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicGetOwnSessionsResponse": {
+        "required": [
+          "sessions"
+        ],
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "PublicLoginRequest": {
         "required": [
           "credentials",
@@ -1874,7 +3397,11 @@
       },
       "PublicLoginResponse": {
         "required": [
-          "token",
+          "accessToken",
+          "accessTokenExpiresAt",
+          "refreshToken",
+          "refreshTokenExpiresAt",
+          "tokenType",
           "user"
         ],
         "type": "object",
@@ -1882,7 +3409,67 @@
           "user": {
             "$ref": "#/components/schemas/UserResponseDto"
           },
-          "token": {
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicRefreshTokenRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicRefreshTokenResponse": {
+        "required": [
+          "accessToken",
+          "accessTokenExpiresAt",
+          "refreshToken",
+          "refreshTokenExpiresAt",
+          "tokenType",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponseDto"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
             "type": "string"
           }
         },
@@ -1948,6 +3535,66 @@
         },
         "additionalProperties": false
       },
+      "PublicRevokeSessionResponse": {
+        "required": [
+          "isSuccess"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicSetPasswordRequest": {
+        "required": [
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicSetPasswordResponse": {
+        "required": [
+          "isSuccess"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicSignOutFromAllDevicesResponse": {
+        "required": [
+          "isSuccess"
+        ],
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicSignOutRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "PublicSignOutResponse": {
         "required": [
           "isSuccess"
@@ -1982,7 +3629,11 @@
       },
       "PublicSignUpResponse": {
         "required": [
-          "token",
+          "accessToken",
+          "accessTokenExpiresAt",
+          "refreshToken",
+          "refreshTokenExpiresAt",
+          "tokenType",
           "user",
           "verificationRequired"
         ],
@@ -1991,7 +3642,21 @@
           "user": {
             "$ref": "#/components/schemas/UserResponseDto"
           },
-          "token": {
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
             "type": "string"
           },
           "verificationRequired": {
@@ -2026,7 +3691,11 @@
       },
       "PublicSocialLoginResponse": {
         "required": [
-          "token",
+          "accessToken",
+          "accessTokenExpiresAt",
+          "refreshToken",
+          "refreshTokenExpiresAt",
+          "tokenType",
           "user"
         ],
         "type": "object",
@@ -2034,7 +3703,21 @@
           "user": {
             "$ref": "#/components/schemas/UserResponseDto"
           },
-          "token": {
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
             "type": "string"
           }
         },
@@ -2064,10 +3747,6 @@
             "nullable": true
           },
           "countryName": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryFlagUrl": {
             "type": "string",
             "nullable": true
           },
@@ -2151,12 +3830,92 @@
         },
         "additionalProperties": false
       },
+      "SessionDto": {
+        "required": [
+          "browser",
+          "client",
+          "createdAt",
+          "device",
+          "expiresAt",
+          "id",
+          "isActive",
+          "platform"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ipAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "userAgent": {
+            "type": "string",
+            "nullable": true
+          },
+          "browser": {
+            "$ref": "#/components/schemas/EnumBrowser"
+          },
+          "device": {
+            "$ref": "#/components/schemas/EnumDevice"
+          },
+          "platform": {
+            "$ref": "#/components/schemas/EnumPlatform"
+          },
+          "client": {
+            "$ref": "#/components/schemas/EnumClient"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionDtoPaginatedResult": {
+        "required": [
+          "count",
+          "items",
+          "pageIndex",
+          "pageSize"
+        ],
+        "type": "object",
+        "properties": {
+          "pageIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "UserResponseDto": {
         "required": [
           "authProvider",
           "id",
           "isActive",
-          "isLoggedIn",
           "isVerified",
           "permissions",
           "roles",
@@ -2196,22 +3955,10 @@
           "isActive": {
             "type": "boolean"
           },
-          "isLoggedIn": {
-            "type": "boolean"
-          },
-          "lastLoginAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
           "avatar": {
             "$ref": "#/components/schemas/FileDto"
           },
           "countryName": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryFlagUrl": {
             "type": "string",
             "nullable": true
           },

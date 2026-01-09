@@ -71,7 +71,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -90,7 +90,65 @@ This endpoint performs the following operations:
   }
 
   @override
+  Future<Response<AdminSignOutFromAllDevicesResponse>>
+  _AdminSignOutFromAllDevices({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Signs out the currently authenticated admin user from all devices by invalidating all active sessions.
+After successful sign-out, all refresh tokens will be revoked and the admin must re-authenticate on all devices.
+
+This endpoint is commonly used:
+
+- After password changes (security best practice)
+- When admin suspects account compromise
+- When enabling two-factor authentication
+- As a "Sign Out Everywhere" feature\n
+\n
+**Authentication Requirements:**\n
+- Valid JWT Bearer token with admin privileges\n
+- Account must be active (not suspended)\n
+\n
+**Security Features:**\n
+- Invalidates all active sessions across all devices\n
+- Uses soft delete for session tracking and analytics\n
+- Prevents token reuse after sign-out\n
+- Idempotent operation (safe to call multiple times)\n
+\n
+**Response Codes:**\n
+- Returns 200 OK with success status\n
+- Returns 401 Unauthorized for invalid/missing JWT token\n
+- Returns 403 Forbidden for non-admin users or inactive accounts\n
+\n
+**Process Flow:**\n
+1. Extracts admin user ID from JWT token\n
+2. Validates account is active and has admin privileges\n
+3. Soft deletes all active sessions for the admin user\n
+4. Returns success response.''',
+      summary: 'Sign out the authenticated admin user from all devices',
+      operationId: 'AdminSignOutFromAllDevices',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::identity"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/auth/sign-out-all');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminSignOutFromAllDevicesResponse,
+      AdminSignOutFromAllDevicesResponse
+    >($request);
+  }
+
+  @override
   Future<Response<AdminSignOutResponse>> _AdminSignOut({
+    required AdminSignOutRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
           '''Signs out the currently authenticated admin user by updating their login status.
@@ -139,15 +197,17 @@ This endpoint performs secure sign-out by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
     final Uri $url = Uri.parse('/api/v1/admin/auth/sign-out');
+    final $body = body;
     final Request $request = Request(
-      'DELETE',
+      'POST',
       $url,
       client.baseUrl,
+      body: $body,
       tag: swaggerMetaData,
     );
     return client.send<AdminSignOutResponse, AdminSignOutResponse>($request);
@@ -227,7 +287,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -305,7 +365,7 @@ This endpoint enables admins to request a new verification code when:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -371,7 +431,7 @@ This endpoint performs enhanced authentication by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -432,7 +492,7 @@ This endpoint follows security best practices by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -526,7 +586,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::authentication"],
+      tags: ["admin::identity"],
       deprecated: false,
     ),
   }) {
@@ -543,6 +603,302 @@ This endpoint performs the following operations:
         .send<AdminChangePasswordResponse, AdminChangePasswordResponse>(
           $request,
         );
+  }
+
+  @override
+  Future<Response<AdminGetSessionMetricsResponse>> _AdminGetSessionMetrics({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Retrieves comprehensive session metrics including platform distribution and user activity.
+This is an admin-only operation for monitoring system usage and platform analytics.
+
+**Metrics Provided:**
+
+- Client Platform Counts: Sessions grouped by client platform (iOS app, Android app, Web browser, PWA)
+- Device Type Counts: Sessions grouped by device type (Mobile, Desktop, Tablet)
+- Total Active Sessions: Count of all currently active sessions
+- Total Active Users: Count of unique users with at least one active session
+
+**Use Cases:**
+
+- Monitor platform adoption (mobile app vs web app usage)
+- Track device type distribution for responsive design priorities
+- Measure concurrent user activity
+- Generate dashboards showing real-time system usage
+
+**Response Codes:**
+
+- Returns 200 OK with metrics data
+- Returns 401 Unauthorized if access token is invalid
+- Returns 403 Forbidden if not admin''',
+      summary: 'Get session metrics and statistics',
+      operationId: 'AdminGetSessionMetrics',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions/metrics');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetSessionMetricsResponse, AdminGetSessionMetricsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllSessionsResponse>> _AdminGetAllSessions({
+    required int pageIndex,
+    required int pageSize,
+    String? status,
+    String? userId,
+    String? ipAddress,
+    DateTime? fromDate,
+    DateTime? toDate,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Retrieves a paginated list of all user sessions with optional filtering capabilities.
+This is an admin-only operation for monitoring and managing user sessions.
+
+**Query Parameters:**
+
+- pageIndex: Zero-based page index (default: 0)
+- pageSize: Number of items per page (default: 10, max: 100)
+- status: Filter by status ("active" or "expired")\n
+- userId: Filter by user ID (GUID)\n
+- ipAddress: Filter by IP address (partial match)\n
+- deviceName: Filter by device name (partial match)\n
+- fromDate: Filter sessions created after this date\n
+- toDate: Filter sessions created before this date\n
+\n
+**Response Includes:**\n
+- Paginated list of sessions\n
+- Total count of matching sessions\n
+- Current page index and size\n
+\n
+**Response Codes:**\n
+- Returns 200 OK with paginated sessions\n
+- Returns 400 Bad Request for invalid parameters\n
+- Returns 401 Unauthorized if access token is invalid\n
+- Returns 403 Forbidden if not admin''',
+      summary: 'Retrieve all sessions with pagination and filtering',
+      operationId: 'AdminGetAllSessions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'status': status,
+      'userId': userId,
+      'ipAddress': ipAddress,
+      'fromDate': fromDate,
+      'toDate': toDate,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllSessionsResponse, AdminGetAllSessionsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<dynamic>> _AdminExportSessionData({
+    String? status,
+    DateTime? fromDate,
+    DateTime? toDate,
+    String? format,
+    String? columns,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Exports session data with optional filtering by status and date range.
+This is an admin-only operation for extracting session data for reporting and analysis.
+
+**Filter Parameters:**
+
+- Status: Filter by session status ("active" or "expired").\n
+- FromDate: Include only sessions created after this date.\n
+- ToDate: Include only sessions created before this date.\n
+\n
+**Exported Fields:**\n
+- Session ID, User ID\n
+- IP Address, Device Name, User Agent, Client Platform\n
+- Created At, Expires At, Is Active, Deleted At\n
+\n
+**Use Cases:**\n
+- Generate session activity reports\n
+- Export data for compliance and auditing\n
+- Analyze session patterns and user behavior\n
+- Create backups of session data\n
+\n
+**Response Codes:**\n
+- Returns 200 OK with session export data\n
+- Returns 400 Bad Request if filter parameters are invalid\n
+- Returns 401 Unauthorized if access token is invalid\n
+- Returns 403 Forbidden if not admin''',
+      summary: 'Export session data with optional filtering',
+      operationId: 'AdminExportSessionData',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions/export');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'status': status,
+      'fromDate': fromDate,
+      'toDate': toDate,
+      'format': format,
+      'columns': columns,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<AdminForceLogoutUserResponse>> _AdminForceLogoutUser({
+    required String id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Forces a user to log out from all their active sessions across all devices.
+This is an admin-only operation used for security purposes or account management.
+
+This endpoint performs force logout by:
+
+- Validating the target user ID from the route parameter
+- Soft deleting all sessions associated with that user
+- Invalidating all tokens for those sessions
+
+**Authentication Requirements:**
+
+- Admin must be authenticated with a valid access token
+- Requires admin role and appropriate permissions
+
+**Use Cases:**
+
+- Security response to compromised accounts
+- Account suspension or termination
+- Policy enforcement (e.g., forced password reset)
+- Emergency access revocation
+
+**Response Codes:**
+
+- Returns 200 OK with success flag on successful logout
+- Returns 400 Bad Request if user ID is invalid
+- Returns 401 Unauthorized if access token is invalid or expired
+- Returns 403 Forbidden if admin lacks required permissions
+
+**Important Notes:**
+
+- This operation affects all user sessions, not just one device
+- Sessions are soft deleted for audit trail purposes
+- User will need to log in again on all devices''',
+      summary: 'Force logout a user from all devices',
+      operationId: 'AdminForceLogoutUser',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions/force-logout/${id}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminForceLogoutUserResponse, AdminForceLogoutUserResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCleanupExpiredSessionsResponse>>
+  _AdminCleanupExpiredSessions({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Performs a cleanup operation to soft delete all expired sessions from the database.
+This is an admin-only maintenance operation used for database hygiene.
+
+This endpoint performs cleanup by:
+
+- Identifying all sessions that have expired (past their ExpiresAt timestamp)
+- Soft deleting those expired sessions to maintain audit trail
+- Returning the count of sessions that were cleaned up
+
+**Authentication Requirements:**
+
+- Admin must be authenticated with a valid access token
+- Requires admin role and appropriate permissions
+
+**Use Cases:**
+
+- Regular maintenance to keep session data clean
+- Database optimization and cleanup
+- Scheduled cleanup operations (can be triggered manually or via cron)
+- Removing stale session data that won\'t be used again
+
+**Response Codes:**
+
+- Returns 200 OK with deleted count on successful cleanup
+- Returns 401 Unauthorized if access token is invalid or expired
+- Returns 403 Forbidden if admin lacks required permissions
+
+**Important Notes:**
+
+- Sessions are soft deleted, not permanently removed
+- This operation only affects expired sessions, not active ones
+- The operation is safe to run multiple times
+- Consider running this periodically as part of maintenance tasks''',
+      summary: 'Cleanup all expired sessions',
+      operationId: 'AdminCleanupExpiredSessions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions/cleanup');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminCleanupExpiredSessionsResponse,
+      AdminCleanupExpiredSessionsResponse
+    >($request);
   }
 
   @override
@@ -619,11 +975,11 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::profile"],
+      tags: ["admin::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/profile');
+    final Uri $url = Uri.parse('/api/v1/admin/user/profile');
     final Request $request = Request(
       'GET',
       $url,
@@ -665,7 +1021,7 @@ This endpoint performs the following operations:
 
 - Username (must be unique across the system)
 - Phone number with country information
-- Country details (name, flag, ISO code, dial code)
+- Country details (name, ISO code, dial code)
 
 **Restrictions:**
 
@@ -724,11 +1080,11 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::profile"],
+      tags: ["admin::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/profile');
+    final Uri $url = Uri.parse('/api/v1/admin/user/profile');
     final $body = body;
     final Request $request = Request(
       'PATCH',
@@ -809,11 +1165,11 @@ curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::profile"],
+      tags: ["admin::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/profile/avatar');
+    final Uri $url = Uri.parse('/api/v1/admin/user/avatar');
     final List<PartValue> $parts = <PartValue>[
       PartValueFile<MultipartFile>('avatarFile', avatarFile),
     ];
@@ -883,7 +1239,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -951,7 +1307,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1012,7 +1368,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1029,7 +1385,66 @@ This endpoint performs the following operations:
   }
 
   @override
+  Future<Response<PublicSignOutFromAllDevicesResponse>>
+  _PublicSignOutFromAllDevices({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Signs out the currently authenticated user from all devices by invalidating all active sessions.
+After successful sign-out, all refresh tokens will be revoked and the user must re-authenticate on all devices.
+
+This endpoint is commonly used:
+
+- After password changes (security best practice)
+- When user suspects account compromise
+- When enabling two-factor authentication
+- As a "Sign Out Everywhere" feature\n
+\n
+**Authentication Requirements:**\n
+- Valid JWT Bearer token\n
+- Account must be active (not suspended)\n
+- Verification status is not required for sign-out\n
+\n
+**Security Features:**\n
+- Invalidates all active sessions across all devices\n
+- Uses soft delete for session tracking and analytics\n
+- Prevents token reuse after sign-out\n
+- Idempotent operation (safe to call multiple times)\n
+\n
+**Response Codes:**\n
+- Returns 200 OK with success status\n
+- Returns 401 Unauthorized for invalid/missing JWT token\n
+- Returns 403 Forbidden for inactive accounts\n
+\n
+**Process Flow:**\n
+1. Extracts user ID from JWT token\n
+2. Validates account is active\n
+3. Soft deletes all active sessions for the user\n
+4. Returns success response.''',
+      summary: 'Sign out the authenticated user from all devices',
+      operationId: 'PublicSignOutFromAllDevices',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::identity"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/auth/sign-out-all');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicSignOutFromAllDevicesResponse,
+      PublicSignOutFromAllDevicesResponse
+    >($request);
+  }
+
+  @override
   Future<Response<PublicSignOutResponse>> _PublicSignOut({
+    required PublicSignOutRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
           '''Signs out the currently authenticated user by updating their login status.
@@ -1074,18 +1489,105 @@ This endpoint performs secure sign-out by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
     final Uri $url = Uri.parse('/api/v1/public/auth/sign-out');
+    final $body = body;
     final Request $request = Request(
-      'DELETE',
+      'POST',
       $url,
       client.baseUrl,
+      body: $body,
       tag: swaggerMetaData,
     );
     return client.send<PublicSignOutResponse, PublicSignOutResponse>($request);
+  }
+
+  @override
+  Future<Response<PublicSetPasswordResponse>> _PublicSetPassword({
+    required PublicSetPasswordRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Allows users who authenticated via external providers (Google/Facebook) to set a password for local authentication.
+
+This endpoint performs the following operations:
+
+- Validates JWT token authentication and extracts user ID
+- Verifies user account is active
+- Checks that user has an email address configured
+- Validates that user\'s current auth provider is Google or Facebook (not Local)
+- Hashes the new password using secure algorithms
+- Sets the password and changes auth provider to Local
+- Updates the user in the database
+
+**Request Requirements:**
+
+- Valid password meeting security requirements
+- User must be authenticated with valid JWT token
+- User must have authenticated via Google or Facebook originally
+- User must have an email address configured
+
+**Response Codes:**
+
+- Returns 200 OK with success status
+- Returns 400 Bad Request for missing email, already set password, or invalid auth provider
+- Returns 401 Unauthorized for invalid/missing JWT token
+- Returns 403 Forbidden for inactive accounts
+- Returns 404 Not Found for user not found
+
+**Error Handling:**
+
+- BadRequestException (400): Missing email, password already set, or not external auth user
+- AuthenticationException (401): Invalid JWT token
+- AuthorizationException (403): Account not active
+- NotFoundException (404): User not found
+
+**Process Flow:**
+
+1. Validates JWT token and extracts user ID
+
+2. Validates password requirements
+
+3. Finds user by ID and validates account status
+
+4. Checks that user has an email address
+
+5. Validates user\'s current auth provider is Google or Facebook
+
+6. Hashes new password securely
+
+7. Sets password and changes auth provider to Local
+
+8. Updates user in database
+
+9. Returns success response.
+
+**Note:** After successfully setting a password, users can log in using their email and password,
+
+in addition to continuing to use their external authentication provider.''',
+      summary: 'Set password for external auth users (Google/Facebook)',
+      operationId: 'PublicSetPassword',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::identity"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/auth/set-password');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicSetPasswordResponse, PublicSetPasswordResponse>(
+      $request,
+    );
   }
 
   @override
@@ -1162,7 +1664,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1239,7 +1741,7 @@ This endpoint enables users to request a new verification code when:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1300,7 +1802,7 @@ This endpoint performs enhanced authentication by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1360,7 +1862,7 @@ This endpoint follows security best practices by:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1458,7 +1960,7 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::authentication"],
+      tags: ["public::identity"],
       deprecated: false,
     ),
   }) {
@@ -1475,6 +1977,279 @@ This endpoint performs the following operations:
         .send<PublicChangePasswordResponse, PublicChangePasswordResponse>(
           $request,
         );
+  }
+
+  @override
+  Future<Response<PublicGetOwnSessionsResponse>> _PublicGetOwnSessions({
+    bool? isActive,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Retrieves a list of all sessions (devices) for the currently authenticated user.
+Supports filtering by session status (active/inactive).
+
+This endpoint provides session management by:
+
+- Listing all user sessions across different devices
+- Showing device information (IP address, device name, user agent)
+- Indicating session status (active or expired)
+- Displaying session creation and expiration times
+
+**Authentication Requirements:**
+
+- User must be authenticated with a valid access token
+- User can only view their own sessions
+
+**Query Parameters:**
+
+- isActive (optional): Filter sessions by status
+- true: Only active sessions
+- false: Only expired/inactive sessions
+- null/omitted: All sessions
+
+**Use Cases:**
+
+- View all active login sessions
+- Identify unrecognized devices
+- Manage active sessions before revoking specific ones
+- Security audit of login history
+
+**Response Codes:**
+
+- Returns 200 OK with list of sessions
+- Returns 401 Unauthorized if access token is invalid or expired
+- Returns 403 Forbidden if user lacks required permissions
+
+**Session Information Includes:**
+
+- Session ID for revoking specific sessions
+- IP address of the device
+- Device name and user agent string
+- Creation timestamp
+- Expiration timestamp
+- Active status (computed from expiration time and deletion status)''',
+      summary: 'Retrieve all sessions for the authenticated user',
+      operationId: 'PublicGetOwnSessions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/sessions');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'isActive': isActive,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetOwnSessionsResponse, PublicGetOwnSessionsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicGetOwnSessionByIdResponse>> _PublicGetOwnSessionById({
+    required String id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Retrieves detailed information about a specific session identified by its ID.
+The session must belong to the authenticated user.
+
+This endpoint provides session details by:
+
+- Validating the session ID from the route parameter
+- Verifying the session belongs to the authenticated user
+- Returning complete session metadata and status
+
+**Authentication Requirements:**
+
+- User must be authenticated with a valid access token
+- User can only view their own sessions
+
+**Use Cases:**
+
+- View detailed information about a specific session
+- Check session status before revoking
+- Verify device information for security auditing
+- Display session details in user dashboard
+
+**Security Features:**
+
+- Session ownership verification prevents viewing other users\' sessions
+- Returns 404 (not 403) for unauthorized access to prevent session enumeration
+
+**Response Codes:**
+
+- Returns 200 OK with session details on success
+- Returns 400 Bad Request if session ID is invalid
+- Returns 401 Unauthorized if access token is invalid or expired
+- Returns 403 Forbidden if user lacks required permissions
+- Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+**Session Information Includes:**
+
+- Session ID
+- IP address of the device
+- Device name and user agent string
+- Creation timestamp
+- Expiration timestamp
+- Active status (computed from expiration time and deletion status)
+
+**Error Handling:**
+
+- NotFoundException (404): Session not found or doesn\'t belong to user''',
+      summary: 'Retrieve a specific session by ID',
+      operationId: 'PublicGetOwnSessionById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/sessions/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetOwnSessionByIdResponse, PublicGetOwnSessionByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicRevokeSessionResponse>> _PublicRevokeSession({
+    required String id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Revokes (logs out from) a specific session identified by its ID.
+This allows users to remotely log out from other devices.
+
+This endpoint performs session revocation by:
+
+- Validating the session ID from the route parameter
+- Verifying the session belongs to the authenticated user
+- Soft deleting the session (marking it as inactive)
+- Invalidating all tokens associated with that session
+
+**Authentication Requirements:**
+
+- User must be authenticated with a valid access token
+- User can only revoke their own sessions
+
+**Use Cases:**
+
+- Log out from a specific device remotely
+- Remove unrecognized or suspicious sessions
+- Clean up old sessions after viewing session list
+- Security response to potential account compromise
+
+**Security Features:**
+
+- Session ownership verification prevents revoking other users\' sessions
+- Soft delete ensures session history is maintained for audit purposes
+- Immediate invalidation prevents further use of associated tokens
+
+**Response Codes:**
+
+- Returns 200 OK with success flag on successful revocation
+- Returns 400 Bad Request if session ID is invalid
+- Returns 401 Unauthorized if access token is invalid or expired
+- Returns 403 Forbidden if user lacks required permissions
+- Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+**Error Handling:**
+
+- NotFoundException (404): Session not found or doesn\'t belong to user
+- Attempting to revoke another user\'s session returns 404 (not 403) to prevent session enumeration attacks''',
+      summary: 'Revoke a specific session (log out from a device)',
+      operationId: 'PublicRevokeSession',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/sessions/revoke/${id}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicRevokeSessionResponse, PublicRevokeSessionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicRefreshTokenResponse>> _PublicRefreshToken({
+    required PublicRefreshTokenRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''Validates and rotates a refresh token to obtain a new access token.
+Implements token rotation for enhanced security - the old refresh token is invalidated.
+
+This endpoint performs token refresh by:
+
+- Validating the provided refresh token
+- Verifying the session is still active and not expired
+- Generating a new access token
+- Rotating the refresh token (old token becomes invalid)
+- Returning new authentication credentials
+
+**Authentication Requirements:**
+
+- Valid, non-expired refresh token
+- Session must be active (not logged out or revoked)
+
+**Security Features:**
+
+- Automatic token rotation prevents token reuse
+- Refresh token hashing for secure storage
+- Session validation ensures only active sessions can refresh
+
+**Response Codes:**
+
+- Returns 200 OK with new tokens on successful refresh
+- Returns 403 Forbidden for invalid or expired refresh tokens
+
+**Error Handling:**
+
+- AuthorizationException (403): Invalid/expired refresh token or session revoked
+- Token rotation ensures old refresh tokens cannot be reused after successful refresh.''',
+      summary: 'Refresh access token using a valid refresh token',
+      operationId: 'PublicRefreshToken',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/sessions/refresh-token');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicRefreshTokenResponse, PublicRefreshTokenResponse>(
+      $request,
+    );
   }
 
   @override
@@ -1554,11 +2329,11 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::profile"],
+      tags: ["public::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/profile');
+    final Uri $url = Uri.parse('/api/v1/public/user/profile');
     final Request $request = Request(
       'GET',
       $url,
@@ -1599,10 +2374,10 @@ This endpoint performs the following operations:
 
 **Updateable Information:**
 
-- Email address (triggers re-verification and signout)
+- Email address (triggers re-verification and logout)
 - Username (must be unique across the system)
 - Phone number with country information
-- Country details (name, flag, ISO code, dial code)
+- Country details (name, ISO code, dial code)
 
 **Security Features:**
 
@@ -1649,7 +2424,7 @@ This endpoint performs the following operations:
 
 **Important Notes:**
 
-- Email updates reset verification status and force signout
+- Email updates reset verification status and force logout
 - Phone number updates include country information
 - Only provided fields are updated (partial updates supported)
 - All validations are performed before any updates.''',
@@ -1658,11 +2433,11 @@ This endpoint performs the following operations:
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::profile"],
+      tags: ["public::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/profile');
+    final Uri $url = Uri.parse('/api/v1/public/user/profile');
     final $body = body;
     final Request $request = Request(
       'PATCH',
@@ -1740,11 +2515,11 @@ curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::profile"],
+      tags: ["public::user"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/profile/avatar');
+    final Uri $url = Uri.parse('/api/v1/public/user/avatar');
     final List<PartValue> $parts = <PartValue>[
       PartValueFile<MultipartFile>('avatarFile', avatarFile),
     ];

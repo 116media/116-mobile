@@ -5,11 +5,16 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:collection/collection.dart';
 import 'dart:convert';
 
+import 'api_116.enums.swagger.dart' as enums;
+
 part 'api_116.models.swagger.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AdminChangePasswordRequest {
-  const AdminChangePasswordRequest({required this.oldPassword, required this.newPassword});
+  const AdminChangePasswordRequest({
+    required this.oldPassword,
+    required this.newPassword,
+  });
 
   factory AdminChangePasswordRequest.fromJson(Map<String, dynamic> json) =>
       _$AdminChangePasswordRequestFromJson(json);
@@ -28,9 +33,15 @@ class AdminChangePasswordRequest {
     return identical(this, other) ||
         (other is AdminChangePasswordRequest &&
             (identical(other.oldPassword, oldPassword) ||
-                const DeepCollectionEquality().equals(other.oldPassword, oldPassword)) &&
+                const DeepCollectionEquality().equals(
+                  other.oldPassword,
+                  oldPassword,
+                )) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
+                const DeepCollectionEquality().equals(
+                  other.newPassword,
+                  newPassword,
+                )));
   }
 
   @override
@@ -44,7 +55,10 @@ class AdminChangePasswordRequest {
 }
 
 extension $AdminChangePasswordRequestExtension on AdminChangePasswordRequest {
-  AdminChangePasswordRequest copyWith({String? oldPassword, String? newPassword}) {
+  AdminChangePasswordRequest copyWith({
+    String? oldPassword,
+    String? newPassword,
+  }) {
     return AdminChangePasswordRequest(
       oldPassword: oldPassword ?? this.oldPassword,
       newPassword: newPassword ?? this.newPassword,
@@ -81,14 +95,18 @@ class AdminChangePasswordResponse {
     return identical(this, other) ||
         (other is AdminChangePasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminChangePasswordResponseExtension on AdminChangePasswordResponse {
@@ -98,6 +116,106 @@ extension $AdminChangePasswordResponseExtension on AdminChangePasswordResponse {
 
   AdminChangePasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
     return AdminChangePasswordResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminCleanupExpiredSessionsResponse {
+  const AdminCleanupExpiredSessionsResponse({required this.deletedCount});
+
+  factory AdminCleanupExpiredSessionsResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => _$AdminCleanupExpiredSessionsResponseFromJson(json);
+
+  static const toJsonFactory = _$AdminCleanupExpiredSessionsResponseToJson;
+  Map<String, dynamic> toJson() =>
+      _$AdminCleanupExpiredSessionsResponseToJson(this);
+
+  @JsonKey(name: 'deletedCount')
+  final int deletedCount;
+  static const fromJsonFactory = _$AdminCleanupExpiredSessionsResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminCleanupExpiredSessionsResponse &&
+            (identical(other.deletedCount, deletedCount) ||
+                const DeepCollectionEquality().equals(
+                  other.deletedCount,
+                  deletedCount,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(deletedCount) ^ runtimeType.hashCode;
+}
+
+extension $AdminCleanupExpiredSessionsResponseExtension
+    on AdminCleanupExpiredSessionsResponse {
+  AdminCleanupExpiredSessionsResponse copyWith({int? deletedCount}) {
+    return AdminCleanupExpiredSessionsResponse(
+      deletedCount: deletedCount ?? this.deletedCount,
+    );
+  }
+
+  AdminCleanupExpiredSessionsResponse copyWithWrapped({
+    Wrapped<int>? deletedCount,
+  }) {
+    return AdminCleanupExpiredSessionsResponse(
+      deletedCount: (deletedCount != null
+          ? deletedCount.value
+          : this.deletedCount),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminForceLogoutUserResponse {
+  const AdminForceLogoutUserResponse({required this.isSuccess});
+
+  factory AdminForceLogoutUserResponse.fromJson(Map<String, dynamic> json) =>
+      _$AdminForceLogoutUserResponseFromJson(json);
+
+  static const toJsonFactory = _$AdminForceLogoutUserResponseToJson;
+  Map<String, dynamic> toJson() => _$AdminForceLogoutUserResponseToJson(this);
+
+  @JsonKey(name: 'isSuccess')
+  final bool isSuccess;
+  static const fromJsonFactory = _$AdminForceLogoutUserResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminForceLogoutUserResponse &&
+            (identical(other.isSuccess, isSuccess) ||
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+}
+
+extension $AdminForceLogoutUserResponseExtension
+    on AdminForceLogoutUserResponse {
+  AdminForceLogoutUserResponse copyWith({bool? isSuccess}) {
+    return AdminForceLogoutUserResponse(isSuccess: isSuccess ?? this.isSuccess);
+  }
+
+  AdminForceLogoutUserResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
+    return AdminForceLogoutUserResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
     );
   }
@@ -129,7 +247,8 @@ class AdminForgotPasswordRequest {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
 }
 
 extension $AdminForgotPasswordRequestExtension on AdminForgotPasswordRequest {
@@ -138,13 +257,18 @@ extension $AdminForgotPasswordRequestExtension on AdminForgotPasswordRequest {
   }
 
   AdminForgotPasswordRequest copyWithWrapped({Wrapped<String>? email}) {
-    return AdminForgotPasswordRequest(email: (email != null ? email.value : this.email));
+    return AdminForgotPasswordRequest(
+      email: (email != null ? email.value : this.email),
+    );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class AdminForgotPasswordResponse {
-  const AdminForgotPasswordResponse({required this.isSuccess, required this.email});
+  const AdminForgotPasswordResponse({
+    required this.isSuccess,
+    required this.email,
+  });
 
   factory AdminForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
       _$AdminForgotPasswordResponseFromJson(json);
@@ -163,7 +287,10 @@ class AdminForgotPasswordResponse {
     return identical(this, other) ||
         (other is AdminForgotPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)) &&
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)));
   }
@@ -186,10 +313,60 @@ extension $AdminForgotPasswordResponseExtension on AdminForgotPasswordResponse {
     );
   }
 
-  AdminForgotPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess, Wrapped<String>? email}) {
+  AdminForgotPasswordResponse copyWithWrapped({
+    Wrapped<bool>? isSuccess,
+    Wrapped<String>? email,
+  }) {
     return AdminForgotPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
       email: (email != null ? email.value : this.email),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminGetAllSessionsResponse {
+  const AdminGetAllSessionsResponse({required this.sessions});
+
+  factory AdminGetAllSessionsResponse.fromJson(Map<String, dynamic> json) =>
+      _$AdminGetAllSessionsResponseFromJson(json);
+
+  static const toJsonFactory = _$AdminGetAllSessionsResponseToJson;
+  Map<String, dynamic> toJson() => _$AdminGetAllSessionsResponseToJson(this);
+
+  @JsonKey(name: 'sessions')
+  final SessionDtoPaginatedResult sessions;
+  static const fromJsonFactory = _$AdminGetAllSessionsResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminGetAllSessionsResponse &&
+            (identical(other.sessions, sessions) ||
+                const DeepCollectionEquality().equals(
+                  other.sessions,
+                  sessions,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(sessions) ^ runtimeType.hashCode;
+}
+
+extension $AdminGetAllSessionsResponseExtension on AdminGetAllSessionsResponse {
+  AdminGetAllSessionsResponse copyWith({SessionDtoPaginatedResult? sessions}) {
+    return AdminGetAllSessionsResponse(sessions: sessions ?? this.sessions);
+  }
+
+  AdminGetAllSessionsResponse copyWithWrapped({
+    Wrapped<SessionDtoPaginatedResult>? sessions,
+  }) {
+    return AdminGetAllSessionsResponse(
+      sessions: (sessions != null ? sessions.value : this.sessions),
     );
   }
 }
@@ -220,7 +397,8 @@ class AdminGetOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $AdminGetOwnProfileResponseExtension on AdminGetOwnProfileResponse {
@@ -229,7 +407,133 @@ extension $AdminGetOwnProfileResponseExtension on AdminGetOwnProfileResponse {
   }
 
   AdminGetOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return AdminGetOwnProfileResponse(user: (user != null ? user.value : this.user));
+    return AdminGetOwnProfileResponse(
+      user: (user != null ? user.value : this.user),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminGetSessionMetricsResponse {
+  const AdminGetSessionMetricsResponse({
+    required this.browsers,
+    required this.devices,
+    required this.platforms,
+    required this.clients,
+    required this.totalActiveSessions,
+    required this.totalActiveUsers,
+  });
+
+  factory AdminGetSessionMetricsResponse.fromJson(Map<String, dynamic> json) =>
+      _$AdminGetSessionMetricsResponseFromJson(json);
+
+  static const toJsonFactory = _$AdminGetSessionMetricsResponseToJson;
+  Map<String, dynamic> toJson() => _$AdminGetSessionMetricsResponseToJson(this);
+
+  @JsonKey(name: 'browsers')
+  final BrowserMetrics browsers;
+  @JsonKey(name: 'devices')
+  final DeviceMetrics devices;
+  @JsonKey(name: 'platforms')
+  final PlatformMetrics platforms;
+  @JsonKey(name: 'clients')
+  final ClientMetrics clients;
+  @JsonKey(name: 'totalActiveSessions')
+  final int totalActiveSessions;
+  @JsonKey(name: 'totalActiveUsers')
+  final int totalActiveUsers;
+  static const fromJsonFactory = _$AdminGetSessionMetricsResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminGetSessionMetricsResponse &&
+            (identical(other.browsers, browsers) ||
+                const DeepCollectionEquality().equals(
+                  other.browsers,
+                  browsers,
+                )) &&
+            (identical(other.devices, devices) ||
+                const DeepCollectionEquality().equals(
+                  other.devices,
+                  devices,
+                )) &&
+            (identical(other.platforms, platforms) ||
+                const DeepCollectionEquality().equals(
+                  other.platforms,
+                  platforms,
+                )) &&
+            (identical(other.clients, clients) ||
+                const DeepCollectionEquality().equals(
+                  other.clients,
+                  clients,
+                )) &&
+            (identical(other.totalActiveSessions, totalActiveSessions) ||
+                const DeepCollectionEquality().equals(
+                  other.totalActiveSessions,
+                  totalActiveSessions,
+                )) &&
+            (identical(other.totalActiveUsers, totalActiveUsers) ||
+                const DeepCollectionEquality().equals(
+                  other.totalActiveUsers,
+                  totalActiveUsers,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(browsers) ^
+      const DeepCollectionEquality().hash(devices) ^
+      const DeepCollectionEquality().hash(platforms) ^
+      const DeepCollectionEquality().hash(clients) ^
+      const DeepCollectionEquality().hash(totalActiveSessions) ^
+      const DeepCollectionEquality().hash(totalActiveUsers) ^
+      runtimeType.hashCode;
+}
+
+extension $AdminGetSessionMetricsResponseExtension
+    on AdminGetSessionMetricsResponse {
+  AdminGetSessionMetricsResponse copyWith({
+    BrowserMetrics? browsers,
+    DeviceMetrics? devices,
+    PlatformMetrics? platforms,
+    ClientMetrics? clients,
+    int? totalActiveSessions,
+    int? totalActiveUsers,
+  }) {
+    return AdminGetSessionMetricsResponse(
+      browsers: browsers ?? this.browsers,
+      devices: devices ?? this.devices,
+      platforms: platforms ?? this.platforms,
+      clients: clients ?? this.clients,
+      totalActiveSessions: totalActiveSessions ?? this.totalActiveSessions,
+      totalActiveUsers: totalActiveUsers ?? this.totalActiveUsers,
+    );
+  }
+
+  AdminGetSessionMetricsResponse copyWithWrapped({
+    Wrapped<BrowserMetrics>? browsers,
+    Wrapped<DeviceMetrics>? devices,
+    Wrapped<PlatformMetrics>? platforms,
+    Wrapped<ClientMetrics>? clients,
+    Wrapped<int>? totalActiveSessions,
+    Wrapped<int>? totalActiveUsers,
+  }) {
+    return AdminGetSessionMetricsResponse(
+      browsers: (browsers != null ? browsers.value : this.browsers),
+      devices: (devices != null ? devices.value : this.devices),
+      platforms: (platforms != null ? platforms.value : this.platforms),
+      clients: (clients != null ? clients.value : this.clients),
+      totalActiveSessions: (totalActiveSessions != null
+          ? totalActiveSessions.value
+          : this.totalActiveSessions),
+      totalActiveUsers: (totalActiveUsers != null
+          ? totalActiveUsers.value
+          : this.totalActiveUsers),
+    );
   }
 }
 
@@ -256,7 +560,10 @@ class AdminLoginRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(other.password, password)));
+                const DeepCollectionEquality().equals(
+                  other.password,
+                  password,
+                )));
   }
 
   @override
@@ -271,10 +578,16 @@ class AdminLoginRequest {
 
 extension $AdminLoginRequestExtension on AdminLoginRequest {
   AdminLoginRequest copyWith({String? email, String? password}) {
-    return AdminLoginRequest(email: email ?? this.email, password: password ?? this.password);
+    return AdminLoginRequest(
+      email: email ?? this.email,
+      password: password ?? this.password,
+    );
   }
 
-  AdminLoginRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? password}) {
+  AdminLoginRequest copyWithWrapped({
+    Wrapped<String>? email,
+    Wrapped<String>? password,
+  }) {
     return AdminLoginRequest(
       email: (email != null ? email.value : this.email),
       password: (password != null ? password.value : this.password),
@@ -284,7 +597,14 @@ extension $AdminLoginRequestExtension on AdminLoginRequest {
 
 @JsonSerializable(explicitToJson: true)
 class AdminLoginResponse {
-  const AdminLoginResponse({required this.user, required this.token});
+  const AdminLoginResponse({
+    required this.user,
+    required this.accessToken,
+    required this.accessTokenExpiresAt,
+    required this.refreshToken,
+    required this.refreshTokenExpiresAt,
+    required this.tokenType,
+  });
 
   factory AdminLoginResponse.fromJson(Map<String, dynamic> json) =>
       _$AdminLoginResponseFromJson(json);
@@ -294,8 +614,16 @@ class AdminLoginResponse {
 
   @JsonKey(name: 'user')
   final UserResponseDto user;
-  @JsonKey(name: 'token')
-  final String token;
+  @JsonKey(name: 'accessToken')
+  final String accessToken;
+  @JsonKey(name: 'accessTokenExpiresAt')
+  final DateTime accessTokenExpiresAt;
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  @JsonKey(name: 'refreshTokenExpiresAt')
+  final DateTime refreshTokenExpiresAt;
+  @JsonKey(name: 'tokenType')
+  final String tokenType;
   static const fromJsonFactory = _$AdminLoginResponseFromJson;
 
   @override
@@ -304,8 +632,31 @@ class AdminLoginResponse {
         (other is AdminLoginResponse &&
             (identical(other.user, user) ||
                 const DeepCollectionEquality().equals(other.user, user)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality().equals(
+                  other.accessToken,
+                  accessToken,
+                )) &&
+            (identical(other.accessTokenExpiresAt, accessTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.accessTokenExpiresAt,
+                  accessTokenExpiresAt,
+                )) &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )) &&
+            (identical(other.refreshTokenExpiresAt, refreshTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshTokenExpiresAt,
+                  refreshTokenExpiresAt,
+                )) &&
+            (identical(other.tokenType, tokenType) ||
+                const DeepCollectionEquality().equals(
+                  other.tokenType,
+                  tokenType,
+                )));
   }
 
   @override
@@ -314,19 +665,55 @@ class AdminLoginResponse {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(accessTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(refreshToken) ^
+      const DeepCollectionEquality().hash(refreshTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(tokenType) ^
       runtimeType.hashCode;
 }
 
 extension $AdminLoginResponseExtension on AdminLoginResponse {
-  AdminLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return AdminLoginResponse(user: user ?? this.user, token: token ?? this.token);
+  AdminLoginResponse copyWith({
+    UserResponseDto? user,
+    String? accessToken,
+    DateTime? accessTokenExpiresAt,
+    String? refreshToken,
+    DateTime? refreshTokenExpiresAt,
+    String? tokenType,
+  }) {
+    return AdminLoginResponse(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresAt: accessTokenExpiresAt ?? this.accessTokenExpiresAt,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenExpiresAt:
+          refreshTokenExpiresAt ?? this.refreshTokenExpiresAt,
+      tokenType: tokenType ?? this.tokenType,
+    );
   }
 
-  AdminLoginResponse copyWithWrapped({Wrapped<UserResponseDto>? user, Wrapped<String>? token}) {
+  AdminLoginResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+    Wrapped<String>? accessToken,
+    Wrapped<DateTime>? accessTokenExpiresAt,
+    Wrapped<String>? refreshToken,
+    Wrapped<DateTime>? refreshTokenExpiresAt,
+    Wrapped<String>? tokenType,
+  }) {
     return AdminLoginResponse(
       user: (user != null ? user.value : this.user),
-      token: (token != null ? token.value : this.token),
+      accessToken: (accessToken != null ? accessToken.value : this.accessToken),
+      accessTokenExpiresAt: (accessTokenExpiresAt != null
+          ? accessTokenExpiresAt.value
+          : this.accessTokenExpiresAt),
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+      refreshTokenExpiresAt: (refreshTokenExpiresAt != null
+          ? refreshTokenExpiresAt.value
+          : this.refreshTokenExpiresAt),
+      tokenType: (tokenType != null ? tokenType.value : this.tokenType),
     );
   }
 }
@@ -369,10 +756,16 @@ class AdminResendOtpRequest {
 
 extension $AdminResendOtpRequestExtension on AdminResendOtpRequest {
   AdminResendOtpRequest copyWith({String? email, String? purpose}) {
-    return AdminResendOtpRequest(email: email ?? this.email, purpose: purpose ?? this.purpose);
+    return AdminResendOtpRequest(
+      email: email ?? this.email,
+      purpose: purpose ?? this.purpose,
+    );
   }
 
-  AdminResendOtpRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? purpose}) {
+  AdminResendOtpRequest copyWithWrapped({
+    Wrapped<String>? email,
+    Wrapped<String>? purpose,
+  }) {
     return AdminResendOtpRequest(
       email: (email != null ? email.value : this.email),
       purpose: (purpose != null ? purpose.value : this.purpose),
@@ -399,14 +792,18 @@ class AdminResendOtpResponse {
     return identical(this, other) ||
         (other is AdminResendOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminResendOtpResponseExtension on AdminResendOtpResponse {
@@ -452,7 +849,10 @@ class AdminResetPasswordRequest {
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
+                const DeepCollectionEquality().equals(
+                  other.newPassword,
+                  newPassword,
+                )));
   }
 
   @override
@@ -467,7 +867,11 @@ class AdminResetPasswordRequest {
 }
 
 extension $AdminResetPasswordRequestExtension on AdminResetPasswordRequest {
-  AdminResetPasswordRequest copyWith({String? email, String? code, String? newPassword}) {
+  AdminResetPasswordRequest copyWith({
+    String? email,
+    String? code,
+    String? newPassword,
+  }) {
     return AdminResetPasswordRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -507,14 +911,18 @@ class AdminResetPasswordResponse {
     return identical(this, other) ||
         (other is AdminResetPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminResetPasswordResponseExtension on AdminResetPasswordResponse {
@@ -525,6 +933,105 @@ extension $AdminResetPasswordResponseExtension on AdminResetPasswordResponse {
   AdminResetPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
     return AdminResetPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminSignOutFromAllDevicesResponse {
+  const AdminSignOutFromAllDevicesResponse({required this.isSuccess});
+
+  factory AdminSignOutFromAllDevicesResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => _$AdminSignOutFromAllDevicesResponseFromJson(json);
+
+  static const toJsonFactory = _$AdminSignOutFromAllDevicesResponseToJson;
+  Map<String, dynamic> toJson() =>
+      _$AdminSignOutFromAllDevicesResponseToJson(this);
+
+  @JsonKey(name: 'isSuccess')
+  final bool isSuccess;
+  static const fromJsonFactory = _$AdminSignOutFromAllDevicesResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminSignOutFromAllDevicesResponse &&
+            (identical(other.isSuccess, isSuccess) ||
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+}
+
+extension $AdminSignOutFromAllDevicesResponseExtension
+    on AdminSignOutFromAllDevicesResponse {
+  AdminSignOutFromAllDevicesResponse copyWith({bool? isSuccess}) {
+    return AdminSignOutFromAllDevicesResponse(
+      isSuccess: isSuccess ?? this.isSuccess,
+    );
+  }
+
+  AdminSignOutFromAllDevicesResponse copyWithWrapped({
+    Wrapped<bool>? isSuccess,
+  }) {
+    return AdminSignOutFromAllDevicesResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AdminSignOutRequest {
+  const AdminSignOutRequest({required this.refreshToken});
+
+  factory AdminSignOutRequest.fromJson(Map<String, dynamic> json) =>
+      _$AdminSignOutRequestFromJson(json);
+
+  static const toJsonFactory = _$AdminSignOutRequestToJson;
+  Map<String, dynamic> toJson() => _$AdminSignOutRequestToJson(this);
+
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  static const fromJsonFactory = _$AdminSignOutRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AdminSignOutRequest &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(refreshToken) ^ runtimeType.hashCode;
+}
+
+extension $AdminSignOutRequestExtension on AdminSignOutRequest {
+  AdminSignOutRequest copyWith({String? refreshToken}) {
+    return AdminSignOutRequest(refreshToken: refreshToken ?? this.refreshToken);
+  }
+
+  AdminSignOutRequest copyWithWrapped({Wrapped<String>? refreshToken}) {
+    return AdminSignOutRequest(
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
     );
   }
 }
@@ -548,14 +1055,18 @@ class AdminSignOutResponse {
     return identical(this, other) ||
         (other is AdminSignOutResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminSignOutResponseExtension on AdminSignOutResponse {
@@ -564,7 +1075,9 @@ extension $AdminSignOutResponseExtension on AdminSignOutResponse {
   }
 
   AdminSignOutResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
-    return AdminSignOutResponse(isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess));
+    return AdminSignOutResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
   }
 }
 
@@ -594,7 +1107,8 @@ class AdminUpdateAvatarResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $AdminUpdateAvatarResponseExtension on AdminUpdateAvatarResponse {
@@ -603,7 +1117,9 @@ extension $AdminUpdateAvatarResponseExtension on AdminUpdateAvatarResponse {
   }
 
   AdminUpdateAvatarResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return AdminUpdateAvatarResponse(user: (user != null ? user.value : this.user));
+    return AdminUpdateAvatarResponse(
+      user: (user != null ? user.value : this.user),
+    );
   }
 }
 
@@ -612,7 +1128,6 @@ class AdminUpdateOwnProfileRequest {
   const AdminUpdateOwnProfileRequest({
     this.userName,
     this.countryName,
-    this.countryFlagUrl,
     this.partialPhoneNumber,
     this.countryIsoCode,
     this.countryDialCode,
@@ -628,8 +1143,6 @@ class AdminUpdateOwnProfileRequest {
   final String? userName;
   @JsonKey(name: 'countryName')
   final String? countryName;
-  @JsonKey(name: 'countryFlagUrl')
-  final String? countryFlagUrl;
   @JsonKey(name: 'partialPhoneNumber')
   final String? partialPhoneNumber;
   @JsonKey(name: 'countryIsoCode')
@@ -643,20 +1156,30 @@ class AdminUpdateOwnProfileRequest {
     return identical(this, other) ||
         (other is AdminUpdateOwnProfileRequest &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(other.userName, userName)) &&
+                const DeepCollectionEquality().equals(
+                  other.userName,
+                  userName,
+                )) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
-            (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryName,
+                  countryName,
+                )) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryIsoCode,
+                  countryIsoCode,
+                )) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)));
+                const DeepCollectionEquality().equals(
+                  other.countryDialCode,
+                  countryDialCode,
+                )));
   }
 
   @override
@@ -666,18 +1189,17 @@ class AdminUpdateOwnProfileRequest {
   int get hashCode =>
       const DeepCollectionEquality().hash(userName) ^
       const DeepCollectionEquality().hash(countryName) ^
-      const DeepCollectionEquality().hash(countryFlagUrl) ^
       const DeepCollectionEquality().hash(partialPhoneNumber) ^
       const DeepCollectionEquality().hash(countryIsoCode) ^
       const DeepCollectionEquality().hash(countryDialCode) ^
       runtimeType.hashCode;
 }
 
-extension $AdminUpdateOwnProfileRequestExtension on AdminUpdateOwnProfileRequest {
+extension $AdminUpdateOwnProfileRequestExtension
+    on AdminUpdateOwnProfileRequest {
   AdminUpdateOwnProfileRequest copyWith({
     String? userName,
     String? countryName,
-    String? countryFlagUrl,
     String? partialPhoneNumber,
     String? countryIsoCode,
     String? countryDialCode,
@@ -685,7 +1207,6 @@ extension $AdminUpdateOwnProfileRequestExtension on AdminUpdateOwnProfileRequest
     return AdminUpdateOwnProfileRequest(
       userName: userName ?? this.userName,
       countryName: countryName ?? this.countryName,
-      countryFlagUrl: countryFlagUrl ?? this.countryFlagUrl,
       partialPhoneNumber: partialPhoneNumber ?? this.partialPhoneNumber,
       countryIsoCode: countryIsoCode ?? this.countryIsoCode,
       countryDialCode: countryDialCode ?? this.countryDialCode,
@@ -695,7 +1216,6 @@ extension $AdminUpdateOwnProfileRequestExtension on AdminUpdateOwnProfileRequest
   AdminUpdateOwnProfileRequest copyWithWrapped({
     Wrapped<String?>? userName,
     Wrapped<String?>? countryName,
-    Wrapped<String?>? countryFlagUrl,
     Wrapped<String?>? partialPhoneNumber,
     Wrapped<String?>? countryIsoCode,
     Wrapped<String?>? countryDialCode,
@@ -703,12 +1223,15 @@ extension $AdminUpdateOwnProfileRequestExtension on AdminUpdateOwnProfileRequest
     return AdminUpdateOwnProfileRequest(
       userName: (userName != null ? userName.value : this.userName),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
+      countryIsoCode: (countryIsoCode != null
+          ? countryIsoCode.value
+          : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null
+          ? countryDialCode.value
+          : this.countryDialCode),
     );
   }
 }
@@ -739,22 +1262,32 @@ class AdminUpdateOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
-extension $AdminUpdateOwnProfileResponseExtension on AdminUpdateOwnProfileResponse {
+extension $AdminUpdateOwnProfileResponseExtension
+    on AdminUpdateOwnProfileResponse {
   AdminUpdateOwnProfileResponse copyWith({UserResponseDto? user}) {
     return AdminUpdateOwnProfileResponse(user: user ?? this.user);
   }
 
-  AdminUpdateOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return AdminUpdateOwnProfileResponse(user: (user != null ? user.value : this.user));
+  AdminUpdateOwnProfileResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+  }) {
+    return AdminUpdateOwnProfileResponse(
+      user: (user != null ? user.value : this.user),
+    );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class AdminVerifyOtpRequest {
-  const AdminVerifyOtpRequest({required this.email, required this.code, required this.purpose});
+  const AdminVerifyOtpRequest({
+    required this.email,
+    required this.code,
+    required this.purpose,
+  });
 
   factory AdminVerifyOtpRequest.fromJson(Map<String, dynamic> json) =>
       _$AdminVerifyOtpRequestFromJson(json);
@@ -794,7 +1327,11 @@ class AdminVerifyOtpRequest {
 }
 
 extension $AdminVerifyOtpRequestExtension on AdminVerifyOtpRequest {
-  AdminVerifyOtpRequest copyWith({String? email, String? code, String? purpose}) {
+  AdminVerifyOtpRequest copyWith({
+    String? email,
+    String? code,
+    String? purpose,
+  }) {
     return AdminVerifyOtpRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -834,14 +1371,18 @@ class AdminVerifyOtpResponse {
     return identical(this, other) ||
         (other is AdminVerifyOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $AdminVerifyOtpResponseExtension on AdminVerifyOtpResponse {
@@ -852,6 +1393,377 @@ extension $AdminVerifyOtpResponseExtension on AdminVerifyOtpResponse {
   AdminVerifyOtpResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
     return AdminVerifyOtpResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class BrowserMetrics {
+  const BrowserMetrics({
+    required this.chrome,
+    required this.firefox,
+    required this.safari,
+    required this.edge,
+    required this.opera,
+    required this.internetExplorer,
+    required this.googleSearchApp,
+    required this.samsung,
+    required this.unknown,
+  });
+
+  factory BrowserMetrics.fromJson(Map<String, dynamic> json) =>
+      _$BrowserMetricsFromJson(json);
+
+  static const toJsonFactory = _$BrowserMetricsToJson;
+  Map<String, dynamic> toJson() => _$BrowserMetricsToJson(this);
+
+  @JsonKey(name: 'chrome')
+  final int chrome;
+  @JsonKey(name: 'firefox')
+  final int firefox;
+  @JsonKey(name: 'safari')
+  final int safari;
+  @JsonKey(name: 'edge')
+  final int edge;
+  @JsonKey(name: 'opera')
+  final int opera;
+  @JsonKey(name: 'internetExplorer')
+  final int internetExplorer;
+  @JsonKey(name: 'googleSearchApp')
+  final int googleSearchApp;
+  @JsonKey(name: 'samsung')
+  final int samsung;
+  @JsonKey(name: 'unknown')
+  final int unknown;
+  static const fromJsonFactory = _$BrowserMetricsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is BrowserMetrics &&
+            (identical(other.chrome, chrome) ||
+                const DeepCollectionEquality().equals(other.chrome, chrome)) &&
+            (identical(other.firefox, firefox) ||
+                const DeepCollectionEquality().equals(
+                  other.firefox,
+                  firefox,
+                )) &&
+            (identical(other.safari, safari) ||
+                const DeepCollectionEquality().equals(other.safari, safari)) &&
+            (identical(other.edge, edge) ||
+                const DeepCollectionEquality().equals(other.edge, edge)) &&
+            (identical(other.opera, opera) ||
+                const DeepCollectionEquality().equals(other.opera, opera)) &&
+            (identical(other.internetExplorer, internetExplorer) ||
+                const DeepCollectionEquality().equals(
+                  other.internetExplorer,
+                  internetExplorer,
+                )) &&
+            (identical(other.googleSearchApp, googleSearchApp) ||
+                const DeepCollectionEquality().equals(
+                  other.googleSearchApp,
+                  googleSearchApp,
+                )) &&
+            (identical(other.samsung, samsung) ||
+                const DeepCollectionEquality().equals(
+                  other.samsung,
+                  samsung,
+                )) &&
+            (identical(other.unknown, unknown) ||
+                const DeepCollectionEquality().equals(other.unknown, unknown)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(chrome) ^
+      const DeepCollectionEquality().hash(firefox) ^
+      const DeepCollectionEquality().hash(safari) ^
+      const DeepCollectionEquality().hash(edge) ^
+      const DeepCollectionEquality().hash(opera) ^
+      const DeepCollectionEquality().hash(internetExplorer) ^
+      const DeepCollectionEquality().hash(googleSearchApp) ^
+      const DeepCollectionEquality().hash(samsung) ^
+      const DeepCollectionEquality().hash(unknown) ^
+      runtimeType.hashCode;
+}
+
+extension $BrowserMetricsExtension on BrowserMetrics {
+  BrowserMetrics copyWith({
+    int? chrome,
+    int? firefox,
+    int? safari,
+    int? edge,
+    int? opera,
+    int? internetExplorer,
+    int? googleSearchApp,
+    int? samsung,
+    int? unknown,
+  }) {
+    return BrowserMetrics(
+      chrome: chrome ?? this.chrome,
+      firefox: firefox ?? this.firefox,
+      safari: safari ?? this.safari,
+      edge: edge ?? this.edge,
+      opera: opera ?? this.opera,
+      internetExplorer: internetExplorer ?? this.internetExplorer,
+      googleSearchApp: googleSearchApp ?? this.googleSearchApp,
+      samsung: samsung ?? this.samsung,
+      unknown: unknown ?? this.unknown,
+    );
+  }
+
+  BrowserMetrics copyWithWrapped({
+    Wrapped<int>? chrome,
+    Wrapped<int>? firefox,
+    Wrapped<int>? safari,
+    Wrapped<int>? edge,
+    Wrapped<int>? opera,
+    Wrapped<int>? internetExplorer,
+    Wrapped<int>? googleSearchApp,
+    Wrapped<int>? samsung,
+    Wrapped<int>? unknown,
+  }) {
+    return BrowserMetrics(
+      chrome: (chrome != null ? chrome.value : this.chrome),
+      firefox: (firefox != null ? firefox.value : this.firefox),
+      safari: (safari != null ? safari.value : this.safari),
+      edge: (edge != null ? edge.value : this.edge),
+      opera: (opera != null ? opera.value : this.opera),
+      internetExplorer: (internetExplorer != null
+          ? internetExplorer.value
+          : this.internetExplorer),
+      googleSearchApp: (googleSearchApp != null
+          ? googleSearchApp.value
+          : this.googleSearchApp),
+      samsung: (samsung != null ? samsung.value : this.samsung),
+      unknown: (unknown != null ? unknown.value : this.unknown),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ClientMetrics {
+  const ClientMetrics({
+    required this.mobileApp,
+    required this.webApp,
+    required this.dashboard,
+    required this.unknown,
+  });
+
+  factory ClientMetrics.fromJson(Map<String, dynamic> json) =>
+      _$ClientMetricsFromJson(json);
+
+  static const toJsonFactory = _$ClientMetricsToJson;
+  Map<String, dynamic> toJson() => _$ClientMetricsToJson(this);
+
+  @JsonKey(name: 'mobileApp')
+  final int mobileApp;
+  @JsonKey(name: 'webApp')
+  final int webApp;
+  @JsonKey(name: 'dashboard')
+  final int dashboard;
+  @JsonKey(name: 'unknown')
+  final int unknown;
+  static const fromJsonFactory = _$ClientMetricsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ClientMetrics &&
+            (identical(other.mobileApp, mobileApp) ||
+                const DeepCollectionEquality().equals(
+                  other.mobileApp,
+                  mobileApp,
+                )) &&
+            (identical(other.webApp, webApp) ||
+                const DeepCollectionEquality().equals(other.webApp, webApp)) &&
+            (identical(other.dashboard, dashboard) ||
+                const DeepCollectionEquality().equals(
+                  other.dashboard,
+                  dashboard,
+                )) &&
+            (identical(other.unknown, unknown) ||
+                const DeepCollectionEquality().equals(other.unknown, unknown)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(mobileApp) ^
+      const DeepCollectionEquality().hash(webApp) ^
+      const DeepCollectionEquality().hash(dashboard) ^
+      const DeepCollectionEquality().hash(unknown) ^
+      runtimeType.hashCode;
+}
+
+extension $ClientMetricsExtension on ClientMetrics {
+  ClientMetrics copyWith({
+    int? mobileApp,
+    int? webApp,
+    int? dashboard,
+    int? unknown,
+  }) {
+    return ClientMetrics(
+      mobileApp: mobileApp ?? this.mobileApp,
+      webApp: webApp ?? this.webApp,
+      dashboard: dashboard ?? this.dashboard,
+      unknown: unknown ?? this.unknown,
+    );
+  }
+
+  ClientMetrics copyWithWrapped({
+    Wrapped<int>? mobileApp,
+    Wrapped<int>? webApp,
+    Wrapped<int>? dashboard,
+    Wrapped<int>? unknown,
+  }) {
+    return ClientMetrics(
+      mobileApp: (mobileApp != null ? mobileApp.value : this.mobileApp),
+      webApp: (webApp != null ? webApp.value : this.webApp),
+      dashboard: (dashboard != null ? dashboard.value : this.dashboard),
+      unknown: (unknown != null ? unknown.value : this.unknown),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class DeviceMetrics {
+  const DeviceMetrics({
+    required this.desktop,
+    required this.mobile,
+    required this.tablet,
+    required this.watch,
+    required this.tv,
+    required this.console,
+    required this.car,
+    required this.ioT,
+    required this.unknown,
+  });
+
+  factory DeviceMetrics.fromJson(Map<String, dynamic> json) =>
+      _$DeviceMetricsFromJson(json);
+
+  static const toJsonFactory = _$DeviceMetricsToJson;
+  Map<String, dynamic> toJson() => _$DeviceMetricsToJson(this);
+
+  @JsonKey(name: 'desktop')
+  final int desktop;
+  @JsonKey(name: 'mobile')
+  final int mobile;
+  @JsonKey(name: 'tablet')
+  final int tablet;
+  @JsonKey(name: 'watch')
+  final int watch;
+  @JsonKey(name: 'tv')
+  final int tv;
+  @JsonKey(name: 'console')
+  final int console;
+  @JsonKey(name: 'car')
+  final int car;
+  @JsonKey(name: 'ioT')
+  final int ioT;
+  @JsonKey(name: 'unknown')
+  final int unknown;
+  static const fromJsonFactory = _$DeviceMetricsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is DeviceMetrics &&
+            (identical(other.desktop, desktop) ||
+                const DeepCollectionEquality().equals(
+                  other.desktop,
+                  desktop,
+                )) &&
+            (identical(other.mobile, mobile) ||
+                const DeepCollectionEquality().equals(other.mobile, mobile)) &&
+            (identical(other.tablet, tablet) ||
+                const DeepCollectionEquality().equals(other.tablet, tablet)) &&
+            (identical(other.watch, watch) ||
+                const DeepCollectionEquality().equals(other.watch, watch)) &&
+            (identical(other.tv, tv) ||
+                const DeepCollectionEquality().equals(other.tv, tv)) &&
+            (identical(other.console, console) ||
+                const DeepCollectionEquality().equals(
+                  other.console,
+                  console,
+                )) &&
+            (identical(other.car, car) ||
+                const DeepCollectionEquality().equals(other.car, car)) &&
+            (identical(other.ioT, ioT) ||
+                const DeepCollectionEquality().equals(other.ioT, ioT)) &&
+            (identical(other.unknown, unknown) ||
+                const DeepCollectionEquality().equals(other.unknown, unknown)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(desktop) ^
+      const DeepCollectionEquality().hash(mobile) ^
+      const DeepCollectionEquality().hash(tablet) ^
+      const DeepCollectionEquality().hash(watch) ^
+      const DeepCollectionEquality().hash(tv) ^
+      const DeepCollectionEquality().hash(console) ^
+      const DeepCollectionEquality().hash(car) ^
+      const DeepCollectionEquality().hash(ioT) ^
+      const DeepCollectionEquality().hash(unknown) ^
+      runtimeType.hashCode;
+}
+
+extension $DeviceMetricsExtension on DeviceMetrics {
+  DeviceMetrics copyWith({
+    int? desktop,
+    int? mobile,
+    int? tablet,
+    int? watch,
+    int? tv,
+    int? console,
+    int? car,
+    int? ioT,
+    int? unknown,
+  }) {
+    return DeviceMetrics(
+      desktop: desktop ?? this.desktop,
+      mobile: mobile ?? this.mobile,
+      tablet: tablet ?? this.tablet,
+      watch: watch ?? this.watch,
+      tv: tv ?? this.tv,
+      console: console ?? this.console,
+      car: car ?? this.car,
+      ioT: ioT ?? this.ioT,
+      unknown: unknown ?? this.unknown,
+    );
+  }
+
+  DeviceMetrics copyWithWrapped({
+    Wrapped<int>? desktop,
+    Wrapped<int>? mobile,
+    Wrapped<int>? tablet,
+    Wrapped<int>? watch,
+    Wrapped<int>? tv,
+    Wrapped<int>? console,
+    Wrapped<int>? car,
+    Wrapped<int>? ioT,
+    Wrapped<int>? unknown,
+  }) {
+    return DeviceMetrics(
+      desktop: (desktop != null ? desktop.value : this.desktop),
+      mobile: (mobile != null ? mobile.value : this.mobile),
+      tablet: (tablet != null ? tablet.value : this.tablet),
+      watch: (watch != null ? watch.value : this.watch),
+      tv: (tv != null ? tv.value : this.tv),
+      console: (console != null ? console.value : this.console),
+      car: (car != null ? car.value : this.car),
+      ioT: (ioT != null ? ioT.value : this.ioT),
+      unknown: (unknown != null ? unknown.value : this.unknown),
     );
   }
 }
@@ -868,7 +1780,8 @@ class FileDto {
     required this.isDeleted,
   });
 
-  factory FileDto.fromJson(Map<String, dynamic> json) => _$FileDtoFromJson(json);
+  factory FileDto.fromJson(Map<String, dynamic> json) =>
+      _$FileDtoFromJson(json);
 
   static const toJsonFactory = _$FileDtoToJson;
   Map<String, dynamic> toJson() => _$FileDtoToJson(this);
@@ -893,19 +1806,38 @@ class FileDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is FileDto &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.fileName, fileName) ||
-                const DeepCollectionEquality().equals(other.fileName, fileName)) &&
+                const DeepCollectionEquality().equals(
+                  other.fileName,
+                  fileName,
+                )) &&
             (identical(other.originalFileName, originalFileName) ||
-                const DeepCollectionEquality().equals(other.originalFileName, originalFileName)) &&
+                const DeepCollectionEquality().equals(
+                  other.originalFileName,
+                  originalFileName,
+                )) &&
             (identical(other.mimeType, mimeType) ||
-                const DeepCollectionEquality().equals(other.mimeType, mimeType)) &&
+                const DeepCollectionEquality().equals(
+                  other.mimeType,
+                  mimeType,
+                )) &&
             (identical(other.storageUrl, storageUrl) ||
-                const DeepCollectionEquality().equals(other.storageUrl, storageUrl)) &&
+                const DeepCollectionEquality().equals(
+                  other.storageUrl,
+                  storageUrl,
+                )) &&
             (identical(other.sizeInBytes, sizeInBytes) ||
-                const DeepCollectionEquality().equals(other.sizeInBytes, sizeInBytes)) &&
+                const DeepCollectionEquality().equals(
+                  other.sizeInBytes,
+                  sizeInBytes,
+                )) &&
             (identical(other.isDeleted, isDeleted) ||
-                const DeepCollectionEquality().equals(other.isDeleted, isDeleted)));
+                const DeepCollectionEquality().equals(
+                  other.isDeleted,
+                  isDeleted,
+                )));
   }
 
   @override
@@ -956,11 +1888,118 @@ extension $FileDtoExtension on FileDto {
     return FileDto(
       id: (id != null ? id.value : this.id),
       fileName: (fileName != null ? fileName.value : this.fileName),
-      originalFileName: (originalFileName != null ? originalFileName.value : this.originalFileName),
+      originalFileName: (originalFileName != null
+          ? originalFileName.value
+          : this.originalFileName),
       mimeType: (mimeType != null ? mimeType.value : this.mimeType),
       storageUrl: (storageUrl != null ? storageUrl.value : this.storageUrl),
       sizeInBytes: (sizeInBytes != null ? sizeInBytes.value : this.sizeInBytes),
       isDeleted: (isDeleted != null ? isDeleted.value : this.isDeleted),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class HttpValidationProblemDetails {
+  const HttpValidationProblemDetails({
+    this.type,
+    this.title,
+    this.status,
+    this.detail,
+    this.instance,
+    required this.errors,
+  });
+
+  factory HttpValidationProblemDetails.fromJson(Map<String, dynamic> json) =>
+      _$HttpValidationProblemDetailsFromJson(json);
+
+  static const toJsonFactory = _$HttpValidationProblemDetailsToJson;
+  Map<String, dynamic> toJson() => _$HttpValidationProblemDetailsToJson(this);
+
+  @JsonKey(name: 'type')
+  final String? type;
+  @JsonKey(name: 'title')
+  final String? title;
+  @JsonKey(name: 'status')
+  final int? status;
+  @JsonKey(name: 'detail')
+  final String? detail;
+  @JsonKey(name: 'instance')
+  final String? instance;
+  @JsonKey(name: 'errors')
+  final Map<String, dynamic> errors;
+  static const fromJsonFactory = _$HttpValidationProblemDetailsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is HttpValidationProblemDetails &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.title, title) ||
+                const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)) &&
+            (identical(other.detail, detail) ||
+                const DeepCollectionEquality().equals(other.detail, detail)) &&
+            (identical(other.instance, instance) ||
+                const DeepCollectionEquality().equals(
+                  other.instance,
+                  instance,
+                )) &&
+            (identical(other.errors, errors) ||
+                const DeepCollectionEquality().equals(other.errors, errors)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(status) ^
+      const DeepCollectionEquality().hash(detail) ^
+      const DeepCollectionEquality().hash(instance) ^
+      const DeepCollectionEquality().hash(errors) ^
+      runtimeType.hashCode;
+}
+
+extension $HttpValidationProblemDetailsExtension
+    on HttpValidationProblemDetails {
+  HttpValidationProblemDetails copyWith({
+    String? type,
+    String? title,
+    int? status,
+    String? detail,
+    String? instance,
+    Map<String, dynamic>? errors,
+  }) {
+    return HttpValidationProblemDetails(
+      type: type ?? this.type,
+      title: title ?? this.title,
+      status: status ?? this.status,
+      detail: detail ?? this.detail,
+      instance: instance ?? this.instance,
+      errors: errors ?? this.errors,
+    );
+  }
+
+  HttpValidationProblemDetails copyWithWrapped({
+    Wrapped<String?>? type,
+    Wrapped<String?>? title,
+    Wrapped<int?>? status,
+    Wrapped<String?>? detail,
+    Wrapped<String?>? instance,
+    Wrapped<Map<String, dynamic>>? errors,
+  }) {
+    return HttpValidationProblemDetails(
+      type: (type != null ? type.value : this.type),
+      title: (title != null ? title.value : this.title),
+      status: (status != null ? status.value : this.status),
+      detail: (detail != null ? detail.value : this.detail),
+      instance: (instance != null ? instance.value : this.instance),
+      errors: (errors != null ? errors.value : this.errors),
     );
   }
 }
@@ -974,7 +2013,8 @@ class PermissionDto {
     required this.description,
   });
 
-  factory PermissionDto.fromJson(Map<String, dynamic> json) => _$PermissionDtoFromJson(json);
+  factory PermissionDto.fromJson(Map<String, dynamic> json) =>
+      _$PermissionDtoFromJson(json);
 
   static const toJsonFactory = _$PermissionDtoToJson;
   Map<String, dynamic> toJson() => _$PermissionDtoToJson(this);
@@ -993,13 +2033,20 @@ class PermissionDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PermissionDto &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.resource, resource) ||
-                const DeepCollectionEquality().equals(other.resource, resource)) &&
+                const DeepCollectionEquality().equals(
+                  other.resource,
+                  resource,
+                )) &&
             (identical(other.action, action) ||
                 const DeepCollectionEquality().equals(other.action, action)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality().equals(other.description, description)));
+                const DeepCollectionEquality().equals(
+                  other.description,
+                  description,
+                )));
   }
 
   @override
@@ -1015,7 +2062,12 @@ class PermissionDto {
 }
 
 extension $PermissionDtoExtension on PermissionDto {
-  PermissionDto copyWith({String? id, String? resource, String? action, String? description}) {
+  PermissionDto copyWith({
+    String? id,
+    String? resource,
+    String? action,
+    String? description,
+  }) {
     return PermissionDto(
       id: id ?? this.id,
       resource: resource ?? this.resource,
@@ -1040,10 +2092,147 @@ extension $PermissionDtoExtension on PermissionDto {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ProblemDetails {
-  const ProblemDetails({this.type, this.title, this.status, this.detail, this.instance});
+class PlatformMetrics {
+  const PlatformMetrics({
+    required this.windows,
+    required this.mac,
+    required this.ios,
+    required this.ipadOs,
+    required this.linux,
+    required this.android,
+    required this.chromeOs,
+    required this.unknown,
+  });
 
-  factory ProblemDetails.fromJson(Map<String, dynamic> json) => _$ProblemDetailsFromJson(json);
+  factory PlatformMetrics.fromJson(Map<String, dynamic> json) =>
+      _$PlatformMetricsFromJson(json);
+
+  static const toJsonFactory = _$PlatformMetricsToJson;
+  Map<String, dynamic> toJson() => _$PlatformMetricsToJson(this);
+
+  @JsonKey(name: 'windows')
+  final int windows;
+  @JsonKey(name: 'mac')
+  final int mac;
+  @JsonKey(name: 'ios')
+  final int ios;
+  @JsonKey(name: 'ipadOs')
+  final int ipadOs;
+  @JsonKey(name: 'linux')
+  final int linux;
+  @JsonKey(name: 'android')
+  final int android;
+  @JsonKey(name: 'chromeOs')
+  final int chromeOs;
+  @JsonKey(name: 'unknown')
+  final int unknown;
+  static const fromJsonFactory = _$PlatformMetricsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlatformMetrics &&
+            (identical(other.windows, windows) ||
+                const DeepCollectionEquality().equals(
+                  other.windows,
+                  windows,
+                )) &&
+            (identical(other.mac, mac) ||
+                const DeepCollectionEquality().equals(other.mac, mac)) &&
+            (identical(other.ios, ios) ||
+                const DeepCollectionEquality().equals(other.ios, ios)) &&
+            (identical(other.ipadOs, ipadOs) ||
+                const DeepCollectionEquality().equals(other.ipadOs, ipadOs)) &&
+            (identical(other.linux, linux) ||
+                const DeepCollectionEquality().equals(other.linux, linux)) &&
+            (identical(other.android, android) ||
+                const DeepCollectionEquality().equals(
+                  other.android,
+                  android,
+                )) &&
+            (identical(other.chromeOs, chromeOs) ||
+                const DeepCollectionEquality().equals(
+                  other.chromeOs,
+                  chromeOs,
+                )) &&
+            (identical(other.unknown, unknown) ||
+                const DeepCollectionEquality().equals(other.unknown, unknown)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(windows) ^
+      const DeepCollectionEquality().hash(mac) ^
+      const DeepCollectionEquality().hash(ios) ^
+      const DeepCollectionEquality().hash(ipadOs) ^
+      const DeepCollectionEquality().hash(linux) ^
+      const DeepCollectionEquality().hash(android) ^
+      const DeepCollectionEquality().hash(chromeOs) ^
+      const DeepCollectionEquality().hash(unknown) ^
+      runtimeType.hashCode;
+}
+
+extension $PlatformMetricsExtension on PlatformMetrics {
+  PlatformMetrics copyWith({
+    int? windows,
+    int? mac,
+    int? ios,
+    int? ipadOs,
+    int? linux,
+    int? android,
+    int? chromeOs,
+    int? unknown,
+  }) {
+    return PlatformMetrics(
+      windows: windows ?? this.windows,
+      mac: mac ?? this.mac,
+      ios: ios ?? this.ios,
+      ipadOs: ipadOs ?? this.ipadOs,
+      linux: linux ?? this.linux,
+      android: android ?? this.android,
+      chromeOs: chromeOs ?? this.chromeOs,
+      unknown: unknown ?? this.unknown,
+    );
+  }
+
+  PlatformMetrics copyWithWrapped({
+    Wrapped<int>? windows,
+    Wrapped<int>? mac,
+    Wrapped<int>? ios,
+    Wrapped<int>? ipadOs,
+    Wrapped<int>? linux,
+    Wrapped<int>? android,
+    Wrapped<int>? chromeOs,
+    Wrapped<int>? unknown,
+  }) {
+    return PlatformMetrics(
+      windows: (windows != null ? windows.value : this.windows),
+      mac: (mac != null ? mac.value : this.mac),
+      ios: (ios != null ? ios.value : this.ios),
+      ipadOs: (ipadOs != null ? ipadOs.value : this.ipadOs),
+      linux: (linux != null ? linux.value : this.linux),
+      android: (android != null ? android.value : this.android),
+      chromeOs: (chromeOs != null ? chromeOs.value : this.chromeOs),
+      unknown: (unknown != null ? unknown.value : this.unknown),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProblemDetails {
+  const ProblemDetails({
+    this.type,
+    this.title,
+    this.status,
+    this.detail,
+    this.instance,
+  });
+
+  factory ProblemDetails.fromJson(Map<String, dynamic> json) =>
+      _$ProblemDetailsFromJson(json);
 
   static const toJsonFactory = _$ProblemDetailsToJson;
   Map<String, dynamic> toJson() => _$ProblemDetailsToJson(this);
@@ -1073,7 +2262,10 @@ class ProblemDetails {
             (identical(other.detail, detail) ||
                 const DeepCollectionEquality().equals(other.detail, detail)) &&
             (identical(other.instance, instance) ||
-                const DeepCollectionEquality().equals(other.instance, instance)));
+                const DeepCollectionEquality().equals(
+                  other.instance,
+                  instance,
+                )));
   }
 
   @override
@@ -1125,7 +2317,10 @@ extension $ProblemDetailsExtension on ProblemDetails {
 
 @JsonSerializable(explicitToJson: true)
 class PublicChangePasswordRequest {
-  const PublicChangePasswordRequest({required this.oldPassword, required this.newPassword});
+  const PublicChangePasswordRequest({
+    required this.oldPassword,
+    required this.newPassword,
+  });
 
   factory PublicChangePasswordRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicChangePasswordRequestFromJson(json);
@@ -1144,9 +2339,15 @@ class PublicChangePasswordRequest {
     return identical(this, other) ||
         (other is PublicChangePasswordRequest &&
             (identical(other.oldPassword, oldPassword) ||
-                const DeepCollectionEquality().equals(other.oldPassword, oldPassword)) &&
+                const DeepCollectionEquality().equals(
+                  other.oldPassword,
+                  oldPassword,
+                )) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
+                const DeepCollectionEquality().equals(
+                  other.newPassword,
+                  newPassword,
+                )));
   }
 
   @override
@@ -1160,7 +2361,10 @@ class PublicChangePasswordRequest {
 }
 
 extension $PublicChangePasswordRequestExtension on PublicChangePasswordRequest {
-  PublicChangePasswordRequest copyWith({String? oldPassword, String? newPassword}) {
+  PublicChangePasswordRequest copyWith({
+    String? oldPassword,
+    String? newPassword,
+  }) {
     return PublicChangePasswordRequest(
       oldPassword: oldPassword ?? this.oldPassword,
       newPassword: newPassword ?? this.newPassword,
@@ -1197,17 +2401,22 @@ class PublicChangePasswordResponse {
     return identical(this, other) ||
         (other is PublicChangePasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
-extension $PublicChangePasswordResponseExtension on PublicChangePasswordResponse {
+extension $PublicChangePasswordResponseExtension
+    on PublicChangePasswordResponse {
   PublicChangePasswordResponse copyWith({bool? isSuccess}) {
     return PublicChangePasswordResponse(isSuccess: isSuccess ?? this.isSuccess);
   }
@@ -1245,7 +2454,8 @@ class PublicForgotPasswordRequest {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(email) ^ runtimeType.hashCode;
 }
 
 extension $PublicForgotPasswordRequestExtension on PublicForgotPasswordRequest {
@@ -1254,13 +2464,18 @@ extension $PublicForgotPasswordRequestExtension on PublicForgotPasswordRequest {
   }
 
   PublicForgotPasswordRequest copyWithWrapped({Wrapped<String>? email}) {
-    return PublicForgotPasswordRequest(email: (email != null ? email.value : this.email));
+    return PublicForgotPasswordRequest(
+      email: (email != null ? email.value : this.email),
+    );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicForgotPasswordResponse {
-  const PublicForgotPasswordResponse({required this.isSuccess, required this.email});
+  const PublicForgotPasswordResponse({
+    required this.isSuccess,
+    required this.email,
+  });
 
   factory PublicForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
       _$PublicForgotPasswordResponseFromJson(json);
@@ -1279,7 +2494,10 @@ class PublicForgotPasswordResponse {
     return identical(this, other) ||
         (other is PublicForgotPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)) &&
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)));
   }
@@ -1294,7 +2512,8 @@ class PublicForgotPasswordResponse {
       runtimeType.hashCode;
 }
 
-extension $PublicForgotPasswordResponseExtension on PublicForgotPasswordResponse {
+extension $PublicForgotPasswordResponseExtension
+    on PublicForgotPasswordResponse {
   PublicForgotPasswordResponse copyWith({bool? isSuccess, String? email}) {
     return PublicForgotPasswordResponse(
       isSuccess: isSuccess ?? this.isSuccess,
@@ -1302,7 +2521,10 @@ extension $PublicForgotPasswordResponseExtension on PublicForgotPasswordResponse
     );
   }
 
-  PublicForgotPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess, Wrapped<String>? email}) {
+  PublicForgotPasswordResponse copyWithWrapped({
+    Wrapped<bool>? isSuccess,
+    Wrapped<String>? email,
+  }) {
     return PublicForgotPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
       email: (email != null ? email.value : this.email),
@@ -1336,7 +2558,8 @@ class PublicGetOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $PublicGetOwnProfileResponseExtension on PublicGetOwnProfileResponse {
@@ -1344,8 +2567,106 @@ extension $PublicGetOwnProfileResponseExtension on PublicGetOwnProfileResponse {
     return PublicGetOwnProfileResponse(user: user ?? this.user);
   }
 
-  PublicGetOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return PublicGetOwnProfileResponse(user: (user != null ? user.value : this.user));
+  PublicGetOwnProfileResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+  }) {
+    return PublicGetOwnProfileResponse(
+      user: (user != null ? user.value : this.user),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicGetOwnSessionByIdResponse {
+  const PublicGetOwnSessionByIdResponse({required this.session});
+
+  factory PublicGetOwnSessionByIdResponse.fromJson(Map<String, dynamic> json) =>
+      _$PublicGetOwnSessionByIdResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicGetOwnSessionByIdResponseToJson;
+  Map<String, dynamic> toJson() =>
+      _$PublicGetOwnSessionByIdResponseToJson(this);
+
+  @JsonKey(name: 'session')
+  final SessionDto session;
+  static const fromJsonFactory = _$PublicGetOwnSessionByIdResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicGetOwnSessionByIdResponse &&
+            (identical(other.session, session) ||
+                const DeepCollectionEquality().equals(other.session, session)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(session) ^ runtimeType.hashCode;
+}
+
+extension $PublicGetOwnSessionByIdResponseExtension
+    on PublicGetOwnSessionByIdResponse {
+  PublicGetOwnSessionByIdResponse copyWith({SessionDto? session}) {
+    return PublicGetOwnSessionByIdResponse(session: session ?? this.session);
+  }
+
+  PublicGetOwnSessionByIdResponse copyWithWrapped({
+    Wrapped<SessionDto>? session,
+  }) {
+    return PublicGetOwnSessionByIdResponse(
+      session: (session != null ? session.value : this.session),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicGetOwnSessionsResponse {
+  const PublicGetOwnSessionsResponse({required this.sessions});
+
+  factory PublicGetOwnSessionsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PublicGetOwnSessionsResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicGetOwnSessionsResponseToJson;
+  Map<String, dynamic> toJson() => _$PublicGetOwnSessionsResponseToJson(this);
+
+  @JsonKey(name: 'sessions', defaultValue: <SessionDto>[])
+  final List<SessionDto> sessions;
+  static const fromJsonFactory = _$PublicGetOwnSessionsResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicGetOwnSessionsResponse &&
+            (identical(other.sessions, sessions) ||
+                const DeepCollectionEquality().equals(
+                  other.sessions,
+                  sessions,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(sessions) ^ runtimeType.hashCode;
+}
+
+extension $PublicGetOwnSessionsResponseExtension
+    on PublicGetOwnSessionsResponse {
+  PublicGetOwnSessionsResponse copyWith({List<SessionDto>? sessions}) {
+    return PublicGetOwnSessionsResponse(sessions: sessions ?? this.sessions);
+  }
+
+  PublicGetOwnSessionsResponse copyWithWrapped({
+    Wrapped<List<SessionDto>>? sessions,
+  }) {
+    return PublicGetOwnSessionsResponse(
+      sessions: (sessions != null ? sessions.value : this.sessions),
+    );
   }
 }
 
@@ -1370,9 +2691,15 @@ class PublicLoginRequest {
     return identical(this, other) ||
         (other is PublicLoginRequest &&
             (identical(other.credentials, credentials) ||
-                const DeepCollectionEquality().equals(other.credentials, credentials)) &&
+                const DeepCollectionEquality().equals(
+                  other.credentials,
+                  credentials,
+                )) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(other.password, password)));
+                const DeepCollectionEquality().equals(
+                  other.password,
+                  password,
+                )));
   }
 
   @override
@@ -1393,7 +2720,10 @@ extension $PublicLoginRequestExtension on PublicLoginRequest {
     );
   }
 
-  PublicLoginRequest copyWithWrapped({Wrapped<String>? credentials, Wrapped<String>? password}) {
+  PublicLoginRequest copyWithWrapped({
+    Wrapped<String>? credentials,
+    Wrapped<String>? password,
+  }) {
     return PublicLoginRequest(
       credentials: (credentials != null ? credentials.value : this.credentials),
       password: (password != null ? password.value : this.password),
@@ -1403,7 +2733,14 @@ extension $PublicLoginRequestExtension on PublicLoginRequest {
 
 @JsonSerializable(explicitToJson: true)
 class PublicLoginResponse {
-  const PublicLoginResponse({required this.user, required this.token});
+  const PublicLoginResponse({
+    required this.user,
+    required this.accessToken,
+    required this.accessTokenExpiresAt,
+    required this.refreshToken,
+    required this.refreshTokenExpiresAt,
+    required this.tokenType,
+  });
 
   factory PublicLoginResponse.fromJson(Map<String, dynamic> json) =>
       _$PublicLoginResponseFromJson(json);
@@ -1413,8 +2750,16 @@ class PublicLoginResponse {
 
   @JsonKey(name: 'user')
   final UserResponseDto user;
-  @JsonKey(name: 'token')
-  final String token;
+  @JsonKey(name: 'accessToken')
+  final String accessToken;
+  @JsonKey(name: 'accessTokenExpiresAt')
+  final DateTime accessTokenExpiresAt;
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  @JsonKey(name: 'refreshTokenExpiresAt')
+  final DateTime refreshTokenExpiresAt;
+  @JsonKey(name: 'tokenType')
+  final String tokenType;
   static const fromJsonFactory = _$PublicLoginResponseFromJson;
 
   @override
@@ -1423,8 +2768,31 @@ class PublicLoginResponse {
         (other is PublicLoginResponse &&
             (identical(other.user, user) ||
                 const DeepCollectionEquality().equals(other.user, user)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality().equals(
+                  other.accessToken,
+                  accessToken,
+                )) &&
+            (identical(other.accessTokenExpiresAt, accessTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.accessTokenExpiresAt,
+                  accessTokenExpiresAt,
+                )) &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )) &&
+            (identical(other.refreshTokenExpiresAt, refreshTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshTokenExpiresAt,
+                  refreshTokenExpiresAt,
+                )) &&
+            (identical(other.tokenType, tokenType) ||
+                const DeepCollectionEquality().equals(
+                  other.tokenType,
+                  tokenType,
+                )));
   }
 
   @override
@@ -1433,19 +2801,227 @@ class PublicLoginResponse {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(accessTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(refreshToken) ^
+      const DeepCollectionEquality().hash(refreshTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(tokenType) ^
       runtimeType.hashCode;
 }
 
 extension $PublicLoginResponseExtension on PublicLoginResponse {
-  PublicLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return PublicLoginResponse(user: user ?? this.user, token: token ?? this.token);
+  PublicLoginResponse copyWith({
+    UserResponseDto? user,
+    String? accessToken,
+    DateTime? accessTokenExpiresAt,
+    String? refreshToken,
+    DateTime? refreshTokenExpiresAt,
+    String? tokenType,
+  }) {
+    return PublicLoginResponse(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresAt: accessTokenExpiresAt ?? this.accessTokenExpiresAt,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenExpiresAt:
+          refreshTokenExpiresAt ?? this.refreshTokenExpiresAt,
+      tokenType: tokenType ?? this.tokenType,
+    );
   }
 
-  PublicLoginResponse copyWithWrapped({Wrapped<UserResponseDto>? user, Wrapped<String>? token}) {
+  PublicLoginResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+    Wrapped<String>? accessToken,
+    Wrapped<DateTime>? accessTokenExpiresAt,
+    Wrapped<String>? refreshToken,
+    Wrapped<DateTime>? refreshTokenExpiresAt,
+    Wrapped<String>? tokenType,
+  }) {
     return PublicLoginResponse(
       user: (user != null ? user.value : this.user),
-      token: (token != null ? token.value : this.token),
+      accessToken: (accessToken != null ? accessToken.value : this.accessToken),
+      accessTokenExpiresAt: (accessTokenExpiresAt != null
+          ? accessTokenExpiresAt.value
+          : this.accessTokenExpiresAt),
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+      refreshTokenExpiresAt: (refreshTokenExpiresAt != null
+          ? refreshTokenExpiresAt.value
+          : this.refreshTokenExpiresAt),
+      tokenType: (tokenType != null ? tokenType.value : this.tokenType),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicRefreshTokenRequest {
+  const PublicRefreshTokenRequest({required this.refreshToken});
+
+  factory PublicRefreshTokenRequest.fromJson(Map<String, dynamic> json) =>
+      _$PublicRefreshTokenRequestFromJson(json);
+
+  static const toJsonFactory = _$PublicRefreshTokenRequestToJson;
+  Map<String, dynamic> toJson() => _$PublicRefreshTokenRequestToJson(this);
+
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  static const fromJsonFactory = _$PublicRefreshTokenRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicRefreshTokenRequest &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(refreshToken) ^ runtimeType.hashCode;
+}
+
+extension $PublicRefreshTokenRequestExtension on PublicRefreshTokenRequest {
+  PublicRefreshTokenRequest copyWith({String? refreshToken}) {
+    return PublicRefreshTokenRequest(
+      refreshToken: refreshToken ?? this.refreshToken,
+    );
+  }
+
+  PublicRefreshTokenRequest copyWithWrapped({Wrapped<String>? refreshToken}) {
+    return PublicRefreshTokenRequest(
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicRefreshTokenResponse {
+  const PublicRefreshTokenResponse({
+    required this.user,
+    required this.accessToken,
+    required this.accessTokenExpiresAt,
+    required this.refreshToken,
+    required this.refreshTokenExpiresAt,
+    required this.tokenType,
+  });
+
+  factory PublicRefreshTokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$PublicRefreshTokenResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicRefreshTokenResponseToJson;
+  Map<String, dynamic> toJson() => _$PublicRefreshTokenResponseToJson(this);
+
+  @JsonKey(name: 'user')
+  final UserResponseDto user;
+  @JsonKey(name: 'accessToken')
+  final String accessToken;
+  @JsonKey(name: 'accessTokenExpiresAt')
+  final DateTime accessTokenExpiresAt;
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  @JsonKey(name: 'refreshTokenExpiresAt')
+  final DateTime refreshTokenExpiresAt;
+  @JsonKey(name: 'tokenType')
+  final String tokenType;
+  static const fromJsonFactory = _$PublicRefreshTokenResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicRefreshTokenResponse &&
+            (identical(other.user, user) ||
+                const DeepCollectionEquality().equals(other.user, user)) &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality().equals(
+                  other.accessToken,
+                  accessToken,
+                )) &&
+            (identical(other.accessTokenExpiresAt, accessTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.accessTokenExpiresAt,
+                  accessTokenExpiresAt,
+                )) &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )) &&
+            (identical(other.refreshTokenExpiresAt, refreshTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshTokenExpiresAt,
+                  refreshTokenExpiresAt,
+                )) &&
+            (identical(other.tokenType, tokenType) ||
+                const DeepCollectionEquality().equals(
+                  other.tokenType,
+                  tokenType,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(accessTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(refreshToken) ^
+      const DeepCollectionEquality().hash(refreshTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(tokenType) ^
+      runtimeType.hashCode;
+}
+
+extension $PublicRefreshTokenResponseExtension on PublicRefreshTokenResponse {
+  PublicRefreshTokenResponse copyWith({
+    UserResponseDto? user,
+    String? accessToken,
+    DateTime? accessTokenExpiresAt,
+    String? refreshToken,
+    DateTime? refreshTokenExpiresAt,
+    String? tokenType,
+  }) {
+    return PublicRefreshTokenResponse(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresAt: accessTokenExpiresAt ?? this.accessTokenExpiresAt,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenExpiresAt:
+          refreshTokenExpiresAt ?? this.refreshTokenExpiresAt,
+      tokenType: tokenType ?? this.tokenType,
+    );
+  }
+
+  PublicRefreshTokenResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+    Wrapped<String>? accessToken,
+    Wrapped<DateTime>? accessTokenExpiresAt,
+    Wrapped<String>? refreshToken,
+    Wrapped<DateTime>? refreshTokenExpiresAt,
+    Wrapped<String>? tokenType,
+  }) {
+    return PublicRefreshTokenResponse(
+      user: (user != null ? user.value : this.user),
+      accessToken: (accessToken != null ? accessToken.value : this.accessToken),
+      accessTokenExpiresAt: (accessTokenExpiresAt != null
+          ? accessTokenExpiresAt.value
+          : this.accessTokenExpiresAt),
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+      refreshTokenExpiresAt: (refreshTokenExpiresAt != null
+          ? refreshTokenExpiresAt.value
+          : this.refreshTokenExpiresAt),
+      tokenType: (tokenType != null ? tokenType.value : this.tokenType),
     );
   }
 }
@@ -1488,10 +3064,16 @@ class PublicResendOtpRequest {
 
 extension $PublicResendOtpRequestExtension on PublicResendOtpRequest {
   PublicResendOtpRequest copyWith({String? email, String? purpose}) {
-    return PublicResendOtpRequest(email: email ?? this.email, purpose: purpose ?? this.purpose);
+    return PublicResendOtpRequest(
+      email: email ?? this.email,
+      purpose: purpose ?? this.purpose,
+    );
   }
 
-  PublicResendOtpRequest copyWithWrapped({Wrapped<String>? email, Wrapped<String>? purpose}) {
+  PublicResendOtpRequest copyWithWrapped({
+    Wrapped<String>? email,
+    Wrapped<String>? purpose,
+  }) {
     return PublicResendOtpRequest(
       email: (email != null ? email.value : this.email),
       purpose: (purpose != null ? purpose.value : this.purpose),
@@ -1518,14 +3100,18 @@ class PublicResendOtpResponse {
     return identical(this, other) ||
         (other is PublicResendOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicResendOtpResponseExtension on PublicResendOtpResponse {
@@ -1571,7 +3157,10 @@ class PublicResetPasswordRequest {
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
             (identical(other.newPassword, newPassword) ||
-                const DeepCollectionEquality().equals(other.newPassword, newPassword)));
+                const DeepCollectionEquality().equals(
+                  other.newPassword,
+                  newPassword,
+                )));
   }
 
   @override
@@ -1586,7 +3175,11 @@ class PublicResetPasswordRequest {
 }
 
 extension $PublicResetPasswordRequestExtension on PublicResetPasswordRequest {
-  PublicResetPasswordRequest copyWith({String? email, String? code, String? newPassword}) {
+  PublicResetPasswordRequest copyWith({
+    String? email,
+    String? code,
+    String? newPassword,
+  }) {
     return PublicResetPasswordRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -1626,14 +3219,18 @@ class PublicResetPasswordResponse {
     return identical(this, other) ||
         (other is PublicResetPasswordResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicResetPasswordResponseExtension on PublicResetPasswordResponse {
@@ -1644,6 +3241,242 @@ extension $PublicResetPasswordResponseExtension on PublicResetPasswordResponse {
   PublicResetPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
     return PublicResetPasswordResponse(
       isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicRevokeSessionResponse {
+  const PublicRevokeSessionResponse({required this.isSuccess});
+
+  factory PublicRevokeSessionResponse.fromJson(Map<String, dynamic> json) =>
+      _$PublicRevokeSessionResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicRevokeSessionResponseToJson;
+  Map<String, dynamic> toJson() => _$PublicRevokeSessionResponseToJson(this);
+
+  @JsonKey(name: 'isSuccess')
+  final bool isSuccess;
+  static const fromJsonFactory = _$PublicRevokeSessionResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicRevokeSessionResponse &&
+            (identical(other.isSuccess, isSuccess) ||
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+}
+
+extension $PublicRevokeSessionResponseExtension on PublicRevokeSessionResponse {
+  PublicRevokeSessionResponse copyWith({bool? isSuccess}) {
+    return PublicRevokeSessionResponse(isSuccess: isSuccess ?? this.isSuccess);
+  }
+
+  PublicRevokeSessionResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
+    return PublicRevokeSessionResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicSetPasswordRequest {
+  const PublicSetPasswordRequest({required this.password});
+
+  factory PublicSetPasswordRequest.fromJson(Map<String, dynamic> json) =>
+      _$PublicSetPasswordRequestFromJson(json);
+
+  static const toJsonFactory = _$PublicSetPasswordRequestToJson;
+  Map<String, dynamic> toJson() => _$PublicSetPasswordRequestToJson(this);
+
+  @JsonKey(name: 'password')
+  final String password;
+  static const fromJsonFactory = _$PublicSetPasswordRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicSetPasswordRequest &&
+            (identical(other.password, password) ||
+                const DeepCollectionEquality().equals(
+                  other.password,
+                  password,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(password) ^ runtimeType.hashCode;
+}
+
+extension $PublicSetPasswordRequestExtension on PublicSetPasswordRequest {
+  PublicSetPasswordRequest copyWith({String? password}) {
+    return PublicSetPasswordRequest(password: password ?? this.password);
+  }
+
+  PublicSetPasswordRequest copyWithWrapped({Wrapped<String>? password}) {
+    return PublicSetPasswordRequest(
+      password: (password != null ? password.value : this.password),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicSetPasswordResponse {
+  const PublicSetPasswordResponse({required this.isSuccess});
+
+  factory PublicSetPasswordResponse.fromJson(Map<String, dynamic> json) =>
+      _$PublicSetPasswordResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicSetPasswordResponseToJson;
+  Map<String, dynamic> toJson() => _$PublicSetPasswordResponseToJson(this);
+
+  @JsonKey(name: 'isSuccess')
+  final bool isSuccess;
+  static const fromJsonFactory = _$PublicSetPasswordResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicSetPasswordResponse &&
+            (identical(other.isSuccess, isSuccess) ||
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+}
+
+extension $PublicSetPasswordResponseExtension on PublicSetPasswordResponse {
+  PublicSetPasswordResponse copyWith({bool? isSuccess}) {
+    return PublicSetPasswordResponse(isSuccess: isSuccess ?? this.isSuccess);
+  }
+
+  PublicSetPasswordResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
+    return PublicSetPasswordResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicSignOutFromAllDevicesResponse {
+  const PublicSignOutFromAllDevicesResponse({required this.isSuccess});
+
+  factory PublicSignOutFromAllDevicesResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => _$PublicSignOutFromAllDevicesResponseFromJson(json);
+
+  static const toJsonFactory = _$PublicSignOutFromAllDevicesResponseToJson;
+  Map<String, dynamic> toJson() =>
+      _$PublicSignOutFromAllDevicesResponseToJson(this);
+
+  @JsonKey(name: 'isSuccess')
+  final bool isSuccess;
+  static const fromJsonFactory = _$PublicSignOutFromAllDevicesResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicSignOutFromAllDevicesResponse &&
+            (identical(other.isSuccess, isSuccess) ||
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+}
+
+extension $PublicSignOutFromAllDevicesResponseExtension
+    on PublicSignOutFromAllDevicesResponse {
+  PublicSignOutFromAllDevicesResponse copyWith({bool? isSuccess}) {
+    return PublicSignOutFromAllDevicesResponse(
+      isSuccess: isSuccess ?? this.isSuccess,
+    );
+  }
+
+  PublicSignOutFromAllDevicesResponse copyWithWrapped({
+    Wrapped<bool>? isSuccess,
+  }) {
+    return PublicSignOutFromAllDevicesResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PublicSignOutRequest {
+  const PublicSignOutRequest({required this.refreshToken});
+
+  factory PublicSignOutRequest.fromJson(Map<String, dynamic> json) =>
+      _$PublicSignOutRequestFromJson(json);
+
+  static const toJsonFactory = _$PublicSignOutRequestToJson;
+  Map<String, dynamic> toJson() => _$PublicSignOutRequestToJson(this);
+
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  static const fromJsonFactory = _$PublicSignOutRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PublicSignOutRequest &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(refreshToken) ^ runtimeType.hashCode;
+}
+
+extension $PublicSignOutRequestExtension on PublicSignOutRequest {
+  PublicSignOutRequest copyWith({String? refreshToken}) {
+    return PublicSignOutRequest(
+      refreshToken: refreshToken ?? this.refreshToken,
+    );
+  }
+
+  PublicSignOutRequest copyWithWrapped({Wrapped<String>? refreshToken}) {
+    return PublicSignOutRequest(
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
     );
   }
 }
@@ -1667,14 +3500,18 @@ class PublicSignOutResponse {
     return identical(this, other) ||
         (other is PublicSignOutResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicSignOutResponseExtension on PublicSignOutResponse {
@@ -1683,13 +3520,19 @@ extension $PublicSignOutResponseExtension on PublicSignOutResponse {
   }
 
   PublicSignOutResponse copyWithWrapped({Wrapped<bool>? isSuccess}) {
-    return PublicSignOutResponse(isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess));
+    return PublicSignOutResponse(
+      isSuccess: (isSuccess != null ? isSuccess.value : this.isSuccess),
+    );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicSignUpRequest {
-  const PublicSignUpRequest({required this.email, required this.userName, required this.password});
+  const PublicSignUpRequest({
+    required this.email,
+    required this.userName,
+    required this.password,
+  });
 
   factory PublicSignUpRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicSignUpRequestFromJson(json);
@@ -1712,9 +3555,15 @@ class PublicSignUpRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(other.userName, userName)) &&
+                const DeepCollectionEquality().equals(
+                  other.userName,
+                  userName,
+                )) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality().equals(other.password, password)));
+                const DeepCollectionEquality().equals(
+                  other.password,
+                  password,
+                )));
   }
 
   @override
@@ -1729,7 +3578,11 @@ class PublicSignUpRequest {
 }
 
 extension $PublicSignUpRequestExtension on PublicSignUpRequest {
-  PublicSignUpRequest copyWith({String? email, String? userName, String? password}) {
+  PublicSignUpRequest copyWith({
+    String? email,
+    String? userName,
+    String? password,
+  }) {
     return PublicSignUpRequest(
       email: email ?? this.email,
       userName: userName ?? this.userName,
@@ -1754,7 +3607,11 @@ extension $PublicSignUpRequestExtension on PublicSignUpRequest {
 class PublicSignUpResponse {
   const PublicSignUpResponse({
     required this.user,
-    required this.token,
+    required this.accessToken,
+    required this.accessTokenExpiresAt,
+    required this.refreshToken,
+    required this.refreshTokenExpiresAt,
+    required this.tokenType,
     required this.verificationRequired,
   });
 
@@ -1766,8 +3623,16 @@ class PublicSignUpResponse {
 
   @JsonKey(name: 'user')
   final UserResponseDto user;
-  @JsonKey(name: 'token')
-  final String token;
+  @JsonKey(name: 'accessToken')
+  final String accessToken;
+  @JsonKey(name: 'accessTokenExpiresAt')
+  final DateTime accessTokenExpiresAt;
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  @JsonKey(name: 'refreshTokenExpiresAt')
+  final DateTime refreshTokenExpiresAt;
+  @JsonKey(name: 'tokenType')
+  final String tokenType;
   @JsonKey(name: 'verificationRequired')
   final bool verificationRequired;
   static const fromJsonFactory = _$PublicSignUpResponseFromJson;
@@ -1778,8 +3643,31 @@ class PublicSignUpResponse {
         (other is PublicSignUpResponse &&
             (identical(other.user, user) ||
                 const DeepCollectionEquality().equals(other.user, user)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)) &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality().equals(
+                  other.accessToken,
+                  accessToken,
+                )) &&
+            (identical(other.accessTokenExpiresAt, accessTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.accessTokenExpiresAt,
+                  accessTokenExpiresAt,
+                )) &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )) &&
+            (identical(other.refreshTokenExpiresAt, refreshTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshTokenExpiresAt,
+                  refreshTokenExpiresAt,
+                )) &&
+            (identical(other.tokenType, tokenType) ||
+                const DeepCollectionEquality().equals(
+                  other.tokenType,
+                  tokenType,
+                )) &&
             (identical(other.verificationRequired, verificationRequired) ||
                 const DeepCollectionEquality().equals(
                   other.verificationRequired,
@@ -1793,7 +3681,11 @@ class PublicSignUpResponse {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(accessTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(refreshToken) ^
+      const DeepCollectionEquality().hash(refreshTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(tokenType) ^
       const DeepCollectionEquality().hash(verificationRequired) ^
       runtimeType.hashCode;
 }
@@ -1801,24 +3693,47 @@ class PublicSignUpResponse {
 extension $PublicSignUpResponseExtension on PublicSignUpResponse {
   PublicSignUpResponse copyWith({
     UserResponseDto? user,
-    String? token,
+    String? accessToken,
+    DateTime? accessTokenExpiresAt,
+    String? refreshToken,
+    DateTime? refreshTokenExpiresAt,
+    String? tokenType,
     bool? verificationRequired,
   }) {
     return PublicSignUpResponse(
       user: user ?? this.user,
-      token: token ?? this.token,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresAt: accessTokenExpiresAt ?? this.accessTokenExpiresAt,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenExpiresAt:
+          refreshTokenExpiresAt ?? this.refreshTokenExpiresAt,
+      tokenType: tokenType ?? this.tokenType,
       verificationRequired: verificationRequired ?? this.verificationRequired,
     );
   }
 
   PublicSignUpResponse copyWithWrapped({
     Wrapped<UserResponseDto>? user,
-    Wrapped<String>? token,
+    Wrapped<String>? accessToken,
+    Wrapped<DateTime>? accessTokenExpiresAt,
+    Wrapped<String>? refreshToken,
+    Wrapped<DateTime>? refreshTokenExpiresAt,
+    Wrapped<String>? tokenType,
     Wrapped<bool>? verificationRequired,
   }) {
     return PublicSignUpResponse(
       user: (user != null ? user.value : this.user),
-      token: (token != null ? token.value : this.token),
+      accessToken: (accessToken != null ? accessToken.value : this.accessToken),
+      accessTokenExpiresAt: (accessTokenExpiresAt != null
+          ? accessTokenExpiresAt.value
+          : this.accessTokenExpiresAt),
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+      refreshTokenExpiresAt: (refreshTokenExpiresAt != null
+          ? refreshTokenExpiresAt.value
+          : this.refreshTokenExpiresAt),
+      tokenType: (tokenType != null ? tokenType.value : this.tokenType),
       verificationRequired: (verificationRequired != null
           ? verificationRequired.value
           : this.verificationRequired),
@@ -1858,11 +3773,20 @@ class PublicSocialLoginRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(other.userName, userName)) &&
+                const DeepCollectionEquality().equals(
+                  other.userName,
+                  userName,
+                )) &&
             (identical(other.avatarUrl, avatarUrl) ||
-                const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl)) &&
+                const DeepCollectionEquality().equals(
+                  other.avatarUrl,
+                  avatarUrl,
+                )) &&
             (identical(other.provider, provider) ||
-                const DeepCollectionEquality().equals(other.provider, provider)));
+                const DeepCollectionEquality().equals(
+                  other.provider,
+                  provider,
+                )));
   }
 
   @override
@@ -1909,7 +3833,14 @@ extension $PublicSocialLoginRequestExtension on PublicSocialLoginRequest {
 
 @JsonSerializable(explicitToJson: true)
 class PublicSocialLoginResponse {
-  const PublicSocialLoginResponse({required this.user, required this.token});
+  const PublicSocialLoginResponse({
+    required this.user,
+    required this.accessToken,
+    required this.accessTokenExpiresAt,
+    required this.refreshToken,
+    required this.refreshTokenExpiresAt,
+    required this.tokenType,
+  });
 
   factory PublicSocialLoginResponse.fromJson(Map<String, dynamic> json) =>
       _$PublicSocialLoginResponseFromJson(json);
@@ -1919,8 +3850,16 @@ class PublicSocialLoginResponse {
 
   @JsonKey(name: 'user')
   final UserResponseDto user;
-  @JsonKey(name: 'token')
-  final String token;
+  @JsonKey(name: 'accessToken')
+  final String accessToken;
+  @JsonKey(name: 'accessTokenExpiresAt')
+  final DateTime accessTokenExpiresAt;
+  @JsonKey(name: 'refreshToken')
+  final String refreshToken;
+  @JsonKey(name: 'refreshTokenExpiresAt')
+  final DateTime refreshTokenExpiresAt;
+  @JsonKey(name: 'tokenType')
+  final String tokenType;
   static const fromJsonFactory = _$PublicSocialLoginResponseFromJson;
 
   @override
@@ -1929,8 +3868,31 @@ class PublicSocialLoginResponse {
         (other is PublicSocialLoginResponse &&
             (identical(other.user, user) ||
                 const DeepCollectionEquality().equals(other.user, user)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality().equals(
+                  other.accessToken,
+                  accessToken,
+                )) &&
+            (identical(other.accessTokenExpiresAt, accessTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.accessTokenExpiresAt,
+                  accessTokenExpiresAt,
+                )) &&
+            (identical(other.refreshToken, refreshToken) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshToken,
+                  refreshToken,
+                )) &&
+            (identical(other.refreshTokenExpiresAt, refreshTokenExpiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.refreshTokenExpiresAt,
+                  refreshTokenExpiresAt,
+                )) &&
+            (identical(other.tokenType, tokenType) ||
+                const DeepCollectionEquality().equals(
+                  other.tokenType,
+                  tokenType,
+                )));
   }
 
   @override
@@ -1939,22 +3901,55 @@ class PublicSocialLoginResponse {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(accessTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(refreshToken) ^
+      const DeepCollectionEquality().hash(refreshTokenExpiresAt) ^
+      const DeepCollectionEquality().hash(tokenType) ^
       runtimeType.hashCode;
 }
 
 extension $PublicSocialLoginResponseExtension on PublicSocialLoginResponse {
-  PublicSocialLoginResponse copyWith({UserResponseDto? user, String? token}) {
-    return PublicSocialLoginResponse(user: user ?? this.user, token: token ?? this.token);
+  PublicSocialLoginResponse copyWith({
+    UserResponseDto? user,
+    String? accessToken,
+    DateTime? accessTokenExpiresAt,
+    String? refreshToken,
+    DateTime? refreshTokenExpiresAt,
+    String? tokenType,
+  }) {
+    return PublicSocialLoginResponse(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      accessTokenExpiresAt: accessTokenExpiresAt ?? this.accessTokenExpiresAt,
+      refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenExpiresAt:
+          refreshTokenExpiresAt ?? this.refreshTokenExpiresAt,
+      tokenType: tokenType ?? this.tokenType,
+    );
   }
 
   PublicSocialLoginResponse copyWithWrapped({
     Wrapped<UserResponseDto>? user,
-    Wrapped<String>? token,
+    Wrapped<String>? accessToken,
+    Wrapped<DateTime>? accessTokenExpiresAt,
+    Wrapped<String>? refreshToken,
+    Wrapped<DateTime>? refreshTokenExpiresAt,
+    Wrapped<String>? tokenType,
   }) {
     return PublicSocialLoginResponse(
       user: (user != null ? user.value : this.user),
-      token: (token != null ? token.value : this.token),
+      accessToken: (accessToken != null ? accessToken.value : this.accessToken),
+      accessTokenExpiresAt: (accessTokenExpiresAt != null
+          ? accessTokenExpiresAt.value
+          : this.accessTokenExpiresAt),
+      refreshToken: (refreshToken != null
+          ? refreshToken.value
+          : this.refreshToken),
+      refreshTokenExpiresAt: (refreshTokenExpiresAt != null
+          ? refreshTokenExpiresAt.value
+          : this.refreshTokenExpiresAt),
+      tokenType: (tokenType != null ? tokenType.value : this.tokenType),
     );
   }
 }
@@ -1985,7 +3980,8 @@ class PublicUpdateAvatarResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
 extension $PublicUpdateAvatarResponseExtension on PublicUpdateAvatarResponse {
@@ -1994,7 +3990,9 @@ extension $PublicUpdateAvatarResponseExtension on PublicUpdateAvatarResponse {
   }
 
   PublicUpdateAvatarResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return PublicUpdateAvatarResponse(user: (user != null ? user.value : this.user));
+    return PublicUpdateAvatarResponse(
+      user: (user != null ? user.value : this.user),
+    );
   }
 }
 
@@ -2004,7 +4002,6 @@ class PublicUpdateOwnProfileRequest {
     this.email,
     this.userName,
     this.countryName,
-    this.countryFlagUrl,
     this.partialPhoneNumber,
     this.countryIsoCode,
     this.countryDialCode,
@@ -2022,8 +4019,6 @@ class PublicUpdateOwnProfileRequest {
   final String? userName;
   @JsonKey(name: 'countryName')
   final String? countryName;
-  @JsonKey(name: 'countryFlagUrl')
-  final String? countryFlagUrl;
   @JsonKey(name: 'partialPhoneNumber')
   final String? partialPhoneNumber;
   @JsonKey(name: 'countryIsoCode')
@@ -2039,20 +4034,30 @@ class PublicUpdateOwnProfileRequest {
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(other.userName, userName)) &&
+                const DeepCollectionEquality().equals(
+                  other.userName,
+                  userName,
+                )) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
-            (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryName,
+                  countryName,
+                )) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryIsoCode,
+                  countryIsoCode,
+                )) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)));
+                const DeepCollectionEquality().equals(
+                  other.countryDialCode,
+                  countryDialCode,
+                )));
   }
 
   @override
@@ -2063,19 +4068,18 @@ class PublicUpdateOwnProfileRequest {
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(userName) ^
       const DeepCollectionEquality().hash(countryName) ^
-      const DeepCollectionEquality().hash(countryFlagUrl) ^
       const DeepCollectionEquality().hash(partialPhoneNumber) ^
       const DeepCollectionEquality().hash(countryIsoCode) ^
       const DeepCollectionEquality().hash(countryDialCode) ^
       runtimeType.hashCode;
 }
 
-extension $PublicUpdateOwnProfileRequestExtension on PublicUpdateOwnProfileRequest {
+extension $PublicUpdateOwnProfileRequestExtension
+    on PublicUpdateOwnProfileRequest {
   PublicUpdateOwnProfileRequest copyWith({
     String? email,
     String? userName,
     String? countryName,
-    String? countryFlagUrl,
     String? partialPhoneNumber,
     String? countryIsoCode,
     String? countryDialCode,
@@ -2084,7 +4088,6 @@ extension $PublicUpdateOwnProfileRequestExtension on PublicUpdateOwnProfileReque
       email: email ?? this.email,
       userName: userName ?? this.userName,
       countryName: countryName ?? this.countryName,
-      countryFlagUrl: countryFlagUrl ?? this.countryFlagUrl,
       partialPhoneNumber: partialPhoneNumber ?? this.partialPhoneNumber,
       countryIsoCode: countryIsoCode ?? this.countryIsoCode,
       countryDialCode: countryDialCode ?? this.countryDialCode,
@@ -2095,7 +4098,6 @@ extension $PublicUpdateOwnProfileRequestExtension on PublicUpdateOwnProfileReque
     Wrapped<String?>? email,
     Wrapped<String?>? userName,
     Wrapped<String?>? countryName,
-    Wrapped<String?>? countryFlagUrl,
     Wrapped<String?>? partialPhoneNumber,
     Wrapped<String?>? countryIsoCode,
     Wrapped<String?>? countryDialCode,
@@ -2104,12 +4106,15 @@ extension $PublicUpdateOwnProfileRequestExtension on PublicUpdateOwnProfileReque
       email: (email != null ? email.value : this.email),
       userName: (userName != null ? userName.value : this.userName),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
+      countryIsoCode: (countryIsoCode != null
+          ? countryIsoCode.value
+          : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null
+          ? countryDialCode.value
+          : this.countryDialCode),
     );
   }
 }
@@ -2140,22 +4145,32 @@ class PublicUpdateOwnProfileResponse {
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(user) ^ runtimeType.hashCode;
 }
 
-extension $PublicUpdateOwnProfileResponseExtension on PublicUpdateOwnProfileResponse {
+extension $PublicUpdateOwnProfileResponseExtension
+    on PublicUpdateOwnProfileResponse {
   PublicUpdateOwnProfileResponse copyWith({UserResponseDto? user}) {
     return PublicUpdateOwnProfileResponse(user: user ?? this.user);
   }
 
-  PublicUpdateOwnProfileResponse copyWithWrapped({Wrapped<UserResponseDto>? user}) {
-    return PublicUpdateOwnProfileResponse(user: (user != null ? user.value : this.user));
+  PublicUpdateOwnProfileResponse copyWithWrapped({
+    Wrapped<UserResponseDto>? user,
+  }) {
+    return PublicUpdateOwnProfileResponse(
+      user: (user != null ? user.value : this.user),
+    );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PublicVerifyOtpRequest {
-  const PublicVerifyOtpRequest({required this.email, required this.code, required this.purpose});
+  const PublicVerifyOtpRequest({
+    required this.email,
+    required this.code,
+    required this.purpose,
+  });
 
   factory PublicVerifyOtpRequest.fromJson(Map<String, dynamic> json) =>
       _$PublicVerifyOtpRequestFromJson(json);
@@ -2195,7 +4210,11 @@ class PublicVerifyOtpRequest {
 }
 
 extension $PublicVerifyOtpRequestExtension on PublicVerifyOtpRequest {
-  PublicVerifyOtpRequest copyWith({String? email, String? code, String? purpose}) {
+  PublicVerifyOtpRequest copyWith({
+    String? email,
+    String? code,
+    String? purpose,
+  }) {
     return PublicVerifyOtpRequest(
       email: email ?? this.email,
       code: code ?? this.code,
@@ -2235,14 +4254,18 @@ class PublicVerifyOtpResponse {
     return identical(this, other) ||
         (other is PublicVerifyOtpResponse &&
             (identical(other.isSuccess, isSuccess) ||
-                const DeepCollectionEquality().equals(other.isSuccess, isSuccess)));
+                const DeepCollectionEquality().equals(
+                  other.isSuccess,
+                  isSuccess,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isSuccess) ^ runtimeType.hashCode;
 }
 
 extension $PublicVerifyOtpResponseExtension on PublicVerifyOtpResponse {
@@ -2259,9 +4282,14 @@ extension $PublicVerifyOtpResponseExtension on PublicVerifyOtpResponse {
 
 @JsonSerializable(explicitToJson: true)
 class RoleDto {
-  const RoleDto({required this.id, required this.name, required this.description});
+  const RoleDto({
+    required this.id,
+    required this.name,
+    required this.description,
+  });
 
-  factory RoleDto.fromJson(Map<String, dynamic> json) => _$RoleDtoFromJson(json);
+  factory RoleDto.fromJson(Map<String, dynamic> json) =>
+      _$RoleDtoFromJson(json);
 
   static const toJsonFactory = _$RoleDtoToJson;
   Map<String, dynamic> toJson() => _$RoleDtoToJson(this);
@@ -2278,11 +4306,15 @@ class RoleDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is RoleDto &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality().equals(other.description, description)));
+                const DeepCollectionEquality().equals(
+                  other.description,
+                  description,
+                )));
   }
 
   @override
@@ -2319,6 +4351,274 @@ extension $RoleDtoExtension on RoleDto {
 }
 
 @JsonSerializable(explicitToJson: true)
+class SessionDto {
+  const SessionDto({
+    required this.id,
+    this.ipAddress,
+    this.userAgent,
+    required this.browser,
+    required this.device,
+    required this.platform,
+    required this.$client,
+    required this.createdAt,
+    required this.expiresAt,
+    required this.isActive,
+  });
+
+  factory SessionDto.fromJson(Map<String, dynamic> json) =>
+      _$SessionDtoFromJson(json);
+
+  static const toJsonFactory = _$SessionDtoToJson;
+  Map<String, dynamic> toJson() => _$SessionDtoToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'ipAddress')
+  final String? ipAddress;
+  @JsonKey(name: 'userAgent')
+  final String? userAgent;
+  @JsonKey(
+    name: 'browser',
+    toJson: enumBrowserToJson,
+    fromJson: enumBrowserFromJson,
+  )
+  final enums.EnumBrowser browser;
+  @JsonKey(
+    name: 'device',
+    toJson: enumDeviceToJson,
+    fromJson: enumDeviceFromJson,
+  )
+  final enums.EnumDevice device;
+  @JsonKey(
+    name: 'platform',
+    toJson: enumPlatformToJson,
+    fromJson: enumPlatformFromJson,
+  )
+  final enums.EnumPlatform platform;
+  @JsonKey(
+    name: 'client',
+    toJson: enumClientToJson,
+    fromJson: enumClientFromJson,
+  )
+  final enums.EnumClient $client;
+  @JsonKey(name: 'createdAt')
+  final DateTime createdAt;
+  @JsonKey(name: 'expiresAt')
+  final DateTime expiresAt;
+  @JsonKey(name: 'isActive')
+  final bool isActive;
+  static const fromJsonFactory = _$SessionDtoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is SessionDto &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.ipAddress, ipAddress) ||
+                const DeepCollectionEquality().equals(
+                  other.ipAddress,
+                  ipAddress,
+                )) &&
+            (identical(other.userAgent, userAgent) ||
+                const DeepCollectionEquality().equals(
+                  other.userAgent,
+                  userAgent,
+                )) &&
+            (identical(other.browser, browser) ||
+                const DeepCollectionEquality().equals(
+                  other.browser,
+                  browser,
+                )) &&
+            (identical(other.device, device) ||
+                const DeepCollectionEquality().equals(other.device, device)) &&
+            (identical(other.platform, platform) ||
+                const DeepCollectionEquality().equals(
+                  other.platform,
+                  platform,
+                )) &&
+            (identical(other.$client, $client) ||
+                const DeepCollectionEquality().equals(
+                  other.$client,
+                  $client,
+                )) &&
+            (identical(other.createdAt, createdAt) ||
+                const DeepCollectionEquality().equals(
+                  other.createdAt,
+                  createdAt,
+                )) &&
+            (identical(other.expiresAt, expiresAt) ||
+                const DeepCollectionEquality().equals(
+                  other.expiresAt,
+                  expiresAt,
+                )) &&
+            (identical(other.isActive, isActive) ||
+                const DeepCollectionEquality().equals(
+                  other.isActive,
+                  isActive,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(ipAddress) ^
+      const DeepCollectionEquality().hash(userAgent) ^
+      const DeepCollectionEquality().hash(browser) ^
+      const DeepCollectionEquality().hash(device) ^
+      const DeepCollectionEquality().hash(platform) ^
+      const DeepCollectionEquality().hash($client) ^
+      const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(expiresAt) ^
+      const DeepCollectionEquality().hash(isActive) ^
+      runtimeType.hashCode;
+}
+
+extension $SessionDtoExtension on SessionDto {
+  SessionDto copyWith({
+    String? id,
+    String? ipAddress,
+    String? userAgent,
+    enums.EnumBrowser? browser,
+    enums.EnumDevice? device,
+    enums.EnumPlatform? platform,
+    enums.EnumClient? $client,
+    DateTime? createdAt,
+    DateTime? expiresAt,
+    bool? isActive,
+  }) {
+    return SessionDto(
+      id: id ?? this.id,
+      ipAddress: ipAddress ?? this.ipAddress,
+      userAgent: userAgent ?? this.userAgent,
+      browser: browser ?? this.browser,
+      device: device ?? this.device,
+      platform: platform ?? this.platform,
+      $client: $client ?? this.$client,
+      createdAt: createdAt ?? this.createdAt,
+      expiresAt: expiresAt ?? this.expiresAt,
+      isActive: isActive ?? this.isActive,
+    );
+  }
+
+  SessionDto copyWithWrapped({
+    Wrapped<String>? id,
+    Wrapped<String?>? ipAddress,
+    Wrapped<String?>? userAgent,
+    Wrapped<enums.EnumBrowser>? browser,
+    Wrapped<enums.EnumDevice>? device,
+    Wrapped<enums.EnumPlatform>? platform,
+    Wrapped<enums.EnumClient>? $client,
+    Wrapped<DateTime>? createdAt,
+    Wrapped<DateTime>? expiresAt,
+    Wrapped<bool>? isActive,
+  }) {
+    return SessionDto(
+      id: (id != null ? id.value : this.id),
+      ipAddress: (ipAddress != null ? ipAddress.value : this.ipAddress),
+      userAgent: (userAgent != null ? userAgent.value : this.userAgent),
+      browser: (browser != null ? browser.value : this.browser),
+      device: (device != null ? device.value : this.device),
+      platform: (platform != null ? platform.value : this.platform),
+      $client: ($client != null ? $client.value : this.$client),
+      createdAt: (createdAt != null ? createdAt.value : this.createdAt),
+      expiresAt: (expiresAt != null ? expiresAt.value : this.expiresAt),
+      isActive: (isActive != null ? isActive.value : this.isActive),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class SessionDtoPaginatedResult {
+  const SessionDtoPaginatedResult({
+    required this.pageIndex,
+    required this.pageSize,
+    required this.count,
+    required this.items,
+  });
+
+  factory SessionDtoPaginatedResult.fromJson(Map<String, dynamic> json) =>
+      _$SessionDtoPaginatedResultFromJson(json);
+
+  static const toJsonFactory = _$SessionDtoPaginatedResultToJson;
+  Map<String, dynamic> toJson() => _$SessionDtoPaginatedResultToJson(this);
+
+  @JsonKey(name: 'pageIndex')
+  final int pageIndex;
+  @JsonKey(name: 'pageSize')
+  final int pageSize;
+  @JsonKey(name: 'count')
+  final int count;
+  @JsonKey(name: 'items', defaultValue: <SessionDto>[])
+  final List<SessionDto> items;
+  static const fromJsonFactory = _$SessionDtoPaginatedResultFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is SessionDtoPaginatedResult &&
+            (identical(other.pageIndex, pageIndex) ||
+                const DeepCollectionEquality().equals(
+                  other.pageIndex,
+                  pageIndex,
+                )) &&
+            (identical(other.pageSize, pageSize) ||
+                const DeepCollectionEquality().equals(
+                  other.pageSize,
+                  pageSize,
+                )) &&
+            (identical(other.count, count) ||
+                const DeepCollectionEquality().equals(other.count, count)) &&
+            (identical(other.items, items) ||
+                const DeepCollectionEquality().equals(other.items, items)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(pageIndex) ^
+      const DeepCollectionEquality().hash(pageSize) ^
+      const DeepCollectionEquality().hash(count) ^
+      const DeepCollectionEquality().hash(items) ^
+      runtimeType.hashCode;
+}
+
+extension $SessionDtoPaginatedResultExtension on SessionDtoPaginatedResult {
+  SessionDtoPaginatedResult copyWith({
+    int? pageIndex,
+    int? pageSize,
+    int? count,
+    List<SessionDto>? items,
+  }) {
+    return SessionDtoPaginatedResult(
+      pageIndex: pageIndex ?? this.pageIndex,
+      pageSize: pageSize ?? this.pageSize,
+      count: count ?? this.count,
+      items: items ?? this.items,
+    );
+  }
+
+  SessionDtoPaginatedResult copyWithWrapped({
+    Wrapped<int>? pageIndex,
+    Wrapped<int>? pageSize,
+    Wrapped<int>? count,
+    Wrapped<List<SessionDto>>? items,
+  }) {
+    return SessionDtoPaginatedResult(
+      pageIndex: (pageIndex != null ? pageIndex.value : this.pageIndex),
+      pageSize: (pageSize != null ? pageSize.value : this.pageSize),
+      count: (count != null ? count.value : this.count),
+      items: (items != null ? items.value : this.items),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class UserResponseDto {
   const UserResponseDto({
     required this.id,
@@ -2329,11 +4629,8 @@ class UserResponseDto {
     required this.authProvider,
     required this.isVerified,
     required this.isActive,
-    required this.isLoggedIn,
-    this.lastLoginAt,
     this.avatar,
     this.countryName,
-    this.countryFlagUrl,
     this.countryIsoCode,
     this.countryDialCode,
     this.partialPhoneNumber,
@@ -2342,7 +4639,8 @@ class UserResponseDto {
     this.updatedAt,
   });
 
-  factory UserResponseDto.fromJson(Map<String, dynamic> json) => _$UserResponseDtoFromJson(json);
+  factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseDtoFromJson(json);
 
   static const toJsonFactory = _$UserResponseDtoToJson;
   Map<String, dynamic> toJson() => _$UserResponseDtoToJson(this);
@@ -2363,16 +4661,10 @@ class UserResponseDto {
   final bool isVerified;
   @JsonKey(name: 'isActive')
   final bool isActive;
-  @JsonKey(name: 'isLoggedIn')
-  final bool isLoggedIn;
-  @JsonKey(name: 'lastLoginAt')
-  final DateTime? lastLoginAt;
   @JsonKey(name: 'avatar')
   final FileDto? avatar;
   @JsonKey(name: 'countryName')
   final String? countryName;
-  @JsonKey(name: 'countryFlagUrl')
-  final String? countryFlagUrl;
   @JsonKey(name: 'countryIsoCode')
   final String? countryIsoCode;
   @JsonKey(name: 'countryDialCode')
@@ -2391,46 +4683,74 @@ class UserResponseDto {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is UserResponseDto &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.userName, userName) ||
-                const DeepCollectionEquality().equals(other.userName, userName)) &&
+                const DeepCollectionEquality().equals(
+                  other.userName,
+                  userName,
+                )) &&
             (identical(other.roles, roles) ||
                 const DeepCollectionEquality().equals(other.roles, roles)) &&
             (identical(other.permissions, permissions) ||
-                const DeepCollectionEquality().equals(other.permissions, permissions)) &&
+                const DeepCollectionEquality().equals(
+                  other.permissions,
+                  permissions,
+                )) &&
             (identical(other.authProvider, authProvider) ||
-                const DeepCollectionEquality().equals(other.authProvider, authProvider)) &&
+                const DeepCollectionEquality().equals(
+                  other.authProvider,
+                  authProvider,
+                )) &&
             (identical(other.isVerified, isVerified) ||
-                const DeepCollectionEquality().equals(other.isVerified, isVerified)) &&
+                const DeepCollectionEquality().equals(
+                  other.isVerified,
+                  isVerified,
+                )) &&
             (identical(other.isActive, isActive) ||
-                const DeepCollectionEquality().equals(other.isActive, isActive)) &&
-            (identical(other.isLoggedIn, isLoggedIn) ||
-                const DeepCollectionEquality().equals(other.isLoggedIn, isLoggedIn)) &&
-            (identical(other.lastLoginAt, lastLoginAt) ||
-                const DeepCollectionEquality().equals(other.lastLoginAt, lastLoginAt)) &&
+                const DeepCollectionEquality().equals(
+                  other.isActive,
+                  isActive,
+                )) &&
             (identical(other.avatar, avatar) ||
                 const DeepCollectionEquality().equals(other.avatar, avatar)) &&
             (identical(other.countryName, countryName) ||
-                const DeepCollectionEquality().equals(other.countryName, countryName)) &&
-            (identical(other.countryFlagUrl, countryFlagUrl) ||
-                const DeepCollectionEquality().equals(other.countryFlagUrl, countryFlagUrl)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryName,
+                  countryName,
+                )) &&
             (identical(other.countryIsoCode, countryIsoCode) ||
-                const DeepCollectionEquality().equals(other.countryIsoCode, countryIsoCode)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryIsoCode,
+                  countryIsoCode,
+                )) &&
             (identical(other.countryDialCode, countryDialCode) ||
-                const DeepCollectionEquality().equals(other.countryDialCode, countryDialCode)) &&
+                const DeepCollectionEquality().equals(
+                  other.countryDialCode,
+                  countryDialCode,
+                )) &&
             (identical(other.partialPhoneNumber, partialPhoneNumber) ||
                 const DeepCollectionEquality().equals(
                   other.partialPhoneNumber,
                   partialPhoneNumber,
                 )) &&
             (identical(other.fullPhoneNumber, fullPhoneNumber) ||
-                const DeepCollectionEquality().equals(other.fullPhoneNumber, fullPhoneNumber)) &&
+                const DeepCollectionEquality().equals(
+                  other.fullPhoneNumber,
+                  fullPhoneNumber,
+                )) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality().equals(other.createdAt, createdAt)) &&
+                const DeepCollectionEquality().equals(
+                  other.createdAt,
+                  createdAt,
+                )) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality().equals(other.updatedAt, updatedAt)));
+                const DeepCollectionEquality().equals(
+                  other.updatedAt,
+                  updatedAt,
+                )));
   }
 
   @override
@@ -2446,11 +4766,8 @@ class UserResponseDto {
       const DeepCollectionEquality().hash(authProvider) ^
       const DeepCollectionEquality().hash(isVerified) ^
       const DeepCollectionEquality().hash(isActive) ^
-      const DeepCollectionEquality().hash(isLoggedIn) ^
-      const DeepCollectionEquality().hash(lastLoginAt) ^
       const DeepCollectionEquality().hash(avatar) ^
       const DeepCollectionEquality().hash(countryName) ^
-      const DeepCollectionEquality().hash(countryFlagUrl) ^
       const DeepCollectionEquality().hash(countryIsoCode) ^
       const DeepCollectionEquality().hash(countryDialCode) ^
       const DeepCollectionEquality().hash(partialPhoneNumber) ^
@@ -2470,11 +4787,8 @@ extension $UserResponseDtoExtension on UserResponseDto {
     String? authProvider,
     bool? isVerified,
     bool? isActive,
-    bool? isLoggedIn,
-    DateTime? lastLoginAt,
     FileDto? avatar,
     String? countryName,
-    String? countryFlagUrl,
     String? countryIsoCode,
     String? countryDialCode,
     String? partialPhoneNumber,
@@ -2491,11 +4805,8 @@ extension $UserResponseDtoExtension on UserResponseDto {
       authProvider: authProvider ?? this.authProvider,
       isVerified: isVerified ?? this.isVerified,
       isActive: isActive ?? this.isActive,
-      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
-      lastLoginAt: lastLoginAt ?? this.lastLoginAt,
       avatar: avatar ?? this.avatar,
       countryName: countryName ?? this.countryName,
-      countryFlagUrl: countryFlagUrl ?? this.countryFlagUrl,
       countryIsoCode: countryIsoCode ?? this.countryIsoCode,
       countryDialCode: countryDialCode ?? this.countryDialCode,
       partialPhoneNumber: partialPhoneNumber ?? this.partialPhoneNumber,
@@ -2514,11 +4825,8 @@ extension $UserResponseDtoExtension on UserResponseDto {
     Wrapped<String>? authProvider,
     Wrapped<bool>? isVerified,
     Wrapped<bool>? isActive,
-    Wrapped<bool>? isLoggedIn,
-    Wrapped<DateTime?>? lastLoginAt,
     Wrapped<FileDto?>? avatar,
     Wrapped<String?>? countryName,
-    Wrapped<String?>? countryFlagUrl,
     Wrapped<String?>? countryIsoCode,
     Wrapped<String?>? countryDialCode,
     Wrapped<String?>? partialPhoneNumber,
@@ -2532,20 +4840,25 @@ extension $UserResponseDtoExtension on UserResponseDto {
       userName: (userName != null ? userName.value : this.userName),
       roles: (roles != null ? roles.value : this.roles),
       permissions: (permissions != null ? permissions.value : this.permissions),
-      authProvider: (authProvider != null ? authProvider.value : this.authProvider),
+      authProvider: (authProvider != null
+          ? authProvider.value
+          : this.authProvider),
       isVerified: (isVerified != null ? isVerified.value : this.isVerified),
       isActive: (isActive != null ? isActive.value : this.isActive),
-      isLoggedIn: (isLoggedIn != null ? isLoggedIn.value : this.isLoggedIn),
-      lastLoginAt: (lastLoginAt != null ? lastLoginAt.value : this.lastLoginAt),
       avatar: (avatar != null ? avatar.value : this.avatar),
       countryName: (countryName != null ? countryName.value : this.countryName),
-      countryFlagUrl: (countryFlagUrl != null ? countryFlagUrl.value : this.countryFlagUrl),
-      countryIsoCode: (countryIsoCode != null ? countryIsoCode.value : this.countryIsoCode),
-      countryDialCode: (countryDialCode != null ? countryDialCode.value : this.countryDialCode),
+      countryIsoCode: (countryIsoCode != null
+          ? countryIsoCode.value
+          : this.countryIsoCode),
+      countryDialCode: (countryDialCode != null
+          ? countryDialCode.value
+          : this.countryDialCode),
       partialPhoneNumber: (partialPhoneNumber != null
           ? partialPhoneNumber.value
           : this.partialPhoneNumber),
-      fullPhoneNumber: (fullPhoneNumber != null ? fullPhoneNumber.value : this.fullPhoneNumber),
+      fullPhoneNumber: (fullPhoneNumber != null
+          ? fullPhoneNumber.value
+          : this.fullPhoneNumber),
       createdAt: (createdAt != null ? createdAt.value : this.createdAt),
       updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
     );
@@ -2553,87 +4866,373 @@ extension $UserResponseDtoExtension on UserResponseDto {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ApiV1AdminProfileAvatarPatch$RequestBody {
-  const ApiV1AdminProfileAvatarPatch$RequestBody({required this.avatarFile});
+class ApiV1AdminUserAvatarPatch$RequestBody {
+  const ApiV1AdminUserAvatarPatch$RequestBody({required this.avatarFile});
 
-  factory ApiV1AdminProfileAvatarPatch$RequestBody.fromJson(Map<String, dynamic> json) =>
-      _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(json);
+  factory ApiV1AdminUserAvatarPatch$RequestBody.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ApiV1AdminUserAvatarPatch$RequestBodyFromJson(json);
 
-  static const toJsonFactory = _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson;
-  Map<String, dynamic> toJson() => _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(this);
+  static const toJsonFactory = _$ApiV1AdminUserAvatarPatch$RequestBodyToJson;
+  Map<String, dynamic> toJson() =>
+      _$ApiV1AdminUserAvatarPatch$RequestBodyToJson(this);
 
   @JsonKey(name: 'avatarFile')
   final String avatarFile;
-  static const fromJsonFactory = _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson;
+  static const fromJsonFactory =
+      _$ApiV1AdminUserAvatarPatch$RequestBodyFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is ApiV1AdminProfileAvatarPatch$RequestBody &&
+        (other is ApiV1AdminUserAvatarPatch$RequestBody &&
             (identical(other.avatarFile, avatarFile) ||
-                const DeepCollectionEquality().equals(other.avatarFile, avatarFile)));
+                const DeepCollectionEquality().equals(
+                  other.avatarFile,
+                  avatarFile,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
 }
 
-extension $ApiV1AdminProfileAvatarPatch$RequestBodyExtension
-    on ApiV1AdminProfileAvatarPatch$RequestBody {
-  ApiV1AdminProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
-    return ApiV1AdminProfileAvatarPatch$RequestBody(avatarFile: avatarFile ?? this.avatarFile);
+extension $ApiV1AdminUserAvatarPatch$RequestBodyExtension
+    on ApiV1AdminUserAvatarPatch$RequestBody {
+  ApiV1AdminUserAvatarPatch$RequestBody copyWith({String? avatarFile}) {
+    return ApiV1AdminUserAvatarPatch$RequestBody(
+      avatarFile: avatarFile ?? this.avatarFile,
+    );
   }
 
-  ApiV1AdminProfileAvatarPatch$RequestBody copyWithWrapped({Wrapped<String>? avatarFile}) {
-    return ApiV1AdminProfileAvatarPatch$RequestBody(
+  ApiV1AdminUserAvatarPatch$RequestBody copyWithWrapped({
+    Wrapped<String>? avatarFile,
+  }) {
+    return ApiV1AdminUserAvatarPatch$RequestBody(
       avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
-class ApiV1PublicProfileAvatarPatch$RequestBody {
-  const ApiV1PublicProfileAvatarPatch$RequestBody({required this.avatarFile});
+class ApiV1PublicUserAvatarPatch$RequestBody {
+  const ApiV1PublicUserAvatarPatch$RequestBody({required this.avatarFile});
 
-  factory ApiV1PublicProfileAvatarPatch$RequestBody.fromJson(Map<String, dynamic> json) =>
-      _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(json);
+  factory ApiV1PublicUserAvatarPatch$RequestBody.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ApiV1PublicUserAvatarPatch$RequestBodyFromJson(json);
 
-  static const toJsonFactory = _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson;
-  Map<String, dynamic> toJson() => _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(this);
+  static const toJsonFactory = _$ApiV1PublicUserAvatarPatch$RequestBodyToJson;
+  Map<String, dynamic> toJson() =>
+      _$ApiV1PublicUserAvatarPatch$RequestBodyToJson(this);
 
   @JsonKey(name: 'avatarFile')
   final String avatarFile;
-  static const fromJsonFactory = _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson;
+  static const fromJsonFactory =
+      _$ApiV1PublicUserAvatarPatch$RequestBodyFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is ApiV1PublicProfileAvatarPatch$RequestBody &&
+        (other is ApiV1PublicUserAvatarPatch$RequestBody &&
             (identical(other.avatarFile, avatarFile) ||
-                const DeepCollectionEquality().equals(other.avatarFile, avatarFile)));
+                const DeepCollectionEquality().equals(
+                  other.avatarFile,
+                  avatarFile,
+                )));
   }
 
   @override
   String toString() => jsonEncode(this);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
+  int get hashCode =>
+      const DeepCollectionEquality().hash(avatarFile) ^ runtimeType.hashCode;
 }
 
-extension $ApiV1PublicProfileAvatarPatch$RequestBodyExtension
-    on ApiV1PublicProfileAvatarPatch$RequestBody {
-  ApiV1PublicProfileAvatarPatch$RequestBody copyWith({String? avatarFile}) {
-    return ApiV1PublicProfileAvatarPatch$RequestBody(avatarFile: avatarFile ?? this.avatarFile);
+extension $ApiV1PublicUserAvatarPatch$RequestBodyExtension
+    on ApiV1PublicUserAvatarPatch$RequestBody {
+  ApiV1PublicUserAvatarPatch$RequestBody copyWith({String? avatarFile}) {
+    return ApiV1PublicUserAvatarPatch$RequestBody(
+      avatarFile: avatarFile ?? this.avatarFile,
+    );
   }
 
-  ApiV1PublicProfileAvatarPatch$RequestBody copyWithWrapped({Wrapped<String>? avatarFile}) {
-    return ApiV1PublicProfileAvatarPatch$RequestBody(
+  ApiV1PublicUserAvatarPatch$RequestBody copyWithWrapped({
+    Wrapped<String>? avatarFile,
+  }) {
+    return ApiV1PublicUserAvatarPatch$RequestBody(
       avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );
   }
+}
+
+int? enumBrowserNullableToJson(enums.EnumBrowser? enumBrowser) {
+  return enumBrowser?.value;
+}
+
+int? enumBrowserToJson(enums.EnumBrowser enumBrowser) {
+  return enumBrowser.value;
+}
+
+enums.EnumBrowser enumBrowserFromJson(
+  Object? enumBrowser, [
+  enums.EnumBrowser? defaultValue,
+]) {
+  return enums.EnumBrowser.values.firstWhereOrNull(
+        (e) => e.value == enumBrowser,
+      ) ??
+      defaultValue ??
+      enums.EnumBrowser.swaggerGeneratedUnknown;
+}
+
+enums.EnumBrowser? enumBrowserNullableFromJson(
+  Object? enumBrowser, [
+  enums.EnumBrowser? defaultValue,
+]) {
+  if (enumBrowser == null) {
+    return null;
+  }
+  return enums.EnumBrowser.values.firstWhereOrNull(
+        (e) => e.value == enumBrowser,
+      ) ??
+      defaultValue;
+}
+
+String enumBrowserExplodedListToJson(List<enums.EnumBrowser>? enumBrowser) {
+  return enumBrowser?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<int> enumBrowserListToJson(List<enums.EnumBrowser>? enumBrowser) {
+  if (enumBrowser == null) {
+    return [];
+  }
+
+  return enumBrowser.map((e) => e.value!).toList();
+}
+
+List<enums.EnumBrowser> enumBrowserListFromJson(
+  List? enumBrowser, [
+  List<enums.EnumBrowser>? defaultValue,
+]) {
+  if (enumBrowser == null) {
+    return defaultValue ?? [];
+  }
+
+  return enumBrowser.map((e) => enumBrowserFromJson(e)).toList();
+}
+
+List<enums.EnumBrowser>? enumBrowserNullableListFromJson(
+  List? enumBrowser, [
+  List<enums.EnumBrowser>? defaultValue,
+]) {
+  if (enumBrowser == null) {
+    return defaultValue;
+  }
+
+  return enumBrowser.map((e) => enumBrowserFromJson(e)).toList();
+}
+
+int? enumClientNullableToJson(enums.EnumClient? enumClient) {
+  return enumClient?.value;
+}
+
+int? enumClientToJson(enums.EnumClient enumClient) {
+  return enumClient.value;
+}
+
+enums.EnumClient enumClientFromJson(
+  Object? enumClient, [
+  enums.EnumClient? defaultValue,
+]) {
+  return enums.EnumClient.values.firstWhereOrNull(
+        (e) => e.value == enumClient,
+      ) ??
+      defaultValue ??
+      enums.EnumClient.swaggerGeneratedUnknown;
+}
+
+enums.EnumClient? enumClientNullableFromJson(
+  Object? enumClient, [
+  enums.EnumClient? defaultValue,
+]) {
+  if (enumClient == null) {
+    return null;
+  }
+  return enums.EnumClient.values.firstWhereOrNull(
+        (e) => e.value == enumClient,
+      ) ??
+      defaultValue;
+}
+
+String enumClientExplodedListToJson(List<enums.EnumClient>? enumClient) {
+  return enumClient?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<int> enumClientListToJson(List<enums.EnumClient>? enumClient) {
+  if (enumClient == null) {
+    return [];
+  }
+
+  return enumClient.map((e) => e.value!).toList();
+}
+
+List<enums.EnumClient> enumClientListFromJson(
+  List? enumClient, [
+  List<enums.EnumClient>? defaultValue,
+]) {
+  if (enumClient == null) {
+    return defaultValue ?? [];
+  }
+
+  return enumClient.map((e) => enumClientFromJson(e)).toList();
+}
+
+List<enums.EnumClient>? enumClientNullableListFromJson(
+  List? enumClient, [
+  List<enums.EnumClient>? defaultValue,
+]) {
+  if (enumClient == null) {
+    return defaultValue;
+  }
+
+  return enumClient.map((e) => enumClientFromJson(e)).toList();
+}
+
+int? enumDeviceNullableToJson(enums.EnumDevice? enumDevice) {
+  return enumDevice?.value;
+}
+
+int? enumDeviceToJson(enums.EnumDevice enumDevice) {
+  return enumDevice.value;
+}
+
+enums.EnumDevice enumDeviceFromJson(
+  Object? enumDevice, [
+  enums.EnumDevice? defaultValue,
+]) {
+  return enums.EnumDevice.values.firstWhereOrNull(
+        (e) => e.value == enumDevice,
+      ) ??
+      defaultValue ??
+      enums.EnumDevice.swaggerGeneratedUnknown;
+}
+
+enums.EnumDevice? enumDeviceNullableFromJson(
+  Object? enumDevice, [
+  enums.EnumDevice? defaultValue,
+]) {
+  if (enumDevice == null) {
+    return null;
+  }
+  return enums.EnumDevice.values.firstWhereOrNull(
+        (e) => e.value == enumDevice,
+      ) ??
+      defaultValue;
+}
+
+String enumDeviceExplodedListToJson(List<enums.EnumDevice>? enumDevice) {
+  return enumDevice?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<int> enumDeviceListToJson(List<enums.EnumDevice>? enumDevice) {
+  if (enumDevice == null) {
+    return [];
+  }
+
+  return enumDevice.map((e) => e.value!).toList();
+}
+
+List<enums.EnumDevice> enumDeviceListFromJson(
+  List? enumDevice, [
+  List<enums.EnumDevice>? defaultValue,
+]) {
+  if (enumDevice == null) {
+    return defaultValue ?? [];
+  }
+
+  return enumDevice.map((e) => enumDeviceFromJson(e)).toList();
+}
+
+List<enums.EnumDevice>? enumDeviceNullableListFromJson(
+  List? enumDevice, [
+  List<enums.EnumDevice>? defaultValue,
+]) {
+  if (enumDevice == null) {
+    return defaultValue;
+  }
+
+  return enumDevice.map((e) => enumDeviceFromJson(e)).toList();
+}
+
+int? enumPlatformNullableToJson(enums.EnumPlatform? enumPlatform) {
+  return enumPlatform?.value;
+}
+
+int? enumPlatformToJson(enums.EnumPlatform enumPlatform) {
+  return enumPlatform.value;
+}
+
+enums.EnumPlatform enumPlatformFromJson(
+  Object? enumPlatform, [
+  enums.EnumPlatform? defaultValue,
+]) {
+  return enums.EnumPlatform.values.firstWhereOrNull(
+        (e) => e.value == enumPlatform,
+      ) ??
+      defaultValue ??
+      enums.EnumPlatform.swaggerGeneratedUnknown;
+}
+
+enums.EnumPlatform? enumPlatformNullableFromJson(
+  Object? enumPlatform, [
+  enums.EnumPlatform? defaultValue,
+]) {
+  if (enumPlatform == null) {
+    return null;
+  }
+  return enums.EnumPlatform.values.firstWhereOrNull(
+        (e) => e.value == enumPlatform,
+      ) ??
+      defaultValue;
+}
+
+String enumPlatformExplodedListToJson(List<enums.EnumPlatform>? enumPlatform) {
+  return enumPlatform?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<int> enumPlatformListToJson(List<enums.EnumPlatform>? enumPlatform) {
+  if (enumPlatform == null) {
+    return [];
+  }
+
+  return enumPlatform.map((e) => e.value!).toList();
+}
+
+List<enums.EnumPlatform> enumPlatformListFromJson(
+  List? enumPlatform, [
+  List<enums.EnumPlatform>? defaultValue,
+]) {
+  if (enumPlatform == null) {
+    return defaultValue ?? [];
+  }
+
+  return enumPlatform.map((e) => enumPlatformFromJson(e)).toList();
+}
+
+List<enums.EnumPlatform>? enumPlatformNullableListFromJson(
+  List? enumPlatform, [
+  List<enums.EnumPlatform>? defaultValue,
+]) {
+  if (enumPlatform == null) {
+    return defaultValue;
+  }
+
+  return enumPlatform.map((e) => enumPlatformFromJson(e)).toList();
 }
 
 // ignore: unused_element
