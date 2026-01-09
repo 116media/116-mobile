@@ -3053,60 +3053,6 @@
         },
         "additionalProperties": false
       },
-      "EnumBrowser": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "EnumClient": {
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "EnumDevice": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "EnumPlatform": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
       "FileDto": {
         "required": [
           "fileName",
@@ -3856,16 +3802,16 @@
             "nullable": true
           },
           "browser": {
-            "$ref": "#/components/schemas/EnumBrowser"
+            "type": "string"
           },
           "device": {
-            "$ref": "#/components/schemas/EnumDevice"
+            "type": "string"
           },
           "platform": {
-            "$ref": "#/components/schemas/EnumPlatform"
+            "type": "string"
           },
           "client": {
-            "$ref": "#/components/schemas/EnumClient"
+            "type": "string"
           },
           "createdAt": {
             "type": "string",

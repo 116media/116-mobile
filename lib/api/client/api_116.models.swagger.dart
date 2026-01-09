@@ -5,8 +5,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:collection/collection.dart';
 import 'dart:convert';
 
-import 'api_116.enums.swagger.dart' as enums;
-
 part 'api_116.models.swagger.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -4377,30 +4375,14 @@ class SessionDto {
   final String? ipAddress;
   @JsonKey(name: 'userAgent')
   final String? userAgent;
-  @JsonKey(
-    name: 'browser',
-    toJson: enumBrowserToJson,
-    fromJson: enumBrowserFromJson,
-  )
-  final enums.EnumBrowser browser;
-  @JsonKey(
-    name: 'device',
-    toJson: enumDeviceToJson,
-    fromJson: enumDeviceFromJson,
-  )
-  final enums.EnumDevice device;
-  @JsonKey(
-    name: 'platform',
-    toJson: enumPlatformToJson,
-    fromJson: enumPlatformFromJson,
-  )
-  final enums.EnumPlatform platform;
-  @JsonKey(
-    name: 'client',
-    toJson: enumClientToJson,
-    fromJson: enumClientFromJson,
-  )
-  final enums.EnumClient $client;
+  @JsonKey(name: 'browser')
+  final String browser;
+  @JsonKey(name: 'device')
+  final String device;
+  @JsonKey(name: 'platform')
+  final String platform;
+  @JsonKey(name: 'client')
+  final String $client;
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
   @JsonKey(name: 'expiresAt')
@@ -4482,10 +4464,10 @@ extension $SessionDtoExtension on SessionDto {
     String? id,
     String? ipAddress,
     String? userAgent,
-    enums.EnumBrowser? browser,
-    enums.EnumDevice? device,
-    enums.EnumPlatform? platform,
-    enums.EnumClient? $client,
+    String? browser,
+    String? device,
+    String? platform,
+    String? $client,
     DateTime? createdAt,
     DateTime? expiresAt,
     bool? isActive,
@@ -4508,10 +4490,10 @@ extension $SessionDtoExtension on SessionDto {
     Wrapped<String>? id,
     Wrapped<String?>? ipAddress,
     Wrapped<String?>? userAgent,
-    Wrapped<enums.EnumBrowser>? browser,
-    Wrapped<enums.EnumDevice>? device,
-    Wrapped<enums.EnumPlatform>? platform,
-    Wrapped<enums.EnumClient>? $client,
+    Wrapped<String>? browser,
+    Wrapped<String>? device,
+    Wrapped<String>? platform,
+    Wrapped<String>? $client,
     Wrapped<DateTime>? createdAt,
     Wrapped<DateTime>? expiresAt,
     Wrapped<bool>? isActive,
@@ -4969,270 +4951,6 @@ extension $ApiV1PublicUserAvatarPatch$RequestBodyExtension
       avatarFile: (avatarFile != null ? avatarFile.value : this.avatarFile),
     );
   }
-}
-
-int? enumBrowserNullableToJson(enums.EnumBrowser? enumBrowser) {
-  return enumBrowser?.value;
-}
-
-int? enumBrowserToJson(enums.EnumBrowser enumBrowser) {
-  return enumBrowser.value;
-}
-
-enums.EnumBrowser enumBrowserFromJson(
-  Object? enumBrowser, [
-  enums.EnumBrowser? defaultValue,
-]) {
-  return enums.EnumBrowser.values.firstWhereOrNull(
-        (e) => e.value == enumBrowser,
-      ) ??
-      defaultValue ??
-      enums.EnumBrowser.swaggerGeneratedUnknown;
-}
-
-enums.EnumBrowser? enumBrowserNullableFromJson(
-  Object? enumBrowser, [
-  enums.EnumBrowser? defaultValue,
-]) {
-  if (enumBrowser == null) {
-    return null;
-  }
-  return enums.EnumBrowser.values.firstWhereOrNull(
-        (e) => e.value == enumBrowser,
-      ) ??
-      defaultValue;
-}
-
-String enumBrowserExplodedListToJson(List<enums.EnumBrowser>? enumBrowser) {
-  return enumBrowser?.map((e) => e.value!).join(',') ?? '';
-}
-
-List<int> enumBrowserListToJson(List<enums.EnumBrowser>? enumBrowser) {
-  if (enumBrowser == null) {
-    return [];
-  }
-
-  return enumBrowser.map((e) => e.value!).toList();
-}
-
-List<enums.EnumBrowser> enumBrowserListFromJson(
-  List? enumBrowser, [
-  List<enums.EnumBrowser>? defaultValue,
-]) {
-  if (enumBrowser == null) {
-    return defaultValue ?? [];
-  }
-
-  return enumBrowser.map((e) => enumBrowserFromJson(e)).toList();
-}
-
-List<enums.EnumBrowser>? enumBrowserNullableListFromJson(
-  List? enumBrowser, [
-  List<enums.EnumBrowser>? defaultValue,
-]) {
-  if (enumBrowser == null) {
-    return defaultValue;
-  }
-
-  return enumBrowser.map((e) => enumBrowserFromJson(e)).toList();
-}
-
-int? enumClientNullableToJson(enums.EnumClient? enumClient) {
-  return enumClient?.value;
-}
-
-int? enumClientToJson(enums.EnumClient enumClient) {
-  return enumClient.value;
-}
-
-enums.EnumClient enumClientFromJson(
-  Object? enumClient, [
-  enums.EnumClient? defaultValue,
-]) {
-  return enums.EnumClient.values.firstWhereOrNull(
-        (e) => e.value == enumClient,
-      ) ??
-      defaultValue ??
-      enums.EnumClient.swaggerGeneratedUnknown;
-}
-
-enums.EnumClient? enumClientNullableFromJson(
-  Object? enumClient, [
-  enums.EnumClient? defaultValue,
-]) {
-  if (enumClient == null) {
-    return null;
-  }
-  return enums.EnumClient.values.firstWhereOrNull(
-        (e) => e.value == enumClient,
-      ) ??
-      defaultValue;
-}
-
-String enumClientExplodedListToJson(List<enums.EnumClient>? enumClient) {
-  return enumClient?.map((e) => e.value!).join(',') ?? '';
-}
-
-List<int> enumClientListToJson(List<enums.EnumClient>? enumClient) {
-  if (enumClient == null) {
-    return [];
-  }
-
-  return enumClient.map((e) => e.value!).toList();
-}
-
-List<enums.EnumClient> enumClientListFromJson(
-  List? enumClient, [
-  List<enums.EnumClient>? defaultValue,
-]) {
-  if (enumClient == null) {
-    return defaultValue ?? [];
-  }
-
-  return enumClient.map((e) => enumClientFromJson(e)).toList();
-}
-
-List<enums.EnumClient>? enumClientNullableListFromJson(
-  List? enumClient, [
-  List<enums.EnumClient>? defaultValue,
-]) {
-  if (enumClient == null) {
-    return defaultValue;
-  }
-
-  return enumClient.map((e) => enumClientFromJson(e)).toList();
-}
-
-int? enumDeviceNullableToJson(enums.EnumDevice? enumDevice) {
-  return enumDevice?.value;
-}
-
-int? enumDeviceToJson(enums.EnumDevice enumDevice) {
-  return enumDevice.value;
-}
-
-enums.EnumDevice enumDeviceFromJson(
-  Object? enumDevice, [
-  enums.EnumDevice? defaultValue,
-]) {
-  return enums.EnumDevice.values.firstWhereOrNull(
-        (e) => e.value == enumDevice,
-      ) ??
-      defaultValue ??
-      enums.EnumDevice.swaggerGeneratedUnknown;
-}
-
-enums.EnumDevice? enumDeviceNullableFromJson(
-  Object? enumDevice, [
-  enums.EnumDevice? defaultValue,
-]) {
-  if (enumDevice == null) {
-    return null;
-  }
-  return enums.EnumDevice.values.firstWhereOrNull(
-        (e) => e.value == enumDevice,
-      ) ??
-      defaultValue;
-}
-
-String enumDeviceExplodedListToJson(List<enums.EnumDevice>? enumDevice) {
-  return enumDevice?.map((e) => e.value!).join(',') ?? '';
-}
-
-List<int> enumDeviceListToJson(List<enums.EnumDevice>? enumDevice) {
-  if (enumDevice == null) {
-    return [];
-  }
-
-  return enumDevice.map((e) => e.value!).toList();
-}
-
-List<enums.EnumDevice> enumDeviceListFromJson(
-  List? enumDevice, [
-  List<enums.EnumDevice>? defaultValue,
-]) {
-  if (enumDevice == null) {
-    return defaultValue ?? [];
-  }
-
-  return enumDevice.map((e) => enumDeviceFromJson(e)).toList();
-}
-
-List<enums.EnumDevice>? enumDeviceNullableListFromJson(
-  List? enumDevice, [
-  List<enums.EnumDevice>? defaultValue,
-]) {
-  if (enumDevice == null) {
-    return defaultValue;
-  }
-
-  return enumDevice.map((e) => enumDeviceFromJson(e)).toList();
-}
-
-int? enumPlatformNullableToJson(enums.EnumPlatform? enumPlatform) {
-  return enumPlatform?.value;
-}
-
-int? enumPlatformToJson(enums.EnumPlatform enumPlatform) {
-  return enumPlatform.value;
-}
-
-enums.EnumPlatform enumPlatformFromJson(
-  Object? enumPlatform, [
-  enums.EnumPlatform? defaultValue,
-]) {
-  return enums.EnumPlatform.values.firstWhereOrNull(
-        (e) => e.value == enumPlatform,
-      ) ??
-      defaultValue ??
-      enums.EnumPlatform.swaggerGeneratedUnknown;
-}
-
-enums.EnumPlatform? enumPlatformNullableFromJson(
-  Object? enumPlatform, [
-  enums.EnumPlatform? defaultValue,
-]) {
-  if (enumPlatform == null) {
-    return null;
-  }
-  return enums.EnumPlatform.values.firstWhereOrNull(
-        (e) => e.value == enumPlatform,
-      ) ??
-      defaultValue;
-}
-
-String enumPlatformExplodedListToJson(List<enums.EnumPlatform>? enumPlatform) {
-  return enumPlatform?.map((e) => e.value!).join(',') ?? '';
-}
-
-List<int> enumPlatformListToJson(List<enums.EnumPlatform>? enumPlatform) {
-  if (enumPlatform == null) {
-    return [];
-  }
-
-  return enumPlatform.map((e) => e.value!).toList();
-}
-
-List<enums.EnumPlatform> enumPlatformListFromJson(
-  List? enumPlatform, [
-  List<enums.EnumPlatform>? defaultValue,
-]) {
-  if (enumPlatform == null) {
-    return defaultValue ?? [];
-  }
-
-  return enumPlatform.map((e) => enumPlatformFromJson(e)).toList();
-}
-
-List<enums.EnumPlatform>? enumPlatformNullableListFromJson(
-  List? enumPlatform, [
-  List<enums.EnumPlatform>? defaultValue,
-]) {
-  if (enumPlatform == null) {
-    return defaultValue;
-  }
-
-  return enumPlatform.map((e) => enumPlatformFromJson(e)).toList();
 }
 
 // ignore: unused_element

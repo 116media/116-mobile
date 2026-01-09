@@ -15,9 +15,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show MultipartFile;
 import 'package:chopper/chopper.dart' as chopper;
-import 'api_116.enums.swagger.dart' as enums;
 import 'api_116.metadata.swagger.dart';
-export 'api_116.enums.swagger.dart';
 export 'api_116.models.swagger.dart';
 
 part 'api_116.swagger.chopper.dart';
