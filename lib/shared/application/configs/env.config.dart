@@ -16,4 +16,14 @@ abstract class EnvConfig {
   ///
   /// Expected environment variable: `GOOGLE_SERVER_CLIENT_ID`
   static String? get googleServerClientId => dotenv.get("GOOGLE_SERVER_CLIENT_ID");
+
+  /// Retrieves the Client Application identifier.
+  ///
+  /// Sent as "Client-App" header in all API requests to identify which
+  /// application is consuming the API endpoints.
+  ///
+  /// Valid values: MobileApp (iOS/Android), WebApp (SPA), Dashboard (Admin panel)
+  ///
+  /// Expected environment variable: `CLIENT_APP`
+  static String get clientApp => dotenv.get("CLIENT_APP", fallback: "MobileApp");
 }
