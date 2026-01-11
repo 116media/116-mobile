@@ -124,8 +124,7 @@ This endpoint performs the following operations:
   });
 
   ///Sign out the authenticated admin user from all devices
-  Future<chopper.Response<AdminSignOutFromAllDevicesResponse>>
-  AdminSignOutFromAllDevices() {
+  Future<chopper.Response<AdminSignOutFromAllDevicesResponse>> AdminSignOutFromAllDevices() {
     generatedMapping.putIfAbsent(
       AdminSignOutFromAllDevicesResponse,
       () => AdminSignOutFromAllDevicesResponse.fromJsonFactory,
@@ -136,8 +135,7 @@ This endpoint performs the following operations:
 
   ///Sign out the authenticated admin user from all devices
   @POST(path: '/api/v1/admin/auth/sign-out-all', optionalBody: true)
-  Future<chopper.Response<AdminSignOutFromAllDevicesResponse>>
-  _AdminSignOutFromAllDevices({
+  Future<chopper.Response<AdminSignOutFromAllDevicesResponse>> _AdminSignOutFromAllDevices({
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
@@ -185,10 +183,7 @@ This endpoint is commonly used:
   Future<chopper.Response<AdminSignOutResponse>> AdminSignOut({
     required AdminSignOutRequest? body,
   }) {
-    generatedMapping.putIfAbsent(
-      AdminSignOutResponse,
-      () => AdminSignOutResponse.fromJsonFactory,
-    );
+    generatedMapping.putIfAbsent(AdminSignOutResponse, () => AdminSignOutResponse.fromJsonFactory);
 
     return _AdminSignOut(body: body);
   }
@@ -424,13 +419,8 @@ This endpoint enables admins to request a new verification code when:
   });
 
   ///Authenticate admin and return JWT token with admin claims
-  Future<chopper.Response<AdminLoginResponse>> AdminLogin({
-    required AdminLoginRequest? body,
-  }) {
-    generatedMapping.putIfAbsent(
-      AdminLoginResponse,
-      () => AdminLoginResponse.fromJsonFactory,
-    );
+  Future<chopper.Response<AdminLoginResponse>> AdminLogin({required AdminLoginRequest? body}) {
+    generatedMapping.putIfAbsent(AdminLoginResponse, () => AdminLoginResponse.fromJsonFactory);
 
     return _AdminLogin(body: body);
   }
@@ -441,8 +431,7 @@ This endpoint enables admins to request a new verification code when:
     @Body() required AdminLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates an admin user using email and password credentials.
+      description: '''Authenticates an admin user using email and password credentials.
 The returned JWT token includes admin-specific claims for accessing administrative endpoints.
 
 This endpoint performs enhanced authentication by:
@@ -649,8 +638,7 @@ This endpoint performs the following operations:
   });
 
   ///Get session metrics and statistics
-  Future<chopper.Response<AdminGetSessionMetricsResponse>>
-  AdminGetSessionMetrics() {
+  Future<chopper.Response<AdminGetSessionMetricsResponse>> AdminGetSessionMetrics() {
     generatedMapping.putIfAbsent(
       AdminGetSessionMetricsResponse,
       () => AdminGetSessionMetricsResponse.fromJsonFactory,
@@ -661,8 +649,7 @@ This endpoint performs the following operations:
 
   ///Get session metrics and statistics
   @GET(path: '/api/v1/admin/sessions/metrics')
-  Future<chopper.Response<AdminGetSessionMetricsResponse>>
-  _AdminGetSessionMetrics({
+  Future<chopper.Response<AdminGetSessionMetricsResponse>> _AdminGetSessionMetrics({
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
@@ -822,8 +809,7 @@ This is an admin-only operation for monitoring and managing user sessions.
     @Query('columns') String? columns,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Exports session data with optional filtering by status and date range.
+      description: '''Exports session data with optional filtering by status and date range.
 This is an admin-only operation for extracting session data for reporting and analysis.
 
 **Filter Parameters:**
@@ -878,8 +864,7 @@ This is an admin-only operation for extracting session data for reporting and an
     @Path('id') required String id,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Forces a user to log out from all their active sessions across all devices.
+      description: '''Forces a user to log out from all their active sessions across all devices.
 This is an admin-only operation used for security purposes or account management.
 
 This endpoint performs force logout by:
@@ -923,8 +908,7 @@ This endpoint performs force logout by:
   });
 
   ///Cleanup all expired sessions
-  Future<chopper.Response<AdminCleanupExpiredSessionsResponse>>
-  AdminCleanupExpiredSessions() {
+  Future<chopper.Response<AdminCleanupExpiredSessionsResponse>> AdminCleanupExpiredSessions() {
     generatedMapping.putIfAbsent(
       AdminCleanupExpiredSessionsResponse,
       () => AdminCleanupExpiredSessionsResponse.fromJsonFactory,
@@ -935,8 +919,7 @@ This endpoint performs force logout by:
 
   ///Cleanup all expired sessions
   @POST(path: '/api/v1/admin/sessions/cleanup', optionalBody: true)
-  Future<chopper.Response<AdminCleanupExpiredSessionsResponse>>
-  _AdminCleanupExpiredSessions({
+  Future<chopper.Response<AdminCleanupExpiredSessionsResponse>> _AdminCleanupExpiredSessions({
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
@@ -1063,8 +1046,7 @@ This endpoint performs the following operations:
 5. Maps complete user data to response DTO
 
 6. Returns comprehensive admin user profile information''',
-      summary:
-          'Retrieve authenticated admin user\'s complete profile information',
+      summary: 'Retrieve authenticated admin user\'s complete profile information',
       operationId: 'AdminGetOwnProfile',
       consumes: [],
       produces: [],
@@ -1075,8 +1057,9 @@ This endpoint performs the following operations:
   });
 
   ///Update authenticated admin user's own profile information
-  Future<chopper.Response<AdminUpdateOwnProfileResponse>>
-  AdminUpdateOwnProfile({required AdminUpdateOwnProfileRequest? body}) {
+  Future<chopper.Response<AdminUpdateOwnProfileResponse>> AdminUpdateOwnProfile({
+    required AdminUpdateOwnProfileRequest? body,
+  }) {
     generatedMapping.putIfAbsent(
       AdminUpdateOwnProfileResponse,
       () => AdminUpdateOwnProfileResponse.fromJsonFactory,
@@ -1087,13 +1070,11 @@ This endpoint performs the following operations:
 
   ///Update authenticated admin user's own profile information
   @PATCH(path: '/api/v1/admin/user/profile', optionalBody: true)
-  Future<chopper.Response<AdminUpdateOwnProfileResponse>>
-  _AdminUpdateOwnProfile({
+  Future<chopper.Response<AdminUpdateOwnProfileResponse>> _AdminUpdateOwnProfile({
     @Body() required AdminUpdateOwnProfileRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the profile information for the currently authenticated admin user.
+      description: '''Updates the profile information for the currently authenticated admin user.
 
 This endpoint requires admin user authentication - only logged-in admin users can update their own profile,
 providing secure profile management for authenticated admin users
@@ -1201,8 +1182,7 @@ This endpoint performs the following operations:
     @PartFile() required MultipartFile avatarFile,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the authenticated admin user\'s avatar by uploading an image file.
+      description: '''Updates the authenticated admin user\'s avatar by uploading an image file.
 
 This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
 The system will automatically delete any previous avatar when a new one is uploaded.
@@ -1358,8 +1338,7 @@ This endpoint performs the following operations:
     @Body() required PublicSocialLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates a user through external social providers (Google or Facebook).
+      description: '''Authenticates a user through external social providers (Google or Facebook).
 
 Social users are automatically verified and granted visitor role permissions.
 Avatar images from social providers are downloaded and stored locally.
@@ -1413,10 +1392,7 @@ This endpoint performs the following operations:
   Future<chopper.Response<PublicSignUpResponse>> PublicSignUp({
     required PublicSignUpRequest? body,
   }) {
-    generatedMapping.putIfAbsent(
-      PublicSignUpResponse,
-      () => PublicSignUpResponse.fromJsonFactory,
-    );
+    generatedMapping.putIfAbsent(PublicSignUpResponse, () => PublicSignUpResponse.fromJsonFactory);
 
     return _PublicSignUp(body: body);
   }
@@ -1427,8 +1403,7 @@ This endpoint performs the following operations:
     @Body() required PublicSignUpRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Registers a new public user by creating an account with the provided details.
+      description: '''Registers a new public user by creating an account with the provided details.
 
 The created user account will initially have the Visitor role and related permissions,
 granting basic public access until further elevated by admins.
@@ -1472,8 +1447,7 @@ This endpoint performs the following operations:
   });
 
   ///Sign out the authenticated user from all devices
-  Future<chopper.Response<PublicSignOutFromAllDevicesResponse>>
-  PublicSignOutFromAllDevices() {
+  Future<chopper.Response<PublicSignOutFromAllDevicesResponse>> PublicSignOutFromAllDevices() {
     generatedMapping.putIfAbsent(
       PublicSignOutFromAllDevicesResponse,
       () => PublicSignOutFromAllDevicesResponse.fromJsonFactory,
@@ -1484,8 +1458,7 @@ This endpoint performs the following operations:
 
   ///Sign out the authenticated user from all devices
   @POST(path: '/api/v1/public/auth/sign-out-all', optionalBody: true)
-  Future<chopper.Response<PublicSignOutFromAllDevicesResponse>>
-  _PublicSignOutFromAllDevices({
+  Future<chopper.Response<PublicSignOutFromAllDevicesResponse>> _PublicSignOutFromAllDevices({
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
@@ -1548,8 +1521,7 @@ This endpoint is commonly used:
     @Body() required PublicSignOutRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Signs out the currently authenticated user by updating their login status.
+      description: '''Signs out the currently authenticated user by updating their login status.
 After successful sign-out, the client should discard the JWT token.
 
 This endpoint performs secure sign-out by:
@@ -1853,13 +1825,8 @@ This endpoint enables users to request a new verification code when:
   });
 
   ///Authenticate public user and return JWT token with user claims
-  Future<chopper.Response<PublicLoginResponse>> PublicLogin({
-    required PublicLoginRequest? body,
-  }) {
-    generatedMapping.putIfAbsent(
-      PublicLoginResponse,
-      () => PublicLoginResponse.fromJsonFactory,
-    );
+  Future<chopper.Response<PublicLoginResponse>> PublicLogin({required PublicLoginRequest? body}) {
+    generatedMapping.putIfAbsent(PublicLoginResponse, () => PublicLoginResponse.fromJsonFactory);
 
     return _PublicLogin(body: body);
   }
@@ -1870,8 +1837,7 @@ This endpoint enables users to request a new verification code when:
     @Body() required PublicLoginRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Authenticates a public user using email/userName and password credentials.
+      description: '''Authenticates a public user using email/userName and password credentials.
 The returned JWT token includes claims for accessing public user\'s endpoints.
 
 This endpoint performs enhanced authentication by:
@@ -2077,9 +2043,7 @@ This endpoint performs the following operations:
 
   ///Retrieve all sessions for the authenticated user
   ///@param isActive
-  Future<chopper.Response<PublicGetOwnSessionsResponse>> PublicGetOwnSessions({
-    bool? isActive,
-  }) {
+  Future<chopper.Response<PublicGetOwnSessionsResponse>> PublicGetOwnSessions({bool? isActive}) {
     generatedMapping.putIfAbsent(
       PublicGetOwnSessionsResponse,
       () => PublicGetOwnSessionsResponse.fromJsonFactory,
@@ -2151,8 +2115,9 @@ This endpoint provides session management by:
 
   ///Retrieve a specific session by ID
   ///@param id
-  Future<chopper.Response<PublicGetOwnSessionByIdResponse>>
-  PublicGetOwnSessionById({required String id}) {
+  Future<chopper.Response<PublicGetOwnSessionByIdResponse>> PublicGetOwnSessionById({
+    required String id,
+  }) {
     generatedMapping.putIfAbsent(
       PublicGetOwnSessionByIdResponse,
       () => PublicGetOwnSessionByIdResponse.fromJsonFactory,
@@ -2164,13 +2129,11 @@ This endpoint provides session management by:
   ///Retrieve a specific session by ID
   ///@param id
   @GET(path: '/api/v1/public/sessions/{id}')
-  Future<chopper.Response<PublicGetOwnSessionByIdResponse>>
-  _PublicGetOwnSessionById({
+  Future<chopper.Response<PublicGetOwnSessionByIdResponse>> _PublicGetOwnSessionById({
     @Path('id') required String id,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Retrieves detailed information about a specific session identified by its ID.
+      description: '''Retrieves detailed information about a specific session identified by its ID.
 The session must belong to the authenticated user.
 
 This endpoint provides session details by:
@@ -2228,9 +2191,7 @@ This endpoint provides session details by:
 
   ///Revoke a specific session (log out from a device)
   ///@param id
-  Future<chopper.Response<PublicRevokeSessionResponse>> PublicRevokeSession({
-    required String id,
-  }) {
+  Future<chopper.Response<PublicRevokeSessionResponse>> PublicRevokeSession({required String id}) {
     generatedMapping.putIfAbsent(
       PublicRevokeSessionResponse,
       () => PublicRevokeSessionResponse.fromJsonFactory,
@@ -2246,8 +2207,7 @@ This endpoint provides session details by:
     @Path('id') required String id,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Revokes (logs out from) a specific session identified by its ID.
+      description: '''Revokes (logs out from) a specific session identified by its ID.
 This allows users to remotely log out from other devices.
 
 This endpoint performs session revocation by:
@@ -2315,8 +2275,7 @@ This endpoint performs session revocation by:
     @Body() required PublicRefreshTokenRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Validates and rotates a refresh token to obtain a new access token.
+      description: '''Validates and rotates a refresh token to obtain a new access token.
 Implements token rotation for enhanced security - the old refresh token is invalidated.
 
 This endpoint performs token refresh by:
@@ -2452,8 +2411,9 @@ This endpoint performs the following operations:
   });
 
   ///Update authenticated user's own profile information
-  Future<chopper.Response<PublicUpdateOwnProfileResponse>>
-  PublicUpdateOwnProfile({required PublicUpdateOwnProfileRequest? body}) {
+  Future<chopper.Response<PublicUpdateOwnProfileResponse>> PublicUpdateOwnProfile({
+    required PublicUpdateOwnProfileRequest? body,
+  }) {
     generatedMapping.putIfAbsent(
       PublicUpdateOwnProfileResponse,
       () => PublicUpdateOwnProfileResponse.fromJsonFactory,
@@ -2464,13 +2424,11 @@ This endpoint performs the following operations:
 
   ///Update authenticated user's own profile information
   @PATCH(path: '/api/v1/public/user/profile', optionalBody: true)
-  Future<chopper.Response<PublicUpdateOwnProfileResponse>>
-  _PublicUpdateOwnProfile({
+  Future<chopper.Response<PublicUpdateOwnProfileResponse>> _PublicUpdateOwnProfile({
     @Body() required PublicUpdateOwnProfileRequest? body,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the profile information for the currently authenticated user.
+      description: '''Updates the profile information for the currently authenticated user.
 
 This endpoint requires user authentication - only logged-in users can update their own profile,
 providing secure profile management for authenticated users
@@ -2576,8 +2534,7 @@ This endpoint performs the following operations:
     @PartFile() required MultipartFile avatarFile,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the authenticated user\'s avatar by uploading an image file.
+      description: '''Updates the authenticated user\'s avatar by uploading an image file.
 
 This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
 The system will automatically delete any previous avatar when a new one is uploaded.
@@ -2702,9 +2659,7 @@ class $JsonSerializableConverter extends chopper.JsonConverter {
 
     if (ResultType == DateTime) {
       return response.copyWith(
-        body:
-            DateTime.parse((response.body as String).replaceAll('"', ''))
-                as ResultType,
+        body: DateTime.parse((response.body as String).replaceAll('"', '')) as ResultType,
       );
     }
 
