@@ -15,6 +15,8 @@ import 'platform/connectivity/presentation/widgets/connectivity.banner.widget.da
     show ConnectivityBanner;
 import 'platform/country/application/usecases/initialize.country.usecase.dart'
     show InitializeCountryUseCase;
+import 'platform/session/application/usecases/initialize.device.usecase.dart'
+    show InitializeDeviceUseCase;
 import 'platform/preferences/presentation/bloc/preferences.bloc.dart' show PreferencesBloc;
 import 'platform/preferences/presentation/bloc/preferences.event.dart' show PreferencesLoadStarted;
 import 'platform/preferences/presentation/bloc/preferences.state.dart'
@@ -42,17 +44,14 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // Load environment variables
   await dotenv.load(fileName: '.env');
-
-  // Initialize Hive for local data persistence
   await initializeHive();
-
-  // Initialize dependency injection
   await ServiceLocator.initialize();
-
-  // Initialize translations - use device locale by default
   LocaleSettings.useDeviceLocale();
+
+  // Initialize device ID on app start
+  final initDeviceUseCase = sl<InitializeDeviceUseCase>();
+  await initDeviceUseCase.execute(null);
 
   // Initialize country data from IP on app start
   final initCountryUseCase = sl<InitializeCountryUseCase>();
