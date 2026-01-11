@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart' show Either;
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
-import '../repositories/session.repository.port.dart' show ISessionRepository;
+import '../repositories/session.state.repository.port.dart' show ISessionStateRepository;
 
 /// Use case for retrieving the current session state.
 ///
@@ -11,7 +11,7 @@ import '../repositories/session.repository.port.dart' show ISessionRepository;
 /// preferences, and authentication status. Used for initial app
 /// routing and access control decisions.
 class GetSessionStateUseCase implements IUseCase<void, SessionStateEntity> {
-  final ISessionRepository _repository;
+  final ISessionStateRepository _repository;
 
   const GetSessionStateUseCase(this._repository);
 
