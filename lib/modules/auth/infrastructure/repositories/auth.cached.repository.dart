@@ -2,6 +2,8 @@ import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
 import '../../../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
     show ISessionTokenSecureDataSource;
+import '../../../../shared/domain/entities/token-response/token.response.entity.dart'
+    show TokenResponseEntity;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
@@ -17,7 +19,6 @@ import '../../domain/entities/resetpassword-response/resetpassword.response.enti
     show ResetPasswordResponseEntity;
 import '../../domain/entities/signout-response/signout.response.entity.dart'
     show SignOutResponseEntity;
-import '../../domain/entities/token-response/token.response.entity.dart' show TokenResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
