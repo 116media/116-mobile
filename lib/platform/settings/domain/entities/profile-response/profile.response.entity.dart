@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../../../modules/auth/domain/entities/user/user.entity.dart';
+import '../../../../../shared/domain/entities/user/user.entity.dart';
 
 part 'profile.response.entity.freezed.dart';
 
