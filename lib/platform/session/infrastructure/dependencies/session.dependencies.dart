@@ -2,8 +2,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' show Flutter
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive_ce/hive.dart' show Box, Hive;
 
+import '../../../../modules/auth/application/data-sources/auth.local.datasource.port.dart'
+    show IAuthLocalDataSource;
 import '../../application/data-sources/device.secure.datasource.port.dart'
     show IDeviceSecureDataSource;
+import '../../application/data-sources/session.remote.datasource.port.dart'
+    show ISessionRemoteDataSource;
 import '../../application/data-sources/session.state.local.datasource.port.dart'
     show ISessionStateLocalDataSource;
 import '../../application/data-sources/session.token.secure.datasource.port.dart'
@@ -11,6 +15,8 @@ import '../../application/data-sources/session.token.secure.datasource.port.dart
 import '../../application/repositories/device.repository.port.dart' show IDeviceRepository;
 import '../../application/repositories/session.state.repository.port.dart'
     show ISessionStateRepository;
+import '../../application/repositories/session.token.repository.port.dart'
+    show ISessionTokenRepository;
 import '../../application/usecases/clear.session.usecase.dart' show ClearSessionUseCase;
 import '../../application/usecases/get.session.state.usecase.dart' show GetSessionStateUseCase;
 import '../../application/usecases/initialize.device.usecase.dart' show InitializeDeviceUseCase;
@@ -23,10 +29,13 @@ import '../../application/usecases/watch.session.state.usecase.dart' show WatchS
 import '../../presentation/bloc/session.bloc.dart' show SessionBloc;
 import '../constants/hive.constants.dart' show kSessionBox;
 import '../data-sources/device.secure.datasource.dart' show DeviceSecureDataSource;
+import '../data-sources/session.remote.datasource.dart' show SessionRemoteDataSource;
 import '../data-sources/session.state.local.datasource.dart' show SessionStateLocalDataSource;
 import '../data-sources/session.token.secure.datasource.dart' show SessionTokenSecureDataSource;
 import '../repositories/device.cached.repository.dart' show DeviceCachedRepository;
 import '../repositories/session.state.repository.dart' show SessionStateRepository;
+import '../repositories/session.token.cached.repository.dart' show SessionTokenCachedRepository;
+import '../repositories/session.token.remote.repository.dart' show SessionTokenRemoteRepository;
 
 /// Registers all session module dependencies.
 Future<void> registerSessionDependencies(GetIt sl) async {
@@ -34,11 +43,12 @@ Future<void> registerSessionDependencies(GetIt sl) async {
   final sessionBox = await Hive.openBox<dynamic>(kSessionBox);
   sl.registerSingleton<Box<dynamic>>(sessionBox, instanceName: kSessionBox);
 
-  // FlutterSecureStorage instance (shared for all secure data sources)
+  // FlutterSecureStorage
   const secureStorage = FlutterSecureStorage();
   sl.registerSingleton<FlutterSecureStorage>(secureStorage);
 
-  // Session State Data source
+  // Data sources
+  sl.registerSingleton<ISessionRemoteDataSource>(SessionRemoteDataSource());
   sl.registerSingleton<ISessionStateLocalDataSource>(
     SessionStateLocalDataSource(sl<Box<dynamic>>(instanceName: kSessionBox)),
     dispose: (datasource) {
@@ -47,22 +57,29 @@ Future<void> registerSessionDependencies(GetIt sl) async {
       }
     },
   );
-
-  // Session Token Secure Data source
   sl.registerSingleton<ISessionTokenSecureDataSource>(
     SessionTokenSecureDataSource(sl<FlutterSecureStorage>()),
   );
-
-  // Device Secure Data source
   sl.registerSingleton<IDeviceSecureDataSource>(DeviceSecureDataSource(sl<FlutterSecureStorage>()));
 
-  // Session State Repository
+  // Repository
   sl.registerSingleton<ISessionStateRepository>(
     SessionStateRepository(sl<ISessionStateLocalDataSource>()),
   );
-
-  // Device Repository
   sl.registerSingleton<IDeviceRepository>(DeviceCachedRepository(sl<IDeviceSecureDataSource>()));
+  sl.registerSingleton<SessionTokenRemoteRepository>(
+    SessionTokenRemoteRepository(
+      sl<ISessionRemoteDataSource>(),
+      sl<ISessionTokenSecureDataSource>(),
+    ),
+  );
+  sl.registerSingleton<ISessionTokenRepository>(
+    SessionTokenCachedRepository(
+      sl<SessionTokenRemoteRepository>(),
+      sl<IAuthLocalDataSource>(),
+      sl<ISessionTokenSecureDataSource>(),
+    ),
+  );
 
   // Use cases
   sl.registerFactory<GetSessionStateUseCase>(
