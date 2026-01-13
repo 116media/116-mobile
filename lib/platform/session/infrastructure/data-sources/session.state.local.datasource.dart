@@ -7,8 +7,8 @@ import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exce
     show ReadFailedCacheException;
 import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
     show WriteFailedCacheException;
-import '../../application/data-sources/session.local.datasource.port.dart'
-    show ISessionLocalDataSource;
+import '../../application/data-sources/session.state.local.datasource.port.dart'
+    show ISessionStateLocalDataSource;
 import '../constants/hive.constants.dart' show kSessionStateKey;
 import '../models/hive/session.state.model.dart' show SessionStateModel;
 
@@ -17,11 +17,11 @@ import '../models/hive/session.state.model.dart' show SessionStateModel;
 /// Concrete implementation that manages session state in Hive local storage.
 /// Handles persistence of onboarding, preferences, and auth status. Throws
 /// cache exceptions that will be converted to failures by the repository.
-class SessionLocalDataSource implements ISessionLocalDataSource {
+class SessionStateLocalDataSource implements ISessionStateLocalDataSource {
   final Box<dynamic> _sessionBox;
   final StreamController<SessionStateModel> _sessionController;
 
-  SessionLocalDataSource(this._sessionBox)
+  SessionStateLocalDataSource(this._sessionBox)
     : _sessionController = StreamController<SessionStateModel>.broadcast();
 
   @override

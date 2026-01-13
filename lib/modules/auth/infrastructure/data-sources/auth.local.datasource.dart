@@ -5,7 +5,7 @@ import '../../../../shared/infrastructure/exceptions/local/readfailed.cache.exce
 import '../../../../shared/infrastructure/exceptions/local/writefailed.cache.exception.dart'
     show WriteFailedCacheException;
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
-import '../constants/hive.constants.dart' show kTokenKey, kUserKey;
+import '../constants/hive.constants.dart' show kUserKey;
 import '../models/hive/user/user.model.dart' show UserModel;
 import '../../../../i18n/strings.g.dart' show t;
 
@@ -39,42 +39,6 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       throw ReadFailedCacheException(
         instance: 'AuthLocalDataSource.getUser',
         detail: t.auth.cacheError.getUser(error: e.toString()),
-      );
-    }
-  }
-
-  @override
-  Future<void> setToken(String token) async {
-    try {
-      await _authBox.put(kTokenKey, token);
-    } catch (e) {
-      throw WriteFailedCacheException(
-        instance: 'AuthLocalDataSource.setToken',
-        detail: t.auth.cacheError.setToken(error: e.toString()),
-      );
-    }
-  }
-
-  @override
-  Future<String?> getToken() async {
-    try {
-      return _authBox.get(kTokenKey) as String?;
-    } catch (e) {
-      throw ReadFailedCacheException(
-        instance: 'AuthLocalDataSource.getToken',
-        detail: t.auth.cacheError.getToken(error: e.toString()),
-      );
-    }
-  }
-
-  @override
-  Future<void> clearToken() async {
-    try {
-      await _authBox.delete(kTokenKey);
-    } catch (e) {
-      throw WriteFailedCacheException(
-        instance: 'AuthLocalDataSource.clearToken',
-        detail: t.auth.cacheError.clearToken(error: e.toString()),
       );
     }
   }

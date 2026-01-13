@@ -15,11 +15,8 @@ class UserModel {
   final String authProvider;
   final bool isVerified;
   final bool isActive;
-  final bool isLoggedIn;
-  final String? lastLoginAt;
   final FileModel? avatar;
   final String? countryName;
-  final String? countryFlagUrl;
   final String? countryIsoCode;
   final String? countryDialCode;
   final String? partialPhoneNumber;
@@ -36,11 +33,8 @@ class UserModel {
     required this.authProvider,
     required this.isVerified,
     required this.isActive,
-    required this.isLoggedIn,
-    this.lastLoginAt,
     this.avatar,
     this.countryName,
-    this.countryFlagUrl,
     this.countryIsoCode,
     this.countryDialCode,
     this.partialPhoneNumber,
@@ -60,11 +54,8 @@ class UserModel {
       authProvider: authProvider,
       isVerified: isVerified,
       isActive: isActive,
-      isLoggedIn: isLoggedIn,
-      lastLoginAt: lastLoginAt,
       avatar: avatar?.toEntity(),
       countryName: countryName,
-      countryFlagUrl: countryFlagUrl,
       countryIsoCode: countryIsoCode,
       countryDialCode: countryDialCode,
       partialPhoneNumber: partialPhoneNumber,
@@ -85,11 +76,8 @@ class UserModel {
       authProvider: entity.authProvider,
       isVerified: entity.isVerified,
       isActive: entity.isActive,
-      isLoggedIn: entity.isLoggedIn,
-      lastLoginAt: entity.lastLoginAt,
       avatar: entity.avatar != null ? FileModel.fromEntity(entity.avatar!) : null,
       countryName: entity.countryName,
-      countryFlagUrl: entity.countryFlagUrl,
       countryIsoCode: entity.countryIsoCode,
       countryDialCode: entity.countryDialCode,
       partialPhoneNumber: entity.partialPhoneNumber,

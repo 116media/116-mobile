@@ -34,30 +34,6 @@ abstract class IAuthLocalDataSource {
   /// - [CacheException] if watching local storage fails
   Stream<UserModel?> watchUser();
 
-  /// Persists the authentication token to local storage.
-  ///
-  /// Stores the JWT token for subsequent authenticated API requests.
-  ///
-  /// **Throws:**
-  /// - [CacheException] if writing to local storage fails
-  Future<void> setToken(String token);
-
-  /// Retrieves the stored authentication token from local storage.
-  ///
-  /// **Returns:** The token string if available, null otherwise.
-  ///
-  /// **Throws:**
-  /// - [CacheException] if reading from local storage fails
-  Future<String?> getToken();
-
-  /// Removes the authentication token from local storage.
-  ///
-  /// Used during signout or token invalidation to clear the user's session.
-  ///
-  /// **Throws:**
-  /// - [CacheException] if deleting from local storage fails
-  Future<void> clearToken();
-
   /// Removes the user information from local storage.
   ///
   /// Used during sign out to clear the cached user profile data.

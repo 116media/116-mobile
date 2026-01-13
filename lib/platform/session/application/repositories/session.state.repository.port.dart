@@ -8,7 +8,7 @@ import '../../domain/enums/auth.status.enum.dart' show AuthStatus;
 ///
 /// Defines the contract for managing user session state including
 /// onboarding, preferences, and authentication status.
-abstract class ISessionRepository {
+abstract class ISessionStateRepository {
   /// Gets the current session state.
   ///
   /// Returns [Right] with [SessionStateEntity] on success,

@@ -21,6 +21,20 @@ AdminChangePasswordResponse _$AdminChangePasswordResponseFromJson(Map<String, dy
 Map<String, dynamic> _$AdminChangePasswordResponseToJson(AdminChangePasswordResponse instance) =>
     <String, dynamic>{'isSuccess': instance.isSuccess};
 
+AdminCleanupExpiredSessionsResponse _$AdminCleanupExpiredSessionsResponseFromJson(
+  Map<String, dynamic> json,
+) => AdminCleanupExpiredSessionsResponse(deletedCount: (json['deletedCount'] as num).toInt());
+
+Map<String, dynamic> _$AdminCleanupExpiredSessionsResponseToJson(
+  AdminCleanupExpiredSessionsResponse instance,
+) => <String, dynamic>{'deletedCount': instance.deletedCount};
+
+AdminForceLogoutUserResponse _$AdminForceLogoutUserResponseFromJson(Map<String, dynamic> json) =>
+    AdminForceLogoutUserResponse(isSuccess: json['isSuccess'] as bool);
+
+Map<String, dynamic> _$AdminForceLogoutUserResponseToJson(AdminForceLogoutUserResponse instance) =>
+    <String, dynamic>{'isSuccess': instance.isSuccess};
+
 AdminForgotPasswordRequest _$AdminForgotPasswordRequestFromJson(Map<String, dynamic> json) =>
     AdminForgotPasswordRequest(email: json['email'] as String);
 
@@ -36,6 +50,14 @@ AdminForgotPasswordResponse _$AdminForgotPasswordResponseFromJson(Map<String, dy
 Map<String, dynamic> _$AdminForgotPasswordResponseToJson(AdminForgotPasswordResponse instance) =>
     <String, dynamic>{'isSuccess': instance.isSuccess, 'email': instance.email};
 
+AdminGetAllSessionsResponse _$AdminGetAllSessionsResponseFromJson(Map<String, dynamic> json) =>
+    AdminGetAllSessionsResponse(
+      sessions: SessionDtoPaginatedResult.fromJson(json['sessions'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$AdminGetAllSessionsResponseToJson(AdminGetAllSessionsResponse instance) =>
+    <String, dynamic>{'sessions': instance.sessions.toJson()};
+
 AdminGetOwnProfileResponse _$AdminGetOwnProfileResponseFromJson(Map<String, dynamic> json) =>
     AdminGetOwnProfileResponse(
       user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
@@ -43,6 +65,28 @@ AdminGetOwnProfileResponse _$AdminGetOwnProfileResponseFromJson(Map<String, dyna
 
 Map<String, dynamic> _$AdminGetOwnProfileResponseToJson(AdminGetOwnProfileResponse instance) =>
     <String, dynamic>{'user': instance.user.toJson()};
+
+AdminGetSessionMetricsResponse _$AdminGetSessionMetricsResponseFromJson(
+  Map<String, dynamic> json,
+) => AdminGetSessionMetricsResponse(
+  browsers: BrowserMetrics.fromJson(json['browsers'] as Map<String, dynamic>),
+  devices: DeviceMetrics.fromJson(json['devices'] as Map<String, dynamic>),
+  platforms: PlatformMetrics.fromJson(json['platforms'] as Map<String, dynamic>),
+  clients: ClientMetrics.fromJson(json['clients'] as Map<String, dynamic>),
+  totalActiveSessions: (json['totalActiveSessions'] as num).toInt(),
+  totalActiveUsers: (json['totalActiveUsers'] as num).toInt(),
+);
+
+Map<String, dynamic> _$AdminGetSessionMetricsResponseToJson(
+  AdminGetSessionMetricsResponse instance,
+) => <String, dynamic>{
+  'browsers': instance.browsers.toJson(),
+  'devices': instance.devices.toJson(),
+  'platforms': instance.platforms.toJson(),
+  'clients': instance.clients.toJson(),
+  'totalActiveSessions': instance.totalActiveSessions,
+  'totalActiveUsers': instance.totalActiveUsers,
+};
 
 AdminLoginRequest _$AdminLoginRequestFromJson(Map<String, dynamic> json) =>
     AdminLoginRequest(email: json['email'] as String, password: json['password'] as String);
@@ -54,12 +98,20 @@ Map<String, dynamic> _$AdminLoginRequestToJson(AdminLoginRequest instance) => <S
 
 AdminLoginResponse _$AdminLoginResponseFromJson(Map<String, dynamic> json) => AdminLoginResponse(
   user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
-  token: json['token'] as String,
+  accessToken: json['accessToken'] as String,
+  accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+  refreshToken: json['refreshToken'] as String,
+  refreshTokenExpiresAt: DateTime.parse(json['refreshTokenExpiresAt'] as String),
+  tokenType: json['tokenType'] as String,
 );
 
 Map<String, dynamic> _$AdminLoginResponseToJson(AdminLoginResponse instance) => <String, dynamic>{
   'user': instance.user.toJson(),
-  'token': instance.token,
+  'accessToken': instance.accessToken,
+  'accessTokenExpiresAt': instance.accessTokenExpiresAt.toIso8601String(),
+  'refreshToken': instance.refreshToken,
+  'refreshTokenExpiresAt': instance.refreshTokenExpiresAt.toIso8601String(),
+  'tokenType': instance.tokenType,
 };
 
 AdminResendOtpRequest _$AdminResendOtpRequestFromJson(Map<String, dynamic> json) =>
@@ -94,6 +146,21 @@ AdminResetPasswordResponse _$AdminResetPasswordResponseFromJson(Map<String, dyna
 Map<String, dynamic> _$AdminResetPasswordResponseToJson(AdminResetPasswordResponse instance) =>
     <String, dynamic>{'isSuccess': instance.isSuccess};
 
+AdminSignOutFromAllDevicesResponse _$AdminSignOutFromAllDevicesResponseFromJson(
+  Map<String, dynamic> json,
+) => AdminSignOutFromAllDevicesResponse(isSuccess: json['isSuccess'] as bool);
+
+Map<String, dynamic> _$AdminSignOutFromAllDevicesResponseToJson(
+  AdminSignOutFromAllDevicesResponse instance,
+) => <String, dynamic>{'isSuccess': instance.isSuccess};
+
+AdminSignOutRequest _$AdminSignOutRequestFromJson(Map<String, dynamic> json) =>
+    AdminSignOutRequest(refreshToken: json['refreshToken'] as String);
+
+Map<String, dynamic> _$AdminSignOutRequestToJson(AdminSignOutRequest instance) => <String, dynamic>{
+  'refreshToken': instance.refreshToken,
+};
+
 AdminSignOutResponse _$AdminSignOutResponseFromJson(Map<String, dynamic> json) =>
     AdminSignOutResponse(isSuccess: json['isSuccess'] as bool);
 
@@ -110,7 +177,6 @@ AdminUpdateOwnProfileRequest _$AdminUpdateOwnProfileRequestFromJson(Map<String, 
     AdminUpdateOwnProfileRequest(
       userName: json['userName'] as String?,
       countryName: json['countryName'] as String?,
-      countryFlagUrl: json['countryFlagUrl'] as String?,
       partialPhoneNumber: json['partialPhoneNumber'] as String?,
       countryIsoCode: json['countryIsoCode'] as String?,
       countryDialCode: json['countryDialCode'] as String?,
@@ -120,7 +186,6 @@ Map<String, dynamic> _$AdminUpdateOwnProfileRequestToJson(AdminUpdateOwnProfileR
     <String, dynamic>{
       'userName': instance.userName,
       'countryName': instance.countryName,
-      'countryFlagUrl': instance.countryFlagUrl,
       'partialPhoneNumber': instance.partialPhoneNumber,
       'countryIsoCode': instance.countryIsoCode,
       'countryDialCode': instance.countryDialCode,
@@ -151,6 +216,68 @@ AdminVerifyOtpResponse _$AdminVerifyOtpResponseFromJson(Map<String, dynamic> jso
 Map<String, dynamic> _$AdminVerifyOtpResponseToJson(AdminVerifyOtpResponse instance) =>
     <String, dynamic>{'isSuccess': instance.isSuccess};
 
+BrowserMetrics _$BrowserMetricsFromJson(Map<String, dynamic> json) => BrowserMetrics(
+  chrome: (json['chrome'] as num).toInt(),
+  firefox: (json['firefox'] as num).toInt(),
+  safari: (json['safari'] as num).toInt(),
+  edge: (json['edge'] as num).toInt(),
+  opera: (json['opera'] as num).toInt(),
+  internetExplorer: (json['internetExplorer'] as num).toInt(),
+  googleSearchApp: (json['googleSearchApp'] as num).toInt(),
+  samsung: (json['samsung'] as num).toInt(),
+  unknown: (json['unknown'] as num).toInt(),
+);
+
+Map<String, dynamic> _$BrowserMetricsToJson(BrowserMetrics instance) => <String, dynamic>{
+  'chrome': instance.chrome,
+  'firefox': instance.firefox,
+  'safari': instance.safari,
+  'edge': instance.edge,
+  'opera': instance.opera,
+  'internetExplorer': instance.internetExplorer,
+  'googleSearchApp': instance.googleSearchApp,
+  'samsung': instance.samsung,
+  'unknown': instance.unknown,
+};
+
+ClientMetrics _$ClientMetricsFromJson(Map<String, dynamic> json) => ClientMetrics(
+  mobileApp: (json['mobileApp'] as num).toInt(),
+  webApp: (json['webApp'] as num).toInt(),
+  dashboard: (json['dashboard'] as num).toInt(),
+  unknown: (json['unknown'] as num).toInt(),
+);
+
+Map<String, dynamic> _$ClientMetricsToJson(ClientMetrics instance) => <String, dynamic>{
+  'mobileApp': instance.mobileApp,
+  'webApp': instance.webApp,
+  'dashboard': instance.dashboard,
+  'unknown': instance.unknown,
+};
+
+DeviceMetrics _$DeviceMetricsFromJson(Map<String, dynamic> json) => DeviceMetrics(
+  desktop: (json['desktop'] as num).toInt(),
+  mobile: (json['mobile'] as num).toInt(),
+  tablet: (json['tablet'] as num).toInt(),
+  watch: (json['watch'] as num).toInt(),
+  tv: (json['tv'] as num).toInt(),
+  console: (json['console'] as num).toInt(),
+  car: (json['car'] as num).toInt(),
+  ioT: (json['ioT'] as num).toInt(),
+  unknown: (json['unknown'] as num).toInt(),
+);
+
+Map<String, dynamic> _$DeviceMetricsToJson(DeviceMetrics instance) => <String, dynamic>{
+  'desktop': instance.desktop,
+  'mobile': instance.mobile,
+  'tablet': instance.tablet,
+  'watch': instance.watch,
+  'tv': instance.tv,
+  'console': instance.console,
+  'car': instance.car,
+  'ioT': instance.ioT,
+  'unknown': instance.unknown,
+};
+
 FileDto _$FileDtoFromJson(Map<String, dynamic> json) => FileDto(
   id: json['id'] as String,
   fileName: json['fileName'] as String,
@@ -171,6 +298,26 @@ Map<String, dynamic> _$FileDtoToJson(FileDto instance) => <String, dynamic>{
   'isDeleted': instance.isDeleted,
 };
 
+HttpValidationProblemDetails _$HttpValidationProblemDetailsFromJson(Map<String, dynamic> json) =>
+    HttpValidationProblemDetails(
+      type: json['type'] as String?,
+      title: json['title'] as String?,
+      status: (json['status'] as num?)?.toInt(),
+      detail: json['detail'] as String?,
+      instance: json['instance'] as String?,
+      errors: json['errors'] as Map<String, dynamic>,
+    );
+
+Map<String, dynamic> _$HttpValidationProblemDetailsToJson(HttpValidationProblemDetails instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'title': instance.title,
+      'status': instance.status,
+      'detail': instance.detail,
+      'instance': instance.instance,
+      'errors': instance.errors,
+    };
+
 PermissionDto _$PermissionDtoFromJson(Map<String, dynamic> json) => PermissionDto(
   id: json['id'] as String,
   resource: json['resource'] as String,
@@ -183,6 +330,28 @@ Map<String, dynamic> _$PermissionDtoToJson(PermissionDto instance) => <String, d
   'resource': instance.resource,
   'action': instance.action,
   'description': instance.description,
+};
+
+PlatformMetrics _$PlatformMetricsFromJson(Map<String, dynamic> json) => PlatformMetrics(
+  windows: (json['windows'] as num).toInt(),
+  mac: (json['mac'] as num).toInt(),
+  ios: (json['ios'] as num).toInt(),
+  ipadOs: (json['ipadOs'] as num).toInt(),
+  linux: (json['linux'] as num).toInt(),
+  android: (json['android'] as num).toInt(),
+  chromeOs: (json['chromeOs'] as num).toInt(),
+  unknown: (json['unknown'] as num).toInt(),
+);
+
+Map<String, dynamic> _$PlatformMetricsToJson(PlatformMetrics instance) => <String, dynamic>{
+  'windows': instance.windows,
+  'mac': instance.mac,
+  'ios': instance.ios,
+  'ipadOs': instance.ipadOs,
+  'linux': instance.linux,
+  'android': instance.android,
+  'chromeOs': instance.chromeOs,
+  'unknown': instance.unknown,
 };
 
 ProblemDetails _$ProblemDetailsFromJson(Map<String, dynamic> json) => ProblemDetails(
@@ -239,6 +408,28 @@ PublicGetOwnProfileResponse _$PublicGetOwnProfileResponseFromJson(Map<String, dy
 Map<String, dynamic> _$PublicGetOwnProfileResponseToJson(PublicGetOwnProfileResponse instance) =>
     <String, dynamic>{'user': instance.user.toJson()};
 
+PublicGetOwnSessionByIdResponse _$PublicGetOwnSessionByIdResponseFromJson(
+  Map<String, dynamic> json,
+) => PublicGetOwnSessionByIdResponse(
+  session: SessionDto.fromJson(json['session'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$PublicGetOwnSessionByIdResponseToJson(
+  PublicGetOwnSessionByIdResponse instance,
+) => <String, dynamic>{'session': instance.session.toJson()};
+
+PublicGetOwnSessionsResponse _$PublicGetOwnSessionsResponseFromJson(Map<String, dynamic> json) =>
+    PublicGetOwnSessionsResponse(
+      sessions:
+          (json['sessions'] as List<dynamic>?)
+              ?.map((e) => SessionDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$PublicGetOwnSessionsResponseToJson(PublicGetOwnSessionsResponse instance) =>
+    <String, dynamic>{'sessions': instance.sessions.map((e) => e.toJson()).toList()};
+
 PublicLoginRequest _$PublicLoginRequestFromJson(Map<String, dynamic> json) => PublicLoginRequest(
   credentials: json['credentials'] as String,
   password: json['password'] as String,
@@ -251,13 +442,47 @@ Map<String, dynamic> _$PublicLoginRequestToJson(PublicLoginRequest instance) => 
 
 PublicLoginResponse _$PublicLoginResponseFromJson(Map<String, dynamic> json) => PublicLoginResponse(
   user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
-  token: json['token'] as String,
+  accessToken: json['accessToken'] as String,
+  accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+  refreshToken: json['refreshToken'] as String,
+  refreshTokenExpiresAt: DateTime.parse(json['refreshTokenExpiresAt'] as String),
+  tokenType: json['tokenType'] as String,
 );
 
 Map<String, dynamic> _$PublicLoginResponseToJson(PublicLoginResponse instance) => <String, dynamic>{
   'user': instance.user.toJson(),
-  'token': instance.token,
+  'accessToken': instance.accessToken,
+  'accessTokenExpiresAt': instance.accessTokenExpiresAt.toIso8601String(),
+  'refreshToken': instance.refreshToken,
+  'refreshTokenExpiresAt': instance.refreshTokenExpiresAt.toIso8601String(),
+  'tokenType': instance.tokenType,
 };
+
+PublicRefreshTokenRequest _$PublicRefreshTokenRequestFromJson(Map<String, dynamic> json) =>
+    PublicRefreshTokenRequest(refreshToken: json['refreshToken'] as String);
+
+Map<String, dynamic> _$PublicRefreshTokenRequestToJson(PublicRefreshTokenRequest instance) =>
+    <String, dynamic>{'refreshToken': instance.refreshToken};
+
+PublicRefreshTokenResponse _$PublicRefreshTokenResponseFromJson(Map<String, dynamic> json) =>
+    PublicRefreshTokenResponse(
+      user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
+      accessToken: json['accessToken'] as String,
+      accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+      refreshToken: json['refreshToken'] as String,
+      refreshTokenExpiresAt: DateTime.parse(json['refreshTokenExpiresAt'] as String),
+      tokenType: json['tokenType'] as String,
+    );
+
+Map<String, dynamic> _$PublicRefreshTokenResponseToJson(PublicRefreshTokenResponse instance) =>
+    <String, dynamic>{
+      'user': instance.user.toJson(),
+      'accessToken': instance.accessToken,
+      'accessTokenExpiresAt': instance.accessTokenExpiresAt.toIso8601String(),
+      'refreshToken': instance.refreshToken,
+      'refreshTokenExpiresAt': instance.refreshTokenExpiresAt.toIso8601String(),
+      'tokenType': instance.tokenType,
+    };
 
 PublicResendOtpRequest _$PublicResendOtpRequestFromJson(Map<String, dynamic> json) =>
     PublicResendOtpRequest(email: json['email'] as String, purpose: json['purpose'] as String);
@@ -291,6 +516,38 @@ PublicResetPasswordResponse _$PublicResetPasswordResponseFromJson(Map<String, dy
 Map<String, dynamic> _$PublicResetPasswordResponseToJson(PublicResetPasswordResponse instance) =>
     <String, dynamic>{'isSuccess': instance.isSuccess};
 
+PublicRevokeSessionResponse _$PublicRevokeSessionResponseFromJson(Map<String, dynamic> json) =>
+    PublicRevokeSessionResponse(isSuccess: json['isSuccess'] as bool);
+
+Map<String, dynamic> _$PublicRevokeSessionResponseToJson(PublicRevokeSessionResponse instance) =>
+    <String, dynamic>{'isSuccess': instance.isSuccess};
+
+PublicSetPasswordRequest _$PublicSetPasswordRequestFromJson(Map<String, dynamic> json) =>
+    PublicSetPasswordRequest(password: json['password'] as String);
+
+Map<String, dynamic> _$PublicSetPasswordRequestToJson(PublicSetPasswordRequest instance) =>
+    <String, dynamic>{'password': instance.password};
+
+PublicSetPasswordResponse _$PublicSetPasswordResponseFromJson(Map<String, dynamic> json) =>
+    PublicSetPasswordResponse(isSuccess: json['isSuccess'] as bool);
+
+Map<String, dynamic> _$PublicSetPasswordResponseToJson(PublicSetPasswordResponse instance) =>
+    <String, dynamic>{'isSuccess': instance.isSuccess};
+
+PublicSignOutFromAllDevicesResponse _$PublicSignOutFromAllDevicesResponseFromJson(
+  Map<String, dynamic> json,
+) => PublicSignOutFromAllDevicesResponse(isSuccess: json['isSuccess'] as bool);
+
+Map<String, dynamic> _$PublicSignOutFromAllDevicesResponseToJson(
+  PublicSignOutFromAllDevicesResponse instance,
+) => <String, dynamic>{'isSuccess': instance.isSuccess};
+
+PublicSignOutRequest _$PublicSignOutRequestFromJson(Map<String, dynamic> json) =>
+    PublicSignOutRequest(refreshToken: json['refreshToken'] as String);
+
+Map<String, dynamic> _$PublicSignOutRequestToJson(PublicSignOutRequest instance) =>
+    <String, dynamic>{'refreshToken': instance.refreshToken};
+
 PublicSignOutResponse _$PublicSignOutResponseFromJson(Map<String, dynamic> json) =>
     PublicSignOutResponse(isSuccess: json['isSuccess'] as bool);
 
@@ -312,14 +569,22 @@ Map<String, dynamic> _$PublicSignUpRequestToJson(PublicSignUpRequest instance) =
 PublicSignUpResponse _$PublicSignUpResponseFromJson(Map<String, dynamic> json) =>
     PublicSignUpResponse(
       user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
-      token: json['token'] as String,
+      accessToken: json['accessToken'] as String,
+      accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+      refreshToken: json['refreshToken'] as String,
+      refreshTokenExpiresAt: DateTime.parse(json['refreshTokenExpiresAt'] as String),
+      tokenType: json['tokenType'] as String,
       verificationRequired: json['verificationRequired'] as bool,
     );
 
 Map<String, dynamic> _$PublicSignUpResponseToJson(PublicSignUpResponse instance) =>
     <String, dynamic>{
       'user': instance.user.toJson(),
-      'token': instance.token,
+      'accessToken': instance.accessToken,
+      'accessTokenExpiresAt': instance.accessTokenExpiresAt.toIso8601String(),
+      'refreshToken': instance.refreshToken,
+      'refreshTokenExpiresAt': instance.refreshTokenExpiresAt.toIso8601String(),
+      'tokenType': instance.tokenType,
       'verificationRequired': instance.verificationRequired,
     };
 
@@ -342,11 +607,22 @@ Map<String, dynamic> _$PublicSocialLoginRequestToJson(PublicSocialLoginRequest i
 PublicSocialLoginResponse _$PublicSocialLoginResponseFromJson(Map<String, dynamic> json) =>
     PublicSocialLoginResponse(
       user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
-      token: json['token'] as String,
+      accessToken: json['accessToken'] as String,
+      accessTokenExpiresAt: DateTime.parse(json['accessTokenExpiresAt'] as String),
+      refreshToken: json['refreshToken'] as String,
+      refreshTokenExpiresAt: DateTime.parse(json['refreshTokenExpiresAt'] as String),
+      tokenType: json['tokenType'] as String,
     );
 
 Map<String, dynamic> _$PublicSocialLoginResponseToJson(PublicSocialLoginResponse instance) =>
-    <String, dynamic>{'user': instance.user.toJson(), 'token': instance.token};
+    <String, dynamic>{
+      'user': instance.user.toJson(),
+      'accessToken': instance.accessToken,
+      'accessTokenExpiresAt': instance.accessTokenExpiresAt.toIso8601String(),
+      'refreshToken': instance.refreshToken,
+      'refreshTokenExpiresAt': instance.refreshTokenExpiresAt.toIso8601String(),
+      'tokenType': instance.tokenType,
+    };
 
 PublicUpdateAvatarResponse _$PublicUpdateAvatarResponseFromJson(Map<String, dynamic> json) =>
     PublicUpdateAvatarResponse(
@@ -361,7 +637,6 @@ PublicUpdateOwnProfileRequest _$PublicUpdateOwnProfileRequestFromJson(Map<String
       email: json['email'] as String?,
       userName: json['userName'] as String?,
       countryName: json['countryName'] as String?,
-      countryFlagUrl: json['countryFlagUrl'] as String?,
       partialPhoneNumber: json['partialPhoneNumber'] as String?,
       countryIsoCode: json['countryIsoCode'] as String?,
       countryDialCode: json['countryDialCode'] as String?,
@@ -373,7 +648,6 @@ Map<String, dynamic> _$PublicUpdateOwnProfileRequestToJson(
   'email': instance.email,
   'userName': instance.userName,
   'countryName': instance.countryName,
-  'countryFlagUrl': instance.countryFlagUrl,
   'partialPhoneNumber': instance.partialPhoneNumber,
   'countryIsoCode': instance.countryIsoCode,
   'countryDialCode': instance.countryDialCode,
@@ -417,6 +691,52 @@ Map<String, dynamic> _$RoleDtoToJson(RoleDto instance) => <String, dynamic>{
   'description': instance.description,
 };
 
+SessionDto _$SessionDtoFromJson(Map<String, dynamic> json) => SessionDto(
+  id: json['id'] as String,
+  ipAddress: json['ipAddress'] as String?,
+  userAgent: json['userAgent'] as String?,
+  browser: json['browser'] as String,
+  device: json['device'] as String,
+  platform: json['platform'] as String,
+  $client: json['client'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  expiresAt: DateTime.parse(json['expiresAt'] as String),
+  isActive: json['isActive'] as bool,
+);
+
+Map<String, dynamic> _$SessionDtoToJson(SessionDto instance) => <String, dynamic>{
+  'id': instance.id,
+  'ipAddress': instance.ipAddress,
+  'userAgent': instance.userAgent,
+  'browser': instance.browser,
+  'device': instance.device,
+  'platform': instance.platform,
+  'client': instance.$client,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'expiresAt': instance.expiresAt.toIso8601String(),
+  'isActive': instance.isActive,
+};
+
+SessionDtoPaginatedResult _$SessionDtoPaginatedResultFromJson(Map<String, dynamic> json) =>
+    SessionDtoPaginatedResult(
+      pageIndex: (json['pageIndex'] as num).toInt(),
+      pageSize: (json['pageSize'] as num).toInt(),
+      count: (json['count'] as num).toInt(),
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((e) => SessionDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$SessionDtoPaginatedResultToJson(SessionDtoPaginatedResult instance) =>
+    <String, dynamic>{
+      'pageIndex': instance.pageIndex,
+      'pageSize': instance.pageSize,
+      'count': instance.count,
+      'items': instance.items.map((e) => e.toJson()).toList(),
+    };
+
 UserResponseDto _$UserResponseDtoFromJson(Map<String, dynamic> json) => UserResponseDto(
   id: json['id'] as String,
   email: json['email'] as String?,
@@ -434,11 +754,8 @@ UserResponseDto _$UserResponseDtoFromJson(Map<String, dynamic> json) => UserResp
   authProvider: json['authProvider'] as String,
   isVerified: json['isVerified'] as bool,
   isActive: json['isActive'] as bool,
-  isLoggedIn: json['isLoggedIn'] as bool,
-  lastLoginAt: json['lastLoginAt'] == null ? null : DateTime.parse(json['lastLoginAt'] as String),
   avatar: json['avatar'] == null ? null : FileDto.fromJson(json['avatar'] as Map<String, dynamic>),
   countryName: json['countryName'] as String?,
-  countryFlagUrl: json['countryFlagUrl'] as String?,
   countryIsoCode: json['countryIsoCode'] as String?,
   countryDialCode: json['countryDialCode'] as String?,
   partialPhoneNumber: json['partialPhoneNumber'] as String?,
@@ -456,11 +773,8 @@ Map<String, dynamic> _$UserResponseDtoToJson(UserResponseDto instance) => <Strin
   'authProvider': instance.authProvider,
   'isVerified': instance.isVerified,
   'isActive': instance.isActive,
-  'isLoggedIn': instance.isLoggedIn,
-  'lastLoginAt': instance.lastLoginAt?.toIso8601String(),
   'avatar': instance.avatar?.toJson(),
   'countryName': instance.countryName,
-  'countryFlagUrl': instance.countryFlagUrl,
   'countryIsoCode': instance.countryIsoCode,
   'countryDialCode': instance.countryDialCode,
   'partialPhoneNumber': instance.partialPhoneNumber,
@@ -469,18 +783,18 @@ Map<String, dynamic> _$UserResponseDtoToJson(UserResponseDto instance) => <Strin
   'updatedAt': instance.updatedAt?.toIso8601String(),
 };
 
-ApiV1AdminProfileAvatarPatch$RequestBody _$ApiV1AdminProfileAvatarPatch$RequestBodyFromJson(
+ApiV1AdminUserAvatarPatch$RequestBody _$ApiV1AdminUserAvatarPatch$RequestBodyFromJson(
   Map<String, dynamic> json,
-) => ApiV1AdminProfileAvatarPatch$RequestBody(avatarFile: json['avatarFile'] as String);
+) => ApiV1AdminUserAvatarPatch$RequestBody(avatarFile: json['avatarFile'] as String);
 
-Map<String, dynamic> _$ApiV1AdminProfileAvatarPatch$RequestBodyToJson(
-  ApiV1AdminProfileAvatarPatch$RequestBody instance,
+Map<String, dynamic> _$ApiV1AdminUserAvatarPatch$RequestBodyToJson(
+  ApiV1AdminUserAvatarPatch$RequestBody instance,
 ) => <String, dynamic>{'avatarFile': instance.avatarFile};
 
-ApiV1PublicProfileAvatarPatch$RequestBody _$ApiV1PublicProfileAvatarPatch$RequestBodyFromJson(
+ApiV1PublicUserAvatarPatch$RequestBody _$ApiV1PublicUserAvatarPatch$RequestBodyFromJson(
   Map<String, dynamic> json,
-) => ApiV1PublicProfileAvatarPatch$RequestBody(avatarFile: json['avatarFile'] as String);
+) => ApiV1PublicUserAvatarPatch$RequestBody(avatarFile: json['avatarFile'] as String);
 
-Map<String, dynamic> _$ApiV1PublicProfileAvatarPatch$RequestBodyToJson(
-  ApiV1PublicProfileAvatarPatch$RequestBody instance,
+Map<String, dynamic> _$ApiV1PublicUserAvatarPatch$RequestBodyToJson(
+  ApiV1PublicUserAvatarPatch$RequestBody instance,
 ) => <String, dynamic>{'avatarFile': instance.avatarFile};

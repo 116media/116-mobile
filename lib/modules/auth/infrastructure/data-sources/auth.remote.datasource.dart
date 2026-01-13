@@ -17,6 +17,7 @@ import '../../../../api/client/api_116.swagger.dart'
         PublicSocialLoginResponse,
         PublicVerifyOtpRequest,
         PublicVerifyOtpResponse,
+        PublicSignOutRequest,
         PublicSignOutResponse;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
@@ -185,7 +186,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       );
 
       if (response.isSuccessful) {
-        return PublicSocialLoginResponse(user: response.body!.user, token: response.body!.token);
+        return response.body!;
       } else {
         throw ProblemMapper.toException(response as Response);
       }
@@ -209,7 +210,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       );
 
       if (response.isSuccessful) {
-        return PublicSocialLoginResponse(user: response.body!.user, token: response.body!.token);
+        return response.body!;
       } else {
         throw ProblemMapper.toException(response as Response);
       }
@@ -225,13 +226,18 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
   /// Makes a request to the backend to invalidate the user's session.
   /// On successful response, returns [PublicSignOutResponse] with success status.
   ///
+  /// **Parameters:**
+  /// - `refreshToken` - The refresh token to invalidate on the server
+  ///
   /// **Throws:**
   /// - [ServerException] if the server returns an error response (e.g., invalid token)
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
   @override
-  Future<PublicSignOutResponse> signOut() async {
+  Future<PublicSignOutResponse> signOut(String refreshToken) async {
     try {
-      final response = await _apiClient.PublicSignOut();
+      final response = await _apiClient.PublicSignOut(
+        body: PublicSignOutRequest(refreshToken: refreshToken),
+      );
 
       if (response.isSuccessful) {
         return response.body!;

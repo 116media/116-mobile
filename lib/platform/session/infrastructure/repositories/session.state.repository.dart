@@ -4,9 +4,10 @@ import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
-import '../../application/data-sources/session.local.datasource.port.dart'
-    show ISessionLocalDataSource;
-import '../../application/repositories/session.repository.port.dart' show ISessionRepository;
+import '../../application/data-sources/session.state.local.datasource.port.dart'
+    show ISessionStateLocalDataSource;
+import '../../application/repositories/session.state.repository.port.dart'
+    show ISessionStateRepository;
 import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../../domain/enums/auth.status.enum.dart' show AuthStatus;
 import '../models/hive/session.state.model.dart' show SessionStateModel;
@@ -15,10 +16,10 @@ import '../models/hive/session.state.model.dart' show SessionStateModel;
 ///
 /// Delegates to the local datasource, handles entity/model conversion,
 /// and converts cache exceptions to failures.
-class SessionRepository implements ISessionRepository {
-  final ISessionLocalDataSource _localDataSource;
+class SessionStateRepository implements ISessionStateRepository {
+  final ISessionStateLocalDataSource _localDataSource;
 
-  const SessionRepository(this._localDataSource);
+  const SessionStateRepository(this._localDataSource);
 
   @override
   Future<Either<Failure, SessionStateEntity>> getSessionState() async {

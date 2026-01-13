@@ -120,10 +120,13 @@ abstract class IAuthRemoteDataSource {
   ///
   /// Calls the PublicSignOut API endpoint to invalidate the user's session.
   ///
+  /// **Parameters:**
+  /// - `refreshToken` - The refresh token to invalidate on the server
+  ///
   /// **Returns:** [PublicSignOutResponse] with success status.
   ///
   /// **Throws:**
   /// - [ServerException] if the server returns an error response
   /// - [UnknownException] if network is unreachable or other unexpected errors occur
-  Future<PublicSignOutResponse> signOut();
+  Future<PublicSignOutResponse> signOut(String refreshToken);
 }

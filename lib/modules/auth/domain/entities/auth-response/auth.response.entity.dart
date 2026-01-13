@@ -1,16 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../token-response/token.response.entity.dart';
 import '../user/user.entity.dart';
 
 part 'auth.response.entity.freezed.dart';
 
-/// Authentication response entity returned after successful signin.
+/// Authentication response entity returned after successful authentication.
 ///
 /// Domain entity representing the complete authentication state.
-/// Contains both the JWT token for API authentication and the
+/// Contains the token response with JWT access/refresh tokens and the
 /// authenticated user's data.
 @freezed
 abstract class AuthResponseEntity with _$AuthResponseEntity {
-  const factory AuthResponseEntity({required String token, required UserEntity user}) =
-      _AuthResponseEntity;
+  const factory AuthResponseEntity({
+    required TokenResponseEntity tokenResponse,
+    required UserEntity user,
+  }) = _AuthResponseEntity;
 }

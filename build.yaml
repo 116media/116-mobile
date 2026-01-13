@@ -42,5 +42,6 @@ targets:
           separate_models: true                   # Generate models in separate files
           use_path_for_request_names: false       # Use operation IDs for method names
           multipart_file_type: "MultipartFile"    # Use MultipartFile for file uploads
-
+      slang_build_runner:
+        enabled: false # Disabled to run via separate command
             

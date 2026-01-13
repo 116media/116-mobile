@@ -45,7 +45,7 @@ types:
         index: 3
   UserModel:
     typeId: 3
-    nextIndex: 19
+    nextIndex: 16
     fields:
       id:
         index: 0
@@ -63,35 +63,29 @@ types:
         index: 6
       isActive:
         index: 7
-      isLoggedIn:
-        index: 8
-      lastLoginAt:
-        index: 9
       avatar:
-        index: 10
+        index: 8
       countryName:
-        index: 11
-      countryFlagUrl:
-        index: 12
+        index: 9
       countryIsoCode:
-        index: 13
+        index: 10
       countryDialCode:
-        index: 14
+        index: 11
       partialPhoneNumber:
-        index: 15
+        index: 12
       fullPhoneNumber:
-        index: 16
+        index: 13
       createdAt:
-        index: 17
+        index: 14
       updatedAt:
-        index: 18
+        index: 15
   UserPreferencesModel:
     typeId: 4
     nextIndex: 2
     fields:
-      languageCode:
-        index: 0
       themeMode:
+        index: 0
+      languageCode:
         index: 1
   SessionStateModel:
     typeId: 5

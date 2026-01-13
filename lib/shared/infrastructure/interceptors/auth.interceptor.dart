@@ -1,33 +1,36 @@
 import 'dart:async' show FutureOr;
-import 'package:chopper/chopper.dart';
+import 'package:chopper/chopper.dart' show Chain, Interceptor, Response, applyHeader;
 
-import '../../../modules/auth/application/data-sources/auth.local.datasource.port.dart'
-    show IAuthLocalDataSource;
+import '../../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
+    show ISessionTokenSecureDataSource;
 
 /// Interceptor that adds JWT bearer token to all API requests.
 ///
-/// Retrieves the token from local storage via [IAuthLocalDataSource.getToken]
-/// and adds it as an Authorization header with Bearer scheme.
+/// Retrieves the access token from secure storage via [ISessionTokenSecureDataSource.getAccessToken]
+/// and adds it as an Authorization header with Bearer scheme. Uses hardware-backed
+/// secure storage for token retrieval.
+///
+/// **Header:**
+/// - `Authorization`: Bearer {accessToken}
 class AuthInterceptor implements Interceptor {
-  final IAuthLocalDataSource _localDataSource;
+  final ISessionTokenSecureDataSource _sessionTokenSecureDataSource;
 
-  AuthInterceptor(this._localDataSource);
+  const AuthInterceptor(this._sessionTokenSecureDataSource);
 
   @override
   FutureOr<Response<BodyType>> intercept<BodyType>(Chain<BodyType> chain) async {
     final request = chain.request;
 
     try {
-      final token = await _localDataSource.getToken();
+      final accessToken = await _sessionTokenSecureDataSource.getAccessToken();
 
-      if (token != null && token.isNotEmpty) {
-        final updatedRequest = applyHeader(request, 'Authorization', 'Bearer $token');
+      if (accessToken != null && accessToken.isNotEmpty) {
+        final updatedRequest = applyHeader(request, 'Authorization', 'Bearer $accessToken');
         return chain.proceed(updatedRequest);
       }
 
       return chain.proceed(request);
     } catch (_) {
-      // If token retrieval fails, continue without auth header
       return chain.proceed(request);
     }
   }

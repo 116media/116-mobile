@@ -24,6 +24,7 @@ import '../../domain/entities/resetpassword-response/resetpassword.response.enti
 import '../../domain/entities/role/role.entity.dart' show RoleEntity;
 import '../../domain/entities/signout-response/signout.response.entity.dart'
     show SignOutResponseEntity;
+import '../../domain/entities/token-response/token.response.entity.dart' show TokenResponseEntity;
 import '../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
@@ -64,6 +65,30 @@ class AuthMapper {
     );
   }
 
+  /// Creates TokenResponseEntity from individual token fields.
+  ///
+  /// **Parameters:**
+  /// - `accessToken` - JWT access token for API authorization
+  /// - `refreshToken` - JWT refresh token for obtaining new access tokens
+  /// - `accessTokenExpiresAt` - Access token expiration timestamp
+  /// - `refreshTokenExpiresAt` - Refresh token expiration timestamp
+  /// - `tokenType` - Token type (e.g., "Bearer")
+  static TokenResponseEntity _createTokenResponse({
+    required String accessToken,
+    required String refreshToken,
+    required DateTime accessTokenExpiresAt,
+    required DateTime refreshTokenExpiresAt,
+    required String tokenType,
+  }) {
+    return TokenResponseEntity(
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      accessTokenExpiresAt: accessTokenExpiresAt,
+      refreshTokenExpiresAt: refreshTokenExpiresAt,
+      tokenType: tokenType,
+    );
+  }
+
   /// Maps UserResponseDto to UserEntity domain entity.
   static UserEntity userFromDto(UserResponseDto dto) {
     return UserEntity(
@@ -75,11 +100,8 @@ class AuthMapper {
       authProvider: dto.authProvider,
       isVerified: dto.isVerified,
       isActive: dto.isActive,
-      isLoggedIn: dto.isLoggedIn,
-      lastLoginAt: dto.lastLoginAt?.toIso8601String(),
       avatar: dto.avatar != null ? fileFromDto(dto.avatar!) : null,
       countryName: dto.countryName,
-      countryFlagUrl: dto.countryFlagUrl,
       countryIsoCode: dto.countryIsoCode,
       countryDialCode: dto.countryDialCode,
       partialPhoneNumber: dto.partialPhoneNumber,
@@ -91,19 +113,46 @@ class AuthMapper {
 
   /// Maps PublicLoginResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicLoginDto(PublicLoginResponse response) {
-    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
+    return AuthResponseEntity(
+      tokenResponse: _createTokenResponse(
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        accessTokenExpiresAt: response.accessTokenExpiresAt,
+        refreshTokenExpiresAt: response.refreshTokenExpiresAt,
+        tokenType: response.tokenType,
+      ),
+      user: userFromDto(response.user),
+    );
   }
 
   /// Maps PublicSignUpResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicSignUpDto(PublicSignUpResponse response) {
-    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
+    return AuthResponseEntity(
+      tokenResponse: _createTokenResponse(
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        accessTokenExpiresAt: response.accessTokenExpiresAt,
+        refreshTokenExpiresAt: response.refreshTokenExpiresAt,
+        tokenType: response.tokenType,
+      ),
+      user: userFromDto(response.user),
+    );
   }
 
   /// Maps PublicSocialLoginResponse to AuthResponseEntity domain entity.
   static AuthResponseEntity authResponseFromPublicSocialLoginDto(
     PublicSocialLoginResponse response,
   ) {
-    return AuthResponseEntity(token: response.token, user: userFromDto(response.user));
+    return AuthResponseEntity(
+      tokenResponse: _createTokenResponse(
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        accessTokenExpiresAt: response.accessTokenExpiresAt,
+        refreshTokenExpiresAt: response.refreshTokenExpiresAt,
+        tokenType: response.tokenType,
+      ),
+      user: userFromDto(response.user),
+    );
   }
 
   /// Maps PublicVerifyOtpResponse to VerifyOtpResponseEntity domain entity.

@@ -1,5 +1,7 @@
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
+import '../../../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
+    show ISessionTokenSecureDataSource;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
@@ -15,6 +17,7 @@ import '../../domain/entities/resetpassword-response/resetpassword.response.enti
     show ResetPasswordResponseEntity;
 import '../../domain/entities/signout-response/signout.response.entity.dart'
     show SignOutResponseEntity;
+import '../../domain/entities/token-response/token.response.entity.dart' show TokenResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 import '../../presentation/models/forgotpassword.credentials.model.dart'
@@ -31,12 +34,34 @@ import '../models/hive/user/user.model.dart' show UserModel;
 ///
 /// Wraps the inner repository and adds local caching functionality.
 /// Delegates remote operations to the inner repository, then persists
-/// successful results to local storage.
+/// successful results to local storage. Stores session tokens securely
+/// using SessionSecureDataSource and user data in Hive via LocalDataSource.
 class AuthCachedRepository implements IAuthRepository {
   final IAuthRepository _remoteRepository;
   final IAuthLocalDataSource _localDataSource;
+  final ISessionTokenSecureDataSource _sessionTokenSecureDataSource;
 
-  const AuthCachedRepository(this._remoteRepository, this._localDataSource);
+  const AuthCachedRepository(
+    this._remoteRepository,
+    this._localDataSource,
+    this._sessionTokenSecureDataSource,
+  );
+
+  /// Helper method to store token response securely.
+  ///
+  /// Stores all token fields (accessToken, refreshToken, expiration times, tokenType)
+  /// in secure storage using SessionSecureDataSource.
+  Future<void> _storeTokenResponse(TokenResponseEntity tokenResponse) async {
+    await _sessionTokenSecureDataSource.setAccessToken(tokenResponse.accessToken);
+    await _sessionTokenSecureDataSource.setRefreshToken(tokenResponse.refreshToken);
+    await _sessionTokenSecureDataSource.setAccessTokenExpiresAt(
+      tokenResponse.accessTokenExpiresAt.toIso8601String(),
+    );
+    await _sessionTokenSecureDataSource.setRefreshTokenExpiresAt(
+      tokenResponse.refreshTokenExpiresAt.toIso8601String(),
+    );
+    await _sessionTokenSecureDataSource.setTokenType(tokenResponse.tokenType);
+  }
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signIn(SignInCredentialsModel credentials) async {
@@ -45,7 +70,7 @@ class AuthCachedRepository implements IAuthRepository {
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
       try {
-        await _localDataSource.setToken(authEntity.token);
+        await _storeTokenResponse(authEntity.tokenResponse);
         await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
         return Right(authEntity);
       } on CacheException catch (exception) {
@@ -61,7 +86,7 @@ class AuthCachedRepository implements IAuthRepository {
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
       try {
-        await _localDataSource.setToken(authEntity.token);
+        await _storeTokenResponse(authEntity.tokenResponse);
         await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
         return Right(authEntity);
       } on CacheException catch (exception) {
@@ -129,7 +154,7 @@ class AuthCachedRepository implements IAuthRepository {
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
       try {
-        await _localDataSource.setToken(authEntity.token);
+        await _storeTokenResponse(authEntity.tokenResponse);
         await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
         return Right(authEntity);
       } on CacheException catch (exception) {
@@ -145,7 +170,7 @@ class AuthCachedRepository implements IAuthRepository {
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
       try {
-        await _localDataSource.setToken(authEntity.token);
+        await _storeTokenResponse(authEntity.tokenResponse);
         await _localDataSource.setUser(UserModel.fromEntity(authEntity.user));
         return Right(authEntity);
       } on CacheException catch (exception) {
@@ -162,7 +187,7 @@ class AuthCachedRepository implements IAuthRepository {
     return result.fold((failure) => Left(failure), (authEntity) async {
       try {
         await _localDataSource.clearUser();
-        await _localDataSource.clearToken();
+        await _sessionTokenSecureDataSource.clearSession();
         return Right(authEntity);
       } on CacheException catch (exception) {
         return Left(ProblemMapper.toFailure(exception));

@@ -154,24 +154,21 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       authProvider: fields[5] as String,
       isVerified: fields[6] as bool,
       isActive: fields[7] as bool,
-      isLoggedIn: fields[8] as bool,
-      lastLoginAt: fields[9] as String?,
-      avatar: fields[10] as FileModel?,
-      countryName: fields[11] as String?,
-      countryFlagUrl: fields[12] as String?,
-      countryIsoCode: fields[13] as String?,
-      countryDialCode: fields[14] as String?,
-      partialPhoneNumber: fields[15] as String?,
-      fullPhoneNumber: fields[16] as String?,
-      createdAt: fields[17] as String?,
-      updatedAt: fields[18] as String?,
+      avatar: fields[8] as FileModel?,
+      countryName: fields[9] as String?,
+      countryIsoCode: fields[10] as String?,
+      countryDialCode: fields[11] as String?,
+      partialPhoneNumber: fields[12] as String?,
+      fullPhoneNumber: fields[13] as String?,
+      createdAt: fields[14] as String?,
+      updatedAt: fields[15] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(19)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -189,26 +186,20 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(7)
       ..write(obj.isActive)
       ..writeByte(8)
-      ..write(obj.isLoggedIn)
-      ..writeByte(9)
-      ..write(obj.lastLoginAt)
-      ..writeByte(10)
       ..write(obj.avatar)
-      ..writeByte(11)
+      ..writeByte(9)
       ..write(obj.countryName)
-      ..writeByte(12)
-      ..write(obj.countryFlagUrl)
-      ..writeByte(13)
+      ..writeByte(10)
       ..write(obj.countryIsoCode)
-      ..writeByte(14)
+      ..writeByte(11)
       ..write(obj.countryDialCode)
-      ..writeByte(15)
+      ..writeByte(12)
       ..write(obj.partialPhoneNumber)
-      ..writeByte(16)
+      ..writeByte(13)
       ..write(obj.fullPhoneNumber)
-      ..writeByte(17)
+      ..writeByte(14)
       ..write(obj.createdAt)
-      ..writeByte(18)
+      ..writeByte(15)
       ..write(obj.updatedAt);
   }
 
@@ -231,7 +222,7 @@ class UserPreferencesModelAdapter extends TypeAdapter<UserPreferencesModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserPreferencesModel(languageCode: fields[0] as String, themeMode: fields[1] as String);
+    return UserPreferencesModel(languageCode: fields[1] as String, themeMode: fields[0] as String);
   }
 
   @override
@@ -239,9 +230,9 @@ class UserPreferencesModelAdapter extends TypeAdapter<UserPreferencesModel> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.languageCode)
+      ..write(obj.themeMode)
       ..writeByte(1)
-      ..write(obj.themeMode);
+      ..write(obj.languageCode);
   }
 
   @override

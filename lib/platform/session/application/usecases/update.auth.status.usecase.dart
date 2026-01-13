@@ -4,7 +4,7 @@ import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase
 import '../../../../shared/domain/failures/failure.dart' show Failure;
 import '../../domain/entities/session-state/session.state.entity.dart' show SessionStateEntity;
 import '../../domain/enums/auth.status.enum.dart' show AuthStatus;
-import '../repositories/session.repository.port.dart' show ISessionRepository;
+import '../repositories/session.state.repository.port.dart' show ISessionStateRepository;
 
 /// Use case for updating authentication status.
 ///
@@ -14,7 +14,7 @@ import '../repositories/session.repository.port.dart' show ISessionRepository;
 /// Request: Record with (AuthStatus status, String? userId)
 class UpdateAuthStatusUseCase
     implements IUseCase<({AuthStatus status, String? userId}), SessionStateEntity> {
-  final ISessionRepository _repository;
+  final ISessionStateRepository _repository;
 
   const UpdateAuthStatusUseCase(this._repository);
 

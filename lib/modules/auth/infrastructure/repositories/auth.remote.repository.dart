@@ -1,6 +1,10 @@
 import 'package:fpdart/fpdart.dart' show Either, Left, Right;
 
+import '../../../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
+    show ISessionTokenSecureDataSource;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
+import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
+    show CacheException;
 import '../../../../shared/infrastructure/exceptions/remote/server.exception.dart'
     show ServerException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
@@ -39,11 +43,13 @@ class AuthRemoteRepository implements IAuthRepository {
   final IAuthRemoteDataSource _remoteDataSource;
   final IGoogleAuthDataSource _googleAuthDataSource;
   final IFacebookAuthDataSource _facebookAuthDataSource;
+  final ISessionTokenSecureDataSource _sessionTokenSecureDataSource;
 
   const AuthRemoteRepository(
     this._remoteDataSource,
     this._googleAuthDataSource,
     this._facebookAuthDataSource,
+    this._sessionTokenSecureDataSource,
   );
 
   @override
@@ -153,9 +159,14 @@ class AuthRemoteRepository implements IAuthRepository {
   @override
   Future<Either<Failure, SignOutResponseEntity>> signOut() async {
     try {
-      final response = await _remoteDataSource.signOut();
+      // Retrieve refresh token from secure storage
+      final refreshToken = await _sessionTokenSecureDataSource.getRefreshToken();
+
+      final response = await _remoteDataSource.signOut(refreshToken ?? "");
       final signoutEntity = AuthMapper.signoutResponseFromDto(response);
       return Right(signoutEntity);
+    } on CacheException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }

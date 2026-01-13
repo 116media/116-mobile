@@ -22,12 +22,18 @@ import '../../platform/preferences/infrastructure/data-sources/preferences.local
     show PreferencesLocalDataSource;
 import '../../platform/preferences/infrastructure/dependencies/preferences.dependencies.dart'
     show registerPreferencesDependencies;
+import '../../platform/session/application/data-sources/session.token.secure.datasource.port.dart'
+    show ISessionTokenSecureDataSource;
 import '../../platform/session/infrastructure/dependencies/session.dependencies.dart'
     show registerSessionDependencies;
 import '../../platform/settings/infrastructure/dependencies/settings.dependencies.dart'
     show registerSettingsDependencies;
+import '../../platform/session/application/data-sources/device.secure.datasource.port.dart'
+    show IDeviceSecureDataSource;
 import 'constants/api.constants.dart' show kApiBaseUrl;
 import 'interceptors/auth.interceptor.dart' show AuthInterceptor;
+import 'interceptors/clientapp.interceptor.dart' show ClientAppInterceptor;
+import 'interceptors/deviceid.interceptor.dart' show DeviceIdInterceptor;
 import 'interceptors/language.interceptor.dart' show LanguageInterceptor;
 
 /// Service locator for dependency injection.
@@ -58,13 +64,18 @@ class ServiceLocator {
       },
     );
 
-    // Create Chopper client with AuthInterceptor and LanguageInterceptor
+    // Register session dependencies early (needed for interceptors)
+    await registerSessionDependencies(sl);
+
+    // Create Chopper client with all interceptors
     final chopper = ChopperClient(
       baseUrl: Uri.parse(kApiBaseUrl),
       converter: $JsonSerializableConverter(),
       errorConverter: $JsonSerializableConverter(),
       interceptors: [
-        AuthInterceptor(sl<IAuthLocalDataSource>()),
+        const ClientAppInterceptor(),
+        DeviceIdInterceptor(sl<IDeviceSecureDataSource>()),
+        AuthInterceptor(sl<ISessionTokenSecureDataSource>()),
         LanguageInterceptor(sl<IPreferencesLocalDataSource>()),
       ],
     );
@@ -74,7 +85,6 @@ class ServiceLocator {
     await registerConnectivityDependencies(sl);
     await registerCountryDependencies(sl);
     await registerPreferencesDependencies(sl);
-    await registerSessionDependencies(sl);
     await registerAuthDependencies(sl);
     await registerSettingsDependencies(sl);
   }

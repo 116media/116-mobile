@@ -42,7 +42,6 @@ class SettingsRemoteDataSource implements ISettingsRemoteDataSource {
           email: model.email,
           userName: model.userName,
           countryName: model.countryName,
-          countryFlagUrl: model.countryFlagUrl,
           countryIsoCode: model.countryIsoCode,
           countryDialCode: model.countryDialCode,
           partialPhoneNumber: model.partialPhoneNumber,

@@ -4,7 +4,7 @@ import '../../infrastructure/models/hive/session.state.model.dart' show SessionS
 ///
 /// Defines the contract for managing session state persistence
 /// in local storage (Hive).
-abstract class ISessionLocalDataSource {
+abstract class ISessionStateLocalDataSource {
   /// Retrieves the stored session state from local storage.
   ///
   /// Returns [SessionStateModel] if available, null otherwise.
