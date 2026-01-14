@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../token-response/token.response.entity.dart';
-import '../user/user.entity.dart';
+import '../../../../../shared/domain/entities/token-response/token.response.entity.dart';
+import '../../../../../shared/domain/entities/user/user.entity.dart';
 
 part 'auth.response.entity.freezed.dart';
 

@@ -1,4 +1,4 @@
-import '../../../../domain/entities/role/role.entity.dart' show RoleEntity;
+import '../../../../../../shared/domain/entities/role/role.entity.dart' show RoleEntity;
 
 /// Hive model for persisting [RoleEntity] to local storage.
 ///

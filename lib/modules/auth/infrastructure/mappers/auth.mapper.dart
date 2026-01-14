@@ -12,20 +12,21 @@ import '../../../../api/client/api_116.models.swagger.dart'
         RoleDto,
         UserResponseDto,
         PublicSignOutResponse;
+import '../../../../shared/domain/entities/file/file.entity.dart' show FileEntity;
+import '../../../../shared/domain/entities/permission/permission.entity.dart' show PermissionEntity;
+import '../../../../shared/domain/entities/role/role.entity.dart' show RoleEntity;
+import '../../../../shared/domain/entities/token-response/token.response.entity.dart'
+    show TokenResponseEntity;
+import '../../../../shared/domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
-import '../../domain/entities/file/file.entity.dart' show FileEntity;
 import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
     show ForgotPasswordResponseEntity;
-import '../../domain/entities/permission/permission.entity.dart' show PermissionEntity;
 import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
     show ResendOtpResponseEntity;
 import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
     show ResetPasswordResponseEntity;
-import '../../domain/entities/role/role.entity.dart' show RoleEntity;
 import '../../domain/entities/signout-response/signout.response.entity.dart'
     show SignOutResponseEntity;
-import '../../domain/entities/token-response/token.response.entity.dart' show TokenResponseEntity;
-import '../../domain/entities/user/user.entity.dart' show UserEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
 

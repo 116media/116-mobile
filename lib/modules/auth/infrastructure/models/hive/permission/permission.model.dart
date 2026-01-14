@@ -1,4 +1,5 @@
-import '../../../../domain/entities/permission/permission.entity.dart' show PermissionEntity;
+import '../../../../../../shared/domain/entities/permission/permission.entity.dart'
+    show PermissionEntity;
 
 /// Hive model for persisting [PermissionEntity] to local storage.
 ///

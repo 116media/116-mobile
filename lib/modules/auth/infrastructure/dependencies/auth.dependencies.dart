@@ -47,7 +47,7 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerSingleton<IGoogleAuthDataSource>(GoogleAuthDataSource(GoogleSignIn.instance));
   sl.registerSingleton<IFacebookAuthDataSource>(FacebookAuthDataSource(FacebookAuth.instance));
 
-  // Repository (decorator pattern: cached wraps remote)
+  // Repository
   sl.registerSingleton<AuthRemoteRepository>(
     AuthRemoteRepository(
       sl<IAuthRemoteDataSource>(),
