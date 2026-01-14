@@ -38,6 +38,9 @@ import '../repositories/session.token.cached.repository.dart' show SessionTokenC
 import '../repositories/session.token.remote.repository.dart' show SessionTokenRemoteRepository;
 
 /// Registers all session module dependencies.
+///
+/// Note: Secure storage and token repositories are initialized here
+/// to support access/refresh token rotation and device-aware requests.
 Future<void> registerSessionDependencies(GetIt sl) async {
   // Hive box
   final sessionBox = await Hive.openBox<dynamic>(kSessionBox);
