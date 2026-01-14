@@ -41,10 +41,15 @@ import 'interceptors/auth.interceptor.dart' show AuthInterceptor;
 import 'interceptors/clientapp.interceptor.dart' show ClientAppInterceptor;
 import 'interceptors/deviceid.interceptor.dart' show DeviceIdInterceptor;
 import 'interceptors/language.interceptor.dart' show LanguageInterceptor;
-import 'interceptors/token.refresh.interceptor.dart' show TokenRefreshInterceptor;
+import 'interceptors/access.token.expiry.interceptor.dart' show AccessTokenExpiryInterceptor;
 
 final GetIt sl = GetIt.instance;
 
+/// Centralized dependency injection bootstrapper for the application.
+///
+/// `ServiceLocator` is responsible for initializing and registering all
+/// core infrastructure, platform services, feature modules, and API clients
+/// using `GetIt`.
 class ServiceLocator {
   ServiceLocator._();
 
@@ -72,7 +77,7 @@ class ServiceLocator {
       errorConverter: $JsonSerializableConverter(),
       interceptors: [
         const ClientAppInterceptor(),
-        TokenRefreshInterceptor(sl),
+        AccessTokenExpiryInterceptor(sl),
         DeviceIdInterceptor(sl<IDeviceSecureDataSource>()),
         AuthInterceptor(sl<ISessionTokenSecureDataSource>()),
         LanguageInterceptor(sl<IPreferencesLocalDataSource>()),
