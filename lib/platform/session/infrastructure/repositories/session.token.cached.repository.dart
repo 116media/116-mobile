@@ -63,4 +63,14 @@ class SessionTokenCachedRepository implements ISessionTokenRepository {
       }
     });
   }
+
+  @override
+  Future<Either<Failure, void>> clearLocalTokens() async {
+    try {
+      await _tokenSecureDataSource.clearSession();
+      return const Right(null);
+    } on CacheException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
 }
