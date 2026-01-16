@@ -11,18 +11,21 @@ import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/data-sources/session.token.secure.datasource.port.dart'
     show ISessionTokenSecureDataSource;
-import '../../application/repositories/session.token.repository.port.dart'
-    show ISessionTokenRepository;
+import '../../application/repositories/session.token.local.repository.port.dart'
+    show ISessionTokenLocalRepository;
+import '../../application/repositories/session.token.remote.repository.port.dart'
+    show ISessionTokenRemoteRepository;
 import '../../domain/entities/refresh-token-response/refresh.token.response.dart'
     show RefreshTokenResponseEntity;
 
 /// Cached session token repository (decorator pattern).
 ///
-/// Wraps the inner repository and adds local caching functionality.
-/// Delegates remote token refresh to the inner repository, then persists
+/// Wraps the remote repository and adds local caching functionality.
+/// Delegates remote token refresh to the remote repository, then persists
 /// successful results to secure storage.
-class SessionTokenCachedRepository implements ISessionTokenRepository {
-  final ISessionTokenRepository _remoteRepository;
+class SessionTokenCachedRepository
+    implements ISessionTokenRemoteRepository, ISessionTokenLocalRepository {
+  final ISessionTokenRemoteRepository _remoteRepository;
   final IAuthLocalDataSource _localDataSource;
   final ISessionTokenSecureDataSource _tokenSecureDataSource;
 
