@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart' show Gap;
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 import 'package:panara_dialogs/panara_dialogs.dart' show PanaraCustomDialog;
 
 import '../../../i18n/strings.g.dart';
+import '../../../modules/home/presentation/constants/home.constants.dart' show kHomeRoutePath;
+import '../../domain/failures/failure.dart' show Failure;
+import '../../infrastructure/exceptions/constants/exception.constants.dart'
+    show kRefreshTokenExpiryException;
 import '../themes/extensions/build.context.extension.dart';
 import '../widgets/buttons/enums/button.size.enum.dart' show ButtonSize;
 import '../widgets/buttons/solid.button.dart' show SolidButton;
@@ -21,6 +26,7 @@ class DialogUtil {
     required String message,
     required String buttonText,
     required Color buttonColor,
+    bool barrierDismissible = true,
     VoidCallback? onDismiss,
   }) {
     PanaraCustomDialog.showAnimatedFromTop(
@@ -55,34 +61,60 @@ class DialogUtil {
       padding: EdgeInsets.all(context.sizing.s20),
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
+      barrierDismissible: barrierDismissible,
     );
   }
 
-  /// Shows an error dialog with a message.
+  /// Shows an error dialog with a failure or message.
   ///
   /// **Parameters:**
   /// - [context]: The build context
-  /// - [message]: The error message to display
+  /// - [failure]: The failure object containing error details (title and detail)
+  /// - [message]: Error message string (used when failure is not provided)
   /// - [title]: Optional custom title (defaults to translated "Error")
   /// - [buttonText]: Optional custom button text (defaults to translated "OK")
   /// - [onDismiss]: Optional callback when dialog is dismissed
+  /// - [barrierDismissible]: Whether dialog can be dismissed by tapping outside
+  ///
+  /// **Special Handling:**
+  /// - If failure.title is "RefreshTokenExpiryException", the dialog becomes
+  ///   non-dismissible and redirects to home page on dismiss
+  /// ```
   static void error(
     BuildContext context, {
-    required String message,
+    Failure? failure,
+    String? message,
     String? title,
     String? buttonText,
     VoidCallback? onDismiss,
+    bool? barrierDismissible,
   }) {
     final t = context.t;
+
+    final isSessionExpiry = failure?.title == kRefreshTokenExpiryException;
+    final isBarrierDismissible = isSessionExpiry ? false : (barrierDismissible ?? true);
+
+    final handleOnDismiss = isSessionExpiry
+        ? () {
+            onDismiss?.call();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (context.mounted) {
+                context.go(kHomeRoutePath);
+              }
+            });
+          }
+        : onDismiss;
+
     _showDialog(
       context,
       icon: Icons.error_outline,
       iconColor: ColorsUtil.error,
       title: title ?? t.shared.common.error,
-      message: message,
+      message: message ?? failure?.detail ?? '',
       buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.error,
-      onDismiss: onDismiss,
+      onDismiss: handleOnDismiss,
+      barrierDismissible: isBarrierDismissible,
     );
   }
 
@@ -100,6 +132,7 @@ class DialogUtil {
     String? title,
     String? buttonText,
     VoidCallback? onDismiss,
+    bool barrierDismissible = true,
   }) {
     final t = context.t;
     _showDialog(
@@ -111,6 +144,7 @@ class DialogUtil {
       buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.success,
       onDismiss: onDismiss,
+      barrierDismissible: barrierDismissible,
     );
   }
 
@@ -128,6 +162,7 @@ class DialogUtil {
     String? title,
     String? buttonText,
     VoidCallback? onDismiss,
+    bool barrierDismissible = true,
   }) {
     final t = context.t;
     _showDialog(
@@ -139,6 +174,7 @@ class DialogUtil {
       buttonText: buttonText ?? t.shared.common.ok,
       buttonColor: ColorsUtil.warning,
       onDismiss: onDismiss,
+      barrierDismissible: barrierDismissible,
     );
   }
 
@@ -155,6 +191,7 @@ class DialogUtil {
     required String message,
     String? title,
     String? buttonText,
+    bool barrierDismissible = true,
     VoidCallback? onDismiss,
   }) {
     final t = context.t;
@@ -167,6 +204,7 @@ class DialogUtil {
       title: title ?? t.shared.common.info,
       buttonText: buttonText ?? t.shared.common.ok,
       onDismiss: onDismiss,
+      barrierDismissible: barrierDismissible,
     );
   }
 
@@ -198,6 +236,7 @@ class DialogUtil {
     Color? cancelColor,
     required VoidCallback onConfirm,
     VoidCallback? onCancel,
+    bool barrierDismissible = true,
   }) {
     final t = context.t;
     PanaraCustomDialog.showAnimatedFromBottom(
@@ -252,6 +291,7 @@ class DialogUtil {
       padding: EdgeInsets.all(context.sizing.s20),
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
+      barrierDismissible: barrierDismissible,
     );
   }
 }
