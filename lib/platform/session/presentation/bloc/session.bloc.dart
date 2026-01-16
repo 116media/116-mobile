@@ -4,9 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, Emitter;
 
 import '../../application/usecases/get.session.state.usecase.dart' show GetSessionStateUseCase;
 import '../../application/usecases/watch.session.state.usecase.dart' show WatchSessionStateUseCase;
-import 'session.event.dart' show SessionEvent, SessionLoadStarted, SessionStateChanged;
+import 'session.event.dart'
+    show SessionEvent, SessionLoadStarted, SessionStateChanged, SessionExpiredTriggered;
 import 'session.state.dart'
-    show SessionState, SessionInitial, SessionLoading, SessionSuccess, SessionFailure;
+    show
+        SessionState,
+        SessionInitial,
+        SessionLoading,
+        SessionSuccess,
+        SessionFailure,
+        SessionExpired;
 
 /// BLoC for managing session state.
 ///
@@ -22,6 +29,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     : super(const SessionInitial()) {
     on<SessionLoadStarted>(_onLoadStarted);
     on<SessionStateChanged>(_onStateChanged);
+    on<SessionExpiredTriggered>(_onSessionExpired);
   }
 
   /// Handles the [SessionLoadStarted] event.
@@ -53,6 +61,15 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   /// changes (e.g., after completing onboarding or logging in).
   Future<void> _onStateChanged(SessionStateChanged event, Emitter<SessionState> emit) async {
     emit(SessionSuccess(event.sessionState));
+  }
+
+  /// Handles the [SessionExpiredTriggered] event.
+  ///
+  /// Emits [SessionExpired] state to signal the UI to show the
+  /// session expired dialog. Session data is NOT cleared here -
+  /// it will be cleared when the user clicks OK on the dialog.
+  Future<void> _onSessionExpired(SessionExpiredTriggered event, Emitter<SessionState> emit) async {
+    emit(const SessionExpired());
   }
 
   @override
