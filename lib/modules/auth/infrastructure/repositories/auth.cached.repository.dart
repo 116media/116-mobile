@@ -27,10 +27,6 @@ import '../models/hive/user/user.model.dart' show UserModel;
 /// Delegates remote operations to the inner repository, then persists
 /// successful results to local storage. Stores session tokens securely
 /// using SessionSecureDataSource and user data in Hive via LocalDataSource.
-///
-/// Implements only [IAuthCachedRepository] and [IAuthLocalRepository] following
-/// the Interface Segregation Principle. Transient operations (resendOtp, forgotPassword,
-/// resetPassword) are not implemented here as they don't benefit from caching.
 class AuthCachedRepository implements IAuthCachedRepository, IAuthLocalRepository {
   final IAuthCachedRepository _cachedRepository;
   final IAuthLocalDataSource _localDataSource;

@@ -20,9 +20,6 @@ import '../mappers/session.mapper.dart' show SessionMapper;
 ///
 /// Handles ONLY remote API calls and DTO-to-entity mapping for token refresh.
 /// Does NOT handle caching - that's delegated to the cached repository decorator.
-/// Part of the infrastructure layer in Clean Architecture.
-///
-/// Implements [ISessionTokenRemoteRepository] following Interface Segregation Principle.
 class SessionTokenRemoteRepository implements ISessionTokenRemoteRepository {
   final ISessionRemoteDataSource _remoteDataSource;
   final ISessionTokenSecureDataSource _tokenSecureDataSource;
