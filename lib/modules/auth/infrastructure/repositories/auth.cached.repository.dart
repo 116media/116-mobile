@@ -195,4 +195,14 @@ class AuthCachedRepository implements IAuthRepository {
       }
     });
   }
+
+  @override
+  Future<Either<Failure, void>> clearLocalUserData() async {
+    try {
+      await _localDataSource.clearUser();
+      return const Right(null);
+    } on CacheException catch (exception) {
+      return Left(ProblemMapper.toFailure(exception));
+    }
+  }
 }
