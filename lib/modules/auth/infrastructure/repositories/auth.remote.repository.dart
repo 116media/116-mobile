@@ -12,7 +12,9 @@ import '../../application/data-sources/auth.remote.datasource.port.dart' show IA
 import '../../application/data-sources/facebook.auth.datasource.port.dart'
     show IFacebookAuthDataSource;
 import '../../application/data-sources/google.auth.datasource.port.dart' show IGoogleAuthDataSource;
-import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
+import '../../application/repositories/auth.cached.repository.port.dart' show IAuthCachedRepository;
+import '../../application/repositories/auth.transient.repository.port.dart'
+    show IAuthTransientRepository;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
 import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
     show ForgotPasswordResponseEntity;
@@ -38,8 +40,7 @@ import '../mappers/auth.mapper.dart' show AuthMapper;
 ///
 /// Handles ONLY remote API calls and DTO-to-entity mapping.
 /// Does NOT handle caching - that's delegated to the proxy/decorator.
-/// Part of the infrastructure layer in Clean Architecture.
-class AuthRemoteRepository implements IAuthRepository {
+class AuthRemoteRepository implements IAuthCachedRepository, IAuthTransientRepository {
   final IAuthRemoteDataSource _remoteDataSource;
   final IGoogleAuthDataSource _googleAuthDataSource;
   final IFacebookAuthDataSource _facebookAuthDataSource;
@@ -170,12 +171,5 @@ class AuthRemoteRepository implements IAuthRepository {
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
-  }
-
-  @override
-  Future<Either<Failure, void>> clearLocalUserData() async {
-    // Remote repository doesn't handle local data clearing
-    // This is handled by the cached repository decorator
-    return const Right(null);
   }
 }
