@@ -42,6 +42,7 @@ import 'interceptors/clientapp.interceptor.dart' show ClientAppInterceptor;
 import 'interceptors/deviceid.interceptor.dart' show DeviceIdInterceptor;
 import 'interceptors/language.interceptor.dart' show LanguageInterceptor;
 import 'interceptors/access.token.expiry.interceptor.dart' show AccessTokenExpiryInterceptor;
+import 'interceptors/refresh.token.expiry.interceptor.dart' show RefreshTokenExpiryInterceptor;
 
 final GetIt sl = GetIt.instance;
 
@@ -78,6 +79,7 @@ class ServiceLocator {
       interceptors: [
         const ClientAppInterceptor(),
         AccessTokenExpiryInterceptor(sl),
+        RefreshTokenExpiryInterceptor(sl),
         DeviceIdInterceptor(sl<IDeviceSecureDataSource>()),
         AuthInterceptor(sl<ISessionTokenSecureDataSource>()),
         LanguageInterceptor(sl<IPreferencesLocalDataSource>()),
