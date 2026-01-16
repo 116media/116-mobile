@@ -1,4 +1,8 @@
 {
+  "sessionExpiry": {
+    "title": "Session Expired",
+    "message": "Your session has expired. Please sign in again."
+  },
   "cacheError": {
     "setSession": "Failed to save session state: {error}",
     "getSession": "Failed to retrieve session state: {error}",

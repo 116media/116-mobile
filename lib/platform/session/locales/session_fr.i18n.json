@@ -1,4 +1,8 @@
 {
+  "sessionExpiry": {
+    "title": "Session expirée",
+    "message": "Votre session a expiré. Veuillez vous reconnecter."
+  },
   "cacheError": {
     "setSession": "Échec lors de la sauvegarde de la session : {error}",
     "getSession": "Échec lors de la récupération de la session : {error}",
