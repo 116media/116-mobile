@@ -10,8 +10,8 @@ import '../../application/data-sources/session.remote.datasource.port.dart'
     show ISessionRemoteDataSource;
 import '../../application/data-sources/session.token.secure.datasource.port.dart'
     show ISessionTokenSecureDataSource;
-import '../../application/repositories/session.token.repository.port.dart'
-    show ISessionTokenRepository;
+import '../../application/repositories/session.token.remote.repository.port.dart'
+    show ISessionTokenRemoteRepository;
 import '../../domain/entities/refresh-token-response/refresh.token.response.dart'
     show RefreshTokenResponseEntity;
 import '../mappers/session.mapper.dart' show SessionMapper;
@@ -21,7 +21,9 @@ import '../mappers/session.mapper.dart' show SessionMapper;
 /// Handles ONLY remote API calls and DTO-to-entity mapping for token refresh.
 /// Does NOT handle caching - that's delegated to the cached repository decorator.
 /// Part of the infrastructure layer in Clean Architecture.
-class SessionTokenRemoteRepository implements ISessionTokenRepository {
+///
+/// Implements [ISessionTokenRemoteRepository] following Interface Segregation Principle.
+class SessionTokenRemoteRepository implements ISessionTokenRemoteRepository {
   final ISessionRemoteDataSource _remoteDataSource;
   final ISessionTokenSecureDataSource _tokenSecureDataSource;
 
@@ -41,12 +43,5 @@ class SessionTokenRemoteRepository implements ISessionTokenRepository {
     } on ServerException catch (exception) {
       return Left(ProblemMapper.toFailure(exception));
     }
-  }
-
-  @override
-  Future<Either<Failure, void>> clearLocalTokens() async {
-    // Remote repository doesn't handle local data clearing
-    // This is handled by the cached repository decorator
-    return const Right(null);
   }
 }
