@@ -6,7 +6,7 @@ import '../../domain/entities/resetpassword-response/resetpassword.response.enti
     show ResetPasswordResponseEntity;
 import '../../presentation/models/resetpassword.credentials.model.dart'
     show ResetPasswordCredentialsModel;
-import '../repositories/auth.repository.port.dart' show IAuthRepository;
+import '../repositories/auth.transient.repository.port.dart' show IAuthTransientRepository;
 
 /// Use case for resetting user password using OTP code.
 ///
@@ -14,14 +14,14 @@ import '../repositories/auth.repository.port.dart' show IAuthRepository;
 /// submits the OTP code along with a new password to reset the user's password.
 /// Coordinates with the auth repository to execute the reset operation.
 class ResetPasswordUseCase implements IUseCase<ResetPasswordCredentialsModel, void> {
-  final IAuthRepository _repository;
+  final IAuthTransientRepository _authTransientRepository;
 
-  const ResetPasswordUseCase(this._repository);
+  const ResetPasswordUseCase(this._authTransientRepository);
 
   @override
   Future<Either<Failure, ResetPasswordResponseEntity>> execute(
     ResetPasswordCredentialsModel credentials,
   ) async {
-    return _repository.resetPassword(credentials);
+    return _authTransientRepository.resetPassword(credentials);
   }
 }
