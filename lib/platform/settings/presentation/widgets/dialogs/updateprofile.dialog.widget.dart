@@ -57,7 +57,7 @@ class _UpdateProfileDialogState extends State<UpdateProfileDialog> {
         }
       });
     } else if (state is UpdateProfileFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

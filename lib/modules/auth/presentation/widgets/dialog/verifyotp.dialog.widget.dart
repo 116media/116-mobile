@@ -64,7 +64,7 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
       });
     } else if (state is VerifyOtpFailure) {
       _clearOtpField();
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -72,7 +72,7 @@ class _VerifyOtpDialogState extends State<VerifyOtpDialog> {
     if (state is ResendOtpSuccess) {
       DialogUtil.success(context, message: t.auth.resendOtp.success);
     } else if (state is ResendOtpFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

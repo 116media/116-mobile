@@ -48,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
         }
       });
     } else if (state is SignOutFailure) {
-      DialogUtil.error(ctx, message: state.failure.detail);
+      DialogUtil.error(ctx, failure: state.failure);
     }
   }
 
