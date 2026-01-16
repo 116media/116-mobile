@@ -1,3 +1,5 @@
+import 'dart:async' show StreamSubscription;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart' show GoRouter, GoRouterState;
 
@@ -39,8 +41,17 @@ class AppRouter {
 
   final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
+  late final StreamSubscription _sessionSubscription;
+
+  /// Listens for SessionExpired state and clears session data.
+  ///
+  /// After clearing session data, redirects to home page. The redirect is
+  /// scheduled using SchedulerBinding to ensure any error dialogs from failed
+  /// API calls have time to display before navigation occurs.
   AppRouter(this.sessionBloc) {
-    _listenToSessionExpired();
+    _sessionSubscription = sessionBloc.stream.listen((state) async {
+      if (state is SessionExpired) await _clearSessionData();
+    });
   }
 
   /// Creates the GoRouter instance with session-based guards.
@@ -48,14 +59,17 @@ class AppRouter {
     return GoRouter(
       navigatorKey: _rootNavigatorKey,
       initialLocation: kSplashRoutePath,
+      refreshListenable: SessionBlocRefreshNotifier(sessionBloc),
       redirect: (BuildContext context, GoRouterState state) {
         final sessionState = sessionBloc.state;
 
+        // Allow expired session state to propagate (cleanup handled by listener)
         if (sessionState is SessionExpired) return null;
 
+        // Allow splash while session is loading
         if (state.matchedLocation == kSplashRoutePath) return null;
 
-        // Wait for session to load (for other routes)
+        // Wait for session to load before allowing other routes
         if (sessionState is! SessionSuccess) return kSplashRoutePath;
 
         final session = sessionState.sessionState;
@@ -65,14 +79,12 @@ class AppRouter {
 
         // First check: preferences not set - show preferences screen
         if (session.shouldShowPreferences) {
-          if (state.matchedLocation != kPreferencesRoutePath) return kPreferencesRoutePath;
-          return null;
+          return state.matchedLocation == kPreferencesRoutePath ? null : kPreferencesRoutePath;
         }
 
         // Second check: onboarding not completed - show onboarding screen
         if (session.shouldShowOnboarding) {
-          if (state.matchedLocation != kOnboardingRoutePath) return kOnboardingRoutePath;
-          return null;
+          return state.matchedLocation == kOnboardingRoutePath ? null : kOnboardingRoutePath;
         }
 
         // User can access app - redirect from splash/onboarding/preferences to home
@@ -91,7 +103,6 @@ class AppRouter {
 
         return null;
       },
-      refreshListenable: SessionBlocRefreshNotifier(sessionBloc),
       routes: [
         ...splashRoutes,
         ...preferencesRoutes,
@@ -100,20 +111,10 @@ class AppRouter {
         ...mainShellRoutes,
       ],
       //TODO: design a better 404 page later
-      errorBuilder: (context, state) =>
-          Scaffold(body: Center(child: Text('Page not found: ${state.uri.path}'))),
+      errorBuilder: (context, state) {
+        return Scaffold(body: Center(child: Text('Page not found: ${state.uri.path}')));
+      },
     );
-  }
-
-  /// Listens for SessionExpired state and clears session data.
-  ///
-  /// After clearing session data, redirects to home page. The redirect is
-  /// scheduled using SchedulerBinding to ensure any error dialogs from failed
-  /// API calls have time to display before navigation occurs.
-  void _listenToSessionExpired() {
-    sessionBloc.stream.listen((state) async {
-      if (state is SessionExpired) await _clearSessionData();
-    });
   }
 
   /// Clears all session data using use cases.
@@ -132,6 +133,10 @@ class AppRouter {
     await sl<ClearLocalUserDataUseCase>().execute(null);
     await sl<UpdateAuthStatusUseCase>().execute((status: AuthStatus.guest, userId: null));
   }
+
+  void dispose() {
+    _sessionSubscription.cancel();
+  }
 }
 
 /// Notifies GoRouter when SessionBloc state changes.
@@ -139,10 +144,17 @@ class AppRouter {
 /// This makes GoRouter react to session changes and re-run redirect logic.
 class SessionBlocRefreshNotifier extends ChangeNotifier {
   final SessionBloc sessionBloc;
+  late final StreamSubscription _subscription;
 
   SessionBlocRefreshNotifier(this.sessionBloc) {
-    sessionBloc.stream.listen((_) {
+    _subscription = sessionBloc.stream.listen((_) {
       notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }
