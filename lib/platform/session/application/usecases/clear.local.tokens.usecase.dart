@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../repositories/session.token.repository.port.dart' show ISessionTokenRepository;
+import '../repositories/session.token.local.repository.port.dart' show ISessionTokenLocalRepository;
 
 /// Use case for clearing session tokens from local storage.
 ///
@@ -20,12 +20,12 @@ import '../repositories/session.token.repository.port.dart' show ISessionTokenRe
 /// Preserves:
 /// - device_id (persists across sessions)
 class ClearLocalTokensUseCase implements IUseCase<void, void> {
-  final ISessionTokenRepository _tokenRepository;
+  final ISessionTokenLocalRepository _tokenLocalRepository;
 
-  const ClearLocalTokensUseCase(this._tokenRepository);
+  const ClearLocalTokensUseCase(this._tokenLocalRepository);
 
   @override
   Future<Either<Failure, void>> execute(void request) async {
-    return await _tokenRepository.clearLocalTokens();
+    return await _tokenLocalRepository.clearLocalTokens();
   }
 }
