@@ -12,7 +12,10 @@ import '../../application/data-sources/auth.remote.datasource.port.dart' show IA
 import '../../application/data-sources/facebook.auth.datasource.port.dart'
     show IFacebookAuthDataSource;
 import '../../application/data-sources/google.auth.datasource.port.dart' show IGoogleAuthDataSource;
-import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
+import '../../application/repositories/auth.cached.repository.port.dart' show IAuthCachedRepository;
+import '../../application/repositories/auth.local.repository.port.dart' show IAuthLocalRepository;
+import '../../application/repositories/auth.transient.repository.port.dart'
+    show IAuthTransientRepository;
 import '../../application/usecases/clear.local.user.data.usecase.dart'
     show ClearLocalUserDataUseCase;
 import '../../application/usecases/facebooksignin.usecase.dart' show FacebookSignInUseCase;
@@ -49,35 +52,61 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerSingleton<IGoogleAuthDataSource>(GoogleAuthDataSource(GoogleSignIn.instance));
   sl.registerSingleton<IFacebookAuthDataSource>(FacebookAuthDataSource(FacebookAuth.instance));
 
-  // Repository
-  sl.registerSingleton<AuthRemoteRepository>(
-    AuthRemoteRepository(
-      sl<IAuthRemoteDataSource>(),
-      sl<IGoogleAuthDataSource>(),
-      sl<IFacebookAuthDataSource>(),
-      sl<ISessionTokenSecureDataSource>(),
-    ),
-  );
-  sl.registerSingleton<IAuthRepository>(
-    AuthCachedRepository(
-      sl<AuthRemoteRepository>(),
-      sl<IAuthLocalDataSource>(),
-      sl<ISessionTokenSecureDataSource>(),
-    ),
+  // Repositories
+  // Register remote repository (implements both cacheable and transient operations)
+  final authRemoteRepository = AuthRemoteRepository(
+    sl<IAuthRemoteDataSource>(),
+    sl<IGoogleAuthDataSource>(),
+    sl<IFacebookAuthDataSource>(),
+    sl<ISessionTokenSecureDataSource>(),
   );
 
+  // Register cached repository (wraps remote for cacheable ops, implements local ops)
+  // AuthCachedRepository only implements IAuthCachedRepository and IAuthLocalRepository
+  // It delegates to the remote repository for cacheable operations and adds caching
+  final authCachedRepository = AuthCachedRepository(
+    authRemoteRepository,
+    sl<IAuthLocalDataSource>(),
+    sl<ISessionTokenSecureDataSource>(),
+  );
+
+  // Register interfaces
+  // Transient operations -> use remote repository directly (no caching needed)
+  sl.registerSingleton<IAuthTransientRepository>(authRemoteRepository);
+
+  // Cacheable operations -> use cached repository (adds caching layer)
+  sl.registerSingleton<IAuthCachedRepository>(authCachedRepository);
+
+  // Local operations -> use cached repository
+  sl.registerSingleton<IAuthLocalRepository>(authCachedRepository);
+
+  // Combined interface -> not used directly, here for backward compatibility if needed
+  // Note: IAuthRepository can't be fully satisfied by a single implementation anymore
+  // Use specific interfaces (IAuthCachedRepository, IAuthTransientRepository, IAuthLocalRepository)
+
   // Use cases
-  sl.registerFactory<SignInUseCase>(() => SignInUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<SignUpUseCase>(() => SignUpUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<ResendOtpUseCase>(() => ResendOtpUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<ForgotPasswordUseCase>(() => ForgotPasswordUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<ResetPasswordUseCase>(() => ResetPasswordUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<GoogleSignInUseCase>(() => GoogleSignInUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<FacebookSignInUseCase>(() => FacebookSignInUseCase(sl<IAuthRepository>()));
-  sl.registerFactory<SignOutUseCase>(() => SignOutUseCase(sl<IAuthRepository>()));
+  // Cacheable operations - use cached repository for caching
+  sl.registerFactory<SignInUseCase>(() => SignInUseCase(sl<IAuthCachedRepository>()));
+  sl.registerFactory<SignUpUseCase>(() => SignUpUseCase(sl<IAuthCachedRepository>()));
+  sl.registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl<IAuthCachedRepository>()));
+  sl.registerFactory<GoogleSignInUseCase>(() => GoogleSignInUseCase(sl<IAuthCachedRepository>()));
+  sl.registerFactory<FacebookSignInUseCase>(
+    () => FacebookSignInUseCase(sl<IAuthCachedRepository>()),
+  );
+  sl.registerFactory<SignOutUseCase>(() => SignOutUseCase(sl<IAuthCachedRepository>()));
+
+  // Transient operations - use remote repository directly (no caching)
+  sl.registerFactory<ResendOtpUseCase>(() => ResendOtpUseCase(sl<IAuthTransientRepository>()));
+  sl.registerFactory<ForgotPasswordUseCase>(
+    () => ForgotPasswordUseCase(sl<IAuthTransientRepository>()),
+  );
+  sl.registerFactory<ResetPasswordUseCase>(
+    () => ResetPasswordUseCase(sl<IAuthTransientRepository>()),
+  );
+
+  // Local operations - use cached repository
   sl.registerFactory<ClearLocalUserDataUseCase>(
-    () => ClearLocalUserDataUseCase(sl<IAuthRepository>()),
+    () => ClearLocalUserDataUseCase(sl<IAuthLocalRepository>()),
   );
 
   // BLoCs
