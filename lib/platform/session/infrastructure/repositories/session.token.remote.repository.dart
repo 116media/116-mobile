@@ -42,4 +42,11 @@ class SessionTokenRemoteRepository implements ISessionTokenRepository {
       return Left(ProblemMapper.toFailure(exception));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> clearLocalTokens() async {
+    // Remote repository doesn't handle local data clearing
+    // This is handled by the cached repository decorator
+    return const Right(null);
+  }
 }
