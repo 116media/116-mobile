@@ -9,23 +9,13 @@ import '../../../../shared/infrastructure/exceptions/local/cache.exception.dart'
     show CacheException;
 import '../../../../shared/infrastructure/mappers/problem.mapper.dart' show ProblemMapper;
 import '../../application/data-sources/auth.local.datasource.port.dart' show IAuthLocalDataSource;
-import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
+import '../../application/repositories/auth.cached.repository.port.dart' show IAuthCachedRepository;
+import '../../application/repositories/auth.local.repository.port.dart' show IAuthLocalRepository;
 import '../../domain/entities/auth-response/auth.response.entity.dart' show AuthResponseEntity;
-import '../../domain/entities/forgotpassword-response/forgotpassword.response.entity.dart'
-    show ForgotPasswordResponseEntity;
-import '../../domain/entities/resendotp-response/resendotp.response.entity.dart'
-    show ResendOtpResponseEntity;
-import '../../domain/entities/resetpassword-response/resetpassword.response.entity.dart'
-    show ResetPasswordResponseEntity;
 import '../../domain/entities/signout-response/signout.response.entity.dart'
     show SignOutResponseEntity;
 import '../../domain/entities/verifyotp-response/verifyotp.response.entity.dart'
     show VerifyOtpResponseEntity;
-import '../../presentation/models/forgotpassword.credentials.model.dart'
-    show ForgotPasswordCredentialsModel;
-import '../../presentation/models/resendotp.credentials.model.dart' show ResendOtpCredentialsModel;
-import '../../presentation/models/resetpassword.credentials.model.dart'
-    show ResetPasswordCredentialsModel;
 import '../../presentation/models/signin.credentials.model.dart' show SignInCredentialsModel;
 import '../../presentation/models/signup.credentials.model.dart' show SignUpCredentialsModel;
 import '../../presentation/models/verifyotp.credentials.model.dart' show VerifyOtpCredentialsModel;
@@ -33,17 +23,17 @@ import '../models/hive/user/user.model.dart' show UserModel;
 
 /// Cached authentication repository (decorator pattern).
 ///
-/// Wraps the inner repository and adds local caching functionality.
+/// Wraps the cacheable repository operations and adds local caching functionality.
 /// Delegates remote operations to the inner repository, then persists
 /// successful results to local storage. Stores session tokens securely
 /// using SessionSecureDataSource and user data in Hive via LocalDataSource.
-class AuthCachedRepository implements IAuthRepository {
-  final IAuthRepository _remoteRepository;
+class AuthCachedRepository implements IAuthCachedRepository, IAuthLocalRepository {
+  final IAuthCachedRepository _cachedRepository;
   final IAuthLocalDataSource _localDataSource;
   final ISessionTokenSecureDataSource _sessionTokenSecureDataSource;
 
   const AuthCachedRepository(
-    this._remoteRepository,
+    this._cachedRepository,
     this._localDataSource,
     this._sessionTokenSecureDataSource,
   );
@@ -66,7 +56,7 @@ class AuthCachedRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signIn(SignInCredentialsModel credentials) async {
-    final result = await _remoteRepository.signIn(credentials);
+    final result = await _cachedRepository.signIn(credentials);
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
@@ -82,7 +72,7 @@ class AuthCachedRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signUp(SignUpCredentialsModel credentials) async {
-    final result = await _remoteRepository.signUp(credentials);
+    final result = await _cachedRepository.signUp(credentials);
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
@@ -100,7 +90,7 @@ class AuthCachedRepository implements IAuthRepository {
   Future<Either<Failure, VerifyOtpResponseEntity>> verifyOtp(
     VerifyOtpCredentialsModel credentials,
   ) async {
-    final result = await _remoteRepository.verifyOtp(credentials);
+    final result = await _cachedRepository.verifyOtp(credentials);
 
     // Update cached user's isVerified status if successful
     return result.fold((failure) => Left(failure), (verifyOtpEntity) async {
@@ -122,35 +112,8 @@ class AuthCachedRepository implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, ResendOtpResponseEntity>> resendOtp(
-    ResendOtpCredentialsModel credentials,
-  ) async {
-    // No caching needed - resendOtp is a transient operation that only triggers
-    // an email send. The success/failure result doesn't need to be persisted.
-    return _remoteRepository.resendOtp(credentials);
-  }
-
-  @override
-  Future<Either<Failure, ForgotPasswordResponseEntity>> forgotPassword(
-    ForgotPasswordCredentialsModel credentials,
-  ) async {
-    // No caching needed - forgotPassword is a transient operation that only triggers
-    // a password reset OTP email send. The success/failure result doesn't need to be persisted.
-    return _remoteRepository.forgotPassword(credentials);
-  }
-
-  @override
-  Future<Either<Failure, ResetPasswordResponseEntity>> resetPassword(
-    ResetPasswordCredentialsModel credentials,
-  ) async {
-    // No caching needed - resetPassword is a transient operation that changes password.
-    // The success/failure result doesn't need to be persisted.
-    return _remoteRepository.resetPassword(credentials);
-  }
-
-  @override
   Future<Either<Failure, AuthResponseEntity>> signInWithGoogle() async {
-    final result = await _remoteRepository.signInWithGoogle();
+    final result = await _cachedRepository.signInWithGoogle();
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
@@ -166,7 +129,7 @@ class AuthCachedRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, AuthResponseEntity>> signInWithFacebook() async {
-    final result = await _remoteRepository.signInWithFacebook();
+    final result = await _cachedRepository.signInWithFacebook();
 
     // Only persist if successful
     return result.fold((failure) => Left(failure), (authEntity) async {
@@ -182,7 +145,7 @@ class AuthCachedRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, SignOutResponseEntity>> signOut() async {
-    final result = await _remoteRepository.signOut();
+    final result = await _cachedRepository.signOut();
 
     // Only clear cache if successful
     return result.fold((failure) => Left(failure), (authEntity) async {

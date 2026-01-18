@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart' show Either;
 
 import '../../../../shared/application/usecases/usecase.port.dart' show IUseCase;
 import '../../../../shared/domain/failures/failure.dart' show Failure;
-import '../repositories/auth.repository.port.dart' show IAuthRepository;
+import '../repositories/auth.local.repository.port.dart' show IAuthLocalRepository;
 
 /// Use case for clearing local user data without remote API call.
 ///
@@ -18,12 +18,12 @@ import '../repositories/auth.repository.port.dart' show IAuthRepository;
 /// - Session state (handled by session module)
 /// - Device ID (persists across sessions)
 class ClearLocalUserDataUseCase implements IUseCase<void, void> {
-  final IAuthRepository _authRepository;
+  final IAuthLocalRepository _authLocalRepository;
 
-  const ClearLocalUserDataUseCase(this._authRepository);
+  const ClearLocalUserDataUseCase(this._authLocalRepository);
 
   @override
   Future<Either<Failure, void>> execute(void request) async {
-    return await _authRepository.clearLocalUserData();
+    return await _authLocalRepository.clearLocalUserData();
   }
 }

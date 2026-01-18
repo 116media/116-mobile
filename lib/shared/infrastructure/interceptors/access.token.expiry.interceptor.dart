@@ -3,8 +3,8 @@ import 'package:chopper/chopper.dart' show Chain, Interceptor, Response, applyHe
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:http_status/http_status.dart' show HttpStatusCode;
 
-import '../../../platform/session/application/repositories/session.token.repository.port.dart'
-    show ISessionTokenRepository;
+import '../../../platform/session/application/repositories/session.token.remote.repository.port.dart'
+    show ISessionTokenRemoteRepository;
 import '../mappers/problem.mapper.dart' show ProblemMapper;
 
 /// Interceptor that refreshes expired access tokens automatically.
@@ -38,7 +38,7 @@ class AccessTokenExpiryInterceptor implements Interceptor {
 
   @override
   FutureOr<Response<BodyType>> intercept<BodyType>(Chain<BodyType> chain) async {
-    final sessionTokenRepository = sl<ISessionTokenRepository>();
+    final sessionTokenRepository = sl<ISessionTokenRemoteRepository>();
 
     final request = chain.request;
     final response = await chain.proceed(request);

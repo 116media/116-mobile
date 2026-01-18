@@ -15,8 +15,10 @@ import '../../application/data-sources/session.token.secure.datasource.port.dart
 import '../../application/repositories/device.repository.port.dart' show IDeviceRepository;
 import '../../application/repositories/session.state.repository.port.dart'
     show ISessionStateRepository;
-import '../../application/repositories/session.token.repository.port.dart'
-    show ISessionTokenRepository;
+import '../../application/repositories/session.token.local.repository.port.dart'
+    show ISessionTokenLocalRepository;
+import '../../application/repositories/session.token.remote.repository.port.dart'
+    show ISessionTokenRemoteRepository;
 import '../../application/usecases/clear.local.tokens.usecase.dart' show ClearLocalTokensUseCase;
 import '../../application/usecases/clear.session.usecase.dart' show ClearSessionUseCase;
 import '../../application/usecases/get.session.state.usecase.dart' show GetSessionStateUseCase;
@@ -66,24 +68,28 @@ Future<void> registerSessionDependencies(GetIt sl) async {
   );
   sl.registerSingleton<IDeviceSecureDataSource>(DeviceSecureDataSource(sl<FlutterSecureStorage>()));
 
-  // Repository
+  // Repositories
   sl.registerSingleton<ISessionStateRepository>(
     SessionStateRepository(sl<ISessionStateLocalDataSource>()),
   );
   sl.registerSingleton<IDeviceRepository>(DeviceCachedRepository(sl<IDeviceSecureDataSource>()));
-  sl.registerSingleton<SessionTokenRemoteRepository>(
-    SessionTokenRemoteRepository(
-      sl<ISessionRemoteDataSource>(),
-      sl<ISessionTokenSecureDataSource>(),
-    ),
+
+  // Session token repositories
+  final sessionTokenRemoteRepository = SessionTokenRemoteRepository(
+    sl<ISessionRemoteDataSource>(),
+    sl<ISessionTokenSecureDataSource>(),
   );
-  sl.registerSingleton<ISessionTokenRepository>(
-    SessionTokenCachedRepository(
-      sl<SessionTokenRemoteRepository>(),
-      sl<IAuthLocalDataSource>(),
-      sl<ISessionTokenSecureDataSource>(),
-    ),
+
+  final sessionTokenCachedRepository = SessionTokenCachedRepository(
+    sessionTokenRemoteRepository,
+    sl<IAuthLocalDataSource>(),
+    sl<ISessionTokenSecureDataSource>(),
   );
+
+  // Register the cached repository as remote, local, and combined repository
+  // Note: Cached repository wraps remote operations with caching
+  sl.registerSingleton<ISessionTokenRemoteRepository>(sessionTokenCachedRepository);
+  sl.registerSingleton<ISessionTokenLocalRepository>(sessionTokenCachedRepository);
 
   // Use cases
   sl.registerFactory<GetSessionStateUseCase>(
@@ -100,7 +106,7 @@ Future<void> registerSessionDependencies(GetIt sl) async {
   );
   sl.registerFactory<ClearSessionUseCase>(() => ClearSessionUseCase(sl<ISessionStateRepository>()));
   sl.registerFactory<ClearLocalTokensUseCase>(
-    () => ClearLocalTokensUseCase(sl<ISessionTokenRepository>()),
+    () => ClearLocalTokensUseCase(sl<ISessionTokenLocalRepository>()),
   );
   sl.registerFactory<WatchSessionStateUseCase>(
     () => WatchSessionStateUseCase(sl<ISessionStateRepository>()),
