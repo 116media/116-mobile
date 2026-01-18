@@ -57,10 +57,6 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
 
   final GlobalKey<State<VerifyOtpForm>> _otpFormKey = GlobalKey<State<VerifyOtpForm>>();
 
-  void _showErrorMessage(String message) {
-    DialogUtil.error(context, message: message);
-  }
-
   void _showSuccessMessage(String message) {
     DialogUtil.success(context, message: message);
   }
@@ -81,7 +77,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
       _moveToStep(ForgotPasswordStep.verifyOtp);
       _showSuccessMessage(t.auth.forgotPassword.success);
     } else if (state is ForgotPasswordFailure) {
-      _showErrorMessage(state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -91,7 +87,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
       _showSuccessMessage(t.auth.verifyOtp.success);
     } else if (state is VerifyOtpFailure) {
       _clearOtpField();
-      _showErrorMessage(state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -99,7 +95,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
     if (state is ResendOtpSuccess) {
       _showSuccessMessage(t.auth.resendOtp.success);
     } else if (state is ResendOtpFailure) {
-      _showErrorMessage(state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -122,7 +118,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
         }
       });
     } else if (state is ResetPasswordFailure) {
-      _showErrorMessage(state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

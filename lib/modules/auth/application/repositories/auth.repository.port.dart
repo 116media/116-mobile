@@ -96,4 +96,11 @@ abstract class IAuthRepository {
   /// Returns [Right] with [SignOutResponseEntity] on success,
   /// or [Left] with [Failure] if operation fails.
   Future<Either<Failure, SignOutResponseEntity>> signOut();
+
+  /// Clears local user data without making remote API call.
+  ///
+  /// Removes profile data from hive without attempting to invalidate the session on the server.
+  /// Returns [Right] with void on success,
+  /// or [Left] with [Failure] if local clear operation fails.
+  Future<Either<Failure, void>> clearLocalUserData();
 }

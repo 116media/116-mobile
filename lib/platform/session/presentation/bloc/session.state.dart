@@ -40,3 +40,10 @@ class SessionFailure extends SessionState {
   @override
   List<Object?> get props => [failure];
 }
+
+/// State when refresh token has expired.
+///
+/// Emitted when the user's session has expired due to refresh token expiry.
+class SessionExpired extends SessionState {
+  const SessionExpired();
+}

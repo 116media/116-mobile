@@ -17,6 +17,7 @@ import '../../application/repositories/session.state.repository.port.dart'
     show ISessionStateRepository;
 import '../../application/repositories/session.token.repository.port.dart'
     show ISessionTokenRepository;
+import '../../application/usecases/clear.local.tokens.usecase.dart' show ClearLocalTokensUseCase;
 import '../../application/usecases/clear.session.usecase.dart' show ClearSessionUseCase;
 import '../../application/usecases/get.session.state.usecase.dart' show GetSessionStateUseCase;
 import '../../application/usecases/initialize.device.usecase.dart' show InitializeDeviceUseCase;
@@ -38,6 +39,9 @@ import '../repositories/session.token.cached.repository.dart' show SessionTokenC
 import '../repositories/session.token.remote.repository.dart' show SessionTokenRemoteRepository;
 
 /// Registers all session module dependencies.
+///
+/// Note: Secure storage and token repositories are initialized here
+/// to support access/refresh token rotation and device-aware requests.
 Future<void> registerSessionDependencies(GetIt sl) async {
   // Hive box
   final sessionBox = await Hive.openBox<dynamic>(kSessionBox);
@@ -95,6 +99,9 @@ Future<void> registerSessionDependencies(GetIt sl) async {
     () => UpdateAuthStatusUseCase(sl<ISessionStateRepository>()),
   );
   sl.registerFactory<ClearSessionUseCase>(() => ClearSessionUseCase(sl<ISessionStateRepository>()));
+  sl.registerFactory<ClearLocalTokensUseCase>(
+    () => ClearLocalTokensUseCase(sl<ISessionTokenRepository>()),
+  );
   sl.registerFactory<WatchSessionStateUseCase>(
     () => WatchSessionStateUseCase(sl<ISessionStateRepository>()),
   );
@@ -102,8 +109,8 @@ Future<void> registerSessionDependencies(GetIt sl) async {
     () => InitializeDeviceUseCase(sl<IDeviceRepository>()),
   );
 
-  // BLoC
-  sl.registerFactory<SessionBloc>(
-    () => SessionBloc(sl<GetSessionStateUseCase>(), sl<WatchSessionStateUseCase>()),
+  // BLoC (singleton to ensure same instance across interceptors and UI)
+  sl.registerSingleton<SessionBloc>(
+    SessionBloc(sl<GetSessionStateUseCase>(), sl<WatchSessionStateUseCase>()),
   );
 }

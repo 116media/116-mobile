@@ -13,6 +13,8 @@ import '../../application/data-sources/facebook.auth.datasource.port.dart'
     show IFacebookAuthDataSource;
 import '../../application/data-sources/google.auth.datasource.port.dart' show IGoogleAuthDataSource;
 import '../../application/repositories/auth.repository.port.dart' show IAuthRepository;
+import '../../application/usecases/clear.local.user.data.usecase.dart'
+    show ClearLocalUserDataUseCase;
 import '../../application/usecases/facebooksignin.usecase.dart' show FacebookSignInUseCase;
 import '../../application/usecases/forgotpassword.usecase.dart' show ForgotPasswordUseCase;
 import '../../application/usecases/googlesignin.usecase.dart' show GoogleSignInUseCase;
@@ -74,6 +76,9 @@ Future<void> registerAuthDependencies(GetIt sl) async {
   sl.registerFactory<GoogleSignInUseCase>(() => GoogleSignInUseCase(sl<IAuthRepository>()));
   sl.registerFactory<FacebookSignInUseCase>(() => FacebookSignInUseCase(sl<IAuthRepository>()));
   sl.registerFactory<SignOutUseCase>(() => SignOutUseCase(sl<IAuthRepository>()));
+  sl.registerFactory<ClearLocalUserDataUseCase>(
+    () => ClearLocalUserDataUseCase(sl<IAuthRepository>()),
+  );
 
   // BLoCs
   sl.registerFactory<SignInBloc>(

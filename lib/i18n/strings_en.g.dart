@@ -293,6 +293,8 @@ class TranslationsSessionEn {
   final Translations _root; // ignore: unused_field
 
   // Translations
+  late final TranslationsSessionSessionExpiryEn sessionExpiry =
+      TranslationsSessionSessionExpiryEn.internal(_root);
   late final TranslationsSessionCacheErrorEn cacheError = TranslationsSessionCacheErrorEn.internal(
     _root,
   );
@@ -947,6 +949,25 @@ class TranslationsPreferencesCacheErrorEn {
   ///
   /// fr: 'Échec de la suppression des préférences: {error}'
   String clearPreferences({required Object error}) => 'Failed to clear preferences: ${error}';
+}
+
+// Path: session.sessionExpiry
+class TranslationsSessionSessionExpiryEn {
+  TranslationsSessionSessionExpiryEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// en: 'Session Expired'
+  ///
+  /// fr: 'Session expirée'
+  String get title => 'Session Expired';
+
+  /// en: 'Your session has expired. Please sign in again.'
+  ///
+  /// fr: 'Votre session a expiré. Veuillez vous reconnecter.'
+  String get message => 'Your session has expired. Please sign in again.';
 }
 
 // Path: session.cacheError
@@ -1752,6 +1773,8 @@ extension on Translations {
         ({required Object error}) => 'Failed to save preferences: ${error}',
       'preferences.cacheError.clearPreferences' =>
         ({required Object error}) => 'Failed to clear preferences: ${error}',
+      'session.sessionExpiry.title' => 'Session Expired',
+      'session.sessionExpiry.message' => 'Your session has expired. Please sign in again.',
       'session.cacheError.setSession' =>
         ({required Object error}) => 'Failed to save session state: ${error}',
       'session.cacheError.getSession' =>

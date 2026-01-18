@@ -31,13 +31,4 @@ abstract class IDeviceSecureDataSource {
   /// **Throws:**
   /// - [Exception] if retrieval fails (platform error)
   Future<String?> getDeviceId();
-
-  /// Clears the stored device ID.
-  ///
-  /// Removes device ID from secure storage. Used for testing or
-  /// when user wants to reset device identification.
-  ///
-  /// **Throws:**
-  /// - [Exception] if deletion fails (platform error)
-  Future<void> clearDeviceId();
 }

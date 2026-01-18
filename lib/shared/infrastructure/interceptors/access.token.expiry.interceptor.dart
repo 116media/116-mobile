@@ -29,10 +29,10 @@ import '../mappers/problem.mapper.dart' show ProblemMapper;
 /// **Note:**
 /// This interceptor should run AFTER [AuthInterceptor] so the initial
 /// request includes the (possibly expired) access token.
-class TokenRefreshInterceptor implements Interceptor {
+class AccessTokenExpiryInterceptor implements Interceptor {
   final GetIt sl;
 
-  TokenRefreshInterceptor(this.sl);
+  AccessTokenExpiryInterceptor(this.sl);
 
   static const _retryHeader = 'x-token-refresh-retry';
 

@@ -135,7 +135,7 @@ class _UpdateAvatarDialogContentState extends State<_UpdateAvatarDialogContent> 
         }
       });
     } else if (state is UpdateAvatarFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

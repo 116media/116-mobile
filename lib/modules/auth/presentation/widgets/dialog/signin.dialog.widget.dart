@@ -50,7 +50,7 @@ class _SignInDialogState extends State<SignInDialog> {
       Navigator.of(ctx).pop();
       ctx.go(kHomeRoutePath);
     } else if (state is SignInFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -63,7 +63,7 @@ class _SignInDialogState extends State<SignInDialog> {
       Navigator.of(ctx).pop();
       ctx.go(kHomeRoutePath);
     } else if (state is GoogleSignInFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -76,7 +76,7 @@ class _SignInDialogState extends State<SignInDialog> {
       Navigator.of(ctx).pop();
       ctx.go(kHomeRoutePath);
     } else if (state is FacebookSignInFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

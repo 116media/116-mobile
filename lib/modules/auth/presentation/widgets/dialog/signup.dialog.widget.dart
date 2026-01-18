@@ -48,7 +48,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
       final String email = state.authResponse.user.email ?? '';
       await showAuthDialog(context, VerifyOtpDialog(email: email), closeExisting: true);
     } else if (state is SignUpFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -61,7 +61,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
       Navigator.of(ctx).pop();
       ctx.go(kHomeRoutePath);
     } else if (state is GoogleSignInFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 
@@ -74,7 +74,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
       Navigator.of(ctx).pop();
       ctx.go(kHomeRoutePath);
     } else if (state is FacebookSignInFailure) {
-      DialogUtil.error(context, message: state.failure.detail);
+      DialogUtil.error(context, failure: state.failure);
     }
   }
 

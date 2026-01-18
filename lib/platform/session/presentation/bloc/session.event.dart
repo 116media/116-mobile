@@ -24,3 +24,12 @@ class SessionStateChanged extends SessionEvent {
   @override
   List<Object?> get props => [sessionState];
 }
+
+/// Event triggered when refresh token expires.
+///
+/// This event is typically triggered by the RefreshTokenExpiryInterceptor
+/// when a 403 response with RefreshTokenExpiryException is received.
+/// It signals that the user's session has expired and they need to re-authenticate.
+class SessionExpiredTriggered extends SessionEvent {
+  const SessionExpiredTriggered();
+}

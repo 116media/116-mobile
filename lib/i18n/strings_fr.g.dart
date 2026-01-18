@@ -252,6 +252,9 @@ class TranslationsSessionFr extends TranslationsSessionEn {
 
   // Translations
   @override
+  late final TranslationsSessionSessionExpiryFr sessionExpiry =
+      TranslationsSessionSessionExpiryFr._(_root);
+  @override
   late final TranslationsSessionCacheErrorFr cacheError = TranslationsSessionCacheErrorFr._(_root);
 }
 
@@ -709,6 +712,21 @@ class TranslationsPreferencesCacheErrorFr extends TranslationsPreferencesCacheEr
   @override
   String clearPreferences({required Object error}) =>
       'Échec de la suppression des préférences: ${error}';
+}
+
+// Path: session.sessionExpiry
+class TranslationsSessionSessionExpiryFr extends TranslationsSessionSessionExpiryEn {
+  TranslationsSessionSessionExpiryFr._(TranslationsFr root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsFr _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => 'Session expirée';
+  @override
+  String get message => 'Votre session a expiré. Veuillez vous reconnecter.';
 }
 
 // Path: session.cacheError
@@ -1224,6 +1242,8 @@ extension on TranslationsFr {
         ({required Object error}) => 'Échec de la sauvegarde des préférences: ${error}',
       'preferences.cacheError.clearPreferences' =>
         ({required Object error}) => 'Échec de la suppression des préférences: ${error}',
+      'session.sessionExpiry.title' => 'Session expirée',
+      'session.sessionExpiry.message' => 'Votre session a expiré. Veuillez vous reconnecter.',
       'session.cacheError.setSession' =>
         ({required Object error}) => 'Échec lors de la sauvegarde de la session : ${error}',
       'session.cacheError.getSession' =>

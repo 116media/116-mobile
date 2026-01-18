@@ -171,4 +171,11 @@ class AuthRemoteRepository implements IAuthRepository {
       return Left(ProblemMapper.toFailure(exception));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> clearLocalUserData() async {
+    // Remote repository doesn't handle local data clearing
+    // This is handled by the cached repository decorator
+    return const Right(null);
+  }
 }

@@ -24,9 +24,4 @@ class DeviceSecureDataSource implements IDeviceSecureDataSource {
   Future<String?> getDeviceId() async {
     return await _secureStorage.read(key: kDeviceIdKey);
   }
-
-  @override
-  Future<void> clearDeviceId() async {
-    await _secureStorage.delete(key: kDeviceIdKey);
-  }
 }

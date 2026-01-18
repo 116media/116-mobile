@@ -33,7 +33,7 @@ class ChangePasswordDialog extends StatelessWidget {
         }
       });
     } else if (state is ChangePasswordFailure) {
-      DialogUtil.error(ctx, message: state.failure.detail);
+      DialogUtil.error(ctx, failure: state.failure);
     }
   }
 
