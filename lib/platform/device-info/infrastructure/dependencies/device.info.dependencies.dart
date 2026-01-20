@@ -6,9 +6,6 @@ import '../../application/data-sources/device.info.datasource.port.dart' show ID
 import '../data-sources/device.info.datasource.dart' show DeviceInfoDataSource;
 
 /// Registers device info dependencies in the service locator.
-///
-/// Note: IpCountryLookup is registered in the main service locator
-/// before this function is called, so it can be shared across features.
 Future<void> registerDeviceInfoDependencies(GetIt sl) async {
   sl.registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
 
