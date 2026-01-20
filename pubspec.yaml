@@ -53,6 +53,7 @@ dependencies:
   slang_flutter: ^4.11.0
   uuid: ^4.4.2
   flutter_secure_storage: ^9.2.4
+  device_info_plus: ^12.3.0
 
 dev_dependencies:
   flutter_test:
