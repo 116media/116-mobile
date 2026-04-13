@@ -19,53 +19,1961 @@ final class _$Api116 extends Api116 {
   final Type definitionType = Api116;
 
   @override
+  Future<Response<AdminDeleteArticleCommentResponse>>
+  _AdminDeleteArticleComment({
+    required String? id,
+    required String? commentId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Soft-deletes any article comment regardless of ownership.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin or SuperAdmin role
+
+    - Returns 404 Not Found if the comment does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Delete any article comment',
+      operationId: 'AdminDeleteArticleComment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/articles/${id}/comments/${commentId}',
+    );
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeleteArticleCommentResponse,
+      AdminDeleteArticleCommentResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetArticleByIdResponse>> _AdminGetArticleById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the full details of a single article by its unique identifier.
+    
+
+    Returns the complete article including body content, cover image, SEO metadata,
+    all associated images, and applied tags. Suitable for the article editing view.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with article details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get article details',
+      operationId: 'AdminGetArticleById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetArticleByIdResponse, AdminGetArticleByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateArticleResponse>> _UpdateArticle({
+    required String? id,
+    required AdminUpdateArticleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates all editable fields of an article in a single call. This endpoint serves
+    two purposes: (1) step 2 of the two-step article creation flow — after the admin
+    clicks "Save Draft" (POST), this PUT call fills in the headline, body, and cover
+    image before clicking "Submit"; (2) any subsequent edit while the article is still
+    in a mutable status — for example correcting a typo in the title of a rejected article.
+    \n
+    Covers metadata (title, slug, category), content (headline, body, cover image),
+    commerce fields (customer, order item), promotion flags (social boost, featured
+    placement), and SEO metadata (meta title, meta description).
+    \n
+    Allowed when the article status is <c>Draft</c>, <c>PendingPayment</c>,
+    <c>PendingReview</c>, or <c>Rejected</c>. Attempting to update an article
+    in <c>Approved</c>, <c>Published</c>, or <c>Archived</c> status will return
+    a 400 Bad Request.
+    \n
+    The handler computes an image diff between the previous body and the new body.
+    Any Cloudinary images removed from the body or cover are automatically deleted
+    from Cloudinary storage and purged from the <c>article_images</c> table after commit.
+    \n
+    **Slug uniqueness:** The slug must be unique across all articles. If the provided
+    slug belongs to a different article, the request will return 409 Conflict.
+    \n
+    **Headline requirements:** Minimum 100 characters, maximum 300 characters.
+    \n
+    **Commerce fields:** <c>customerId</c> and <c>orderItemId</c> must be provided
+    together or both omitted. Providing only one will return a 400 Bad Request.
+    \n
+    **Featured placement:** <c>featuredUntil</c> must be a future date when provided.
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have Admin or SuperAdmin role\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with updated article details on success\n
+    - Returns 400 Bad Request if status is not editable, or validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks Admin role\n
+    - Returns 404 Not Found if the article or category does not exist\n
+    - Returns 409 Conflict if the slug is already taken by another article\n
+    - Returns 429 Too Many Requests if rate limit is exceeded\n''',
+      summary: 'Update article',
+      operationId: 'UpdateArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminUpdateArticleResponse, AdminUpdateArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminDeleteArticleResponse>> _DeleteArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Permanently deletes an article and all its associated Cloudinary image assets.
+    
+
+    Only articles in <c>Draft</c> or <c>Rejected</c> status can be deleted.
+    Attempting to delete an article in any other status (Published, Approved,
+    PendingReview, PendingPayment) will return a 400 Bad Request.
+    
+
+    For published or approved articles, use the archive endpoint instead to
+    remove the article from public feeds without permanently deleting it.
+    
+
+    This operation is <b>irreversible</b> — all Cloudinary assets are deleted
+    from cloud storage before the database record is removed.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the article is not in Draft or Rejected status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Permanently delete an article',
+      operationId: 'DeleteArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminDeleteArticleResponse, AdminDeleteArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetAllArticlesResponse>> _AdminGetAllArticles({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    Object? status,
+    String? categoryId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of all articles for admin management.
+    
+
+    Supports optional filtering by content status (e.g., Draft, PendingReview, Published)
+    and by category. Results are returned as a paginated list with summary information
+    suitable for list and management views.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated article list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List all articles',
+      operationId: 'AdminGetAllArticles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'status': status,
+      'categoryId': categoryId,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllArticlesResponse, AdminGetAllArticlesResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreateArticleResponse>> _CreateArticle({
+    required AdminCreateArticleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new article shell (step 1 of the two-step article creation flow).
+    
+
+    The article is created with a title, slug, and category only. The body and headline
+    default to empty strings and must be filled in via
+    <c>PUT /api/v1/admin/articles/{id}</c> (step 2) before the article can be submitted.
+    
+
+    The returned <c>articleId</c> must be stored by the frontend and used as the upload
+    target for inline body images via the image upload endpoint.
+    
+
+    For paid (commissioned) articles, both <c>customerId</c> and <c>orderItemId</c>
+    must be provided together. For free editorial content, both must be omitted.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with article details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the specified category does not exist
+
+    - Returns 409 Conflict if an article with the same slug already exists
+''',
+      summary: 'Create a new article draft',
+      operationId: 'CreateArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateArticleResponse, AdminCreateArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUploadArticleImageResponse>> _UploadArticleImage({
+    required String? id,
+    required String? imageType,
+    required MultipartFile file,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Uploads an image for an article and creates an article image tracking record.
+    
+
+    Images can be of type <c>Cover</c> (the article\'s primary cover image) or
+    <c>Body</c> (an inline image embedded in the article\'s rich-text body).
+    
+
+    The returned <c>url</c> should be used in the article body HTML for body images,
+    or passed as <c>coverImageUrl</c> when updating the article content for cover images.
+    
+
+    Accepts multipart/form-data with an image file and an image type.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with image details and location header on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if the rate limit is exceeded
+''',
+      summary: 'Upload an image for an article',
+      operationId: 'UploadArticleImage',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/images');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'imageType': imageType,
+    };
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('file', file),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUploadArticleImageResponse, AdminUploadArticleImageResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateArticleTagsResponse>> _UpdateArticleTags({
+    required String? id,
+    required AdminUpdateArticleTagsRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Replaces the complete set of tags assigned to an article.
+    
+
+    All existing tag associations are removed and replaced with the provided list of tag IDs.
+    Passing an empty list will remove all tags from the article.
+    
+
+    All tag identifiers are validated to exist before any changes are applied.
+    If any tag ID is not found, the operation returns 404 Not Found and no changes are made.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the article or any of the specified tags do not exist
+''',
+      summary: 'Update article tags',
+      operationId: 'UpdateArticleTags',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/tags');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateArticleTagsResponse, AdminUpdateArticleTagsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateArticleSeoResponse>> _UpdateArticleSeo({
+    required String? id,
+    required AdminUpdateArticleSeoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the SEO metadata of an article, including the custom meta title
+    and meta description used for search engine optimization.
+    
+
+    The meta title falls back to the article\'s main title if not provided.
+    The meta description falls back to a truncated headline if not provided.
+    
+
+    This endpoint can be called on an article in any status, allowing SEO
+    improvements to be made to published articles without going through the
+    full editorial workflow.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated article details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Update article SEO metadata',
+      operationId: 'UpdateArticleSeo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/seo');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateArticleSeoResponse, AdminUpdateArticleSeoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminSubmitArticleResponse>> _SubmitArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Submits an article for editorial review or payment processing.
+    
+
+    Free articles transition directly to <c>PendingReview</c> status, where the
+    editorial team can approve or reject them.
+    Paid (commissioned) articles transition to <c>PendingPayment</c> status, awaiting
+    customer payment verification before entering the editorial review queue.
+    
+
+    This is step 3 of the article workflow, following draft creation (step 1) and
+    content editing (step 2).
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Submit article for review',
+      operationId: 'SubmitArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/submit');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminSubmitArticleResponse, AdminSubmitArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRejectArticleResponse>> _RejectArticle({
+    required String? id,
+    required AdminRejectArticleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Rejects an article that is currently in <c>PendingReview</c> status,
+    transitioning it to <c>Rejected</c> with a mandatory reason.
+    
+
+    The rejection reason is stored on the article and is visible to the editorial team.
+    The admin can revise the article content and resubmit it for review.
+    
+
+    Only articles in <c>PendingReview</c> status can be rejected.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the article is not in PendingReview status or reason is missing
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Reject an article during editorial review',
+      operationId: 'RejectArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/reject');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRejectArticleResponse, AdminRejectArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminPublishArticleResponse>> _PublishArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Publishes an article that has been approved by the editorial team,
+    making it live and visible to all public visitors.
+    
+
+    Only articles in <c>Approved</c> status can be published.
+    Attempting to publish an article in any other status will return a 400 Bad Request.
+    
+
+    The <c>publishedAt</c> timestamp is automatically stamped at the moment of publication.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the article is not in Approved status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Publish an approved article',
+      operationId: 'PublishArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/publish');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminPublishArticleResponse, AdminPublishArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminArchiveArticleResponse>> _ArchiveArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Archives an article, removing it from all public feeds without permanently deleting it.
+    
+
+    Archiving is a reversible operation — the article\'s Cloudinary image assets are
+    <b>not</b> deleted. The article can be restored to a previous active status if needed.
+    
+
+    Use archiving instead of deletion when you want to temporarily hide content
+    without losing it permanently.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Archive an article',
+      operationId: 'ArchiveArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/archive');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminArchiveArticleResponse, AdminArchiveArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminApproveArticleResponse>> _ApproveArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Approves an article that is currently in <c>PendingReview</c> status,
+    transitioning it to <c>Approved</c> and clearing it for publication.
+    
+
+    Only articles in <c>PendingReview</c> status can be approved.
+    Attempting to approve an article in any other status will return a 400 Bad Request.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the article is not in PendingReview status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the article does not exist
+''',
+      summary: 'Approve an article for publication',
+      operationId: 'ApproveArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/articles/${id}/approve');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminApproveArticleResponse, AdminApproveArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetCategoryByIdResponse>> _AdminGetCategoryById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the full details of a single category, including its complete pricing configuration.
+    
+
+    Used by the admin when setting up an order — they need to know exactly what pricing tiers
+    are available for a category before adding items to an order.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with category details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the category does not exist
+''',
+      summary: 'Get a category by ID',
+      operationId: 'AdminGetCategoryById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetCategoryByIdResponse, AdminGetCategoryByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateCategoryResponse>> _AdminUpdateCategory({
+    required String? id,
+    required AdminUpdateCategoryRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates a category\'s display name, URL slug, and description.
+    
+
+    **Note:** Slug changes take effect immediately on public category URLs.
+    Only perform slug changes when the old URL can be redirected at the frontend.
+    The content type and free/paid status cannot be changed via this endpoint.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated category details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the category does not exist
+
+    - Returns 409 Conflict if the new slug is already taken
+''',
+      summary: 'Update a category',
+      operationId: 'AdminUpdateCategory',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateCategoryResponse, AdminUpdateCategoryResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllCategoriesResponse>> _AdminGetAllCategories({
+    int? pageIndex,
+    int? pageSize,
+    bool? isActive,
+    bool? isFree,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Returns a paginated list of all content categories.
+    
+
+    Supports filtering by active status and free/paid status.
+    Used by the admin to review what content formats are currently configured,
+    identify categories that still need pricing, and find active paid categories.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated category list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all categories',
+      operationId: 'AdminGetAllCategories',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'isActive': isActive,
+      'isFree': isFree,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllCategoriesResponse, AdminGetAllCategoriesResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateCategoryPricingResponse>>
+  _AdminUpdateCategoryPricing({
+    required String? id,
+    required String? tierId,
+    required AdminUpdateCategoryPricingRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the price for a specific pricing tier within a category.
+    
+
+    **Note:** Price changes apply only to future orders — existing order items have their
+    price frozen at snapshot time and are never retroactively affected.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the updated pricing details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the category or pricing tier is not configured
+''',
+      summary: 'Update a category pricing tier price',
+      operationId: 'AdminUpdateCategoryPricing',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/categories/${id}/pricing/${tierId}',
+    );
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminUpdateCategoryPricingResponse,
+      AdminUpdateCategoryPricingResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminRemoveCategoryPricingResponse>>
+  _AdminRemoveCategoryPricing({
+    required String? id,
+    required String? tierId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes a pricing tier from a category when that add-on service is no longer offered for that content type.
+    
+
+    **Note:** Existing orders that already contain this tier are unaffected —
+    the price snapshot is preserved on the order item tier record.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the pricing configuration does not exist
+''',
+      summary: 'Remove a pricing tier from a category',
+      operationId: 'AdminRemoveCategoryPricing',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/categories/${id}/pricing/${tierId}',
+    );
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminRemoveCategoryPricingResponse,
+      AdminRemoveCategoryPricingResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminDeactivateCategoryResponse>> _AdminDeactivateCategory({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a category, preventing it from being used in new content or orders.
+    
+
+    Existing content assigned to this category is not affected.
+    The category can be restored later using the activate endpoint.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated category details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the category does not exist
+
+    - Returns 409 Conflict if the category is already inactive
+''',
+      summary: 'Deactivate a category',
+      operationId: 'AdminDeactivateCategory',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminDeactivateCategoryResponse, AdminDeactivateCategoryResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreateCategoryResponse>> _AdminCreateCategory({
+    required String? contentTypeId,
+    required AdminCreateCategoryRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new content category (e.g. "Artist Profile", "116 Le Focus", "Chronique Sale").
+    \n
+    Every article and video must belong to exactly one category. Categories determine whether
+    content is free or paid — a free category skips the payment flow entirely and goes straight
+    to editorial review.
+    \n
+    **Note:** The content type must already exist before creating a category.
+    The slug must be unique, URL-safe, and lowercase (e.g. "artist-profile").
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with category details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 404 Not Found if the content type does not exist\n
+    - Returns 409 Conflict if the slug is already taken\n''',
+      summary: 'Create a new category',
+      operationId: 'AdminCreateCategory',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${contentTypeId}');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreateCategoryResponse, AdminCreateCategoryResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminAddCategoryPricingResponse>> _AdminAddCategoryPricing({
+    required String? id,
+    required AdminAddCategoryPricingRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Attaches a pricing tier to a category and sets the price for that add-on
+    (e.g. "Artist Profile + base_upload = USD25").
+    \n
+    A paid category can only accept orders once it has at least one pricing tier configured.
+    The pricing tier must be active at the time of assignment.
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with the pricing details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 404 Not Found if the category or pricing tier does not exist\n
+    - Returns 409 Conflict if this tier is already configured for the category, or the tier is inactive\n''',
+      summary: 'Add a pricing tier to a category',
+      operationId: 'AdminAddCategoryPricing',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${id}/pricing');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminAddCategoryPricingResponse, AdminAddCategoryPricingResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminActivateCategoryResponse>> _AdminActivateCategory({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a category, making it available for content creation and orders.
+    
+
+    An inactive category cannot be used in new content or order items.
+    This operation restores it to active status.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated category details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the category does not exist
+
+    - Returns 409 Conflict if the category is already active
+''',
+      summary: 'Activate a category',
+      operationId: 'AdminActivateCategory',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/categories/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminActivateCategoryResponse, AdminActivateCategoryResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllContentTypesResponse>> _AdminGetAllContentTypes({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the complete list of content types available in the system.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the list of content types on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all content types',
+      operationId: 'AdminGetAllContentTypes',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::content-types"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/content-types');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllContentTypesResponse, AdminGetAllContentTypesResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreateContentTypeResponse>> _CreateContentType({
+    required AdminCreateContentTypeRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new top-level content format (e.g. "Article", "Video").
+    \n
+    This endpoint creates a content type by:\n
+    - Validating the content type name\n
+    - Checking that no content type with the same name already exists\n
+    - Creating the content type with active status\n
+    - Returning the created content type details\n
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Use Cases:**\n
+    - Define new content formats before creating categories\n
+    \n
+    **Request Body:**\n
+    - name: The unique display name for the content type (max 30 characters)\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with content type details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 409 Conflict if content type name already exists\n''',
+      summary: 'Create a new content type',
+      operationId: 'CreateContentType',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::content-types"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/content-types');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreateContentTypeResponse, AdminCreateContentTypeResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateContentTypeResponse>> _AdminUpdateContentType({
+    required String? id,
+    required AdminUpdateContentTypeRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Updates the name of an existing content type.
+    
+
+    **Note:** Renaming a content type affects the label of all categories currently assigned to it.
+    Ensure the new name accurately reflects the content format before saving.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated content type details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the content type does not exist
+
+    - Returns 409 Conflict if the new name is already taken
+''',
+      summary: 'Update a content type',
+      operationId: 'AdminUpdateContentType',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::content-types"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/content-types/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateContentTypeResponse, AdminUpdateContentTypeResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminDeactivateContentTypeResponse>>
+  _AdminDeactivateContentType({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a content type, preventing it from being used across the platform.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the content type does not exist
+
+    - Returns 409 Conflict if the content type is already inactive
+''',
+      summary: 'Deactivate a content type',
+      operationId: 'AdminDeactivateContentType',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::content-types"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/content-types/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeactivateContentTypeResponse,
+      AdminDeactivateContentTypeResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivateContentTypeResponse>> _ActivateContentType({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a content type, making it available for use across the platform.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the content type does not exist
+
+    - Returns 409 Conflict if the content type is already active
+''',
+      summary: 'Activate a content type',
+      operationId: 'ActivateContentType',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::content-types"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/content-types/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminActivateContentTypeResponse,
+      AdminActivateContentTypeResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetCustomerOrdersResponse>> _AdminGetCustomerOrders({
+    required String? id,
+    int? pageIndex,
+    int? pageSize,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns a paginated list of all orders for a specific B2B customer,
+    ordered by most recently created first.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with a paginated list of order summaries
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List orders for a customer',
+      operationId: 'AdminGetCustomerOrders',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::customers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/customers/${id}/orders');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetCustomerOrdersResponse, AdminGetCustomerOrdersResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetCustomerByIdResponse>> _AdminGetCustomerById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the full details of a single B2B customer by their unique identifier.
+    
+
+    Used by the admin to look up a specific customer\'s contact information before
+    opening an order or following up on a previous engagement.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with customer details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the customer does not exist
+''',
+      summary: 'Get a customer by ID',
+      operationId: 'AdminGetCustomerById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::customers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/customers/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetCustomerByIdResponse, AdminGetCustomerByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateCustomerResponse>> _AdminUpdateCustomer({
+    required String? id,
+    required AdminUpdateCustomerRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the contact information of an existing B2B customer.
+    
+
+    Email is intentionally excluded from this operation — it serves as the unique
+    identifier for a customer and cannot be changed after creation.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated customer details on success
+
+    - Returns 400 Bad Request if the request body is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the customer does not exist
+''',
+      summary: 'Update a customer',
+      operationId: 'AdminUpdateCustomer',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::customers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/customers/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateCustomerResponse, AdminUpdateCustomerResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllCustomersResponse>> _AdminGetAllCustomers({
+    int? pageIndex,
+    int? pageSize,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the paginated list of all B2B customers ordered by most recently created first.
+    
+
+    Used by the admin to search for an existing client before creating an order,
+    or to look up contact details when following up on payment.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated customer list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all customers',
+      operationId: 'AdminGetAllCustomers',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::customers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/customers');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllCustomersResponse, AdminGetAllCustomersResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreateCustomerResponse>> _AdminCreateCustomer({
+    required AdminCreateCustomerRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a B2B client record for an artist, music label, or brand that commissions paid content.
+    
+
+    A customer account must exist before an order can be opened for them. Customers are entirely
+    separate from platform visitor accounts (B2C users who read articles and watch videos).
+    
+
+    **Note:** The email address is used as the unique identifier and cannot be changed after creation.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with customer details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 409 Conflict if a customer with the same email already exists
+''',
+      summary: 'Create a new customer',
+      operationId: 'AdminCreateCustomer',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::customers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/customers');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreateCustomerResponse, AdminCreateCustomerResponse>(
+          $request,
+        );
+  }
+
+  @override
   Future<Response<AdminVerifyOtpResponse>> _AdminVerifyOtp({
     required AdminVerifyOtpRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Verifies the OTP (One-Time Password) code sent to the admin user\'s email for various purposes.
-The admin user must verify their account within the OTP expiration window to gain full access.
+          '''    Verifies the OTP (One-Time Password) code sent to the admin user\'s email for various purposes.
+    The admin user must verify their account within the OTP expiration window to gain full access.
+    
 
-**Supported OTP Purposes:**
+    **Supported OTP Purposes:**
 
-- **Email Verification**: During admin account registration
-- **Account Recovery**: For account recovery processes
+    - **Email Verification**: During admin account registration
 
-This endpoint performs the following operations:
+    - **Account Recovery**: For account recovery processes
 
-- Validates the OTP code format (6-digit numeric)
-- Checks if the admin user exists and is not already verified
-- Validates the OTP against the database (not expired, not used, under attempt limit)
-- Marks the admin user account as verified upon successful validation
-- Invalidates all remaining OTPs for the admin user
+    
 
-**Authentication Requirements:**
+    This endpoint performs the following operations: 
 
-- No authentication required; open to admin users with unverified accounts
+    - Validates the OTP code format (6-digit numeric)
 
-**Security Features:**
+    - Checks if the admin user exists and is not already verified
 
-- OTP expiration (60 minutes)
-- Maximum 3 verification attempts per OTP
-- Single-use OTP codes
-- Automatic cleanup of expired/used OTPs
-- Admin role verification
+    - Validates the OTP against the database (not expired, not used, under attempt limit)
 
-**Response Codes:**
+    - Marks the admin user account as verified upon successful validation
 
-- Returns 200 OK with verification success status
-- Returns 400 Bad Request for invalid OTP code format
-- Returns 401 Unauthorized for expired OTP
-- Returns 403 Forbidden for maximum attempts reached
-- Returns 404 Not Found for no valid OTP found
-- Returns 409 Conflict if account is already verified
+    - Invalidates all remaining OTPs for the admin user
 
-**Error Handling:**
+    
 
-- BadRequestException (400): Invalid OTP code format or value
-- AuthenticationException (401): OTP has expired
-- AuthorizationException (403): Maximum verification attempts reached
-- NotFoundException (404): No valid OTP found for the admin user.''',
+    **Authentication Requirements:**
+
+    - No authentication required; open to admin users with unverified accounts
+
+    
+
+    **Security Features:**
+
+    - OTP expiration (60 minutes)
+
+    - Maximum 3 verification attempts per OTP
+
+    - Single-use OTP codes
+
+    - Automatic cleanup of expired/used OTPs
+
+    - Admin role verification
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with verification success status
+
+    - Returns 400 Bad Request for invalid OTP code format
+
+    - Returns 401 Unauthorized for expired OTP
+
+    - Returns 403 Forbidden for maximum attempts reached
+
+    - Returns 404 Not Found for no valid OTP found
+
+    - Returns 409 Conflict if account is already verified
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid OTP code format or value
+
+    - AuthenticationException (401): OTP has expired
+
+    - AuthorizationException (403): Maximum verification attempts reached
+
+    - NotFoundException (404): No valid OTP found for the admin user.''',
       summary: 'Verify OTP code for admin account activation',
       operationId: 'AdminVerifyOtp',
       consumes: [],
@@ -94,36 +2002,40 @@ This endpoint performs the following operations:
   _AdminSignOutFromAllDevices({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Signs out the currently authenticated admin user from all devices by invalidating all active sessions.
-After successful sign-out, all refresh tokens will be revoked and the admin must re-authenticate on all devices.
+          '''    Signs out the currently authenticated admin user from all devices by invalidating all active sessions.
+    After successful sign-out, all refresh tokens will be revoked and the admin must re-authenticate on all devices.
+    
 
-This endpoint is commonly used:
+    This endpoint is commonly used:
 
-- After password changes (security best practice)
-- When admin suspects account compromise
-- When enabling two-factor authentication
-- As a "Sign Out Everywhere" feature\n
-\n
-**Authentication Requirements:**\n
-- Valid JWT Bearer token with admin privileges\n
-- Account must be active (not suspended)\n
-\n
-**Security Features:**\n
-- Invalidates all active sessions across all devices\n
-- Uses soft delete for session tracking and analytics\n
-- Prevents token reuse after sign-out\n
-- Idempotent operation (safe to call multiple times)\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with success status\n
-- Returns 401 Unauthorized for invalid/missing JWT token\n
-- Returns 403 Forbidden for non-admin users or inactive accounts\n
-\n
-**Process Flow:**\n
-1. Extracts admin user ID from JWT token\n
-2. Validates account is active and has admin privileges\n
-3. Soft deletes all active sessions for the admin user\n
-4. Returns success response.''',
+    - After password changes (security best practice)
+
+    - When admin suspects account compromise
+
+    - When enabling two-factor authentication
+
+    - As a "Sign Out Everywhere" feature\n
+    \n
+    **Authentication Requirements:**\n
+    - Valid JWT Bearer token with admin privileges\n
+    - Account must be active (not suspended)\n
+    \n
+    **Security Features:**\n
+    - Invalidates all active sessions across all devices\n
+    - Uses soft delete for session tracking and analytics\n
+    - Prevents token reuse after sign-out\n
+    - Idempotent operation (safe to call multiple times)\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with success status\n
+    - Returns 401 Unauthorized for invalid/missing JWT token\n
+    - Returns 403 Forbidden for non-admin users or inactive accounts\n
+    \n
+    **Process Flow:**\n
+    1. Extracts admin user ID from JWT token\n
+    2. Validates account is active and has admin privileges\n
+    3. Soft deletes all active sessions for the admin user\n
+    4. Returns success response.''',
       summary: 'Sign out the authenticated admin user from all devices',
       operationId: 'AdminSignOutFromAllDevices',
       consumes: [],
@@ -151,47 +2063,67 @@ This endpoint is commonly used:
     required AdminSignOutRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Signs out the currently authenticated admin user by updating their login status.
-After successful sign-out, the client should discard the JWT token.
+          '''    Signs out the currently authenticated admin user by updating their login status.
+    After successful sign-out, the client should discard the JWT token.
+    
 
-This endpoint performs secure sign-out by:
+    This endpoint performs secure sign-out by:
 
-- Validating JWT token authentication
-- Verifying account is active (not suspended/banned)
-- Ensuring user has admin or super admin role
-- Updating user login status in the database
-- Allowing unverified accounts to sign out
+    - Validating JWT token authentication
 
-**Authentication Requirements:**
+    - Verifying account is active (not suspended/banned)
 
-- Valid JWT Bearer token
-- Account must be active (not suspended)
-- User must have Admin or SuperAdmin role
-- Verification status is not required for sign-out
+    - Ensuring user has admin or super admin role
 
-**Security Features:**
+    - Updating user login status in the database
 
-- Only active admin accounts can perform sign-out
-- Prevents unnecessary database updates if already logged out
-- Always returns success for consistent UX
+    - Allowing unverified accounts to sign out
 
-**Response Codes:**
+    
 
-- Returns 200 OK with success status
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive accounts or insufficient permissions
+    **Authentication Requirements:**
 
-**Process Flow:**
+    - Valid JWT Bearer token
 
-1. Extracts admin user ID from JWT token
+    - Account must be active (not suspended)
 
-2. Validates account is active
+    - User must have Admin or SuperAdmin role
 
-3. Verifies admin/super admin role authorization
+    - Verification status is not required for sign-out
 
-4. Updates login status if currently logged in
+    
 
-5. Returns success response.''',
+    **Security Features:**
+
+    - Only active admin accounts can perform sign-out
+
+    - Prevents unnecessary database updates if already logged out
+
+    - Always returns success for consistent UX
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive accounts or insufficient permissions
+
+    
+
+    **Process Flow:**
+
+    1. Extracts admin user ID from JWT token
+
+    2. Validates account is active
+
+    3. Verifies admin/super admin role authorization
+
+    4. Updates login status if currently logged in
+
+    5. Returns success response.''',
       summary: 'Sign out the authenticated admin user',
       operationId: 'AdminSignOut',
       consumes: [],
@@ -218,70 +2150,103 @@ This endpoint performs secure sign-out by:
     required AdminResetPasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Resets an admin user\'s password after validating the OTP code sent during the forgot password process.
-After successful password reset, the admin user can login with their new password.
+          '''    Resets an admin user\'s password after validating the OTP code sent during the forgot password process.
+    After successful password reset, the admin user can login with their new password.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates the OTP code format and authenticity
-- Checks if the admin user exists and is active
-- Validates the OTP against the database (not expired, not used, under attempt limit)
-- Hashes the new password using secure algorithms
-- Updates the admin user\'s password in the database
-- Invalidates all remaining password reset OTPs for the user
+    - Validates the OTP code format and authenticity
 
-**Authentication Requirements:**
+    - Checks if the admin user exists and is active
 
-- No authentication required; open to admin users with valid OTP codes
-- Admin user account must be active
+    - Validates the OTP against the database (not expired, not used, under attempt limit)
 
-**Security Features:**
+    - Hashes the new password using secure algorithms
 
-- OTP expiration (60 minutes)
-- Maximum 3 verification attempts per OTP
-- Single-use OTP codes
-- Secure password hashing (PBKDF2 with SHA-256)
-- Automatic cleanup of expired/used OTPs
-- Password validation enforced by validator
+    - Updates the admin user\'s password in the database
 
-**Request Requirements:**
+    - Invalidates all remaining password reset OTPs for the user
 
-- Valid email address format
-- Valid OTP code (6-digit numeric)
-- New password meeting security requirements
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with success status
-- Returns 400 Bad Request for invalid input or inactive account
-- Returns 401 Unauthorized for expired OTP
-- Returns 403 Forbidden for max attempts reached
-- Returns 404 Not Found for no valid OTP found or user not found
+    - No authentication required; open to admin users with valid OTP codes
 
-**Error Handling:**
+    - Admin user account must be active
 
-- BadRequestException (400): Invalid input format, inactive account, or invalid OTP
-- AuthenticationException (401): OTP has expired
-- AuthorizationException (403): Maximum verification attempts reached
-- NotFoundException (404): No valid OTP found or user not found
+    
 
-**Process Flow:**
+    **Security Features:**
 
-1. Validates email format and password requirements
+    - OTP expiration (60 minutes)
 
-2. Finds admin user by email address
+    - Maximum 3 verification attempts per OTP
 
-3. Validates account is active
+    - Single-use OTP codes
 
-4. Validates OTP code for password reset purpose
+    - Secure password hashing (PBKDF2 with SHA-256)
 
-5. Hashes new password securely
+    - Automatic cleanup of expired/used OTPs
 
-6. Updates admin user\'s password
+    - Password validation enforced by validator
 
-7. Marks OTP as used and invalidates remaining OTPs
+    
 
-8. Returns success response.''',
+    **Request Requirements:**
+
+    - Valid email address format
+
+    - Valid OTP code (6-digit numeric)
+
+    - New password meeting security requirements
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 400 Bad Request for invalid input or inactive account
+
+    - Returns 401 Unauthorized for expired OTP
+
+    - Returns 403 Forbidden for max attempts reached
+
+    - Returns 404 Not Found for no valid OTP found or user not found
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid input format, inactive account, or invalid OTP
+
+    - AuthenticationException (401): OTP has expired
+
+    - AuthorizationException (403): Maximum verification attempts reached
+
+    - NotFoundException (404): No valid OTP found or user not found
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format and password requirements
+
+    2. Finds admin user by email address
+
+    3. Validates account is active
+
+    4. Validates OTP code for password reset purpose
+
+    5. Hashes new password securely
+
+    6. Updates admin user\'s password
+
+    7. Marks OTP as used and invalidates remaining OTPs
+
+    8. Returns success response.''',
       summary: 'Reset admin user password using OTP verification',
       operationId: 'AdminResetPassword',
       consumes: [],
@@ -310,56 +2275,81 @@ This endpoint performs the following operations:
     required AdminResendOtpRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Resends a new OTP verification code for admin users by invalidating existing OTPs and generating a fresh one.
-This endpoint enables admins to request a new verification code when:
+          '''    Resends a new OTP verification code for admin users by invalidating existing OTPs and generating a fresh one.
+    This endpoint enables admins to request a new verification code when:
+    
 
+    - The original OTP wasn\'t received
 
-- The original OTP wasn\'t received
-- The previous OTP has expired
-- There were issues with email delivery
-- Maximum attempts were reached on the previous OTP
+    - The previous OTP has expired
 
-**Request Requirements:**
+    - There were issues with email delivery
 
-- Valid admin email address format
-- Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)
-- User must have admin privileges
-- Account must be active
+    - Maximum attempts were reached on the previous OTP
 
-**Security Features:**
+    
 
-- Admin role verification
-- Account active status validation
-- Automatic invalidation of existing OTPs for the specified purpose
-- New OTP generation with fresh expiration time
+    **Request Requirements:**
 
-**Response Codes:**
+    - Valid admin email address format
 
-- Returns 200 OK with success status when OTP is resent
-- Returns 400 Bad Request for invalid email format or purpose
-- Returns 404 Not Found when admin user doesn\'t exist
-- Returns 403 Forbidden when user lacks admin privileges
+    - Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)
 
-**Process Flow:**
+    - User must have admin privileges
 
-1. Validates email format and OTP purpose
+    - Account must be active
 
-2. Verifies admin user exists and has admin role
+    
 
-3. Checks account is active and verified
+    **Security Features:**
 
-4. Invalidates all existing OTPs for the specified purpose
+    - Admin role verification
 
-5. Generates new OTP with fresh expiration
+    - Account active status validation
 
-6. Returns success response
+    - Automatic invalidation of existing OTPs for the specified purpose
 
-**Supported OTP Purposes:**
+    - New OTP generation with fresh expiration time
 
-- EmailVerification: For email address verification
-- PasswordReset: For password reset requests
-- TwoFactorAuthentication: For 2FA setup/verification
-- AccountRecovery: For account recovery processes''',
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status when OTP is resent
+
+    - Returns 400 Bad Request for invalid email format or purpose
+
+    - Returns 404 Not Found when admin user doesn\'t exist
+
+    - Returns 403 Forbidden when user lacks admin privileges
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format and OTP purpose
+
+    2. Verifies admin user exists and has admin role
+
+    3. Checks account is active and verified
+
+    4. Invalidates all existing OTPs for the specified purpose
+
+    5. Generates new OTP with fresh expiration
+
+    6. Returns success response
+
+    
+
+    **Supported OTP Purposes:**
+
+    - EmailVerification: For email address verification
+
+    - PasswordReset: For password reset requests
+
+    - TwoFactorAuthentication: For 2FA setup/verification
+
+    - AccountRecovery: For account recovery processes''',
       summary: 'Resend OTP verification code for admin users',
       operationId: 'AdminResendOtp',
       consumes: [],
@@ -388,44 +2378,69 @@ This endpoint enables admins to request a new verification code when:
     required AdminLoginRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Authenticates an admin user using email and password credentials.
-The returned JWT token includes admin-specific claims for accessing administrative endpoints.
+          '''    Authenticates an admin user using email and password credentials.
+    The returned JWT token includes admin-specific claims for accessing administrative endpoints.
+    
 
-This endpoint performs enhanced authentication by:
+    This endpoint performs enhanced authentication by:
 
-- Validating email and password
-- Verifying the account is active and verified
-- Checking for admin role privileges (Admin or SuperAdmin)
-- Generating JWT token with appropriate admin claims
-- Recording the login activity
+    - Validating email and password
 
-**Authentication Requirements:**
+    - Verifying the account is active and verified
 
-- Valid email and password combination
-- Account must be active and verified
-- User must have Admin or SuperAdmin role assigned
+    - Checking for admin role privileges (Admin or SuperAdmin)
 
-**Security Features:**
+    - Generating JWT token with appropriate admin claims
 
-- Password verification using secure hashing (bcrypt)
-- Role-based access validation
-- Login activity tracking
-- Enhanced JWT claims for admin operations
+    - Recording the login activity
 
-**Response Codes:**
+    
 
-- Returns 200 OK with user info and JWT token on successful authentication
-- Returns 400 Bad Request for invalid email format or incorrect password
-- Returns 401 Unauthorized when user lacks admin privileges (Admin/SuperAdmin role required)
-- Returns 403 Forbidden when user account is inactive or disabled
-- Returns 404 Not Found when no user exists with the provided email
+    **Authentication Requirements:**
 
-**Error Handling:**
+    - Valid email and password combination
 
-- AuthenticationException (401): Missing admin role - user authenticated but lacks Admin/SuperAdmin privileges
-- AuthorizationException (403): Account inactive - user exists but account is disabled/suspended
-- BadRequestException (400): Invalid password - email exists but password is incorrect
-- NotFoundException (404): User not found - no account exists with the provided email.''',
+    - Account must be active and verified
+
+    - User must have Admin or SuperAdmin role assigned
+
+    
+
+    **Security Features:**
+
+    - Password verification using secure hashing (bcrypt)
+
+    - Role-based access validation
+
+    - Login activity tracking
+
+    - Enhanced JWT claims for admin operations
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with user info and JWT token on successful authentication
+
+    - Returns 400 Bad Request for invalid email format or incorrect password
+
+    - Returns 401 Unauthorized when user lacks admin privileges (Admin/SuperAdmin role required)
+
+    - Returns 403 Forbidden when user account is inactive or disabled
+
+    - Returns 404 Not Found when no user exists with the provided email
+
+    
+
+    **Error Handling:**
+
+    - AuthenticationException (401): Missing admin role - user authenticated but lacks Admin/SuperAdmin privileges
+
+    - AuthorizationException (403): Account inactive - user exists but account is disabled/suspended
+
+    - BadRequestException (400): Invalid password - email exists but password is incorrect
+
+    - NotFoundException (404): User not found - no account exists with the provided email.''',
       summary: 'Authenticate admin and return JWT token with admin claims',
       operationId: 'AdminLogin',
       consumes: [],
@@ -452,41 +2467,55 @@ This endpoint performs enhanced authentication by:
     required AdminForgotPasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Initiates the password reset process by generating an OTP for the specified admin email address.
+          '''    Initiates the password reset process by generating an OTP for the specified admin email address.
 
-The generated OTP can be used with the verify-otp endpoint to proceed with password reset.
-This endpoint follows security best practices by:
+    The generated OTP can be used with the verify-otp endpoint to proceed with password reset.
+    This endpoint follows security best practices by:
+    
 
+    - Always returning success to prevent user enumeration attacks
 
-- Always returning success to prevent user enumeration attacks
-- Only generating OTP for valid and active admin accounts
-- Silently handling cases where email doesn\'t exist or account is inactive
+    - Only generating OTP for valid and active admin accounts
 
-**Request Requirements:**
+    - Silently handling cases where email doesn\'t exist or account is inactive
 
-- Valid email address format
-- Email must belong to an existing and active admin account
+    
 
-**Security Features:**
+    **Request Requirements:**
 
-- User enumeration protection (consistent response regardless of email existence)
-- Account status validation (active admin accounts only)
-- OTP generation with expiration time
+    - Valid email address format
 
-**Response Codes:**
+    - Email must belong to an existing and active admin account
 
-- Returns 200 OK with success status (always true for security) and the email address
-- Returns 400 Bad Request for invalid email format
+    
 
-**Process Flow:**
+    **Security Features:**
 
-1. Validates email format
+    - User enumeration protection (consistent response regardless of email existence)
 
-2. Checks if admin user exists and is active
+    - Account status validation (active admin accounts only)
 
-3. Generates OTP for password reset
+    - OTP generation with expiration time
 
-4. Returns success response (regardless of actual outcome).''',
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status (always true for security) and the email address
+
+    - Returns 400 Bad Request for invalid email format
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format
+
+    2. Checks if admin user exists and is active
+
+    3. Generates OTP for password reset
+
+    4. Returns success response (regardless of actual outcome).''',
       summary: 'Initiate password reset process for existing admin users',
       operationId: 'AdminForgotPassword',
       consumes: [],
@@ -516,71 +2545,106 @@ This endpoint follows security best practices by:
     required AdminChangePasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Changes an admin user\'s password after verifying their current password for security.
+          '''    Changes an admin user\'s password after verifying their current password for security.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates JWT token authentication and extracts user ID
-- Verifies admin user account is active
-- Validates the current password against stored hash
-- Ensures new password is different from current password
-- Hashes the new password using secure algorithms
-- Updates the admin user\'s password in the database
+    - Validates JWT token authentication and extracts user ID
 
-**Authentication Requirements:**
+    - Verifies admin user account is active
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- Only admin role users can change their password
+    - Validates the current password against stored hash
 
-**Security Features:**
+    - Ensures new password is different from current password
 
-- Current password verification for authorization
-- Prevention of reusing the same password
-- Secure password hashing (PBKDF2 with SHA-256)
-- Strong password validation enforced by validator
-- Account status validation before password change
+    - Hashes the new password using secure algorithms
 
-**Request Requirements:**
+    - Updates the admin user\'s password in the database
 
-- Valid old password for verification
-- New password meeting security requirements
-- User must be authenticated with valid JWT token
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with success status
-- Returns 400 Bad Request for invalid old password or same password
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive accounts or insufficient permissions
-- Returns 404 Not Found for user not found
-- Returns 409 Conflict for new password same as old
+    - Valid JWT Bearer token required
 
-**Error Handling:**
+    - Account must be active (not suspended/banned)
 
-- BadRequestException (400): Invalid old password or inactive account
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not active or insufficient permissions
-- NotFoundException (404): User not found
-- ConflictException (409): New password same as current password
+    - Only admin role users can change their password
 
-**Process Flow:**
+    
 
-1. Validates JWT token and extracts user ID
+    **Security Features:**
 
-2. Validates old password and new password requirements
+    - Current password verification for authorization
 
-3. Finds admin user by ID and validates account status
+    - Prevention of reusing the same password
 
-4. Verifies current password matches provided old password
+    - Secure password hashing (PBKDF2 with SHA-256)
 
-5. Ensures new password is different from current password
+    - Strong password validation enforced by validator
 
-6. Hashes new password securely
+    - Account status validation before password change
 
-7. Updates admin user\'s password in database
+    
 
-8. Returns success response.''',
+    **Request Requirements:**
+
+    - Valid old password for verification
+
+    - New password meeting security requirements
+
+    - User must be authenticated with valid JWT token
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 400 Bad Request for invalid old password or same password
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive accounts or insufficient permissions
+
+    - Returns 404 Not Found for user not found
+
+    - Returns 409 Conflict for new password same as old
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid old password or inactive account
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not active or insufficient permissions
+
+    - NotFoundException (404): User not found
+
+    - ConflictException (409): New password same as current password
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Validates old password and new password requirements
+
+    3. Finds admin user by ID and validates account status
+
+    4. Verifies current password matches provided old password
+
+    5. Ensures new password is different from current password
+
+    6. Hashes new password securely
+
+    7. Updates admin user\'s password in database
+
+    8. Returns success response.''',
       summary: 'Change admin user password with current password verification',
       operationId: 'AdminChangePassword',
       consumes: [],
@@ -606,31 +2670,4464 @@ This endpoint performs the following operations:
   }
 
   @override
+  Future<Response<AdminGetAllLyricsResponse>> _AdminGetAllLyrics({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of all lyrics pages for admin management.
+    Results are returned as a paginated list suitable for list and management views.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated lyrics list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List all lyrics pages',
+      operationId: 'AdminGetAllLyrics',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::lyrics"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/lyrics');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetAllLyricsResponse, AdminGetAllLyricsResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCreateLyricsResponse>> _CreateLyrics({
+    required AdminCreateLyricsRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Creates a new SEO-optimised lyrics page for a song.
+    
+
+    A lyrics page can be:
+    - Standalone with no parent content
+    - Linked to a full video by providing a <c>videoId</c> (e.g., lyric video, "Behind the Lyrics" episode)
+    - Linked to an article by providing an <c>articleId</c> (e.g., a dedicated Lyrics Page article)
+    \n
+    Returns a conflict error if lyrics for the same song title and artist already exist.
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with lyrics details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 409 Conflict if lyrics for the same song and artist already exist\n
+    - Returns 429 Too Many Requests if rate limit is exceeded\n''',
+      summary: 'Create a lyrics page',
+      operationId: 'CreateLyrics',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::lyrics"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/lyrics');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateLyricsResponse, AdminCreateLyricsResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUpdateLyricsSeoResponse>> _UpdateLyricsSeo({
+    required String? id,
+    required AdminUpdateLyricsSeoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the SEO metadata fields of the specified lyrics page, including meta title,
+    meta description, meta keywords, and Schema.org JSON-LD structured data.
+    
+
+    Passing <c>null</c> for any field clears its value. This endpoint does not affect
+    the lyrics text itself — use <c>PUT /api/v1/admin/lyrics/{id}</c> for that.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated lyrics details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the lyrics record does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Update SEO metadata for a lyrics page',
+      operationId: 'UpdateLyricsSeo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::lyrics"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/lyrics/${id}/seo');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateLyricsSeoResponse, AdminUpdateLyricsSeoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateLyricsResponse>> _UpdateLyrics({
+    required String? id,
+    required AdminUpdateLyricsRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Replaces the lyrics text of the specified lyrics page.
+    
+
+    Only the lyrics text body can be updated via this endpoint. To update SEO metadata,
+    use the <c>PATCH /api/v1/admin/lyrics/{id}/seo</c> endpoint.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated lyrics details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the lyrics record does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Update the lyrics text',
+      operationId: 'UpdateLyrics',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::lyrics"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/lyrics/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminUpdateLyricsResponse, AdminUpdateLyricsResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetOwnProfileResponse>> _AdminGetOwnProfile({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the complete profile information for the currently authenticated admin user.
+    
+
+    This endpoint performs the following operations:
+
+    - Validates JWT token authentication and extracts user ID
+
+    - Verifies admin user account is active
+
+    - Retrieves complete admin user information including roles and permissions
+
+    - Fetches admin user avatar file information if available
+
+    - Returns comprehensive admin user profile data
+
+    
+
+    **Authentication Requirements:**
+
+    - Valid JWT Bearer token required
+
+    - Account must be active (not suspended/banned)
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Returned Information:**
+
+    - Basic user details (ID, email, username, verification status)
+
+    - User roles and associated permissions
+
+    - Avatar file information (if available)
+
+    - Account status and activity information
+
+    - Authentication provider information (local/social)
+
+    
+
+    **Security Features:**
+
+    - Admin user can only access their own profile information
+
+    - Account status validation before profile retrieval
+
+    - Comprehensive permission and role information for authorization
+
+    - Avatar file security through proper file service integration
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with complete admin user profile data
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for insufficient permissions or inactive accounts
+
+    - Returns 404 Not Found for user not found
+
+    
+
+    **Error Handling:**
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Insufficient permissions or account inactive
+
+    - NotFoundException (404): User not found
+
+    
+
+    **Use Cases:**
+
+    - Display admin user profile information in admin applications
+
+    - Determine admin user permissions for UI/UX customization
+
+    - Validate admin user account status
+
+    - Access avatar and display admin user information
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Finds admin user by ID and validates account status
+
+    3. Retrieves admin user roles and permissions
+
+    4. Fetches avatar file information if available
+
+    5. Maps complete user data to response DTO
+
+    6. Returns comprehensive admin user profile information''',
+      summary:
+          'Retrieve authenticated admin user\'s complete profile information',
+      operationId: 'AdminGetOwnProfile',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/profile');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetOwnProfileResponse, AdminGetOwnProfileResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUpdateOwnProfileResponse>> _AdminUpdateOwnProfile({
+    required AdminUpdateOwnProfileRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the profile information for the currently authenticated admin user.
+
+    This endpoint requires admin user authentication - only logged-in admin users can update their own profile,
+    providing secure profile management for authenticated admin users
+    while maintaining data integrity and security requirements.
+    
+
+    This endpoint performs the following operations:
+
+    - Validates JWT token authentication and extracts user ID
+
+    - Verifies admin user account is active
+
+    - Validates uniqueness for username and phone number if being updated
+
+    - Updates admin user profile information selectively
+
+    - Returns updated admin user profile data
+
+    
+
+    **Authentication Requirements:**
+
+    - Valid JWT Bearer token required
+
+    - Account must be active (not suspended/banned)
+
+    - Only logged-in admin users can update their profile
+
+    - Admin or SuperAdmin role required
+
+    
+
+    **Updateable Information:**
+
+    - Username (must be unique across the system)
+
+    - Phone number with country information
+
+    - Country details (name, ISO code, dial code)
+
+    
+
+    **Restrictions:**
+
+    - Email updates are not allowed for admin users (security restriction)
+
+    
+
+    **Security Features:**
+
+    - Admin user can only update their own profile information
+
+    - Account status validation before updates
+
+    - Uniqueness validation for username and phone
+
+    - Email updates prohibited for admin users
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated admin user profile data
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive accounts or insufficient permissions
+
+    - Returns 404 Not Found for user not found
+
+    - Returns 409 Conflict for duplicate username/phone
+
+    
+
+    **Error Handling:**
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not active or insufficient permissions
+
+    - NotFoundException (404): User not found
+
+    - ConflictException (409): Username or phone already exists
+
+    
+
+    **Use Cases:**
+
+    - Update admin profile information in administration panels
+
+    - Change username for admin branding
+
+    - Update contact information and location details
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Finds admin user by ID and validates account status
+
+    3. Validates uniqueness for updated fields
+
+    4. Updates admin user profile information selectively
+
+    5. Saves changes to database
+
+    6. Returns updated admin user profile data
+
+    
+
+    **Important Notes:**
+
+    - Email updates are restricted for admin users
+
+    - Phone number updates include country information
+
+    - Only provided fields are updated (partial updates supported)
+
+    - All validations are performed before any updates.''',
+      summary: 'Update authenticated admin user\'s own profile information',
+      operationId: 'AdminUpdateOwnProfile',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/profile');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateOwnProfileResponse, AdminUpdateOwnProfileResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateAvatarResponse>> _AdminUpdateAvatar({
+    required MultipartFile avatarFile,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the authenticated admin user\'s avatar by uploading an image file.
+
+    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
+    The system will automatically delete any previous avatar when a new one is uploaded.
+    
+
+    Admin users only need to have active accounts (no verification requirement).
+    
+
+    **Authentication Requirements:**
+
+    - Admin user must be logged in (JWT token required)
+
+    - Must have Admin or SuperAdmin role
+
+    - Account must be active
+
+    
+
+    **Request Requirements:**
+
+    - Content-Type: multipart/form-data
+
+    - Form field name: "avatarFile"\n
+    - Allowed file types: JPEG, PNG, GIF, WebP\n
+    - Maximum file size: 1MB\n
+    - File must be a valid image\n
+    \n
+    **Avatar Management:**\n
+    - Previous avatar is automatically deleted from cloud storage\n
+    - Images are stored in Cloudinary with automatic optimization\n
+    - Secure HTTPS URLs are generated for accessing avatars\n
+    - Smart quality optimization and format conversion\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with updated admin user information including new avatar\n
+    - Returns 400 Bad Request for invalid file type, size, or missing file\n
+    - Returns 401 Unauthorized for unauthenticated requests\n
+    - Returns 403 Forbidden for non-admin users or inactive accounts\n
+    - Returns 404 Not Found when admin user doesn\'t exist\n
+    \n
+    **Security Features:**\n
+    - Only authenticated admin users can update their own avatar\n
+    - Role-based authorization (Admin/SuperAdmin required)\n
+    - Account activity verification (active accounts only)\n
+    - File type and size validation\n
+    - Automatic cleanup of old avatar files from cloud storage\n
+    - Secure signed uploads to Cloudinary\n
+    \n
+    **Process Flow:**\n
+    1. Validates admin authentication and account status\n
+    2. Validates the uploaded file (type, size, format)\n
+    3. Uploads the new avatar to Cloudinary cloud storage\n
+    4. Deletes the previous avatar from cloud storage (if exists)\n
+    5. Updates admin user record with new avatar reference\n
+    6. Returns updated admin user information with avatar details\n
+    \n
+    **Example cURL Request:**\n
+    ```
+    curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \
+      -H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+      -F "avatarFile=@/path/to/image.jpg"
+    ```''',
+      summary: 'Update admin user avatar via file upload',
+      operationId: 'AdminUpdateAvatar',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/avatar');
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('avatarFile', avatarFile),
+    ];
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminUpdateAvatarResponse, AdminUpdateAvatarResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetOwnRolesResponse>> _AdminGetOwnRoles({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves all roles assigned to the currently authenticated admin user, each including
+    its full set of permissions.
+
+    
+
+    This lightweight endpoint is intended for client applications that need to check or
+    refresh the current admin\'s permissions without fetching the full profile, enabling
+    role-based UI rendering and frontend access control.
+
+    
+
+    **Authentication Requirements:**
+
+    - Valid JWT Bearer token required
+
+    - Admin or SuperAdmin role required
+
+    
+
+    **Returned Information:**
+
+    - List of roles assigned to the admin
+
+    - Each role includes its name, description, active status, and full permission list
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the admin\'s roles and permissions
+
+    - Returns 401 Unauthorized for invalid or missing JWT token
+
+    - Returns 403 Forbidden for insufficient permissions
+
+    - Returns 404 Not Found if the user no longer exists
+''',
+      summary: 'Retrieve the authenticated admin\'s roles and permissions',
+      operationId: 'AdminGetOwnRoles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/roles');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetOwnRolesResponse, AdminGetOwnRolesResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetOwnSessionsResponse>> _AdminGetOwnSessions({
+    bool? isActive,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a list of all sessions (devices) for the currently authenticated admin user.
+    Supports filtering by session status (active/inactive).
+    
+
+    This endpoint provides session management by:
+
+    - Listing all user sessions across different devices
+
+    - Showing device information (IP address, device name, user agent)
+
+    - Indicating session status (active or expired)
+
+    - Displaying session creation and expiration times
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    - User can only view their own sessions
+
+    
+
+    **Query Parameters:**
+
+    - isActive (optional): Filter sessions by status
+
+      - true: Only active sessions
+
+      - false: Only expired/inactive sessions
+
+      - null/omitted: All sessions
+
+    
+
+    **Use Cases:**
+
+    - View all active login sessions
+
+    - Identify unrecognized devices
+
+    - Manage active sessions before revoking specific ones
+
+    - Security audit of login history
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with list of sessions
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    
+
+    **Session Information Includes:**
+
+    - Session ID for revoking specific sessions
+
+    - IP address of the device
+
+    - Device name and user agent string
+
+    - Creation timestamp
+
+    - Expiration timestamp
+
+    - Active status (computed from expiration time and deletion status)''',
+      summary: 'Retrieve all sessions for the authenticated admin user',
+      operationId: 'AdminGetOwnSessions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/sessions');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'isActive': isActive,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetOwnSessionsResponse, AdminGetOwnSessionsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetOwnSessionByIdResponse>> _AdminGetOwnSessionById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves detailed information about a specific session identified by its ID.
+    The session must belong to the authenticated admin user.
+    
+
+    This endpoint provides session details by:
+
+    - Validating the session ID from the route parameter
+
+    - Verifying the session belongs to the authenticated admin user
+
+    - Returning complete session metadata and status
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    - User can only view their own sessions
+
+    
+
+    **Use Cases:**
+
+    - View detailed information about a specific session
+
+    - Check session status before revoking
+
+    - Verify device information for security auditing
+
+    - Display session details in admin dashboard
+
+    
+
+    **Security Features:**
+
+    - Session ownership verification prevents viewing other users\' sessions
+
+    - Returns 404 (not 403) for unauthorized access to prevent session enumeration
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with session details on success
+
+    - Returns 400 Bad Request if session ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+    
+
+    **Session Information Includes:**
+
+    - Session ID
+
+    - IP address of the device
+
+    - Device name and user agent string
+
+    - Creation timestamp
+
+    - Expiration timestamp
+
+    - Active status (computed from expiration time and deletion status)
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Session not found or doesn\'t belong to user''',
+      summary: 'Retrieve a specific session by ID',
+      operationId: 'AdminGetOwnSessionById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/sessions/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetOwnSessionByIdResponse, AdminGetOwnSessionByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminRevokeSessionResponse>> _AdminRevokeSession({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Revokes (logs out from) a specific session identified by its ID.
+    This allows admin users to remotely log out from other devices.
+    
+
+    This endpoint performs session revocation by:
+
+    - Validating the session ID from the route parameter
+
+    - Verifying the session belongs to the authenticated admin user
+
+    - Soft deleting the session (marking it as inactive)
+
+    - Invalidating all tokens associated with that session
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    - User can only revoke their own sessions
+
+    
+
+    **Use Cases:**
+
+    - Log out from a specific device remotely
+
+    - Remove unrecognized or suspicious sessions
+
+    - Clean up old sessions after viewing session list
+
+    - Security response to potential account compromise
+
+    
+
+    **Security Features:**
+
+    - Session ownership verification prevents revoking other users\' sessions
+
+    - Soft delete ensures session history is maintained for audit purposes
+
+    - Immediate invalidation prevents further use of associated tokens
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success flag on successful revocation
+
+    - Returns 400 Bad Request if session ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Session not found or doesn\'t belong to user
+
+    - Attempting to revoke another user\'s session returns 404 (not 403) to prevent session enumeration attacks''',
+      summary: 'Revoke a specific session (log out from a device)',
+      operationId: 'AdminRevokeSession',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/me/sessions/revoke/${id}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRevokeSessionResponse, AdminRevokeSessionResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetPendingPaymentOrdersResponse>>
+  _AdminGetPendingPaymentOrders({
+    int? pageIndex,
+    int? pageSize,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns a paginated list of orders in PendingPayment status, ordered oldest-first
+    so that staff can process payments in the order they were submitted.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with a paginated list of order summaries
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List orders awaiting payment',
+      operationId: 'AdminGetPendingPaymentOrders',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/pending-payment');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminGetPendingPaymentOrdersResponse,
+      AdminGetPendingPaymentOrdersResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetOrderPaymentResponse>> _AdminGetOrderPayment({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the payment details for a specific order, including status, proof URL,
+    payment method, and verification details.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the payment details
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the payment record does not exist
+''',
+      summary: 'Get the payment record of an order',
+      operationId: 'AdminGetOrderPayment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/payment');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetOrderPaymentResponse, AdminGetOrderPaymentResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetOrderByIdResponse>> _AdminGetOrderById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the full detail of a single order including its items, pricing tiers, and payment.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the order details
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order does not exist
+''',
+      summary: 'Get a single order by ID',
+      operationId: 'AdminGetOrderById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetOrderByIdResponse, AdminGetOrderByIdResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetAllOrdersResponse>> _AdminGetAllOrders({
+    int? pageIndex,
+    int? pageSize,
+    Object? status,
+    String? customerId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns a paginated list of orders. Supports optional filtering by status and customer.
+    Results are ordered by most recently created first.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with a paginated list of order summaries
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all orders',
+      operationId: 'AdminGetAllOrders',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'status': status,
+      'customerId': customerId,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetAllOrdersResponse, AdminGetAllOrdersResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCreateOrderResponse>> _AdminCreateOrder({
+    required AdminCreateOrderRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Opens a new content order for a B2B client. This is the first step in the revenue flow —
+    before any commissioned article or video can be created, an order must exist that links the
+    work to the customer who is paying for it.
+    
+
+    The order starts in Draft status with no items or total yet. The admin adds items and tiers
+    before submitting. Optionally linking a package applies a pre-configured bundle deal.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with the order summary on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the customer or package does not exist
+''',
+      summary: 'Create a new content order',
+      operationId: 'AdminCreateOrder',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateOrderResponse, AdminCreateOrderResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminVerifyPaymentResponse>> _AdminVerifyPayment({
+    required String? id,
+    required AdminVerifyPaymentRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Verifies a PendingPayment order\'s payment, transitioning the order to Paid status.
+    A receipt URL is recorded and social boost / featured promotion is stamped on any
+    already-linked content items.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order or payment does not exist
+
+    - Returns 409 Conflict if the payment has already been verified or rejected
+''',
+      summary: 'Verify an order payment',
+      operationId: 'AdminVerifyPayment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/payment/verify');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminVerifyPaymentResponse, AdminVerifyPaymentResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminSubmitOrderResponse>> _AdminSubmitOrder({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Submits a Draft order, transitioning it to PendingPayment status.
+    A payment record is created automatically at the order\'s current total amount.
+    
+
+    The order must have at least one item, and each item must have at least one pricing tier attached.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the order is not in Draft status, or has no items with tiers
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order does not exist
+''',
+      summary: 'Submit a draft order for payment',
+      operationId: 'AdminSubmitOrder',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/submit');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminSubmitOrderResponse, AdminSubmitOrderResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRejectPaymentResponse>> _AdminRejectPayment({
+    required String? id,
+    required AdminRejectPaymentRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Rejects an order\'s payment with optional explanatory notes.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the payment record does not exist
+
+    - Returns 409 Conflict if the payment has already been verified or rejected
+''',
+      summary: 'Reject an order payment',
+      operationId: 'AdminRejectPayment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/payment/reject');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRejectPaymentResponse, AdminRejectPaymentResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCancelOrderResponse>> _AdminCancelOrder({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Cancels a Draft or PendingPayment order. Paid orders cannot be cancelled.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the order is Paid and cannot be cancelled
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order does not exist
+
+    - Returns 409 Conflict if the order is already cancelled
+''',
+      summary: 'Cancel a draft or pending-payment order',
+      operationId: 'AdminCancelOrder',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/cancel');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCancelOrderResponse, AdminCancelOrderResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminAttachPaymentProofResponse>> _AdminAttachPaymentProof({
+    required String? id,
+    required String? paymentMethod,
+    required MultipartFile file,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Uploads the customer\'s payment receipt image to Cloudinary and attaches the resulting
+    URL together with the payment method to the order\'s payment record.
+    Accepts a multipart/form-data request with the image file and payment method.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the payment record does not exist
+''',
+      summary: 'Attach a payment proof to an order',
+      operationId: 'AdminAttachPaymentProof',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/payment/proof');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'paymentMethod': paymentMethod,
+    };
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('file', file),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminAttachPaymentProofResponse, AdminAttachPaymentProofResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminAddOrderItemResponse>> _AdminAddOrderItem({
+    required String? id,
+    required AdminAddOrderItemRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Adds one commissioned content item to a Draft order. Each item specifies the category,
+    the kind of content (Article or Video), and optional promotion options.
+    
+
+    The promotion level price is snapshotted at this moment so the client\'s quote is locked
+    even if the admin adjusts prices later.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with the order item details on success
+
+    - Returns 400 Bad Request if the order is not in Draft status or validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order, category, or promotion level does not exist
+''',
+      summary: 'Add a content item to an order',
+      operationId: 'AdminAddOrderItem',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/orders/${id}/items');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminAddOrderItemResponse, AdminAddOrderItemResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminAddItemTierResponse>> _AdminAddItemTier({
+    required String? id,
+    required String? itemId,
+    required AdminAddItemTierRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Attaches a pricing tier snapshot to a specific order item in a Draft order.
+    The category pricing is snapshotted at this moment so the client\'s quote is locked
+    even if the admin adjusts prices later.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with the tier snapshot details on success
+
+    - Returns 400 Bad Request if the order is not in Draft status or validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the order, item, or pricing tier does not exist
+''',
+      summary: 'Attach a pricing tier to an order item',
+      operationId: 'AdminAddItemTier',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::orders"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/orders/${id}/items/${itemId}/tiers',
+    );
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminAddItemTierResponse, AdminAddItemTierResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetPackageByIdResponse>> _AdminGetPackageById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the full details of a single content package, including all its slots and their category assignments.
+    
+
+    Used by the admin when setting up an order — they need to see exactly what slots
+    are in a package before adding it to a client\'s order.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with package details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the package does not exist
+''',
+      summary: 'Get a package by ID',
+      operationId: 'AdminGetPackageById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetPackageByIdResponse, AdminGetPackageByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllPackagesResponse>> _AdminGetAllPackages({
+    int? pageIndex,
+    int? pageSize,
+    bool? isActive,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the paginated list of all content packages with their slot compositions.
+    
+
+    Supports filtering by active status to show only available packages for new orders
+    or to review inactive ones for reactivation.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated package list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all packages',
+      operationId: 'AdminGetAllPackages',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'isActive': isActive,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllPackagesResponse, AdminGetAllPackagesResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreatePackageResponse>> _AdminCreatePackage({
+    required AdminCreatePackageRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Creates a new content package with a flat price.
+    
+
+    A package groups multiple content slots into a named bundle deal (e.g., "Artist Starter Pack").
+    Slots must be added separately after the package is created.
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with the created package details on success\n
+    - Returns 400 Bad Request if the request body is invalid\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n''',
+      summary: 'Create a package',
+      operationId: 'AdminCreatePackage',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreatePackageResponse, AdminCreatePackageResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRemovePackageSlotResponse>> _AdminRemovePackageSlot({
+    required String? id,
+    required String? slotId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Permanently removes a slot from the specified package.
+    
+
+    This operation cannot be undone. The slot and its category assignment will be deleted.
+    Existing orders that referenced this package before the slot was removed are not affected.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the package or slot does not exist
+''',
+      summary: 'Remove a slot from a package',
+      operationId: 'AdminRemovePackageSlot',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages/${id}/slots/${slotId}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminRemovePackageSlotResponse, AdminRemovePackageSlotResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminDeactivatePackageResponse>> _AdminDeactivatePackage({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a package, removing it from available bundles for new orders.
+    
+
+    Existing orders that reference this package are not affected.
+    The package can be restored later using the activate endpoint.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated package details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the package does not exist
+
+    - Returns 409 Conflict if the package is already inactive
+''',
+      summary: 'Deactivate a package',
+      operationId: 'AdminDeactivatePackage',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminDeactivatePackageResponse, AdminDeactivatePackageResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminAddPackageSlotResponse>> _AdminAddPackageSlot({
+    required String? id,
+    required AdminAddPackageSlotRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Adds a new content slot to an existing package.
+    
+
+    A slot defines what content must be delivered as part of the package.
+    Specify a category to lock the slot to a specific type of content,
+    or leave the category empty to create an open slot where the client may choose any category.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with the updated package details on success
+
+    - Returns 400 Bad Request if the request body is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the package or category does not exist
+''',
+      summary: 'Add a slot to a package',
+      operationId: 'AdminAddPackageSlot',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages/${id}/slots');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminAddPackageSlotResponse, AdminAddPackageSlotResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminActivatePackageResponse>> _AdminActivatePackage({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a package, making it available for new orders.
+    
+
+    An inactive package cannot be added to new client orders.
+    This operation restores it to active status.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated package details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the package does not exist
+
+    - Returns 409 Conflict if the package is already active
+''',
+      summary: 'Activate a package',
+      operationId: 'AdminActivatePackage',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::packages"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/packages/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminActivatePackageResponse, AdminActivatePackageResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetPermissionByIdResponse>> _AdminGetPermissionById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves detailed information about a specific permission identified by its ID.
+    
+
+    This endpoint provides permission details by:
+
+    - Validating the permission ID from the route parameter
+
+    - Fetching the permission data
+
+    - Returning complete permission metadata
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    - Permission status (IsActive, IsDeleted, DeletedAt)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with permission details on success
+
+    - Returns 400 Bad Request if permission ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Permission not found with the specified ID''',
+      summary: 'Retrieve a permission by ID',
+      operationId: 'AdminGetPermissionById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetPermissionByIdResponse, AdminGetPermissionByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdatePermissionResponse>> _AdminUpdatePermission({
+    required String? id,
+    required AdminUpdatePermissionRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates an existing permission\'s resource, action, and/or description.
+    Only provided fields will be updated (partial update supported).
+    
+
+    This endpoint updates a permission by:
+
+    - Validating the permission ID and update data
+
+    - Checking that the new resource/action combination doesn\'t conflict with existing permissions
+
+    - Updating only the fields that are provided
+
+    - Returning the updated permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Request Body:**
+
+    - resource: The new resource name (optional, max 15 characters)
+
+    - action: The new action name (optional, max 15 characters)
+
+    - description: The new description (optional, max 300 characters)
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    - Permission status (IsActive, IsDeleted)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    - Returns 409 Conflict if new resource/action combination already exists
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid resource, action, or description format
+
+    - NotFoundException (404): Permission not found with the specified ID
+
+    - ConflictException (409): Permission with the new resource/action already exists''',
+      summary: 'Update an existing permission',
+      operationId: 'AdminUpdatePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdatePermissionResponse, AdminUpdatePermissionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminSoftDeletePermissionResponse>>
+  _AdminSoftDeletePermission({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Soft deletes a permission, marking it as deleted without permanent removal.
+    
+
+    This endpoint soft deletes a permission by:
+
+    - Validating the permission ID exists
+
+    - Checking that the permission is not already deleted
+
+    - Setting the permission\'s IsDeleted status to true and IsActive to false
+
+    - Recording the deletion timestamp
+
+    - Returning the updated permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Remove a permission while preserving the ability to restore it
+
+    - Hide permission from active listings
+
+    - Maintain audit trail of deleted permissions
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with soft deleted permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    - Returns 409 Conflict if permission is already deleted
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid permission ID format
+
+    - NotFoundException (404): Permission not found with the specified ID
+
+    - ConflictException (409): Permission is already deleted''',
+      summary: 'Soft delete a permission',
+      operationId: 'AdminSoftDeletePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminSoftDeletePermissionResponse,
+      AdminSoftDeletePermissionResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetAllPermissionsResponse>> _AdminGetAllPermissions({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    bool? isActive,
+    bool? isDeleted,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of permissions with optional search and filtering.
+    
+
+    This endpoint provides permission listing by:
+
+    - Supporting fuzzy search across Resource, Action, and Description (case-insensitive)
+
+    - Filtering by active status (IsActive)
+
+    - Filtering by deleted status (IsDeleted)
+
+    - Paginating results for efficient data retrieval
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Query Parameters:**
+
+    - pageIndex: Zero-based page index (default: 0)
+
+    - pageSize: Number of items per page (default: 10)
+
+    - search: Fuzzy search term for Resource, Action, and Description
+
+    - isActive: Filter by active status (true/false)
+
+    - isDeleted: Filter by deleted status (true/false)
+
+    
+
+    **Use Cases:**
+
+    - List all available permissions in the system
+
+    - Search for specific permissions by resource, action, or description
+
+    - Filter permissions by status for administrative purposes
+
+    - Paginate through large permission sets
+
+    
+
+    **Response Includes:**
+
+    - Paginated list of permissions with ID, resource, action, description, and status
+
+    - Total count for pagination
+
+    - Current page index and page size
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated permission list on success
+
+    - Returns 400 Bad Request if query parameters are invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions''',
+      summary: 'Retrieve all permissions with pagination and filtering',
+      operationId: 'AdminGetAllPermissions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'isActive': isActive,
+      'isDeleted': isDeleted,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllPermissionsResponse, AdminGetAllPermissionsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreatePermissionResponse>> _AdminCreatePermission({
+    required AdminCreatePermissionRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new permission with the specified resource, action, and description.
+    
+
+    This endpoint creates a permission by:
+
+    - Validating the resource, action, and description
+
+    - Checking that no permission with the same resource and action already exists
+
+    - Creating the permission with active status
+
+    - Returning the created permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Request Body:**
+
+    - resource: The resource name (max 15 characters)
+
+    - action: The action name (max 15 characters)
+
+    - description: A description of the permission\'s purpose (max 300 characters)
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    - Permission status (IsActive, IsDeleted)
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 409 Conflict if permission with resource and action already exists
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid resource, action, or description format
+
+    - ConflictException (409): Permission with the same resource and action already exists''',
+      summary: 'Create a new permission',
+      operationId: 'AdminCreatePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreatePermissionResponse, AdminCreatePermissionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminRestorePermissionResponse>> _AdminRestorePermission({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Restores a soft-deleted permission, making it available again.
+    
+
+    This endpoint restores a permission by:
+
+    - Validating the permission ID exists
+
+    - Checking that the permission is currently soft-deleted
+
+    - Setting the permission\'s IsDeleted status to false
+
+    - Clearing the deletion timestamp
+
+    - Returning the restored permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Recover accidentally deleted permissions
+
+    - Reinstate previously removed permissions
+
+    
+
+    **Note:**
+
+    - The restored permission will remain inactive (IsActive = false)
+
+    - Use the activate endpoint to make the permission usable again
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with restored permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    - Returns 409 Conflict if permission is not deleted
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid permission ID format
+
+    - NotFoundException (404): Permission not found with the specified ID
+
+    - ConflictException (409): Permission is not deleted and cannot be restored''',
+      summary: 'Restore a soft-deleted permission',
+      operationId: 'AdminRestorePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}/restore');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminRestorePermissionResponse, AdminRestorePermissionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminHardDeletePermissionResponse>>
+  _AdminHardDeletePermission({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Permanently deletes a permission from the system. This action cannot be undone.
+    
+
+    This endpoint hard deletes a permission by:
+
+    - Validating the permission ID exists
+
+    - Permanently removing the permission from the database
+
+    - Cascading deletion to role-permission associations
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Permanently remove obsolete permissions
+
+    - Clean up test or temporary permissions
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on successful deletion
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid permission ID format
+
+    - NotFoundException (404): Permission not found with the specified ID''',
+      summary: 'Permanently delete a permission',
+      operationId: 'AdminHardDeletePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}/hard');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminHardDeletePermissionResponse,
+      AdminHardDeletePermissionResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminDeactivatePermissionResponse>>
+  _AdminDeactivatePermission({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a permission, preventing it from being assigned to roles.
+    
+
+    This endpoint deactivates a permission by:
+
+    - Validating the permission ID exists
+
+    - Checking that the permission is not already inactive
+
+    - Setting the permission\'s IsActive status to false
+
+    - Returning the updated permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Temporarily disable a permission without deleting it
+
+    - Prevent new role assignments of the permission
+
+    - Existing role assignments remain unaffected
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with deactivated permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    - Returns 409 Conflict if permission is already inactive
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid permission ID format
+
+    - NotFoundException (404): Permission not found with the specified ID
+
+    - ConflictException (409): Permission is already inactive''',
+      summary: 'Deactivate a permission',
+      operationId: 'AdminDeactivatePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeactivatePermissionResponse,
+      AdminDeactivatePermissionResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivatePermissionResponse>> _AdminActivatePermission({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a permission, allowing it to be assigned to roles.
+    
+
+    This endpoint activates a permission by:
+
+    - Validating the permission ID exists
+
+    - Checking that the permission is not already active
+
+    - Setting the permission\'s IsActive status to true
+
+    - Returning the updated permission details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Re-enable a previously deactivated permission
+
+    - Make a permission available for assignment to roles
+
+    
+
+    **Response Includes:**
+
+    - Permission ID, resource, action, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with activated permission details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if permission doesn\'t exist
+
+    - Returns 409 Conflict if permission is already active
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid permission ID format
+
+    - NotFoundException (404): Permission not found with the specified ID
+
+    - ConflictException (409): Permission is already active''',
+      summary: 'Activate a permission',
+      operationId: 'AdminActivatePermission',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::permissions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/permissions/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminActivatePermissionResponse, AdminActivatePermissionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllPricingTiersResponse>> _AdminGetAllPricingTiers({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the complete list of pricing tiers available for category pricing configuration.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the list of pricing tiers on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all pricing tiers',
+      operationId: 'AdminGetAllPricingTiers',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::pricing-tiers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/pricing-tiers');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminGetAllPricingTiersResponse, AdminGetAllPricingTiersResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreatePricingTierResponse>> _CreatePricingTier({
+    required AdminCreatePricingTierRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new add-on service fee tier (e.g. "base_upload", "social_boost").
+    \n
+    This endpoint creates a pricing tier by:\n
+    - Validating the tier name and optional description\n
+    - Checking that no pricing tier with the same name already exists\n
+    - Creating the tier with active status\n
+    - Returning the created pricing tier details\n
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Request Body:**\n
+    - name: The unique name for the pricing tier (max 40 characters)\n
+    - description: Optional description of what this tier covers (max 200 characters)\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with pricing tier details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 409 Conflict if pricing tier name already exists\n''',
+      summary: 'Create a new pricing tier',
+      operationId: 'CreatePricingTier',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::pricing-tiers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/pricing-tiers');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreatePricingTierResponse, AdminCreatePricingTierResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdatePricingTierResponse>> _AdminUpdatePricingTier({
+    required String? id,
+    required AdminUpdatePricingTierRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the name and description of an existing pricing tier.
+    
+
+    Price changes on existing order snapshots are unaffected — only new orders will reflect the change.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated pricing tier details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the pricing tier does not exist
+
+    - Returns 409 Conflict if the new name is already taken
+''',
+      summary: 'Update a pricing tier',
+      operationId: 'AdminUpdatePricingTier',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::pricing-tiers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/pricing-tiers/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdatePricingTierResponse, AdminUpdatePricingTierResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminDeactivatePricingTierResponse>>
+  _AdminDeactivatePricingTier({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a pricing tier, preventing it from being assigned to new content.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the pricing tier does not exist
+
+    - Returns 409 Conflict if the pricing tier is already inactive
+''',
+      summary: 'Deactivate a pricing tier',
+      operationId: 'AdminDeactivatePricingTier',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::pricing-tiers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/pricing-tiers/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeactivatePricingTierResponse,
+      AdminDeactivatePricingTierResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivatePricingTierResponse>> _ActivatePricingTier({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a pricing tier, making it available for assignment to content.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the pricing tier does not exist
+
+    - Returns 409 Conflict if the pricing tier is already active
+''',
+      summary: 'Activate a pricing tier',
+      operationId: 'ActivatePricingTier',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::pricing-tiers"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/pricing-tiers/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminActivatePricingTierResponse,
+      AdminActivatePricingTierResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetAllPromotionLevelsResponse>>
+  _AdminGetAllPromotionLevels({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the complete list of promotion levels available for order upsells.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the list of promotion levels on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all promotion levels',
+      operationId: 'AdminGetAllPromotionLevels',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/promotion-levels');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminGetAllPromotionLevelsResponse,
+      AdminGetAllPromotionLevelsResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminCreatePromotionLevelResponse>>
+  _AdminCreatePromotionLevel({
+    required AdminCreatePromotionLevelRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new homepage placement upgrade option (e.g. "Featured — 7 days").
+    \n
+    This endpoint creates a promotion level by:\n
+    - Validating the name, duration, and price\n
+    - Checking that no promotion level with the same name already exists\n
+    - Creating the level with active status\n
+    - Returning the created promotion level details\n
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have SuperAdmin role\n
+    \n
+    **Request Body:**\n
+    - name: The unique display name for the promotion level (max 40 characters)\n
+    - durationDays: The homepage placement duration in days (must be > 0)\n
+    - priceUsd: The price in USD (must be >= 0)\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with promotion level details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks SuperAdmin role\n
+    - Returns 409 Conflict if promotion level name already exists\n''',
+      summary: 'Create a new promotion level',
+      operationId: 'AdminCreatePromotionLevel',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/promotion-levels');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminCreatePromotionLevelResponse,
+      AdminCreatePromotionLevelResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminUpdatePromotionLevelResponse>>
+  _AdminUpdatePromotionLevel({
+    required String? id,
+    required AdminUpdatePromotionLevelRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the name, duration, and price of an existing promotion level.
+    
+
+    Price changes on existing order snapshots are unaffected — only new orders will reflect the change.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated promotion level details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the promotion level does not exist
+
+    - Returns 409 Conflict if the new name is already taken
+''',
+      summary: 'Update a promotion level',
+      operationId: 'AdminUpdatePromotionLevel',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/promotion-levels/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminUpdatePromotionLevelResponse,
+      AdminUpdatePromotionLevelResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminDeactivatePromotionLevelResponse>>
+  _AdminDeactivatePromotionLevel({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a promotion level, preventing it from being assigned to new content.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the promotion level does not exist
+
+    - Returns 409 Conflict if the promotion level is already inactive
+''',
+      summary: 'Deactivate a promotion level',
+      operationId: 'AdminDeactivatePromotionLevel',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/promotion-levels/${id}/deactivate',
+    );
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeactivatePromotionLevelResponse,
+      AdminDeactivatePromotionLevelResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivatePromotionLevelResponse>>
+  _ActivatePromotionLevel({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Activates a promotion level, making it available for assignment to content.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the promotion level does not exist
+
+    - Returns 409 Conflict if the promotion level is already active
+''',
+      summary: 'Activate a promotion level',
+      operationId: 'ActivatePromotionLevel',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/promotion-levels/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminActivatePromotionLevelResponse,
+      AdminActivatePromotionLevelResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminGetRoleByIdResponse>> _AdminGetRoleById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves detailed information about a specific role identified by its ID,
+    including all permissions assigned to the role.
+    
+
+    This endpoint provides role details by:
+
+    - Validating the role ID from the route parameter
+
+    - Fetching the role with all associated permissions
+
+    - Returning complete role metadata and permission list
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - View detailed information about a specific role
+
+    - Review permissions assigned to a role
+
+    - Audit role configuration
+
+    - Display role details in admin dashboard
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - Role status (IsActive, IsDeleted, DeletedAt)
+
+    - List of all permissions assigned to the role
+
+    - Each permission includes resource, action, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with role details and permissions on success
+
+    - Returns 400 Bad Request if role ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Role not found with the specified ID''',
+      summary: 'Retrieve a role by ID with its permissions',
+      operationId: 'AdminGetRoleById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetRoleByIdResponse, AdminGetRoleByIdResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUpdateRoleResponse>> _AdminUpdateRole({
+    required String? id,
+    required AdminUpdateRoleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Updates an existing role\'s name and/or description.
+    Only provided fields will be updated (partial update supported).
+    
+
+    This endpoint updates a role by:
+
+    - Validating the role ID and update data
+
+    - Checking that the new name doesn\'t conflict with existing roles
+
+    - Updating only the fields that are provided
+
+    - Returning the updated role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Rename an existing role
+
+    - Update a role\'s description
+
+    - Modify role details without affecting permissions
+
+    
+
+    **Request Body:**
+
+    - name: The new name for the role (optional, max 20 characters)
+
+    - description: The new description for the role (optional, max 300 characters)
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - Role status (IsActive, IsDeleted)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if new role name already exists
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid name or description format
+
+    - NotFoundException (404): Role not found with the specified ID
+
+    - ConflictException (409): Role with the new name already exists''',
+      summary: 'Update an existing role',
+      operationId: 'AdminUpdateRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminUpdateRoleResponse, AdminUpdateRoleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminSoftDeleteRoleResponse>> _AdminSoftDeleteRole({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Soft deletes a role, marking it as deleted without permanent removal.
+    
+
+    This endpoint soft deletes a role by:
+
+    - Validating the role ID exists
+
+    - Checking that the role is not already deleted
+
+    - Setting the role\'s IsDeleted status to true and IsActive to false
+
+    - Recording the deletion timestamp
+
+    - Returning the updated role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Remove a role while preserving the ability to restore it
+
+    - Hide role from active listings
+
+    - Maintain audit trail of deleted roles
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with soft deleted role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if role is already deleted
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID format
+
+    - NotFoundException (404): Role not found with the specified ID
+
+    - ConflictException (409): Role is already deleted''',
+      summary: 'Soft delete a role',
+      operationId: 'AdminSoftDeleteRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminSoftDeleteRoleResponse, AdminSoftDeleteRoleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllRolesResponse>> _AdminGetAllRoles({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    bool? isActive,
+    bool? isDeleted,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of roles with optional search and filtering.
+    
+
+    This endpoint provides role listing by:
+
+    - Supporting fuzzy search across Name and Description (case-insensitive)
+
+    - Filtering by active status (IsActive)
+
+    - Filtering by deleted status (IsDeleted)
+
+    - Paginating results for efficient data retrieval
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Query Parameters:**
+
+    - pageIndex: Zero-based page index (default: 0)
+
+    - pageSize: Number of items per page (default: 10)
+
+    - search: Fuzzy search term for Name and Description
+
+    - isActive: Filter by active status (true/false)
+
+    - isDeleted: Filter by deleted status (true/false)
+
+    
+
+    **Use Cases:**
+
+    - List all available roles in the system
+
+    - Search for specific roles by name or description
+
+    - Filter roles by status for administrative purposes
+
+    - Paginate through large role sets
+
+    
+
+    **Response Includes:**
+
+    - Paginated list of roles with ID, name, description, and status
+
+    - Total count for pagination
+
+    - Current page index and page size
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated role list on success
+
+    - Returns 400 Bad Request if query parameters are invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions''',
+      summary: 'Retrieve all roles with pagination and filtering',
+      operationId: 'AdminGetAllRoles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'isActive': isActive,
+      'isDeleted': isDeleted,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetAllRolesResponse, AdminGetAllRolesResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCreateRoleResponse>> _AdminCreateRole({
+    required AdminCreateRoleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new role with the specified name and description.
+    
+
+    This endpoint creates a role by:
+
+    - Validating the role name and description
+
+    - Checking that no role with the same name already exists
+
+    - Creating the role with active status
+
+    - Returning the created role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Create custom roles for organization-specific access control
+
+    - Define new permission groupings
+
+    
+
+    **Request Body:**
+
+    - name: The unique name for the role (max 20 characters)
+
+    - description: A description of the role\'s purpose (max 300 characters)
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - Role status (IsActive, IsDeleted)
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 409 Conflict if role name already exists
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid name or description format
+
+    - ConflictException (409): Role with the same name already exists''',
+      summary: 'Create a new role',
+      operationId: 'AdminCreateRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateRoleResponse, AdminCreateRoleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRestoreRoleResponse>> _AdminRestoreRole({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Restores a soft-deleted role, making it available again.
+    
+
+    This endpoint restores a role by:
+
+    - Validating the role ID exists
+
+    - Checking that the role is currently soft-deleted
+
+    - Setting the role\'s IsDeleted status to false
+
+    - Clearing the deletion timestamp
+
+    - Returning the restored role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Recover accidentally deleted roles
+
+    - Reinstate previously removed roles
+
+    
+
+    **Note:**
+
+    - The restored role will remain inactive (IsActive = false)
+
+    - Use the activate endpoint to make the role assignable again
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with restored role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if role is not deleted
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID format
+
+    - NotFoundException (404): Role not found with the specified ID
+
+    - ConflictException (409): Role is not deleted and cannot be restored''',
+      summary: 'Restore a soft-deleted role',
+      operationId: 'AdminRestoreRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/restore');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRestoreRoleResponse, AdminRestoreRoleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRemovePermissionFromRoleResponse>>
+  _AdminRemovePermissionFromRole({
+    required String? id,
+    required String? permissionId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes a permission from a role, revoking that permission from all users with the role.
+    
+
+    This endpoint removes a permission by:
+
+    - Validating the role ID exists
+
+    - Checking that the permission is assigned to the role
+
+    - Removing the role-permission association
+
+    - Returning the updated role with remaining permissions
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Revoke capabilities from a role
+
+    - Reduce role access to resources
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - List of remaining assigned permissions
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated role details on success
+
+    - Returns 400 Bad Request if permission is not assigned to role
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID or permission ID format
+
+    - BadRequestException (400): Permission is not assigned to the role
+
+    - NotFoundException (404): Role not found''',
+      summary: 'Remove a permission from a role',
+      operationId: 'AdminRemovePermissionFromRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/admin/roles/${id}/permissions/${permissionId}',
+    );
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminRemovePermissionFromRoleResponse,
+      AdminRemovePermissionFromRoleResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminHardDeleteRoleResponse>> _AdminHardDeleteRole({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Permanently deletes a role from the system. This action cannot be undone.
+    
+
+    This endpoint hard deletes a role by:
+
+    - Validating the role ID exists
+
+    - Checking that the role is not a core system role (SuperAdmin, Admin, Visitor)
+
+    - Permanently removing the role from the database
+
+    - Cascading deletion to role-permission associations
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Permanently remove obsolete roles
+
+    - Clean up test or temporary roles
+
+    
+
+    **Protected Roles:**
+
+    - SuperAdmin, Admin, and Visitor roles cannot be hard deleted
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on successful deletion
+
+    - Returns 400 Bad Request if attempting to delete a core role
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID format or core role protection
+
+    - NotFoundException (404): Role not found with the specified ID''',
+      summary: 'Permanently delete a role',
+      operationId: 'AdminHardDeleteRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/hard');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminHardDeleteRoleResponse, AdminHardDeleteRoleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminDeactivateRoleResponse>> _AdminDeactivateRole({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Deactivates a role, preventing it from being assigned to users.
+    
+
+    This endpoint deactivates a role by:
+
+    - Validating the role ID exists
+
+    - Checking that the role is not already inactive
+
+    - Setting the role\'s IsActive status to false
+
+    - Returning the updated role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Temporarily disable a role without deleting it
+
+    - Prevent new users from being assigned the role
+
+    - Existing user assignments remain unaffected
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with deactivated role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if role is already inactive
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID format
+
+    - NotFoundException (404): Role not found with the specified ID
+
+    - ConflictException (409): Role is already inactive''',
+      summary: 'Deactivate a role',
+      operationId: 'AdminDeactivateRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminDeactivateRoleResponse, AdminDeactivateRoleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminBulkUpdateRolePermissionsResponse>>
+  _AdminBulkUpdateRolePermissions({
+    required String? id,
+    required AdminBulkUpdateRolePermissionsRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Replaces all permissions of a role with the specified list.
+    
+
+    This endpoint bulk updates permissions by:
+
+    - Validating the role ID exists
+
+    - Removing all permissions not in the new list
+
+    - Adding all permissions in the new list that aren\'t already assigned
+
+    - Returning the updated role with all permissions
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Completely reset role permissions
+
+    - Sync role permissions with an external system
+
+    - Batch permission updates
+
+    
+
+    **Request Body:**
+
+    - permissionIds: Array of permission IDs to assign to the role
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - List of all assigned permissions
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID or permission ID format
+
+    - NotFoundException (404): Role not found''',
+      summary: 'Bulk update role permissions',
+      operationId: 'AdminBulkUpdateRolePermissions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/permissions');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminBulkUpdateRolePermissionsResponse,
+      AdminBulkUpdateRolePermissionsResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminAssignPermissionToRoleResponse>>
+  _AdminAssignPermissionToRole({
+    required String? id,
+    required AdminAssignPermissionToRoleRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Assigns a permission to a role, granting that permission to all users with the role.
+    
+
+    This endpoint assigns a permission by:
+
+    - Validating the role ID exists
+
+    - Validating the permission ID exists
+
+    - Checking that the permission is not already assigned to the role
+
+    - Creating the role-permission association
+
+    - Returning the updated role with all permissions
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Grant new capabilities to a role
+
+    - Expand role access to new resources
+
+    
+
+    **Request Body:**
+
+    - permissionId: The ID of the permission to assign
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    - List of all assigned permissions
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role or permission doesn\'t exist
+
+    - Returns 409 Conflict if permission is already assigned to role
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID or permission ID format
+
+    - NotFoundException (404): Role or permission not found
+
+    - ConflictException (409): Permission is already assigned to the role''',
+      summary: 'Assign a permission to a role',
+      operationId: 'AdminAssignPermissionToRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/permissions');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminAssignPermissionToRoleResponse,
+      AdminAssignPermissionToRoleResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivateRoleResponse>> _AdminActivateRole({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Activates a role, allowing it to be assigned to users.
+    
+
+    This endpoint activates a role by:
+
+    - Validating the role ID exists
+
+    - Checking that the role is not already active
+
+    - Setting the role\'s IsActive status to true
+
+    - Returning the updated role details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Re-enable a previously deactivated role
+
+    - Make a role available for assignment to users
+
+    
+
+    **Response Includes:**
+
+    - Role ID, name, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with activated role details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if role is already active
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid role ID format
+
+    - NotFoundException (404): Role not found with the specified ID
+
+    - ConflictException (409): Role is already active''',
+      summary: 'Activate a role',
+      operationId: 'AdminActivateRole',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::roles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/roles/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminActivateRoleResponse, AdminActivateRoleResponse>(
+      $request,
+    );
+  }
+
+  @override
   Future<Response<AdminGetSessionMetricsResponse>> _AdminGetSessionMetrics({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Retrieves comprehensive session metrics including platform distribution and user activity.
-This is an admin-only operation for monitoring system usage and platform analytics.
+          '''    Retrieves comprehensive session metrics including platform distribution and user activity.
+    This is an admin-only operation for monitoring system usage and platform analytics.
+    
 
-**Metrics Provided:**
+    **Metrics Provided:**
 
-- Client Platform Counts: Sessions grouped by client platform (iOS app, Android app, Web browser, PWA)
-- Device Type Counts: Sessions grouped by device type (Mobile, Desktop, Tablet)
-- Total Active Sessions: Count of all currently active sessions
-- Total Active Users: Count of unique users with at least one active session
+    - Client Platform Counts: Sessions grouped by client platform (iOS app, Android app, Web browser, PWA)
 
-**Use Cases:**
+    - Device Type Counts: Sessions grouped by device type (Mobile, Desktop, Tablet)
 
-- Monitor platform adoption (mobile app vs web app usage)
-- Track device type distribution for responsive design priorities
-- Measure concurrent user activity
-- Generate dashboards showing real-time system usage
+    - Total Active Sessions: Count of all currently active sessions
 
-**Response Codes:**
+    - Total Active Users: Count of unique users with at least one active session
 
-- Returns 200 OK with metrics data
-- Returns 401 Unauthorized if access token is invalid
-- Returns 403 Forbidden if not admin''',
+    
+
+    **Use Cases:**
+
+    - Monitor platform adoption (mobile app vs web app usage)
+
+    - Track device type distribution for responsive design priorities
+
+    - Measure concurrent user activity
+
+    - Generate dashboards showing real-time system usage
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with metrics data
+
+    - Returns 401 Unauthorized if access token is invalid
+
+    - Returns 403 Forbidden if not admin''',
       summary: 'Get session metrics and statistics',
       operationId: 'AdminGetSessionMetrics',
       consumes: [],
@@ -655,8 +7152,8 @@ This is an admin-only operation for monitoring system usage and platform analyti
 
   @override
   Future<Response<AdminGetAllSessionsResponse>> _AdminGetAllSessions({
-    required int pageIndex,
-    required int pageSize,
+    int? pageIndex,
+    int? pageSize,
     String? status,
     String? userId,
     String? ipAddress,
@@ -664,30 +7161,33 @@ This is an admin-only operation for monitoring system usage and platform analyti
     DateTime? toDate,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Retrieves a paginated list of all user sessions with optional filtering capabilities.
-This is an admin-only operation for monitoring and managing user sessions.
+          '''    Retrieves a paginated list of all user sessions with optional filtering capabilities.
+    This is an admin-only operation for monitoring and managing user sessions.
+    
 
-**Query Parameters:**
+    **Query Parameters:**
 
-- pageIndex: Zero-based page index (default: 0)
-- pageSize: Number of items per page (default: 10, max: 100)
-- status: Filter by status ("active" or "expired")\n
-- userId: Filter by user ID (GUID)\n
-- ipAddress: Filter by IP address (partial match)\n
-- deviceName: Filter by device name (partial match)\n
-- fromDate: Filter sessions created after this date\n
-- toDate: Filter sessions created before this date\n
-\n
-**Response Includes:**\n
-- Paginated list of sessions\n
-- Total count of matching sessions\n
-- Current page index and size\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with paginated sessions\n
-- Returns 400 Bad Request for invalid parameters\n
-- Returns 401 Unauthorized if access token is invalid\n
-- Returns 403 Forbidden if not admin''',
+    - pageIndex: Zero-based page index (default: 0)
+
+    - pageSize: Number of items per page (default: 10, max: 100)
+
+    - status: Filter by status ("active" or "expired")\n
+    - userId: Filter by user ID (GUID)\n
+    - ipAddress: Filter by IP address (partial match)\n
+    - deviceName: Filter by device name (partial match)\n
+    - fromDate: Filter sessions created after this date\n
+    - toDate: Filter sessions created before this date\n
+    \n
+    **Response Includes:**\n
+    - Paginated list of sessions\n
+    - Total count of matching sessions\n
+    - Current page index and size\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with paginated sessions\n
+    - Returns 400 Bad Request for invalid parameters\n
+    - Returns 401 Unauthorized if access token is invalid\n
+    - Returns 403 Forbidden if not admin''',
       summary: 'Retrieve all sessions with pagination and filtering',
       operationId: 'AdminGetAllSessions',
       consumes: [],
@@ -729,31 +7229,32 @@ This is an admin-only operation for monitoring and managing user sessions.
     String? columns,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Exports session data with optional filtering by status and date range.
-This is an admin-only operation for extracting session data for reporting and analysis.
+          '''    Exports session data with optional filtering by status and date range.
+    This is an admin-only operation for extracting session data for reporting and analysis.
+    
 
-**Filter Parameters:**
+    **Filter Parameters:**
 
-- Status: Filter by session status ("active" or "expired").\n
-- FromDate: Include only sessions created after this date.\n
-- ToDate: Include only sessions created before this date.\n
-\n
-**Exported Fields:**\n
-- Session ID, User ID\n
-- IP Address, Device Name, User Agent, Client Platform\n
-- Created At, Expires At, Is Active, Deleted At\n
-\n
-**Use Cases:**\n
-- Generate session activity reports\n
-- Export data for compliance and auditing\n
-- Analyze session patterns and user behavior\n
-- Create backups of session data\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with session export data\n
-- Returns 400 Bad Request if filter parameters are invalid\n
-- Returns 401 Unauthorized if access token is invalid\n
-- Returns 403 Forbidden if not admin''',
+    - Status: Filter by session status ("active" or "expired").\n
+    - FromDate: Include only sessions created after this date.\n
+    - ToDate: Include only sessions created before this date.\n
+    \n
+    **Exported Fields:**\n
+    - Session ID, User ID\n
+    - IP Address, Device Name, User Agent, Client Platform\n
+    - Created At, Expires At, Is Active, Deleted At\n
+    \n
+    **Use Cases:**\n
+    - Generate session activity reports\n
+    - Export data for compliance and auditing\n
+    - Analyze session patterns and user behavior\n
+    - Create backups of session data\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with session export data\n
+    - Returns 400 Bad Request if filter parameters are invalid\n
+    - Returns 401 Unauthorized if access token is invalid\n
+    - Returns 403 Forbidden if not admin''',
       summary: 'Export session data with optional filtering',
       operationId: 'AdminExportSessionData',
       consumes: [],
@@ -782,43 +7283,145 @@ This is an admin-only operation for extracting session data for reporting and an
   }
 
   @override
-  Future<Response<AdminForceLogoutUserResponse>> _AdminForceLogoutUser({
-    required String id,
+  Future<Response<AdminRefreshTokenResponse>> _AdminRefreshToken({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Forces a user to log out from all their active sessions across all devices.
-This is an admin-only operation used for security purposes or account management.
+          '''    Validates and rotates a refresh token to obtain a new admin access token.
+    Implements token rotation for enhanced security - the old refresh token is invalidated.
+    
 
-This endpoint performs force logout by:
+    This endpoint performs token refresh by:
 
-- Validating the target user ID from the route parameter
-- Soft deleting all sessions associated with that user
-- Invalidating all tokens for those sessions
+    - Reading the refresh token from the HttpOnly cookie
 
-**Authentication Requirements:**
+    - Validating the provided refresh token
 
-- Admin must be authenticated with a valid access token
-- Requires admin role and appropriate permissions
+    - Verifying the session is still active and not expired
 
-**Use Cases:**
+    - Generating a new access token
 
-- Security response to compromised accounts
-- Account suspension or termination
-- Policy enforcement (e.g., forced password reset)
-- Emergency access revocation
+    - Rotating the refresh token (old token becomes invalid)
 
-**Response Codes:**
+    - Setting new tokens as HttpOnly cookies
 
-- Returns 200 OK with success flag on successful logout
-- Returns 400 Bad Request if user ID is invalid
-- Returns 401 Unauthorized if access token is invalid or expired
-- Returns 403 Forbidden if admin lacks required permissions
+    
 
-**Important Notes:**
+    **Authentication Requirements:**
 
-- This operation affects all user sessions, not just one device
-- Sessions are soft deleted for audit trail purposes
-- User will need to log in again on all devices''',
+    - Valid, non-expired refresh token (via HttpOnly cookie)
+
+    - Session must be active (not logged out or revoked)
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Security Features:**
+
+    - Automatic token rotation prevents token reuse
+
+    - Refresh token hashing for secure storage
+
+    - Session validation ensures only active sessions can refresh
+
+    - Tokens delivered exclusively via HttpOnly cookies
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with user info on successful refresh
+
+    - Returns 401 Unauthorized for unauthenticated requests
+
+    - Returns 403 Forbidden for invalid or expired refresh tokens
+
+    
+
+    **Error Handling:**
+
+    - AuthorizationException (403): Invalid/expired refresh token or session revoked
+
+    - Token rotation ensures old refresh tokens cannot be reused after successful refresh.''',
+      summary: 'Refresh admin access token using a valid refresh token',
+      operationId: 'AdminRefreshToken',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/sessions/refresh-token');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRefreshTokenResponse, AdminRefreshTokenResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminForceLogoutUserResponse>> _AdminForceLogoutUser({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Forces a user to log out from all their active sessions across all devices.
+    This is an admin-only operation used for security purposes or account management.
+    
+
+    This endpoint performs force logout by:
+
+    - Validating the target user ID from the route parameter
+
+    - Soft deleting all sessions associated with that user
+
+    - Invalidating all tokens for those sessions
+
+    
+
+    **Authentication Requirements:**
+
+    - Admin must be authenticated with a valid access token
+
+    - Requires admin role and appropriate permissions
+
+    
+
+    **Use Cases:**
+
+    - Security response to compromised accounts
+
+    - Account suspension or termination
+
+    - Policy enforcement (e.g., forced password reset)
+
+    - Emergency access revocation
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success flag on successful logout
+
+    - Returns 400 Bad Request if user ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if admin lacks required permissions
+
+    
+
+    **Important Notes:**
+
+    - This operation affects all user sessions, not just one device
+
+    - Sessions are soft deleted for audit trail purposes
+
+    - User will need to log in again on all devices''',
       summary: 'Force logout a user from all devices',
       operationId: 'AdminForceLogoutUser',
       consumes: [],
@@ -846,39 +7449,60 @@ This endpoint performs force logout by:
   _AdminCleanupExpiredSessions({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Performs a cleanup operation to soft delete all expired sessions from the database.
-This is an admin-only maintenance operation used for database hygiene.
+          '''    Performs a cleanup operation to soft delete all expired sessions from the database.
+    This is an admin-only maintenance operation used for database hygiene.
+    
 
-This endpoint performs cleanup by:
+    This endpoint performs cleanup by:
 
-- Identifying all sessions that have expired (past their ExpiresAt timestamp)
-- Soft deleting those expired sessions to maintain audit trail
-- Returning the count of sessions that were cleaned up
+    - Identifying all sessions that have expired (past their ExpiresAt timestamp)
 
-**Authentication Requirements:**
+    - Soft deleting those expired sessions to maintain audit trail
 
-- Admin must be authenticated with a valid access token
-- Requires admin role and appropriate permissions
+    - Returning the count of sessions that were cleaned up
 
-**Use Cases:**
+    
 
-- Regular maintenance to keep session data clean
-- Database optimization and cleanup
-- Scheduled cleanup operations (can be triggered manually or via cron)
-- Removing stale session data that won\'t be used again
+    **Authentication Requirements:**
 
-**Response Codes:**
+    - Admin must be authenticated with a valid access token
 
-- Returns 200 OK with deleted count on successful cleanup
-- Returns 401 Unauthorized if access token is invalid or expired
-- Returns 403 Forbidden if admin lacks required permissions
+    - Requires admin role and appropriate permissions
 
-**Important Notes:**
+    
 
-- Sessions are soft deleted, not permanently removed
-- This operation only affects expired sessions, not active ones
-- The operation is safe to run multiple times
-- Consider running this periodically as part of maintenance tasks''',
+    **Use Cases:**
+
+    - Regular maintenance to keep session data clean
+
+    - Database optimization and cleanup
+
+    - Scheduled cleanup operations (can be triggered manually or via cron)
+
+    - Removing stale session data that won\'t be used again
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with deleted count on successful cleanup
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if admin lacks required permissions
+
+    
+
+    **Important Notes:**
+
+    - Sessions are soft deleted, not permanently removed
+
+    - This operation only affects expired sessions, not active ones
+
+    - The operation is safe to run multiple times
+
+    - Consider running this periodically as part of maintenance tasks
+''',
       summary: 'Cleanup all expired sessions',
       operationId: 'AdminCleanupExpiredSessions',
       consumes: [],
@@ -902,189 +7526,1179 @@ This endpoint performs cleanup by:
   }
 
   @override
-  Future<Response<AdminGetOwnProfileResponse>> _AdminGetOwnProfile({
+  Future<Response<AdminGetShortByIdResponse>> _AdminGetShortById({
+    required String? id,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Retrieves the complete profile information for the currently authenticated admin user.
+          '''    Retrieves the full details of a single short video clip by its unique identifier.
+    
 
-This endpoint performs the following operations:
+    Returns the complete short video information including video URL, thumbnail, activity status,
+    engagement counters, and parent video link if applicable.
+    
 
-- Validates JWT token authentication and extracts user ID
-- Verifies admin user account is active
-- Retrieves complete admin user information including roles and permissions
-- Fetches admin user avatar file information if available
-- Returns comprehensive admin user profile data
+    **Authentication Requirements:**
 
-**Authentication Requirements:**
+    - User must be authenticated with a valid access token
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- User must have Admin or SuperAdmin role
+    - User must have Admin or SuperAdmin role
 
-**Returned Information:**
+    
 
-- Basic user details (ID, email, username, verification status)
-- User roles and associated permissions
-- Avatar file information (if available)
-- Account status and activity information
-- Authentication provider information (local/social)
+    **Response Codes:**
 
-**Security Features:**
+    - Returns 200 OK with short video details on success
 
-- Admin user can only access their own profile information
-- Account status validation before profile retrieval
-- Comprehensive permission and role information for authorization
-- Avatar file security through proper file service integration
+    - Returns 401 Unauthorized if access token is invalid or expired
 
-**Response Codes:**
+    - Returns 403 Forbidden if user lacks Admin role
 
-- Returns 200 OK with complete admin user profile data
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for insufficient permissions or inactive accounts
-- Returns 404 Not Found for user not found
+    - Returns 404 Not Found if the short video does not exist
 
-**Error Handling:**
-
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Insufficient permissions or account inactive
-- NotFoundException (404): User not found
-
-**Use Cases:**
-
-- Display admin user profile information in admin applications
-- Determine admin user permissions for UI/UX customization
-- Validate admin user account status
-- Access avatar and display admin user information
-
-**Process Flow:**
-
-1. Validates JWT token and extracts user ID
-
-2. Finds admin user by ID and validates account status
-
-3. Retrieves admin user roles and permissions
-
-4. Fetches avatar file information if available
-
-5. Maps complete user data to response DTO
-
-6. Returns comprehensive admin user profile information''',
-      summary:
-          'Retrieve authenticated admin user\'s complete profile information',
-      operationId: 'AdminGetOwnProfile',
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get short video details',
+      operationId: 'AdminGetShortById',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::user"],
+      tags: ["admin::shorts"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/user/profile');
+    final Uri $url = Uri.parse('/api/v1/admin/shorts/${id}');
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
       tag: swaggerMetaData,
     );
-    return client.send<AdminGetOwnProfileResponse, AdminGetOwnProfileResponse>(
+    return client.send<AdminGetShortByIdResponse, AdminGetShortByIdResponse>(
       $request,
     );
   }
 
   @override
-  Future<Response<AdminUpdateOwnProfileResponse>> _AdminUpdateOwnProfile({
-    required AdminUpdateOwnProfileRequest? body,
+  Future<Response<AdminDeleteShortVideoResponse>> _DeleteShortVideo({
+    required String? id,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Updates the profile information for the currently authenticated admin user.
+          '''    Permanently deletes the specified short video record and removes all associated
+    media assets (video file and thumbnail, if present) from cloud storage.
+    This operation is irreversible.
+    
 
-This endpoint requires admin user authentication - only logged-in admin users can update their own profile,
-providing secure profile management for authenticated admin users
-while maintaining data integrity and security requirements.
+    **Authentication Requirements:**
 
-This endpoint performs the following operations:
+    - User must be authenticated with a valid access token
 
-- Validates JWT token authentication and extracts user ID
-- Verifies admin user account is active
-- Validates uniqueness for username and phone number if being updated
-- Updates admin user profile information selectively
-- Returns updated admin user profile data
+    - User must have SuperAdmin role
 
-**Authentication Requirements:**
+    
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- Only logged-in admin users can update their profile
-- Admin or SuperAdmin role required
+    **Response Codes:**
 
-**Updateable Information:**
+    - Returns 200 OK on success
 
-- Username (must be unique across the system)
-- Phone number with country information
-- Country details (name, ISO code, dial code)
+    - Returns 401 Unauthorized if access token is invalid or expired
 
-**Restrictions:**
+    - Returns 403 Forbidden if user lacks SuperAdmin role
 
-- Email updates are not allowed for admin users (security restriction)
+    - Returns 404 Not Found if the short video does not exist
 
-**Security Features:**
-
-- Admin user can only update their own profile information
-- Account status validation before updates
-- Uniqueness validation for username and phone
-- Email updates prohibited for admin users
-
-**Response Codes:**
-
-- Returns 200 OK with updated admin user profile data
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive accounts or insufficient permissions
-- Returns 404 Not Found for user not found
-- Returns 409 Conflict for duplicate username/phone
-
-**Error Handling:**
-
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not active or insufficient permissions
-- NotFoundException (404): User not found
-- ConflictException (409): Username or phone already exists
-
-**Use Cases:**
-
-- Update admin profile information in administration panels
-- Change username for admin branding
-- Update contact information and location details
-
-**Process Flow:**
-
-1. Validates JWT token and extracts user ID
-
-2. Finds admin user by ID and validates account status
-
-3. Validates uniqueness for updated fields
-
-4. Updates admin user profile information selectively
-
-5. Saves changes to database
-
-6. Returns updated admin user profile data
-
-**Important Notes:**
-
-- Email updates are restricted for admin users
-- Phone number updates include country information
-- Only provided fields are updated (partial updates supported)
-- All validations are performed before any updates.''',
-      summary: 'Update authenticated admin user\'s own profile information',
-      operationId: 'AdminUpdateOwnProfile',
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Permanently delete a short video',
+      operationId: 'DeleteShortVideo',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::user"],
+      tags: ["admin::shorts"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/user/profile');
+    final Uri $url = Uri.parse('/api/v1/admin/shorts/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminDeleteShortVideoResponse, AdminDeleteShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetAllShortsResponse>> _AdminGetAllShorts({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    bool? isActive,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of all short video clips for admin management.
+    
+
+    Supports optional filtering by active status. Results are returned as a paginated list
+    suitable for list and management views.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated short video list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List all short videos',
+      operationId: 'AdminGetAllShorts',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/shorts');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'isActive': isActive,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetAllShortsResponse, AdminGetAllShortsResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCreateShortVideoResponse>> _CreateShortVideo({
+    required String? title,
+    required String? slug,
+    String? videoId,
+    required MultipartFile videoFile,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Uploads a video file to Cloudinary and creates a new short video record.
+    
+
+    Short videos are standalone loopable clips (gossip, reels, quick previews) uploaded
+    directly to cloud storage — not YouTube. They bypass the editorial approval workflow.
+    
+
+    Optionally, a short video can be linked to a full video by providing a <c>videoId</c>,
+    making it a teaser clip for the parent production.
+    
+
+    The video file must be submitted as <c>multipart/form-data</c>.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with short video details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Upload and create a new short video clip',
+      operationId: 'CreateShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/shorts');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'title': title,
+      'slug': slug,
+      'videoId': videoId,
+    };
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('videoFile', videoFile),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminCreateShortVideoResponse, AdminCreateShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUploadShortVideoThumbnailResponse>>
+  _UploadShortVideoThumbnail({
+    required String? id,
+    required MultipartFile file,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Uploads an image file to Cloudinary and sets it as the thumbnail for the specified
+    short video. If a thumbnail already exists, the previous image is deleted from
+    cloud storage after the new one is successfully saved.
+    
+
+    The image file must be submitted as <c>multipart/form-data</c>.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with thumbnail URL and storage key on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Upload or replace the thumbnail for a short video',
+      operationId: 'UploadShortVideoThumbnail',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/shorts/${id}/thumbnail');
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('file', file),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminUploadShortVideoThumbnailResponse,
+      AdminUploadShortVideoThumbnailResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminDeactivateShortVideoResponse>> _DeactivateShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Hides the specified short video from the public feed by clearing its active status.
+    Deactivation is reversible and does not delete any media assets.
+    
+
+    Returns a conflict error if the short video is already inactive.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 409 Conflict if the short video is already inactive
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Deactivate a short video',
+      operationId: 'DeactivateShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/shorts/${id}/deactivate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminDeactivateShortVideoResponse,
+      AdminDeactivateShortVideoResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminActivateShortVideoResponse>> _ActivateShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Makes the specified short video visible on the public feed by setting its active status.
+    
+
+    Returns a conflict error if the short video is already active.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 409 Conflict if the short video is already active
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Activate a short video',
+      operationId: 'ActivateShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/shorts/${id}/activate');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminActivateShortVideoResponse, AdminActivateShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminCreateTagResponse>> _AdminCreateTag({
+    required AdminCreateTagRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new content discovery tag (e.g. "Fally Ipupa", "Kinshasa", "Afrobeats").
+    \n
+    This endpoint creates a tag by:\n
+    - Validating the name and slug format\n
+    - Checking that no tag with the same slug already exists\n
+    - Creating the tag and returning its details\n
+    \n
+    **Authentication Requirements:**\n
+    - User must be authenticated with a valid access token\n
+    - User must have Admin or SuperAdmin role\n
+    \n
+    **Request Body:**\n
+    - name: The display name for the tag (max 50 characters)\n
+    - slug: URL-safe identifier — lowercase letters, numbers, and hyphens only (max 60 characters)\n
+    \n
+    **Response Codes:**\n
+    - Returns 201 Created with tag details on success\n
+    - Returns 400 Bad Request if validation fails\n
+    - Returns 401 Unauthorized if access token is invalid or expired\n
+    - Returns 403 Forbidden if user lacks Admin role\n
+    - Returns 409 Conflict if tag slug already exists\n''',
+      summary: 'Create a new content tag',
+      operationId: 'AdminCreateTag',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::tags"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/tags');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateTagResponse, AdminCreateTagResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetUserRolesResponse>> _AdminGetUserRoles({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Retrieves all roles assigned to a specific user.
+    
+
+    This endpoint retrieves user roles by:
+
+    - Validating the user ID
+
+    - Fetching all role assignments for the user
+
+    - Returning the list of roles with details
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - View user\'s current role assignments
+
+    - Audit user permissions
+
+    
+
+    **Response Includes:**
+
+    - List of roles with ID, name, and description
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with list of roles on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required role
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid user ID format''',
+      summary: 'Get user\'s roles',
+      operationId: 'AdminGetUserRoles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::users"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/users/${id}/roles');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetUserRolesResponse, AdminGetUserRolesResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminAssignRoleToUserResponse>> _AdminAssignRoleToUser({
+    required String? id,
+    required AdminAssignRoleToUserRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Assigns a role to a user, granting them all permissions associated with that role.
+    
+
+    This endpoint assigns a role by:
+
+    - Validating the role ID exists and is active
+
+    - Checking that the role is not already assigned to the user
+
+    - Creating the user-role association
+
+    - Returning the user\'s updated roles
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Grant new capabilities to a user
+
+    - Promote user to a higher role
+
+    
+
+    **Request Body:**
+
+    - roleId: The ID of the role to assign
+
+    
+
+    **Response Includes:**
+
+    - List of all roles assigned to the user
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated roles on success
+
+    - Returns 400 Bad Request if role is inactive or deleted
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if role doesn\'t exist
+
+    - Returns 409 Conflict if role is already assigned to user
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid user ID or role ID format
+
+    - BadRequestException (400): Role is inactive or deleted
+
+    - NotFoundException (404): Role not found
+
+    - ConflictException (409): Role is already assigned to the user''',
+      summary: 'Assign a role to a user',
+      operationId: 'AdminAssignRoleToUser',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::users"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/users/${id}/roles');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminAssignRoleToUserResponse, AdminAssignRoleToUserResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminRemoveRoleFromUserResponse>> _AdminRemoveRoleFromUser({
+    required String? id,
+    required String? roleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes a role from a user, revoking all permissions associated with that role.
+    
+
+    This endpoint removes a role by:
+
+    - Checking that the role is assigned to the user
+
+    - Removing the user-role association
+
+    - Returning the user\'s updated roles
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Use Cases:**
+
+    - Revoke capabilities from a user
+
+    - Demote user from a role
+
+    
+
+    **Response Includes:**
+
+    - List of remaining roles assigned to the user
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated roles on success
+
+    - Returns 400 Bad Request if role is not assigned to user
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    
+
+    **Error Handling:**
+
+    - ValidationException (400): Invalid user ID or role ID format
+
+    - BadRequestException (400): Role is not assigned to the user''',
+      summary: 'Remove a role from a user',
+      operationId: 'AdminRemoveRoleFromUser',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::users"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/users/${id}/roles/${roleId}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminRemoveRoleFromUserResponse, AdminRemoveRoleFromUserResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminGetVideoByIdResponse>> _AdminGetVideoById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the full details of a single video including its tags,
+    SEO metadata, thumbnail, YouTube ID, and workflow status.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with video details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Get video details by ID',
+      operationId: 'AdminGetVideoById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetVideoByIdResponse, AdminGetVideoByIdResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUpdateVideoResponse>> _UpdateVideo({
+    required String? id,
+    required AdminUpdateVideoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates all editable fields of a video in a single request.
+    
+
+    Permitted when the video status is <c>Draft</c>, <c>PendingPayment</c>,
+    <c>PendingReview</c>, or <c>Rejected</c>. Attempting to update a video in
+    <c>Approved</c>, <c>Published</c>, or <c>Archived</c> status returns 400 Bad Request.
+    
+
+    If the slug is changed, the new slug must be unique across all videos.
+    
+
+    When providing a <c>customerId</c>, an <c>orderItemId</c> is required and vice versa.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated video details on success
+
+    - Returns 400 Bad Request if validation fails or video is not in an editable status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video or category does not exist
+
+    - Returns 409 Conflict if the new slug is already taken
+
+    - Returns 429 Too Many Requests if the rate limit is exceeded
+''',
+      summary: 'Update all editable video fields',
+      operationId: 'UpdateVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminUpdateVideoResponse, AdminUpdateVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminDeleteVideoResponse>> _DeleteVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Permanently deletes a video and its associated Cloudinary thumbnail asset.
+    
+
+    Only videos in <c>Draft</c> or <c>Rejected</c> status can be deleted.
+    Attempting to delete a video in any other status (Published, Approved,
+    PendingReview, PendingPayment) will return a 400 Bad Request.
+    
+
+    For published or approved videos, use the archive endpoint instead to
+    remove the video from public feeds without permanently deleting it.
+    
+
+    This operation is <b>irreversible</b> — the Cloudinary thumbnail asset is deleted
+    from cloud storage before the database record is removed.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the video is not in Draft or Rejected status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Permanently delete a video',
+      operationId: 'DeleteVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminDeleteVideoResponse, AdminDeleteVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminGetAllVideosResponse>> _AdminGetAllVideos({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    Object? status,
+    String? categoryId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of videos for admin management.
+    Supports optional filtering by content status and category.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated video list on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+''',
+      summary: 'List all videos',
+      operationId: 'AdminGetAllVideos',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'status': status,
+      'categoryId': categoryId,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminGetAllVideosResponse, AdminGetAllVideosResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminCreateVideoResponse>> _CreateVideo({
+    required AdminCreateVideoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new video shell (step 1 of the video creation flow).
+    
+
+    The video is created with a title, slug, and category only. The YouTube ID
+    and thumbnail must be attached via subsequent endpoints before the video
+    can be published.
+    
+
+    For paid (commissioned) videos, both <c>customerId</c> and <c>orderItemId</c>
+    must be provided together. For free editorial content, both must be omitted.
+    
+
+    An optional <c>shootingScheduledAt</c> date can be provided for pre-booked
+    productions where the client pays before the shoot takes place.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with video details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the specified category does not exist
+
+    - Returns 409 Conflict if a video with the same slug already exists
+''',
+      summary: 'Create a new video',
+      operationId: 'CreateVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminCreateVideoResponse, AdminCreateVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminUploadVideoThumbnailResponse>> _UploadVideoThumbnail({
+    required String? id,
+    required MultipartFile file,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Uploads or replaces the video\'s thumbnail image.
+    
+
+    If the video already has a thumbnail (from a previous upload or from the
+    YouTube thumbnail auto-download), the old Cloudinary asset is deleted after
+    the new thumbnail is uploaded successfully.
+    
+
+    Accepts multipart/form-data with a single image file.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with thumbnail URL and storage key on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video does not exist
+
+    - Returns 429 Too Many Requests if the rate limit is exceeded
+''',
+      summary: 'Upload a custom video thumbnail',
+      operationId: 'UploadVideoThumbnail',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/thumbnail');
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<MultipartFile>('file', file),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      AdminUploadVideoThumbnailResponse,
+      AdminUploadVideoThumbnailResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<AdminUpdateVideoTagsResponse>> _UpdateVideoTags({
+    required String? id,
+    required AdminUpdateVideoTagsRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Replaces the full set of tags associated with a video.
+    All existing tag associations are removed and replaced with the provided tag set.
+    
+
+    All provided tag identifiers must exist.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video or any tag does not exist
+''',
+      summary: 'Replace all tags on a video',
+      operationId: 'UpdateVideoTags',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/tags');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminUpdateVideoTagsResponse, AdminUpdateVideoTagsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminUpdateVideoSeoResponse>> _UpdateVideoSeo({
+    required String? id,
+    required AdminUpdateVideoSeoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates a video\'s SEO metadata fields (meta title and meta description).
+    
+
+    If <c>metaTitle</c> is null, the video\'s display title is used as the SEO title.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated video details on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Update video SEO metadata',
+      operationId: 'UpdateVideoSeo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/seo');
     final $body = body;
     final Request $request = Request(
       'PATCH',
@@ -1094,96 +8708,1121 @@ This endpoint performs the following operations:
       tag: swaggerMetaData,
     );
     return client
-        .send<AdminUpdateOwnProfileResponse, AdminUpdateOwnProfileResponse>(
+        .send<AdminUpdateVideoSeoResponse, AdminUpdateVideoSeoResponse>(
           $request,
         );
   }
 
   @override
-  Future<Response<AdminUpdateAvatarResponse>> _AdminUpdateAvatar({
-    required MultipartFile avatarFile,
+  Future<Response<AdminSubmitVideoResponse>> _SubmitVideo({
+    required String? id,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Updates the authenticated admin user\'s avatar by uploading an image file.
+      description: '''    Submits a video draft for review or payment.
+    
 
-This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
-The system will automatically delete any previous avatar when a new one is uploaded.
+    Free videos transition from <c>Draft</c> to <c>PendingReview</c>.
+    Paid videos (linked to a customer and order item) transition from
+    <c>Draft</c> to <c>PendingPayment</c>.
+    
 
-Admin users only need to have active accounts (no verification requirement).
+    **Authentication Requirements:**
 
-**Authentication Requirements:**
+    - User must be authenticated with a valid access token
 
-- Admin user must be logged in (JWT token required)
-- Must have Admin or SuperAdmin role
-- Account must be active
+    - User must have SuperAdmin role
 
-**Request Requirements:**
+    
 
-- Content-Type: multipart/form-data
-- Form field name: "avatarFile"\n
-- Allowed file types: JPEG, PNG, GIF, WebP\n
-- Maximum file size: 1MB\n
-- File must be a valid image\n
-\n
-**Avatar Management:**\n
-- Previous avatar is automatically deleted from cloud storage\n
-- Images are stored in Cloudinary with automatic optimization\n
-- Secure HTTPS URLs are generated for accessing avatars\n
-- Smart quality optimization and format conversion\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with updated admin user information including new avatar\n
-- Returns 400 Bad Request for invalid file type, size, or missing file\n
-- Returns 401 Unauthorized for unauthenticated requests\n
-- Returns 403 Forbidden for non-admin users or inactive accounts\n
-- Returns 404 Not Found when admin user doesn\'t exist\n
-\n
-**Security Features:**\n
-- Only authenticated admin users can update their own avatar\n
-- Role-based authorization (Admin/SuperAdmin required)\n
-- Account activity verification (active accounts only)\n
-- File type and size validation\n
-- Automatic cleanup of old avatar files from cloud storage\n
-- Secure signed uploads to Cloudinary\n
-\n
-**Process Flow:**\n
-1. Validates admin authentication and account status\n
-2. Validates the uploaded file (type, size, format)\n
-3. Uploads the new avatar to Cloudinary cloud storage\n
-4. Deletes the previous avatar from cloud storage (if exists)\n
-5. Updates admin user record with new avatar reference\n
-6. Returns updated admin user information with avatar details\n
-\n
-**Example cURL Request:**\n
-```
-curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \
--H "Authorization: Bearer ADMIN_JWT_TOKEN" \
--F "avatarFile=@/path/to/image.jpg"
-```''',
-      summary: 'Update admin user avatar via file upload',
-      operationId: 'AdminUpdateAvatar',
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Submit a video for review or payment',
+      operationId: 'SubmitVideo',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["admin::user"],
+      tags: ["admin::videos"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/admin/user/avatar');
-    final List<PartValue> $parts = <PartValue>[
-      PartValueFile<MultipartFile>('avatarFile', avatarFile),
-    ];
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/submit');
     final Request $request = Request(
       'PATCH',
       $url,
       client.baseUrl,
-      parts: $parts,
-      multipart: true,
       tag: swaggerMetaData,
     );
-    return client.send<AdminUpdateAvatarResponse, AdminUpdateAvatarResponse>(
+    return client.send<AdminSubmitVideoResponse, AdminSubmitVideoResponse>(
       $request,
     );
+  }
+
+  @override
+  Future<Response<AdminScheduleShootResponse>> _ScheduleShoot({
+    required String? id,
+    required AdminScheduleShootRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Schedules or updates the shooting date for a video production.
+    
+
+    Used for pre-booked productions where the client pays before the shoot
+    takes place. The shooting date must be in the future.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the date is not in the future
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Schedule a video shoot',
+      operationId: 'ScheduleShoot',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/shoot');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminScheduleShootResponse, AdminScheduleShootResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminRejectVideoResponse>> _RejectVideo({
+    required String? id,
+    required AdminRejectVideoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Rejects a video that is currently in <c>PendingReview</c> status,
+    transitioning it to <c>Rejected</c> with a mandatory rejection reason.
+    
+
+    Only videos in <c>PendingReview</c> status can be rejected.
+    Attempting to reject a video in any other status will return a 400 Bad Request.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the video is not in PendingReview status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Reject a video during editorial review',
+      operationId: 'RejectVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/reject');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminRejectVideoResponse, AdminRejectVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminPublishVideoResponse>> _PublishVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Publishes a video that is currently in <c>Approved</c> status,
+    transitioning it to <c>Published</c> and making it visible to all public visitors.
+    
+
+    Only videos in <c>Approved</c> status can be published.
+    Attempting to publish a video in any other status will return a 400 Bad Request.
+    
+
+    A YouTube video ID must be attached before publishing.
+    The domain method enforces this gate — if no YouTube ID is attached,
+    a 400 Bad Request will be returned.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the video is not in Approved status or has no YouTube ID
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Publish an approved video',
+      operationId: 'PublishVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/publish');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminPublishVideoResponse, AdminPublishVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminAttachYoutubeIdResponse>> _AttachYoutubeId({
+    required String? id,
+    required AdminAttachYoutubeIdRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Attaches a YouTube video ID to a video and automatically downloads
+    the YouTube thumbnail, re-uploading it to Cloudinary.
+    
+
+    If the video already has a thumbnail, the old Cloudinary asset is deleted
+    after the new thumbnail is uploaded successfully.
+    
+
+    The YouTube thumbnail is first attempted at maxresdefault quality (1280x720),
+    falling back to hqdefault (480x360) if unavailable.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have Admin or SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated video details on success
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks Admin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Attach a YouTube video ID',
+      operationId: 'AttachYoutubeId',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/youtube');
+    final $body = body;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<AdminAttachYoutubeIdResponse, AdminAttachYoutubeIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<AdminArchiveVideoResponse>> _ArchiveVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Archives a video, removing it from all public feeds without permanently deleting it.
+    
+
+    Archiving is reversible — Cloudinary thumbnail assets are <b>not</b> deleted.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Archive a video',
+      operationId: 'ArchiveVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/archive');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminArchiveVideoResponse, AdminArchiveVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<AdminApproveVideoResponse>> _ApproveVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Approves a video that is currently in <c>PendingReview</c> status,
+    transitioning it to <c>Approved</c> and clearing it for publication.
+    
+
+    Only videos in <c>PendingReview</c> status can be approved.
+    Attempting to approve a video in any other status will return a 400 Bad Request.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have SuperAdmin role
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the video is not in PendingReview status
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks SuperAdmin role
+
+    - Returns 404 Not Found if the video does not exist
+''',
+      summary: 'Approve a video for publication',
+      operationId: 'ApproveVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["admin::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/admin/videos/${id}/approve');
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<AdminApproveVideoResponse, AdminApproveVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<ArticleSummaryDtoPaginatedResult>>
+  _PublicGetMyArticleBookmarks({
+    int? pageIndex,
+    int? pageSize,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns a paginated list of articles bookmarked by the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get my bookmarked articles',
+      operationId: 'PublicGetMyArticleBookmarks',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/bookmarks');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      ArticleSummaryDtoPaginatedResult,
+      ArticleSummaryDtoPaginatedResult
+    >($request);
+  }
+
+  @override
+  Future<Response<ArticleCommentDtoPaginatedResult>> _PublicGetArticleComments({
+    required String? id,
+    int? pageIndex,
+    int? pageSize,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns a paginated list of comments for a given article.
+    Soft-deleted comments are included but their body is returned as null.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required — anonymous access is permitted
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List comments for an article',
+      operationId: 'PublicGetArticleComments',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/comments');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      ArticleCommentDtoPaginatedResult,
+      ArticleCommentDtoPaginatedResult
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicAddArticleCommentResponse>> _PublicAddArticleComment({
+    required String? id,
+    required PublicAddArticleCommentRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Posts a new comment on an article. The comment body must not exceed 1000 characters.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created on success with the comment DTO
+
+    - Returns 400 Bad Request if the body exceeds the maximum length
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Post a comment on an article',
+      operationId: 'PublicAddArticleComment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/comments');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicAddArticleCommentResponse, PublicAddArticleCommentResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicUnlikeArticleResponse>> _PublicUnlikeArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes the authenticated user\'s like from an article.
+    
+
+    Returns 400 Bad Request if the user has not liked the article.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the user has not liked this article
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Remove a like from an article',
+      operationId: 'PublicUnlikeArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/likes');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicUnlikeArticleResponse, PublicUnlikeArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicLikeArticleResponse>> _PublicLikeArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records that the authenticated user has liked an article.
+    
+
+    Returns 409 Conflict if the user has already liked the article.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 409 Conflict if the user has already liked this article
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Like an article',
+      operationId: 'PublicLikeArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/likes');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicLikeArticleResponse, PublicLikeArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicUnbookmarkArticleResponse>> _PublicUnbookmarkArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes the authenticated user\'s bookmark from an article.
+    
+
+    Returns 400 Bad Request if the user has not bookmarked the article.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the user has not bookmarked this article
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Remove a bookmark from an article',
+      operationId: 'PublicUnbookmarkArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/bookmarks');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicUnbookmarkArticleResponse, PublicUnbookmarkArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicBookmarkArticleResponse>> _PublicBookmarkArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records that the authenticated user has bookmarked an article for later reading.
+    
+
+    Returns 409 Conflict if the user has already bookmarked the article.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 409 Conflict if the user has already bookmarked this article
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Bookmark an article',
+      operationId: 'PublicBookmarkArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/bookmarks');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicBookmarkArticleResponse, PublicBookmarkArticleResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicShareArticleResponse>> _PublicShareArticle({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records a share event for an article. Works for both authenticated users and anonymous visitors.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required — anonymous access is permitted
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 404 Not Found if the article does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Record an article share',
+      operationId: 'PublicShareArticle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${id}/shares');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicShareArticleResponse, PublicShareArticleResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicEditArticleCommentResponse>> _PublicEditArticleComment({
+    required String? id,
+    required String? commentId,
+    required PublicEditArticleCommentRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the body of an existing article comment. Only the comment owner can edit their own comment.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the user is not the comment owner or body is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the comment does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Edit an article comment',
+      operationId: 'PublicEditArticleComment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/public/articles/${id}/comments/${commentId}',
+    );
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicEditArticleCommentResponse,
+      PublicEditArticleCommentResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicDeleteArticleCommentResponse>>
+  _PublicDeleteArticleComment({
+    required String? id,
+    required String? commentId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Soft-deletes an article comment. Users can only delete their own comments.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the user is not the comment owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the comment does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Delete own article comment',
+      operationId: 'PublicDeleteArticleComment',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/public/articles/${id}/comments/${commentId}',
+    );
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicDeleteArticleCommentResponse,
+      PublicDeleteArticleCommentResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetPublishedArticlesResponse>> _GetPublishedArticles({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    String? categoryId,
+    String? tagSlug,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of all published articles for public consumption.
+    
+
+    Supports optional filtering by category. Results are returned as a paginated list
+    with summary information suitable for article feed and browsing views.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated article list on success
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List published articles',
+      operationId: 'GetPublishedArticles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'categoryId': categoryId,
+      'tagSlug': tagSlug,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetPublishedArticlesResponse,
+      PublicGetPublishedArticlesResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetFeaturedArticlesResponse>> _GetFeaturedArticles({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the list of currently featured published articles for public consumption.
+    
+
+    Featured articles are handpicked published articles promoted on the homepage
+    or highlighted sections of the site. Only published articles marked as featured
+    are returned by this endpoint.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the list of featured articles
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List featured articles',
+      operationId: 'GetFeaturedArticles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/featured');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetFeaturedArticlesResponse,
+      PublicGetFeaturedArticlesResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetArticleBySlugResponse>> _GetArticleBySlug({
+    required String? slug,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the full details of a single published article by its URL slug.
+    
+
+    Returns the complete article including body content, cover image, SEO metadata,
+    all associated images, and applied tags. Only published articles are accessible
+    via this endpoint — drafts, pending review, and archived articles return 404.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with article details on success
+
+    - Returns 404 Not Found if the article does not exist or is not published
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get published article by slug',
+      operationId: 'GetArticleBySlug',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::articles"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/articles/${slug}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetArticleBySlugResponse, PublicGetArticleBySlugResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicGetActiveCategoriesResponse>>
+  _PublicGetActiveCategories({
+    String? contentTypeId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the list of active categories available to public visitors.
+    
+
+    Powers the public-facing catalogue page so potential B2B clients can see what content
+    formats 116 offers (e.g. "Artist Profile", "116 Le Focus", "Chronique Sale") before
+    getting in touch. Also used by the frontend to build category filter tabs on the article
+    and video feed pages.
+    \n
+    Only active categories are returned — deactivated formats are hidden from the public.
+    An optional contentTypeId filter can narrow the list to a specific content type.
+    \n
+    **Authentication Requirements:**\n
+    - No authentication required\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with the list of active categories\n''',
+      summary: 'List public categories',
+      operationId: 'PublicGetActiveCategories',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::categories"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/categories');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'contentTypeId': contentTypeId,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetActiveCategoriesResponse,
+      PublicGetActiveCategoriesResponse
+    >($request);
   }
 
   @override
@@ -1191,49 +9830,77 @@ curl -X PATCH https://api.example.com/api/v1/admin/profile/avatar \
     required PublicVerifyOtpRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Verifies the OTP (One-Time Password) code sent to the user\'s email for various purposes.
-The user must verify their account within the OTP expiration window to gain full access.
+          '''    Verifies the OTP (One-Time Password) code sent to the user\'s email for various purposes.
+    The user must verify their account within the OTP expiration window to gain full access.
+    
 
-**Supported OTP Purposes:**
+    **Supported OTP Purposes:**
 
-- **Email Verification**: During user account registration
-- **Account Recovery**: For account recovery processes
+    - **Email Verification**: During user account registration
 
-This endpoint performs the following operations:
+    - **Account Recovery**: For account recovery processes
 
-- Validates the OTP code format (6-digit numeric)
-- Checks if the user exists and is not already verified
-- Validates the OTP against the database (not expired, not used, under attempt limit)
-- Marks the user account as verified upon successful validation
-- Invalidates all remaining OTPs for the user
+    
 
-**Authentication Requirements:**
+    This endpoint performs the following operations:
 
-- No authentication required; open to users with unverified accounts
+    - Validates the OTP code format (6-digit numeric)
 
-**Security Features:**
+    - Checks if the user exists and is not already verified
 
-- OTP expiration (60 minutes)
-- Maximum 3 verification attempts per OTP
-- Single-use OTP codes
-- Automatic cleanup of expired/used OTPs
+    - Validates the OTP against the database (not expired, not used, under attempt limit)
 
-**Response Codes:**
+    - Marks the user account as verified upon successful validation
 
-- Returns 200 OK with verification success status
-- Returns 400 Bad Request for invalid OTP code format
-- Returns 401 Unauthorized for expired OTP
-- Returns 403 Forbidden for maximum attempts reached
-- Returns 404 Not Found for no valid OTP found
-- Returns 409 Conflict if account is already verified
+    - Invalidates all remaining OTPs for the user
 
-**Error Handling:**
+    
 
-- BadRequestException (400): Invalid OTP code format or value
-- AuthenticationException (401): OTP has expired
-- AuthorizationException (403): Maximum verification attempts reached
-- NotFoundException (404): No valid OTP found for the user
-- ConflictException (409): User account is already verified.''',
+    **Authentication Requirements:**
+
+    - No authentication required; open to users with unverified accounts
+
+    
+
+    **Security Features:**
+
+    - OTP expiration (60 minutes)
+
+    - Maximum 3 verification attempts per OTP
+
+    - Single-use OTP codes
+
+    - Automatic cleanup of expired/used OTPs
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with verification success status
+
+    - Returns 400 Bad Request for invalid OTP code format
+
+    - Returns 401 Unauthorized for expired OTP
+
+    - Returns 403 Forbidden for maximum attempts reached
+
+    - Returns 404 Not Found for no valid OTP found
+
+    - Returns 409 Conflict if account is already verified
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid OTP code format or value
+
+    - AuthenticationException (401): OTP has expired
+
+    - AuthorizationException (403): Maximum verification attempts reached
+
+    - NotFoundException (404): No valid OTP found for the user
+
+    - ConflictException (409): User account is already verified.''',
       summary: 'Verify OTP code for account activation',
       operationId: 'PublicVerifyOtp',
       consumes: [],
@@ -1258,50 +9925,73 @@ This endpoint performs the following operations:
   }
 
   @override
-  Future<Response<PublicSocialLoginResponse>> _PublicSocialLogin({
+  Future<Response<PublicSocialLoginWebResponse>> _PublicSocialLogin({
     required PublicSocialLoginRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Authenticates a user through external social providers (Google or Facebook).
+          '''    Authenticates a user through external social providers (Google or Facebook).
 
-Social users are automatically verified and granted visitor role permissions.
-Avatar images from social providers are downloaded and stored locally.
+    Social users are automatically verified and granted visitor role permissions.
+    Avatar images from social providers are downloaded and stored locally.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates social provider data (email, username, avatar URL, provider)
-- Checks for existing local account conflicts
-- Creates new user account or updates existing social user
-- Downloads and stores avatar from social provider URL
-- Assigns visitor role to new users
-- Marks social users as verified and active
+    - Validates social provider data (email, username, avatar URL, provider)
 
-**Authentication Requirements:**
+    - Checks for existing local account conflicts
 
-- No authentication required; open to the public for social login
+    - Creates new user account or updates existing social user
 
-**Supported Providers:**
+    - Downloads and stores avatar from social provider URL
 
-- Google OAuth
-- Facebook OAuth
+    - Assigns visitor role to new users
 
-**Security Features:**
+    - Marks social users as verified and active
 
-- Prevents social login if local account exists with same email
-- Downloads external avatars to prevent hotlinking
-- Automatically verifies social accounts (trusted providers)
-- Updates user login status
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with user info and JWT token
-- Returns 400 Bad Request for invalid provider or malformed data
-- Returns 409 Conflict if local account exists with same email
+    - No authentication required; open to the public for social login
 
-**Error Handling:**
+    
 
-- BadRequestException (400): Invalid provider or malformed social data
-- ConflictException (409): Local account already exists with email.''',
+    **Supported Providers:**
+
+    - Google OAuth
+
+    - Facebook OAuth
+
+    
+
+    **Security Features:**
+
+    - Prevents social login if local account exists with same email
+
+    - Downloads external avatars to prevent hotlinking
+
+    - Automatically verifies social accounts (trusted providers)
+
+    - Updates user login status
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with user info and JWT token
+
+    - Returns 400 Bad Request for invalid provider or malformed data
+
+    - Returns 409 Conflict if local account exists with same email
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid provider or malformed social data
+
+    - ConflictException (409): Local account already exists with email.''',
       summary: 'Authenticate user via social provider',
       operationId: 'PublicSocialLogin',
       consumes: [],
@@ -1320,49 +10010,68 @@ This endpoint performs the following operations:
       body: $body,
       tag: swaggerMetaData,
     );
-    return client.send<PublicSocialLoginResponse, PublicSocialLoginResponse>(
-      $request,
-    );
+    return client
+        .send<PublicSocialLoginWebResponse, PublicSocialLoginWebResponse>(
+          $request,
+        );
   }
 
   @override
-  Future<Response<PublicSignUpResponse>> _PublicSignUp({
+  Future<Response<PublicSignUpWebResponse>> _PublicSignUp({
     required PublicSignUpRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Registers a new public user by creating an account with the provided details.
+          '''    Registers a new public user by creating an account with the provided details.
 
-The created user account will initially have the Visitor role and related permissions,
-granting basic public access until further elevated by admins.
+    The created user account will initially have the Visitor role and related permissions,
+    granting basic public access until further elevated by admins.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates signup data (email, username, password, etc.)
-- Ensures the email/username is unique
-- Hashes the password using secure algorithms (bcrypt)
-- Creates a new public user account in the system
-- Triggers optional account verification (email/SMS)
+    - Validates signup data (email, username, password, etc.)
 
-**Authentication Requirements:**
+    - Ensures the email/username is unique
 
-- No authentication required; open to the public for account creation
+    - Hashes the password using secure algorithms (bcrypt)
 
-**Security Features:**
+    - Creates a new public user account in the system
 
-- Password securely hashed before storage
-- Uniqueness checks on email and username
-- Optional verification workflow (e.g., email confirmation)
+    - Triggers optional account verification (email/SMS)
 
-**Response Codes:**
+    
 
-- Returns 201 Created with newly created user info (excluding sensitive data)
-- Returns 400 Bad Request for invalid input or weak password
-- Returns 409 Conflict if email/username already exists
+    **Authentication Requirements:**
 
-**Error Handling:**
+    - No authentication required; open to the public for account creation
 
-- BadRequestException (400): Invalid signup data (missing/invalid fields, weak password)
-- ConflictException (409): Email or username already in use.''',
+    
+
+    **Security Features:**
+
+    - Password securely hashed before storage
+
+    - Uniqueness checks on email and username
+
+    - Optional verification workflow (e.g., email confirmation)
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created with newly created user info (excluding sensitive data)
+
+    - Returns 400 Bad Request for invalid input or weak password
+
+    - Returns 409 Conflict if email/username already exists
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid signup data (missing/invalid fields, weak password)
+
+    - ConflictException (409): Email or username already in use.''',
       summary: 'Register a new public user account',
       operationId: 'PublicSignUp',
       consumes: [],
@@ -1381,7 +10090,9 @@ This endpoint performs the following operations:
       body: $body,
       tag: swaggerMetaData,
     );
-    return client.send<PublicSignUpResponse, PublicSignUpResponse>($request);
+    return client.send<PublicSignUpWebResponse, PublicSignUpWebResponse>(
+      $request,
+    );
   }
 
   @override
@@ -1389,37 +10100,41 @@ This endpoint performs the following operations:
   _PublicSignOutFromAllDevices({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Signs out the currently authenticated user from all devices by invalidating all active sessions.
-After successful sign-out, all refresh tokens will be revoked and the user must re-authenticate on all devices.
+          '''    Signs out the currently authenticated user from all devices by invalidating all active sessions.
+    After successful sign-out, all refresh tokens will be revoked and the user must re-authenticate on all devices.
+    
 
-This endpoint is commonly used:
+    This endpoint is commonly used:
 
-- After password changes (security best practice)
-- When user suspects account compromise
-- When enabling two-factor authentication
-- As a "Sign Out Everywhere" feature\n
-\n
-**Authentication Requirements:**\n
-- Valid JWT Bearer token\n
-- Account must be active (not suspended)\n
-- Verification status is not required for sign-out\n
-\n
-**Security Features:**\n
-- Invalidates all active sessions across all devices\n
-- Uses soft delete for session tracking and analytics\n
-- Prevents token reuse after sign-out\n
-- Idempotent operation (safe to call multiple times)\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with success status\n
-- Returns 401 Unauthorized for invalid/missing JWT token\n
-- Returns 403 Forbidden for inactive accounts\n
-\n
-**Process Flow:**\n
-1. Extracts user ID from JWT token\n
-2. Validates account is active\n
-3. Soft deletes all active sessions for the user\n
-4. Returns success response.''',
+    - After password changes (security best practice)
+
+    - When user suspects account compromise
+
+    - When enabling two-factor authentication
+
+    - As a "Sign Out Everywhere" feature\n
+    \n
+    **Authentication Requirements:**\n
+    - Valid JWT Bearer token\n
+    - Account must be active (not suspended)\n
+    - Verification status is not required for sign-out\n
+    \n
+    **Security Features:**\n
+    - Invalidates all active sessions across all devices\n
+    - Uses soft delete for session tracking and analytics\n
+    - Prevents token reuse after sign-out\n
+    - Idempotent operation (safe to call multiple times)\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with success status\n
+    - Returns 401 Unauthorized for invalid/missing JWT token\n
+    - Returns 403 Forbidden for inactive accounts\n
+    \n
+    **Process Flow:**\n
+    1. Extracts user ID from JWT token\n
+    2. Validates account is active\n
+    3. Soft deletes all active sessions for the user\n
+    4. Returns success response.''',
       summary: 'Sign out the authenticated user from all devices',
       operationId: 'PublicSignOutFromAllDevices',
       consumes: [],
@@ -1447,43 +10162,61 @@ This endpoint is commonly used:
     required PublicSignOutRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Signs out the currently authenticated user by updating their login status.
-After successful sign-out, the client should discard the JWT token.
+          '''    Signs out the currently authenticated user by updating their login status.
+    After successful sign-out, the client should discard the JWT token.
+    
 
-This endpoint performs secure sign-out by:
+    This endpoint performs secure sign-out by:
 
-- Validating JWT token authentication
-- Verifying account is active (not suspended/banned)
-- Updating user login status in the database
-- Allowing unverified accounts to sign out
+    - Validating JWT token authentication
 
-**Authentication Requirements:**
+    - Verifying account is active (not suspended/banned)
 
-- Valid JWT Bearer token
-- Account must be active (not suspended)
-- Verification status is not required for sign-out
+    - Updating user login status in the database
 
-**Security Features:**
+    - Allowing unverified accounts to sign out
 
-- Only active accounts can perform sign-out
-- Prevents unnecessary database updates if already logged out
-- Always returns success for consistent UX
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with success status
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive accounts
+    - Valid JWT Bearer token
 
-**Process Flow:**
+    - Account must be active (not suspended)
 
-1. Extracts user ID from JWT token
+    - Verification status is not required for sign-out
 
-2. Validates account is active
+    
 
-3. Updates login status if currently logged in
+    **Security Features:**
 
-4. Returns success response.''',
+    - Only active accounts can perform sign-out
+
+    - Prevents unnecessary database updates if already logged out
+
+    - Always returns success for consistent UX
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive accounts
+
+    
+
+    **Process Flow:**
+
+    1. Extracts user ID from JWT token
+
+    2. Validates account is active
+
+    3. Updates login status if currently logged in
+
+    4. Returns success response.''',
       summary: 'Sign out the authenticated user',
       operationId: 'PublicSignOut',
       consumes: [],
@@ -1510,63 +10243,90 @@ This endpoint performs secure sign-out by:
     required PublicSetPasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Allows users who authenticated via external providers (Google/Facebook) to set a password for local authentication.
+          '''    Allows users who authenticated via external providers (Google/Facebook) to set a password for local authentication.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates JWT token authentication and extracts user ID
-- Verifies user account is active
-- Checks that user has an email address configured
-- Validates that user\'s current auth provider is Google or Facebook (not Local)
-- Hashes the new password using secure algorithms
-- Sets the password and changes auth provider to Local
-- Updates the user in the database
+    - Validates JWT token authentication and extracts user ID
 
-**Request Requirements:**
+    - Verifies user account is active
 
-- Valid password meeting security requirements
-- User must be authenticated with valid JWT token
-- User must have authenticated via Google or Facebook originally
-- User must have an email address configured
+    - Checks that user has an email address configured
 
-**Response Codes:**
+    - Validates that user\'s current auth provider is Google or Facebook (not Local)
 
-- Returns 200 OK with success status
-- Returns 400 Bad Request for missing email, already set password, or invalid auth provider
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive accounts
-- Returns 404 Not Found for user not found
+    - Hashes the new password using secure algorithms
 
-**Error Handling:**
+    - Sets the password and changes auth provider to Local
 
-- BadRequestException (400): Missing email, password already set, or not external auth user
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not active
-- NotFoundException (404): User not found
+    - Updates the user in the database
 
-**Process Flow:**
+    
 
-1. Validates JWT token and extracts user ID
+    **Request Requirements:**
 
-2. Validates password requirements
+    - Valid password meeting security requirements
 
-3. Finds user by ID and validates account status
+    - User must be authenticated with valid JWT token
 
-4. Checks that user has an email address
+    - User must have authenticated via Google or Facebook originally
 
-5. Validates user\'s current auth provider is Google or Facebook
+    - User must have an email address configured
 
-6. Hashes new password securely
+    
 
-7. Sets password and changes auth provider to Local
+    **Response Codes:**
 
-8. Updates user in database
+    - Returns 200 OK with success status
 
-9. Returns success response.
+    - Returns 400 Bad Request for missing email, already set password, or invalid auth provider
 
-**Note:** After successfully setting a password, users can log in using their email and password,
+    - Returns 401 Unauthorized for invalid/missing JWT token
 
-in addition to continuing to use their external authentication provider.''',
+    - Returns 403 Forbidden for inactive accounts
+
+    - Returns 404 Not Found for user not found
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Missing email, password already set, or not external auth user
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not active
+
+    - NotFoundException (404): User not found
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Validates password requirements
+
+    3. Finds user by ID and validates account status
+
+    4. Checks that user has an email address
+
+    5. Validates user\'s current auth provider is Google or Facebook
+
+    6. Hashes new password securely
+
+    7. Sets password and changes auth provider to Local
+
+    8. Updates user in database
+
+    9. Returns success response.
+
+    
+
+    **Note:** After successfully setting a password, users can log in using their email and password,
+
+    in addition to continuing to use their external authentication provider.''',
       summary: 'Set password for external auth users (Google/Facebook)',
       operationId: 'PublicSetPassword',
       consumes: [],
@@ -1595,70 +10355,103 @@ in addition to continuing to use their external authentication provider.''',
     required PublicResetPasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Resets a user\'s password after validating the OTP code sent during the forgot password process.
-After successful password reset, the user can login with their new password.
+          '''    Resets a user\'s password after validating the OTP code sent during the forgot password process.
+    After successful password reset, the user can login with their new password.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates the OTP code format and authenticity
-- Checks if the user exists and is active/verified
-- Validates the OTP against the database (not expired, not used, under attempt limit)
-- Hashes the new password using secure algorithms
-- Updates the user\'s password in the database
-- Invalidates all remaining password reset OTPs for the user
+    - Validates the OTP code format and authenticity
 
-**Authentication Requirements:**
+    - Checks if the user exists and is active/verified
 
-- No authentication required; open to users with valid OTP codes
-- User account must be active and verified
+    - Validates the OTP against the database (not expired, not used, under attempt limit)
 
-**Security Features:**
+    - Hashes the new password using secure algorithms
 
-- OTP expiration (60 minutes)
-- Maximum 3 verification attempts per OTP
-- Single-use OTP codes
-- Secure password hashing (PBKDF2 with SHA-256)
-- Automatic cleanup of expired/used OTPs
-- Password validation enforced by validator
+    - Updates the user\'s password in the database
 
-**Request Requirements:**
+    - Invalidates all remaining password reset OTPs for the user
 
-- Valid email address format
-- Valid OTP code (6-digit numeric)
-- New password meeting security requirements
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with success status
-- Returns 400 Bad Request for invalid input or inactive account
-- Returns 401 Unauthorized for expired OTP
-- Returns 403 Forbidden for max attempts reached or unverified account
-- Returns 404 Not Found for no valid OTP found or user not found
+    - No authentication required; open to users with valid OTP codes
 
-**Error Handling:**
+    - User account must be active and verified
 
-- BadRequestException (400): Invalid input format, inactive account, or invalid OTP
-- AuthenticationException (401): OTP has expired
-- AuthorizationException (403): Maximum verification attempts reached or account not verified
-- NotFoundException (404): No valid OTP found or user not found
+    
 
-**Process Flow:**
+    **Security Features:**
 
-1. Validates email format and password requirements
+    - OTP expiration (60 minutes)
 
-2. Finds user by email address
+    - Maximum 3 verification attempts per OTP
 
-3. Validates account is active and verified
+    - Single-use OTP codes
 
-4. Validates OTP code for password reset purpose
+    - Secure password hashing (PBKDF2 with SHA-256)
 
-5. Hashes new password securely
+    - Automatic cleanup of expired/used OTPs
 
-6. Updates user\'s password
+    - Password validation enforced by validator
 
-7. Marks OTP as used and invalidates remaining OTPs
+    
 
-8. Returns success response.''',
+    **Request Requirements:**
+
+    - Valid email address format
+
+    - Valid OTP code (6-digit numeric)
+
+    - New password meeting security requirements
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 400 Bad Request for invalid input or inactive account
+
+    - Returns 401 Unauthorized for expired OTP
+
+    - Returns 403 Forbidden for max attempts reached or unverified account
+
+    - Returns 404 Not Found for no valid OTP found or user not found
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid input format, inactive account, or invalid OTP
+
+    - AuthenticationException (401): OTP has expired
+
+    - AuthorizationException (403): Maximum verification attempts reached or account not verified
+
+    - NotFoundException (404): No valid OTP found or user not found
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format and password requirements
+
+    2. Finds user by email address
+
+    3. Validates account is active and verified
+
+    4. Validates OTP code for password reset purpose
+
+    5. Hashes new password securely
+
+    6. Updates user\'s password
+
+    7. Marks OTP as used and invalidates remaining OTPs
+
+    8. Returns success response.''',
       summary: 'Reset user password using OTP verification',
       operationId: 'PublicResetPassword',
       consumes: [],
@@ -1688,54 +10481,78 @@ This endpoint performs the following operations:
     required PublicResendOtpRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Resends a new OTP verification code for public users by invalidating existing OTPs and generating a fresh one.
+          '''    Resends a new OTP verification code for public users by invalidating existing OTPs and generating a fresh one.
+    
 
-This endpoint enables users to request a new verification code when:
+    This endpoint enables users to request a new verification code when:
 
-- The original OTP wasn\'t received
-- The previous OTP has expired
-- There were issues with email delivery
-- Maximum attempts were reached on the previous OTP
+    - The original OTP wasn\'t received
 
-**Request Requirements:**
+    - The previous OTP has expired
 
-- Valid email address format
-- Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)
-- Account must be active
+    - There were issues with email delivery
 
-**Security Features:**
+    - Maximum attempts were reached on the previous OTP
 
-- Account active status validation
-- Automatic invalidation of existing OTPs for the specified purpose
-- New OTP generation with fresh expiration time
+    
 
-**Response Codes:**
+    **Request Requirements:**
 
-- Returns 200 OK with success status when OTP is resent
-- Returns 400 Bad Request for invalid email format or purpose
-- Returns 404 Not Found when user doesn\'t exist
-- Returns 403 Forbidden when user account is inactive
+    - Valid email address format
 
-**Process Flow:**
+    - Valid OTP purpose (EmailVerification, PasswordReset, TwoFactorAuthentication, AccountRecovery)
 
-1. Validates email format and OTP purpose
+    - Account must be active
 
-2. Verifies user exists
+    
 
-3. Checks account is active and verified
+    **Security Features:**
 
-4. Invalidates all existing OTPs for the specified purpose
+    - Account active status validation
 
-5. Generates new OTP with fresh expiration
+    - Automatic invalidation of existing OTPs for the specified purpose
 
-6. Returns success response
+    - New OTP generation with fresh expiration time
 
-**Supported OTP Purposes:**
+    
 
-- EmailVerification: For email address verification
-- PasswordReset: For password reset requests
-- TwoFactorAuthentication: For 2FA setup/verification
-- AccountRecovery: For account recovery processes''',
+    **Response Codes:**
+
+    - Returns 200 OK with success status when OTP is resent
+
+    - Returns 400 Bad Request for invalid email format or purpose
+
+    - Returns 404 Not Found when user doesn\'t exist
+
+    - Returns 403 Forbidden when user account is inactive
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format and OTP purpose
+
+    2. Verifies user exists
+
+    3. Checks account is active and verified
+
+    4. Invalidates all existing OTPs for the specified purpose
+
+    5. Generates new OTP with fresh expiration
+
+    6. Returns success response
+
+    
+
+    **Supported OTP Purposes:**
+
+    - EmailVerification: For email address verification
+
+    - PasswordReset: For password reset requests
+
+    - TwoFactorAuthentication: For 2FA setup/verification
+
+    - AccountRecovery: For account recovery processes''',
       summary: 'Resend OTP verification code for public users',
       operationId: 'PublicResendOtp',
       consumes: [],
@@ -1760,43 +10577,63 @@ This endpoint enables users to request a new verification code when:
   }
 
   @override
-  Future<Response<PublicLoginResponse>> _PublicLogin({
+  Future<Response<PublicLoginWebResponse>> _PublicLogin({
     required PublicLoginRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Authenticates a public user using email/userName and password credentials.
-The returned JWT token includes claims for accessing public user\'s endpoints.
+          '''    Authenticates a public user using email/userName and password credentials.
+    The returned JWT token includes claims for accessing public user\'s endpoints.
+    
 
-This endpoint performs enhanced authentication by:
+    This endpoint performs enhanced authentication by:
 
-- Validating credentials and password
-- Verifying the account is active and verified
-- Generating JWT token with appropriate user claims
-- Recording the login activity
+    - Validating credentials and password
 
-**Authentication Requirements:**
+    - Verifying the account is active and verified
 
-- Valid email/userName and password combination
-- Account must be active and verified
+    - Generating JWT token with appropriate user claims
 
-**Security Features:**
+    - Recording the login activity
 
-- Password verification using secure hashing (bcrypt)
-- Login activity tracking
-- Basic JWT claims for public users operations
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with user info and JWT token on successful authentication
-- Returns 400 Bad Request for invalid email/userName or incorrect password
-- Returns 403 Forbidden when user account is inactive or disabled
-- Returns 404 Not Found when no user exists with the provided email/userName
+    - Valid email/userName and password combination
 
-**Error Handling:**
+    - Account must be active and verified
 
-- AuthorizationException (403): Account inactive - user exists but account is disabled/suspended
-- BadRequestException (400): Invalid password - email/userName exists but password is incorrect
-- NotFoundException (404): User not found - no account exists with the provided email/userName.''',
+    
+
+    **Security Features:**
+
+    - Password verification using secure hashing (bcrypt)
+
+    - Login activity tracking
+
+    - Basic JWT claims for public users operations
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with user info and JWT token on successful authentication
+
+    - Returns 400 Bad Request for invalid email/userName or incorrect password
+
+    - Returns 403 Forbidden when user account is inactive or disabled
+
+    - Returns 404 Not Found when no user exists with the provided email/userName
+
+    
+
+    **Error Handling:**
+
+    - AuthorizationException (403): Account inactive - user exists but account is disabled/suspended
+
+    - BadRequestException (400): Invalid password - email/userName exists but password is incorrect
+
+    - NotFoundException (404): User not found - no account exists with the provided email/userName.''',
       summary: 'Authenticate public user and return JWT token with user claims',
       operationId: 'PublicLogin',
       consumes: [],
@@ -1815,7 +10652,9 @@ This endpoint performs enhanced authentication by:
       body: $body,
       tag: swaggerMetaData,
     );
-    return client.send<PublicLoginResponse, PublicLoginResponse>($request);
+    return client.send<PublicLoginWebResponse, PublicLoginWebResponse>(
+      $request,
+    );
   }
 
   @override
@@ -1823,40 +10662,55 @@ This endpoint performs enhanced authentication by:
     required PublicForgotPasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Initiates the password reset process by generating an OTP for the specified email address.
-The generated OTP can be used with the verify-otp endpoint to proceed with password reset.
+          '''    Initiates the password reset process by generating an OTP for the specified email address.
+    The generated OTP can be used with the verify-otp endpoint to proceed with password reset.
+    
 
-This endpoint follows security best practices by:
+    This endpoint follows security best practices by:
 
-- Always returning success to prevent user enumeration attacks
-- Only generating OTP for valid, active, and verified accounts
-- Silently handling cases where email doesn\'t exist or account is inactive
+    - Always returning success to prevent user enumeration attacks
 
-**Request Requirements:**
+    - Only generating OTP for valid, active, and verified accounts
 
-- Valid email address format
-- Email must belong to an existing, active, and verified account
+    - Silently handling cases where email doesn\'t exist or account is inactive
 
-**Security Features:**
+    
 
-- User enumeration protection (consistent response regardless of email existence)
-- Account status validation (active and verified)
-- OTP generation with expiration time
+    **Request Requirements:**
 
-**Response Codes:**
+    - Valid email address format
 
-- Returns 200 OK with success status (always true for security) and the email address
-- Returns 400 Bad Request for invalid email format
+    - Email must belong to an existing, active, and verified account
 
-**Process Flow:**
+    
 
-1. Validates email format
+    **Security Features:**
 
-2. Checks if user exists and is active/verified
+    - User enumeration protection (consistent response regardless of email existence)
 
-3. Generates OTP for password reset
+    - Account status validation (active and verified)
 
-4. Returns success response (regardless of actual outcome).''',
+    - OTP generation with expiration time
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status (always true for security) and the email address
+
+    - Returns 400 Bad Request for invalid email format
+
+    
+
+    **Process Flow:**
+
+    1. Validates email format
+
+    2. Checks if user exists and is active/verified
+
+    3. Generates OTP for password reset
+
+    4. Returns success response (regardless of actual outcome).''',
       summary: 'Initiate password reset process for existing users',
       operationId: 'PublicForgotPassword',
       consumes: [],
@@ -1886,75 +10740,111 @@ This endpoint follows security best practices by:
     required PublicChangePasswordRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Changes a user\'s password after verifying their current password for security.
+          '''    Changes a user\'s password after verifying their current password for security.
 
-After successful password change, the user continues using their existing session.
-The new password will be required for future logins.
+    After successful password change, the user continues using their existing session.
+    The new password will be required for future logins.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates JWT token authentication and extracts user ID
-- Verifies user account is active and verified
-- Validates the current password against stored hash
-- Ensures new password is different from current password
-- Hashes the new password using secure algorithms
-- Updates the user\'s password in the database
+    - Validates JWT token authentication and extracts user ID
 
-**Authentication Requirements:**
+    - Verifies user account is active and verified
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- Account must be verified (email confirmed)
-- Only visitor role users can change their password
+    - Validates the current password against stored hash
 
-**Security Features:**
+    - Ensures new password is different from current password
 
-- Current password verification for authorization
-- Prevention of reusing the same password
-- Secure password hashing (PBKDF2 with SHA-256)
-- Strong password validation enforced by validator
-- Account status validation before password change
+    - Hashes the new password using secure algorithms
 
-**Request Requirements:**
+    - Updates the user\'s password in the database
 
-- Valid old password for verification
-- New password meeting security requirements
-- User must be authenticated with valid JWT token
+    
 
-**Response Codes:**
+    **Authentication Requirements:**
 
-- Returns 200 OK with success status
-- Returns 400 Bad Request for invalid old password or same password
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive or unverified accounts
-- Returns 404 Not Found for user not found
-- Returns 409 Conflict for new password same as old
+    - Valid JWT Bearer token required
 
-**Error Handling:**
+    - Account must be active (not suspended/banned)
 
-- BadRequestException (400): Invalid old password or inactive account
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not verified or insufficient permissions
-- NotFoundException (404): User not found
-- ConflictException (409): New password same as current password
+    - Account must be verified (email confirmed)
 
-**Process Flow:**
+    - Only visitor role users can change their password
 
-1. Validates JWT token and extracts user ID
+    
 
-2. Validates old password and new password requirements
+    **Security Features:**
 
-3. Finds user by ID and validates account status
+    - Current password verification for authorization
 
-4. Verifies current password matches provided old password
+    - Prevention of reusing the same password
 
-5. Ensures new password is different from current password
+    - Secure password hashing (PBKDF2 with SHA-256)
 
-6. Hashes new password securely
+    - Strong password validation enforced by validator
 
-7. Updates user\'s password in database
+    - Account status validation before password change
 
-8. Returns success response.''',
+    
+
+    **Request Requirements:**
+
+    - Valid old password for verification
+
+    - New password meeting security requirements
+
+    - User must be authenticated with valid JWT token
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success status
+
+    - Returns 400 Bad Request for invalid old password or same password
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive or unverified accounts
+
+    - Returns 404 Not Found for user not found
+
+    - Returns 409 Conflict for new password same as old
+
+    
+
+    **Error Handling:**
+
+    - BadRequestException (400): Invalid old password or inactive account
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not verified or insufficient permissions
+
+    - NotFoundException (404): User not found
+
+    - ConflictException (409): New password same as current password
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Validates old password and new password requirements
+
+    3. Finds user by ID and validates account status
+
+    4. Verifies current password matches provided old password
+
+    5. Ensures new password is different from current password
+
+    6. Hashes new password securely
+
+    7. Updates user\'s password in database
+
+    8. Returns success response.''',
       summary: 'Change user password with current password verification',
       operationId: 'PublicChangePassword',
       consumes: [],
@@ -1980,140 +10870,45 @@ This endpoint performs the following operations:
   }
 
   @override
-  Future<Response<PublicGetOwnSessionsResponse>> _PublicGetOwnSessions({
-    bool? isActive,
+  Future<Response<PublicGetLyricsBySlugResponse>> _GetLyricsBySlug({
+    required String? songTitle,
+    required String? artistName,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Retrieves a list of all sessions (devices) for the currently authenticated user.
-Supports filtering by session status (active/inactive).
+          '''    Retrieves a lyrics page using the song title and artist name as URL path parameters.
+    This endpoint is designed for SEO-friendly public access to lyrics pages
+    (e.g., <c>/api/v1/public/lyrics/eloko-oyo/fally-ipupa</c>).
+    
 
-This endpoint provides session management by:
+    The lookup is case-insensitive.
+    
 
-- Listing all user sessions across different devices
-- Showing device information (IP address, device name, user agent)
-- Indicating session status (active or expired)
-- Displaying session creation and expiration times
+    **Authentication Requirements:**
 
-**Authentication Requirements:**
+    - No authentication required (public endpoint)
 
-- User must be authenticated with a valid access token
-- User can only view their own sessions
+    
 
-**Query Parameters:**
+    **Response Codes:**
 
-- isActive (optional): Filter sessions by status
-- true: Only active sessions
-- false: Only expired/inactive sessions
-- null/omitted: All sessions
+    - Returns 200 OK with lyrics details on success
 
-**Use Cases:**
+    - Returns 404 Not Found if no lyrics match the given song title and artist name
 
-- View all active login sessions
-- Identify unrecognized devices
-- Manage active sessions before revoking specific ones
-- Security audit of login history
-
-**Response Codes:**
-
-- Returns 200 OK with list of sessions
-- Returns 401 Unauthorized if access token is invalid or expired
-- Returns 403 Forbidden if user lacks required permissions
-
-**Session Information Includes:**
-
-- Session ID for revoking specific sessions
-- IP address of the device
-- Device name and user agent string
-- Creation timestamp
-- Expiration timestamp
-- Active status (computed from expiration time and deletion status)''',
-      summary: 'Retrieve all sessions for the authenticated user',
-      operationId: 'PublicGetOwnSessions',
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get lyrics by song title and artist name',
+      operationId: 'GetLyricsBySlug',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::sessions"],
+      tags: ["public::lyrics"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/sessions');
-    final Map<String, dynamic> $params = <String, dynamic>{
-      'isActive': isActive,
-    };
-    final Request $request = Request(
-      'GET',
-      $url,
-      client.baseUrl,
-      parameters: $params,
-      tag: swaggerMetaData,
+    final Uri $url = Uri.parse(
+      '/api/v1/public/lyrics/${songTitle}/${artistName}',
     );
-    return client
-        .send<PublicGetOwnSessionsResponse, PublicGetOwnSessionsResponse>(
-          $request,
-        );
-  }
-
-  @override
-  Future<Response<PublicGetOwnSessionByIdResponse>> _PublicGetOwnSessionById({
-    required String id,
-    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Retrieves detailed information about a specific session identified by its ID.
-The session must belong to the authenticated user.
-
-This endpoint provides session details by:
-
-- Validating the session ID from the route parameter
-- Verifying the session belongs to the authenticated user
-- Returning complete session metadata and status
-
-**Authentication Requirements:**
-
-- User must be authenticated with a valid access token
-- User can only view their own sessions
-
-**Use Cases:**
-
-- View detailed information about a specific session
-- Check session status before revoking
-- Verify device information for security auditing
-- Display session details in user dashboard
-
-**Security Features:**
-
-- Session ownership verification prevents viewing other users\' sessions
-- Returns 404 (not 403) for unauthorized access to prevent session enumeration
-
-**Response Codes:**
-
-- Returns 200 OK with session details on success
-- Returns 400 Bad Request if session ID is invalid
-- Returns 401 Unauthorized if access token is invalid or expired
-- Returns 403 Forbidden if user lacks required permissions
-- Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
-
-**Session Information Includes:**
-
-- Session ID
-- IP address of the device
-- Device name and user agent string
-- Creation timestamp
-- Expiration timestamp
-- Active status (computed from expiration time and deletion status)
-
-**Error Handling:**
-
-- NotFoundException (404): Session not found or doesn\'t belong to user''',
-      summary: 'Retrieve a specific session by ID',
-      operationId: 'PublicGetOwnSessionById',
-      consumes: [],
-      produces: [],
-      security: [],
-      tags: ["public::sessions"],
-      deprecated: false,
-    ),
-  }) {
-    final Uri $url = Uri.parse('/api/v1/public/sessions/${id}');
     final Request $request = Request(
       'GET',
       $url,
@@ -2121,219 +10916,130 @@ This endpoint provides session details by:
       tag: swaggerMetaData,
     );
     return client
-        .send<PublicGetOwnSessionByIdResponse, PublicGetOwnSessionByIdResponse>(
+        .send<PublicGetLyricsBySlugResponse, PublicGetLyricsBySlugResponse>(
           $request,
         );
-  }
-
-  @override
-  Future<Response<PublicRevokeSessionResponse>> _PublicRevokeSession({
-    required String id,
-    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Revokes (logs out from) a specific session identified by its ID.
-This allows users to remotely log out from other devices.
-
-This endpoint performs session revocation by:
-
-- Validating the session ID from the route parameter
-- Verifying the session belongs to the authenticated user
-- Soft deleting the session (marking it as inactive)
-- Invalidating all tokens associated with that session
-
-**Authentication Requirements:**
-
-- User must be authenticated with a valid access token
-- User can only revoke their own sessions
-
-**Use Cases:**
-
-- Log out from a specific device remotely
-- Remove unrecognized or suspicious sessions
-- Clean up old sessions after viewing session list
-- Security response to potential account compromise
-
-**Security Features:**
-
-- Session ownership verification prevents revoking other users\' sessions
-- Soft delete ensures session history is maintained for audit purposes
-- Immediate invalidation prevents further use of associated tokens
-
-**Response Codes:**
-
-- Returns 200 OK with success flag on successful revocation
-- Returns 400 Bad Request if session ID is invalid
-- Returns 401 Unauthorized if access token is invalid or expired
-- Returns 403 Forbidden if user lacks required permissions
-- Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
-
-**Error Handling:**
-
-- NotFoundException (404): Session not found or doesn\'t belong to user
-- Attempting to revoke another user\'s session returns 404 (not 403) to prevent session enumeration attacks''',
-      summary: 'Revoke a specific session (log out from a device)',
-      operationId: 'PublicRevokeSession',
-      consumes: [],
-      produces: [],
-      security: [],
-      tags: ["public::sessions"],
-      deprecated: false,
-    ),
-  }) {
-    final Uri $url = Uri.parse('/api/v1/public/sessions/revoke/${id}');
-    final Request $request = Request(
-      'POST',
-      $url,
-      client.baseUrl,
-      tag: swaggerMetaData,
-    );
-    return client
-        .send<PublicRevokeSessionResponse, PublicRevokeSessionResponse>(
-          $request,
-        );
-  }
-
-  @override
-  Future<Response<PublicRefreshTokenResponse>> _PublicRefreshToken({
-    required PublicRefreshTokenRequest? body,
-    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
-      description:
-          '''Validates and rotates a refresh token to obtain a new access token.
-Implements token rotation for enhanced security - the old refresh token is invalidated.
-
-This endpoint performs token refresh by:
-
-- Validating the provided refresh token
-- Verifying the session is still active and not expired
-- Generating a new access token
-- Rotating the refresh token (old token becomes invalid)
-- Returning new authentication credentials
-
-**Authentication Requirements:**
-
-- Valid, non-expired refresh token
-- Session must be active (not logged out or revoked)
-
-**Security Features:**
-
-- Automatic token rotation prevents token reuse
-- Refresh token hashing for secure storage
-- Session validation ensures only active sessions can refresh
-
-**Response Codes:**
-
-- Returns 200 OK with new tokens on successful refresh
-- Returns 403 Forbidden for invalid or expired refresh tokens
-
-**Error Handling:**
-
-- AuthorizationException (403): Invalid/expired refresh token or session revoked
-- Token rotation ensures old refresh tokens cannot be reused after successful refresh.''',
-      summary: 'Refresh access token using a valid refresh token',
-      operationId: 'PublicRefreshToken',
-      consumes: [],
-      produces: [],
-      security: [],
-      tags: ["public::sessions"],
-      deprecated: false,
-    ),
-  }) {
-    final Uri $url = Uri.parse('/api/v1/public/sessions/refresh-token');
-    final $body = body;
-    final Request $request = Request(
-      'POST',
-      $url,
-      client.baseUrl,
-      body: $body,
-      tag: swaggerMetaData,
-    );
-    return client.send<PublicRefreshTokenResponse, PublicRefreshTokenResponse>(
-      $request,
-    );
   }
 
   @override
   Future<Response<PublicGetOwnProfileResponse>> _PublicGetOwnProfile({
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Retrieves the complete profile information for the currently authenticated user.
+          '''    Retrieves the complete profile information for the currently authenticated user.
 
-This endpoint provides all necessary user information for client applications
-to display profile details and manage user-specific functionality.
+    This endpoint provides all necessary user information for client applications
+    to display profile details and manage user-specific functionality.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates JWT token authentication and extracts user ID
-- Verifies user account is active and verified
-- Retrieves complete user information including roles and permissions
-- Fetches user avatar file information if available
-- Returns comprehensive user profile data
+    - Validates JWT token authentication and extracts user ID
 
-**Authentication Requirements:**
+    - Verifies user account is active and verified
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- Account must be verified (email confirmed)
-- Only visitor role users can access their profile
+    - Retrieves complete user information including roles and permissions
 
-**Returned Information:**
+    - Fetches user avatar file information if available
 
-- Basic user details (ID, email, username, verification status)
-- User roles and associated permissions
-- Avatar file information (if available)
-- Account status and activity information
-- Authentication provider information (local/social)
+    - Returns comprehensive user profile data
 
-**Security Features:**
+    
 
-- User can only access their own profile information
-- Account status validation before profile retrieval
-- Comprehensive permission and role information for authorization
-- Avatar file security through proper file service integration
+    **Authentication Requirements:**
 
-**Response Codes:**
+    - Valid JWT Bearer token required
 
-- Returns 200 OK with complete user profile data
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive or unverified accounts
-- Returns 404 Not Found for user not found
+    - Account must be active (not suspended/banned)
 
-**Error Handling:**
+    - Account must be verified (email confirmed)
 
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not verified or insufficient permissions
-- NotFoundException (404): User not found
+    - Only visitor role users can access their profile
 
-**Use Cases:**
+    
 
-- Display user profile information in client applications
-- Determine user permissions for UI/UX customization
-- Validate user account status and verification
-- Access avatar and display user information
+    **Returned Information:**
 
-**Process Flow:**
+    - Basic user details (ID, email, username, verification status)
 
-1. Validates JWT token and extracts user ID
+    - User roles and associated permissions
 
-2. Finds user by ID and validates account status
+    - Avatar file information (if available)
 
-3. Retrieves user roles and permissions
+    - Account status and activity information
 
-4. Fetches avatar file information if available
+    - Authentication provider information (local/social)
 
-5. Maps complete user data to response DTO
+    
 
-6. Returns comprehensive user profile information.''',
+    **Security Features:**
+
+    - User can only access their own profile information
+
+    - Account status validation before profile retrieval
+
+    - Comprehensive permission and role information for authorization
+
+    - Avatar file security through proper file service integration
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with complete user profile data
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive or unverified accounts
+
+    - Returns 404 Not Found for user not found
+
+    
+
+    **Error Handling:**
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not verified or insufficient permissions
+
+    - NotFoundException (404): User not found
+
+    
+
+    **Use Cases:**
+
+    - Display user profile information in client applications
+
+    - Determine user permissions for UI/UX customization
+
+    - Validate user account status and verification
+
+    - Access avatar and display user information
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Finds user by ID and validates account status
+
+    3. Retrieves user roles and permissions
+
+    4. Fetches avatar file information if available
+
+    5. Maps complete user data to response DTO
+
+    6. Returns comprehensive user profile information.''',
       summary: 'Retrieve authenticated user\'s complete profile information',
       operationId: 'PublicGetOwnProfile',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::user"],
+      tags: ["public::me"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/user/profile');
+    final Uri $url = Uri.parse('/api/v1/public/me/profile');
     final Request $request = Request(
       'GET',
       $url,
@@ -2351,93 +11057,136 @@ This endpoint performs the following operations:
     required PublicUpdateOwnProfileRequest? body,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Updates the profile information for the currently authenticated user.
+          '''    Updates the profile information for the currently authenticated user.
 
-This endpoint requires user authentication - only logged-in users can update their own profile,
-providing secure profile management for authenticated users
-while maintaining data integrity and security requirements.
+    This endpoint requires user authentication - only logged-in users can update their own profile,
+    providing secure profile management for authenticated users
+    while maintaining data integrity and security requirements.
+    
 
-This endpoint performs the following operations:
+    This endpoint performs the following operations:
 
-- Validates JWT token authentication and extracts user ID
-- Verifies user account is active and verified
-- Validates uniqueness for email, username, and phone number if being updated
-- Updates user profile information selectively
-- Returns updated user profile data
+    - Validates JWT token authentication and extracts user ID
 
-**Authentication Requirements:**
+    - Verifies user account is active and verified
 
-- Valid JWT Bearer token required
-- Account must be active (not suspended/banned)
-- Account must be verified (email confirmed)
-- Only logged-in users can update their profile
+    - Validates uniqueness for email, username, and phone number if being updated
 
-**Updateable Information:**
+    - Updates user profile information selectively
 
-- Email address (triggers re-verification and logout)
-- Username (must be unique across the system)
-- Phone number with country information
-- Country details (name, ISO code, dial code)
+    - Returns updated user profile data
 
-**Security Features:**
+    
 
-- User can only update their own profile information
-- Account status validation before updates
-- Uniqueness validation for email, username, and phone
-- Email update triggers account re-verification
+    **Authentication Requirements:**
 
-**Response Codes:**
+    - Valid JWT Bearer token required
 
-- Returns 200 OK with updated user profile data
-- Returns 401 Unauthorized for invalid/missing JWT token
-- Returns 403 Forbidden for inactive or unverified accounts
-- Returns 404 Not Found for user not found
-- Returns 409 Conflict for duplicate email/username/phone
+    - Account must be active (not suspended/banned)
 
-**Error Handling:**
+    - Account must be verified (email confirmed)
 
-- AuthenticationException (401): Invalid JWT token
-- AuthorizationException (403): Account not verified or insufficient permissions
-- NotFoundException (404): User not found
-- ConflictException (409): Email, username, or phone already exists
+    - Only logged-in users can update their profile
 
-**Use Cases:**
+    
 
-- Update user profile information in client applications
-- Change email address (requires re-verification)
-- Update contact information and location details
-- Modify username for personal branding
+    **Updateable Information:**
 
-**Process Flow:**
+    - Email address (triggers re-verification and logout)
 
-1. Validates JWT token and extracts user ID
+    - Username (must be unique across the system)
 
-2. Finds user by ID and validates account status
+    - Phone number with country information
 
-3. Validates uniqueness for updated fields
+    - Country details (name, ISO code, dial code)
 
-4. Updates user profile information selectively
+    
 
-5. Saves changes to database
+    **Security Features:**
 
-6. Returns updated user profile data
+    - User can only update their own profile information
 
-**Important Notes:**
+    - Account status validation before updates
 
-- Email updates reset verification status and force logout
-- Phone number updates include country information
-- Only provided fields are updated (partial updates supported)
-- All validations are performed before any updates.''',
+    - Uniqueness validation for email, username, and phone
+
+    - Email update triggers account re-verification
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with updated user profile data
+
+    - Returns 401 Unauthorized for invalid/missing JWT token
+
+    - Returns 403 Forbidden for inactive or unverified accounts
+
+    - Returns 404 Not Found for user not found
+
+    - Returns 409 Conflict for duplicate email/username/phone
+
+    
+
+    **Error Handling:**
+
+    - AuthenticationException (401): Invalid JWT token
+
+    - AuthorizationException (403): Account not verified or insufficient permissions
+
+    - NotFoundException (404): User not found
+
+    - ConflictException (409): Email, username, or phone already exists
+
+    
+
+    **Use Cases:**
+
+    - Update user profile information in client applications
+
+    - Change email address (requires re-verification)
+
+    - Update contact information and location details
+
+    - Modify username for personal branding
+
+    
+
+    **Process Flow:**
+
+    1. Validates JWT token and extracts user ID
+
+    2. Finds user by ID and validates account status
+
+    3. Validates uniqueness for updated fields
+
+    4. Updates user profile information selectively
+
+    5. Saves changes to database
+
+    6. Returns updated user profile data
+
+    
+
+    **Important Notes:**
+
+    - Email updates reset verification status and force logout
+
+    - Phone number updates include country information
+
+    - Only provided fields are updated (partial updates supported)
+
+    - All validations are performed before any updates.''',
       summary: 'Update authenticated user\'s own profile information',
       operationId: 'PublicUpdateOwnProfile',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::user"],
+      tags: ["public::me"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/user/profile');
+    final Uri $url = Uri.parse('/api/v1/public/me/profile');
     final $body = body;
     final Request $request = Request(
       'PATCH',
@@ -2457,69 +11206,74 @@ This endpoint performs the following operations:
     required MultipartFile avatarFile,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
-          '''Updates the authenticated user\'s avatar by uploading an image file.
+          '''    Updates the authenticated user\'s avatar by uploading an image file.
 
-This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
-The system will automatically delete any previous avatar when a new one is uploaded.
-Only verified users can update their avatar to maintain profile quality and security.
+    This endpoint accepts multipart/form-data file uploads and stores the image in Cloudinary cloud storage.
+    The system will automatically delete any previous avatar when a new one is uploaded.
+    Only verified users can update their avatar to maintain profile quality and security.
+    
 
-**Authentication Requirements:**
+    **Authentication Requirements:**
 
-- User must be logged in (JWT token required)
-- Account must be active and verified
+    - User must be logged in (JWT token required)
 
-**Request Requirements:**
+    - Account must be active and verified
 
-- Content-Type: multipart/form-data
-- Form field name: "avatarFile"\n
-- Allowed file types: JPEG, PNG, GIF, WebP\n
-- Maximum file size: 1MB\n
-- File must be a valid image\n
-\n
-**Avatar Management:**\n
-- Previous avatar is automatically deleted from cloud storage\n
-- Images are stored in Cloudinary with automatic optimization\n
-- Secure HTTPS URLs are generated for accessing avatars\n
-- Smart quality optimization and format conversion\n
-\n
-**Response Codes:**\n
-- Returns 200 OK with updated user information including new avatar\n
-- Returns 400 Bad Request for invalid file type, size, or missing file\n
-- Returns 401 Unauthorized for unauthenticated requests\n
-- Returns 403 Forbidden for inactive or unverified accounts\n
-- Returns 404 Not Found when user doesn\'t exist\n
-\n
-**Security Features:**\n
-- Only the authenticated user can update their own avatar\n
-- Account verification required (verified accounts only)\n
-- File type and size validation\n
-- Automatic cleanup of old avatar files from cloud storage\n
-- Secure signed uploads to Cloudinary\n
-\n
-**Process Flow:**\n
-1. Validates user authentication and account status\n
-2. Validates the uploaded file (type, size, format)\n
-3. Uploads the new avatar to Cloudinary cloud storage\n
-4. Deletes the previous avatar from cloud storage (if exists)\n
-5. Updates user record with new avatar reference\n
-6. Returns updated user information with avatar details\n
-\n
-**Example cURL Request:**\n
-```
-curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \
--H "Authorization: Bearer YOUR_JWT_TOKEN" \
--F "avatarFile=@/path/to/image.jpg"
-```''',
+    
+
+    **Request Requirements:**
+
+    - Content-Type: multipart/form-data
+
+    - Form field name: "avatarFile"\n
+    - Allowed file types: JPEG, PNG, GIF, WebP\n
+    - Maximum file size: 1MB\n
+    - File must be a valid image\n
+    \n
+    **Avatar Management:**\n
+    - Previous avatar is automatically deleted from cloud storage\n
+    - Images are stored in Cloudinary with automatic optimization\n
+    - Secure HTTPS URLs are generated for accessing avatars\n
+    - Smart quality optimization and format conversion\n
+    \n
+    **Response Codes:**\n
+    - Returns 200 OK with updated user information including new avatar\n
+    - Returns 400 Bad Request for invalid file type, size, or missing file\n
+    - Returns 401 Unauthorized for unauthenticated requests\n
+    - Returns 403 Forbidden for inactive or unverified accounts\n
+    - Returns 404 Not Found when user doesn\'t exist\n
+    \n
+    **Security Features:**\n
+    - Only the authenticated user can update their own avatar\n
+    - Account verification required (verified accounts only)\n
+    - File type and size validation\n
+    - Automatic cleanup of old avatar files from cloud storage\n
+    - Secure signed uploads to Cloudinary\n
+    \n
+    **Process Flow:**\n
+    1. Validates user authentication and account status\n
+    2. Validates the uploaded file (type, size, format)\n
+    3. Uploads the new avatar to Cloudinary cloud storage\n
+    4. Deletes the previous avatar from cloud storage (if exists)\n
+    5. Updates user record with new avatar reference\n
+    6. Returns updated user information with avatar details\n
+    \n
+    **Example cURL Request:**\n
+    ```
+    curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \
+      -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+      -F "avatarFile=@/path/to/image.jpg"
+    ```''',
       summary: 'Update user avatar via file upload',
       operationId: 'PublicUpdateAvatar',
       consumes: [],
       produces: [],
       security: [],
-      tags: ["public::user"],
+      tags: ["public::me"],
       deprecated: false,
     ),
   }) {
-    final Uri $url = Uri.parse('/api/v1/public/user/avatar');
+    final Uri $url = Uri.parse('/api/v1/public/me/avatar');
     final List<PartValue> $parts = <PartValue>[
       PartValueFile<MultipartFile>('avatarFile', avatarFile),
     ];
@@ -2534,5 +11288,1519 @@ curl -X PATCH https://api.example.com/api/v1/public/profile/avatar \
     return client.send<PublicUpdateAvatarResponse, PublicUpdateAvatarResponse>(
       $request,
     );
+  }
+
+  @override
+  Future<Response<PublicGetOwnRolesResponse>> _PublicGetOwnRoles({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves all roles assigned to the currently authenticated user, each including
+    its full set of permissions.
+
+    
+
+    This endpoint is intended for client applications that need to determine what
+    features and actions the current user is allowed to perform, enabling role-based
+    UI rendering and frontend access control.
+
+    
+
+    **Authentication Requirements:**
+
+    - Valid JWT Bearer token required
+
+    - Only visitor role users can access this endpoint
+
+    
+
+    **Returned Information:**
+
+    - List of roles assigned to the user
+
+    - Each role includes its name, description, active status, and full permission list
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the user\'s roles and permissions
+
+    - Returns 401 Unauthorized for invalid or missing JWT token
+
+    - Returns 403 Forbidden for inactive or unverified accounts
+
+    - Returns 404 Not Found if the user no longer exists
+''',
+      summary: 'Retrieve the authenticated user\'s roles and permissions',
+      operationId: 'PublicGetOwnRoles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::me"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/me/roles');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicGetOwnRolesResponse, PublicGetOwnRolesResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicGetOwnSessionsResponse>> _PublicGetOwnSessions({
+    bool? isActive,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a list of all sessions (devices) for the currently authenticated user.
+    Supports filtering by session status (active/inactive).
+    
+
+    This endpoint provides session management by:
+
+    - Listing all user sessions across different devices
+
+    - Showing device information (IP address, device name, user agent)
+
+    - Indicating session status (active or expired)
+
+    - Displaying session creation and expiration times
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User can only view their own sessions
+
+    
+
+    **Query Parameters:**
+
+    - isActive (optional): Filter sessions by status
+
+      - true: Only active sessions
+
+      - false: Only expired/inactive sessions
+
+      - null/omitted: All sessions
+
+    
+
+    **Use Cases:**
+
+    - View all active login sessions
+
+    - Identify unrecognized devices
+
+    - Manage active sessions before revoking specific ones
+
+    - Security audit of login history
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with list of sessions
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    
+
+    **Session Information Includes:**
+
+    - Session ID for revoking specific sessions
+
+    - IP address of the device
+
+    - Device name and user agent string
+
+    - Creation timestamp
+
+    - Expiration timestamp
+
+    - Active status (computed from expiration time and deletion status)''',
+      summary: 'Retrieve all sessions for the authenticated user',
+      operationId: 'PublicGetOwnSessions',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/me/sessions');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'isActive': isActive,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetOwnSessionsResponse, PublicGetOwnSessionsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicGetOwnSessionByIdResponse>> _PublicGetOwnSessionById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves detailed information about a specific session identified by its ID.
+    The session must belong to the authenticated user.
+    
+
+    This endpoint provides session details by:
+
+    - Validating the session ID from the route parameter
+
+    - Verifying the session belongs to the authenticated user
+
+    - Returning complete session metadata and status
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User can only view their own sessions
+
+    
+
+    **Use Cases:**
+
+    - View detailed information about a specific session
+
+    - Check session status before revoking
+
+    - Verify device information for security auditing
+
+    - Display session details in user dashboard
+
+    
+
+    **Security Features:**
+
+    - Session ownership verification prevents viewing other users\' sessions
+
+    - Returns 404 (not 403) for unauthorized access to prevent session enumeration
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with session details on success
+
+    - Returns 400 Bad Request if session ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+    
+
+    **Session Information Includes:**
+
+    - Session ID
+
+    - IP address of the device
+
+    - Device name and user agent string
+
+    - Creation timestamp
+
+    - Expiration timestamp
+
+    - Active status (computed from expiration time and deletion status)
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Session not found or doesn\'t belong to user''',
+      summary: 'Retrieve a specific session by ID',
+      operationId: 'PublicGetOwnSessionById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/me/sessions/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetOwnSessionByIdResponse, PublicGetOwnSessionByIdResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicRevokeSessionResponse>> _PublicRevokeSession({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Revokes (logs out from) a specific session identified by its ID.
+    This allows users to remotely log out from other devices.
+    
+
+    This endpoint performs session revocation by:
+
+    - Validating the session ID from the route parameter
+
+    - Verifying the session belongs to the authenticated user
+
+    - Soft deleting the session (marking it as inactive)
+
+    - Invalidating all tokens associated with that session
+
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User can only revoke their own sessions
+
+    
+
+    **Use Cases:**
+
+    - Log out from a specific device remotely
+
+    - Remove unrecognized or suspicious sessions
+
+    - Clean up old sessions after viewing session list
+
+    - Security response to potential account compromise
+
+    
+
+    **Security Features:**
+
+    - Session ownership verification prevents revoking other users\' sessions
+
+    - Soft delete ensures session history is maintained for audit purposes
+
+    - Immediate invalidation prevents further use of associated tokens
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with success flag on successful revocation
+
+    - Returns 400 Bad Request if session ID is invalid
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 403 Forbidden if user lacks required permissions
+
+    - Returns 404 Not Found if session doesn\'t exist or doesn\'t belong to user
+
+    
+
+    **Error Handling:**
+
+    - NotFoundException (404): Session not found or doesn\'t belong to user
+
+    - Attempting to revoke another user\'s session returns 404 (not 403) to prevent session enumeration attacks''',
+      summary: 'Revoke a specific session (log out from a device)',
+      operationId: 'PublicRevokeSession',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::me::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/me/sessions/revoke/${id}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicRevokeSessionResponse, PublicRevokeSessionResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PlaylistDetailDto>> _PublicGetPlaylistById({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns the detail view of a playlist including all its videos.
+    Only the playlist owner can view the playlist.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the requesting user is not the playlist owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the playlist does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get a playlist by ID',
+      operationId: 'PublicGetPlaylistById',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<PlaylistDetailDto, PlaylistDetailDto>($request);
+  }
+
+  @override
+  Future<Response<PublicRenamePlaylistResponse>> _PublicRenamePlaylist({
+    required String? id,
+    required PublicRenamePlaylistRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Updates the display name of a playlist owned by the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if validation fails or user is not the owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the playlist does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Rename a playlist',
+      operationId: 'PublicRenamePlaylist',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicRenamePlaylistResponse, PublicRenamePlaylistResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicDeletePlaylistResponse>> _PublicDeletePlaylist({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Permanently deletes a playlist owned by the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the requesting user is not the playlist owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the playlist does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Delete a playlist',
+      operationId: 'PublicDeletePlaylist',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicDeletePlaylistResponse, PublicDeletePlaylistResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<List<PlaylistDto>>> _PublicGetMyPlaylists({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: '''    Returns all playlists owned by the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get my playlists',
+      operationId: 'PublicGetMyPlaylists',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<List<PlaylistDto>, PlaylistDto>($request);
+  }
+
+  @override
+  Future<Response<PublicCreatePlaylistResponse>> _PublicCreatePlaylist({
+    required PublicCreatePlaylistRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Creates a new playlist owned by the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 201 Created on success with the playlist DTO
+
+    - Returns 400 Bad Request if validation fails
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Create a new playlist',
+      operationId: 'PublicCreatePlaylist',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicCreatePlaylistResponse, PublicCreatePlaylistResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicRemoveVideoFromPlaylistResponse>>
+  _PublicRemoveVideoFromPlaylist({
+    required String? id,
+    required String? videoId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes a video from the authenticated user\'s playlist.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the requesting user is not the playlist owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the playlist does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Remove a video from a playlist',
+      operationId: 'PublicRemoveVideoFromPlaylist',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse(
+      '/api/v1/public/playlists/${id}/videos/${videoId}',
+    );
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicRemoveVideoFromPlaylistResponse,
+      PublicRemoveVideoFromPlaylistResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicAddVideoToPlaylistResponse>> _PublicAddVideoToPlaylist({
+    required String? id,
+    required PublicAddVideoToPlaylistRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Adds a published video to the authenticated user\'s playlist.
+    Returns 409 Conflict if the video is already in the playlist.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the requesting user is not the playlist owner
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the playlist or video does not exist
+
+    - Returns 409 Conflict if the video is already in the playlist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Add a video to a playlist',
+      operationId: 'PublicAddVideoToPlaylist',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::playlists"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/playlists/${id}/videos');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicAddVideoToPlaylistResponse,
+      PublicAddVideoToPlaylistResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetActivePromotionLevelsResponse>>
+  _PublicGetActivePromotionLevels({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns all currently active promotion levels for content discovery and purchasing decisions.
+    
+
+    This endpoint is publicly accessible and does not require authentication.
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the list of active promotion levels on success
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get active promotion levels',
+      operationId: 'PublicGetActivePromotionLevels',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::promotion-levels"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/promotion-levels');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetActivePromotionLevelsResponse,
+      PublicGetActivePromotionLevelsResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicRefreshTokenWebResponse>> _PublicRefreshToken({
+    required PublicRefreshTokenRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Validates and rotates a refresh token to obtain a new access token.
+    Implements token rotation for enhanced security - the old refresh token is invalidated.
+    
+
+    This endpoint performs token refresh by:
+
+    - Validating the provided refresh token
+
+    - Verifying the session is still active and not expired
+
+    - Generating a new access token
+
+    - Rotating the refresh token (old token becomes invalid)
+
+    - Returning new authentication credentials
+
+    
+
+    **Authentication Requirements:**
+
+    - Valid, non-expired refresh token
+
+    - Session must be active (not logged out or revoked)
+
+    
+
+    **Security Features:**
+
+    - Automatic token rotation prevents token reuse
+
+    - Refresh token hashing for secure storage
+
+    - Session validation ensures only active sessions can refresh
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with new tokens on successful refresh
+
+    - Returns 403 Forbidden for invalid or expired refresh tokens
+
+    
+
+    **Error Handling:**
+
+    - AuthorizationException (403): Invalid/expired refresh token or session revoked
+
+    - Token rotation ensures old refresh tokens cannot be reused after successful refresh.''',
+      summary: 'Refresh access token using a valid refresh token',
+      operationId: 'PublicRefreshToken',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::sessions"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/sessions/refresh-token');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicRefreshTokenWebResponse, PublicRefreshTokenWebResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicUnlikeShortVideoResponse>> _PublicUnlikeShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes the authenticated user\'s like from a short video.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the user has not liked this short video
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Remove a like from a short video',
+      operationId: 'PublicUnlikeShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/likes');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicUnlikeShortVideoResponse, PublicUnlikeShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicLikeShortVideoResponse>> _PublicLikeShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records that the authenticated user has liked a short video.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 409 Conflict if the user has already liked this short video
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Like a short video',
+      operationId: 'PublicLikeShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/likes');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicLikeShortVideoResponse, PublicLikeShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicUnbookmarkShortVideoResponse>>
+  _PublicUnbookmarkShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Removes a bookmark from a short video for the authenticated user.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if the short video has not been bookmarked
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Remove a bookmark from a short video',
+      operationId: 'PublicUnbookmarkShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/bookmarks');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicUnbookmarkShortVideoResponse,
+      PublicUnbookmarkShortVideoResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicBookmarkShortVideoResponse>> _PublicBookmarkShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records that the authenticated user has bookmarked a short video.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 409 Conflict if the user has already bookmarked this short video
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Bookmark a short video',
+      operationId: 'PublicBookmarkShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/bookmarks');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicBookmarkShortVideoResponse,
+      PublicBookmarkShortVideoResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicShareShortVideoResponse>> _PublicShareShortVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records a share event for a short video. This endpoint is publicly accessible
+    and does not require authentication.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required (anonymous access allowed)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Share a short video',
+      operationId: 'PublicShareShortVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/shares');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicShareShortVideoResponse, PublicShareShortVideoResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicRecordShortVideoViewResponse>>
+  _PublicRecordShortVideoView({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records a view event for a short video, incrementing its view count.
+    This endpoint is publicly accessible and does not require authentication.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required (anonymous access allowed)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 404 Not Found if the short video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Record a view for a short video',
+      operationId: 'PublicRecordShortVideoView',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${id}/views');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicRecordShortVideoViewResponse,
+      PublicRecordShortVideoViewResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetPublicShortsResponse>> _GetPublicShorts({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of active short video clips for public consumption.
+    Only short videos with active status are returned.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required (public endpoint)
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated short video list on success
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List active short videos',
+      operationId: 'GetPublicShorts',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetPublicShortsResponse, PublicGetPublicShortsResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicGetPublicShortBySlugResponse>> _GetPublicShortBySlug({
+    required String? slug,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the full details of a single active short video clip by its URL slug.
+    
+
+    Powers the individual short video page with the video player and engagement counters.
+    Returns 404 if the short video does not exist or is not active.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with short video details on success
+
+    - Returns 404 Not Found if the short video does not exist or is not active
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get active short video by slug',
+      operationId: 'GetPublicShortBySlug',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::shorts"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/shorts/${slug}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetPublicShortBySlugResponse,
+      PublicGetPublicShortBySlugResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetAllTagsResponse>> _PublicGetAllTags({
+    String? search,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Returns all available tags for browsing and filtering content.
+    
+
+    Supports optional search filtering via the `search` query parameter.
+    The search performs a case-insensitive partial match on both tag name and slug.
+    
+
+    **Query Parameters:**
+
+    - `search` (optional): filter tags by name or slug (e.g. `?search=fally`)
+
+    
+
+    This endpoint is publicly accessible and does not require authentication.
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with the matching list of tags (empty array if none match)
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get all tags',
+      operationId: 'PublicGetAllTags',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::tags"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/tags');
+    final Map<String, dynamic> $params = <String, dynamic>{'search': search};
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicGetAllTagsResponse, PublicGetAllTagsResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicShareVideoResponse>> _PublicShareVideo({
+    required String? id,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Records a share event for a video. Works for both authenticated users and anonymous visitors.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required — anonymous access is permitted
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 404 Not Found if the video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Record a video share',
+      operationId: 'PublicShareVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/videos/${id}/shares');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicShareVideoResponse, PublicShareVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicRateVideoResponse>> _PublicRateVideo({
+    required String? id,
+    required PublicRateVideoRequest? body,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Submits or updates the authenticated user\'s star rating (1–5) for a video.
+    If the user has already rated the video, the existing rating is updated.
+    
+
+    **Authentication Requirements:**
+
+    - User must be authenticated with a valid access token
+
+    - User must have an active account
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK on success
+
+    - Returns 400 Bad Request if stars is not between 1 and 5
+
+    - Returns 401 Unauthorized if access token is invalid or expired
+
+    - Returns 404 Not Found if the video does not exist
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Rate a video',
+      operationId: 'PublicRateVideo',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/videos/${id}/ratings');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      tag: swaggerMetaData,
+    );
+    return client.send<PublicRateVideoResponse, PublicRateVideoResponse>(
+      $request,
+    );
+  }
+
+  @override
+  Future<Response<PublicGetVideoBySlugResponse>> _GetVideoBySlug({
+    required String? slug,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the full details of a single published video by its URL slug.
+    
+
+    Powers the individual video page with the embedded YouTube player, star ratings,
+    and related videos. Returns 404 if the video does not exist or is not published.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with video detail on success
+
+    - Returns 404 Not Found if video does not exist or is not published
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'Get published video by slug',
+      operationId: 'GetVideoBySlug',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/videos/${slug}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetVideoBySlugResponse, PublicGetVideoBySlugResponse>(
+          $request,
+        );
+  }
+
+  @override
+  Future<Response<PublicGetPublishedVideosResponse>> _GetPublishedVideos({
+    int? pageIndex,
+    int? pageSize,
+    String? search,
+    String? categoryId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves a paginated list of all published videos for public consumption.
+    
+
+    Supports optional filtering by category. Results are returned as a paginated list
+    with summary information suitable for video feed and browsing views.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with paginated video list on success
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List published videos',
+      operationId: 'GetPublishedVideos',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/videos');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'search': search,
+      'categoryId': categoryId,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client.send<
+      PublicGetPublishedVideosResponse,
+      PublicGetPublishedVideosResponse
+    >($request);
+  }
+
+  @override
+  Future<Response<PublicGetFeaturedVideosResponse>> _GetFeaturedVideos({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          '''    Retrieves the list of currently featured published videos.
+    
+
+    A video is featured when an admin stamps it with a future expiry date after a
+    Commerce promotion purchase. Only videos where is_featured = true,
+    featured_until > now(), and status = Published are returned.
+    
+
+    **Authentication Requirements:**
+
+    - No authentication required
+
+    
+
+    **Response Codes:**
+
+    - Returns 200 OK with featured video list on success
+
+    - Returns 429 Too Many Requests if rate limit is exceeded
+''',
+      summary: 'List featured videos',
+      operationId: 'GetFeaturedVideos',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["public::videos"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/api/v1/public/videos/featured');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<PublicGetFeaturedVideosResponse, PublicGetFeaturedVideosResponse>(
+          $request,
+        );
   }
 }

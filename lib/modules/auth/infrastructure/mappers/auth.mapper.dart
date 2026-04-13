@@ -98,7 +98,7 @@ class AuthMapper {
       userName: dto.userName,
       roles: dto.roles.map(roleFromDto).toList(),
       permissions: dto.permissions.map(permissionFromDto).toList(),
-      authProvider: dto.authProvider,
+      authProvider: dto.authProvider.value!,
       isVerified: dto.isVerified,
       isActive: dto.isActive,
       avatar: dto.avatar != null ? fileFromDto(dto.avatar!) : null,
